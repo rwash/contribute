@@ -1,0 +1,75 @@
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+# 
+# Install the MYSQL driver
+#   gem install mysql2
+#
+# Ensure the MySQL gem is defined in your Gemfile
+#   gem 'mysql2'
+#
+# And be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: main_contribute_development
+  pool: 5
+  username: contribute_dev
+  password: contribute_dev
+  socket: /var/run/mysqld/mysqld.sock
+
+# A separate environment for each developer
+
+rick:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: rick_contribute_development
+  pool: 5
+  username: contribute_dev
+  password: contribute_dev
+  socket: /var/run/mysqld/mysqld.sock
+
+mitch:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: mitch_contribute_development
+  pool: 5
+  username: contribute_dev
+  password: contribute_dev
+  socket: /var/run/mysqld/mysqld.sock
+
+andrew:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: andrew_contribute_development
+  pool: 5
+  username: contribute_dev
+  password: contribute_dev
+  socket: /var/run/mysqld/mysqld.sock
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: contribute_test
+  pool: 5
+  username: robiso33
+  password: eeG6Iqui
+  socket: /var/run/mysqld/mysqld.sock
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: contribute_production
+  pool: 5
+  username: robiso33
+  password: eeG6Iqui
+  socket: /var/run/mysqld/mysqld.sock
+  
