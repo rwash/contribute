@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120124223636) do
+ActiveRecord::Schema.define(:version => 20120125014812) do
 
   create_table "categories", :force => true do |t|
     t.string   "shortDescription"
@@ -24,12 +24,12 @@ ActiveRecord::Schema.define(:version => 20120124223636) do
     t.string   "name"
     t.string   "shortDescription"
     t.text     "longDescription"
-    t.date     "startDate"
     t.date     "endDate"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "categoryId"
     t.decimal  "fundingGoal",      :precision => 8, :scale => 2
+    t.boolean  "active"
   end
 
 end
