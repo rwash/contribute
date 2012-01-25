@@ -45,8 +45,5 @@ gem 'devise'
 
 #Testing framework
 gem 'factory_girl_rails'
-gem 'shoulda'
+gem 'shoulda-matchers'
 gem 'rspec-rails'
-
-
-

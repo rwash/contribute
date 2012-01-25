@@ -120,7 +120,7 @@ GEM
       railties (~> 3.1.0)
       sass (~> 3.1.10)
       tilt (~> 1.3.2)
-    shoulda (2.11.3)
+    shoulda-matchers (1.0.0)
     sprockets (2.0.3)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -155,7 +155,7 @@ DEPENDENCIES
   rails (= 3.1.3)
   rspec-rails
   sass-rails (~> 3.1.5)
-  shoulda
+  shoulda-matchers
   therubyracer
   turn (~> 0.8.3)
   uglifier (>= 1.0.3)
