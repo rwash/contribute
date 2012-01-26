@@ -4,5 +4,6 @@ class Project < ActiveRecord::Base
 	def initialize(attributes = nil, options = {})
 		super
 		self.active = true
+		self.created_at = Date.today
 	end
 end

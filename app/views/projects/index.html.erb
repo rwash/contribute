@@ -2,4 +2,6 @@
 <% @projects.each do |project| %>
 <li> <%= project.name %> (<%= link_to "View", project_url(project) %>)</li>
 <% end %>
+<br>
+<%= link_to "Create Project", new_project_url %>
 
