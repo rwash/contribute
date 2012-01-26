@@ -1,0 +1,20 @@
+art_project:
+  id: 1
+  name: "beautiful art"
+  shortDescription: "this is the greatest thing I've ever seen"
+  longDescription: "omg"
+  endDate: "11/11/2013"
+  startDate: "10/11/2012"
+  created_at: "10/11/2012"
+  categoryId: 0
+  fundingGoal: 150000
+goggles:
+  id: 2
+  name: "great goggles"
+  shortDescription: "my eyesss the goggles do noothing"
+  longDescription: "blah blah"
+  endDate: "11/11/2012"
+  startDate: "9/14/2012"
+  created_at: "10/20/2012"
+  categoryId: 1
+  fundingGoal: 200000
