@@ -15,6 +15,8 @@ class Project < ActiveRecord::Base
 	validates :longDescription, :presence => true, :length => {:maximum => MAX_LONG_DESC_LENGTH}
 
 	validates :fundingGoal, :presence => true, :format => { :with => /^\d+??(?:\.\d{0,2})?$/ }, :numericality => {:greater_than_or_equal_to => MIN_FUNDING_GOAL, :less_than_or_equal_to => MAX_FUNDING_GOAL}
+	validates :created_at, :presence => true
+	validates :active, :presence => true
 	#todo: dates
 
 	def initialize(attributes = nil, options = {})
