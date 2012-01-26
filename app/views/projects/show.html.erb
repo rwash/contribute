@@ -7,3 +7,5 @@
 <li> Category: <%= Category.find(@project.categoryId).shortDescription %> TODO: Handle when there's no category!</li>
 <li> Funding Goal: <%= number_to_currency(@project.fundingGoal) %> </li>
 <li> Active: <%= @project.active %> </li>
+<br>
+<li> <%= link_to "Back", projects_url %>
