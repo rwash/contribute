@@ -1,0 +1,9 @@
+<h1> <%= @project.name %> </h1>
+<li> Short Desc: <%= @project.shortDescription %> </li>
+<li> Long Desc: <%= @project.longDescription %> </li>
+<li> End Date: <%= @project.endDate %> </li>
+<li> Created At: <%= @project.created_at %> </li>
+<li> Updated At: <%= @project.updated_at %> </li>
+<li> Category: <%= Category.find(@project.categoryId).shortDescription %> TODO: Handle when there's no category!</li>
+<li> Funding Goal: <%= number_to_currency(@project.fundingGoal) %> </li>
+<li> Active: <%= @project.active %> </li>
