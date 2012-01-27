@@ -3,8 +3,8 @@ art_project:
   name: "beautiful art"
   shortDescription: "this is the greatest thing I've ever seen"
   longDescription: "omg"
-  endDate: 2013-11-11
-  startDate: 2012-10-11
+  endDate: <%= Date.today + 1.days %>
+  startDate: <%= Date.today %>
   created_at: 2012-10-22 16:32:03.10 -5
   categoryId: 0
   fundingGoal: 150000
@@ -14,8 +14,8 @@ goggles:
   name: "great goggles"
   shortDescription: "my eyesss the goggles do noothing"
   longDescription: "blah blah"
-  endDate: 2012-11-11
-  startDate: 2012-9-14
+  endDate: <%= Date.today + 1.days %>
+  startDate: <%= Date.today %>
   created_at: 2012-10-20 16:32:03.10 -5
   categoryId: 1
   fundingGoal: 200000
