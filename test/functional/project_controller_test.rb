@@ -42,13 +42,21 @@ class ProjectsControllerTest < ActionController::TestCase
 
 		@project.fundingGoal = -1
 		post :create, project: @project.attributes
-		assert_response :success
-		assert_select "h2", {:text => /(.*)error(.*)/}, "heading does not contain errors" 
+		assert_select "h2", {:text => /(.*)error(.*)/}, "heading does not contain errors"
+		
+		#put project back in db
+		@project.fundingGoal = Project.MIN_FUNDING_GOAL + 1
+		@project.save!
 	end
 
 	test "update_success_on_valid_parameters" do
+		put :update, id: @project.to_param, project: @project.attributes
+		assert_redirected_to project_path(assigns(:project))
 	end
 
 	test "update_failure_on_invalid_parameters" do
+		@project.fundingGoal = -1
+		put :update, id: @project.to_param, project: @project.attributes
+		assert_select "h2", {:text => /(.*)error(.*)/}, "heading does not contain errors" 
 	end
 end
