@@ -24,9 +24,7 @@ class ProjectTest < ActiveSupport::TestCase
 	end
 
 	test "valid funding goal" do
-		project = projects(:goggles)
-		assert project.valid?, "Project wasn't valid to begin with, check project fixture"
-		
+		project = get_valid_project(:goggles)	
 		project.fundingGoal = Project.MIN_FUNDING_GOAL - 1
 		assert project.invalid?
 
@@ -50,8 +48,7 @@ class ProjectTest < ActiveSupport::TestCase
 	end
 
 	test "valid start and end date" do
-		project = projects(:goggles)
-		assert project.valid?, "Project wasn't valid to begin with, check project fixture"
+		project = get_valid_project(:goggles)
 	
 		#Test startDate >= Today
 		project.startDate = Date.today - 1.days
