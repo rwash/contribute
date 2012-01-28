@@ -8,4 +8,12 @@ class ProjectsController < InheritedResources::Base
 			redirect_to projects_url, notice: 'Invalid Project'
 		end
 	end
+
+	def edit
+		begin
+			edit!
+		rescue ActiveRecord::RecordNotFound
+			redirect_to projects_url, notice: 'Invalid Project'
+		end
+	end
 end
