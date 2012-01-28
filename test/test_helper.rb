@@ -10,4 +10,10 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+	def get_valid_project(projectSymbol)
+project = projects(projectSymbol)
+		assert project.valid?, "Project wasn't valid to begin with, check project fixture"
+	return project
+	end
+
 end
