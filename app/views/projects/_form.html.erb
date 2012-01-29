@@ -9,12 +9,13 @@
 		</ul>
 		</div>
 	<% end %>
-Name: <%= f.text_field :name  %><br />
-Short Desc: <%= f.text_field :shortDescription %><br />
-Long Desc: <%= f.text_field :longDescription %><br />
-Start Date: <%= f.text_field :startDate %> TODO: GET THIS TO WORK!<br />
-End Date: <%= f.text_field :endDate %> TODO: GET THIS TO WORK!<br />
-Category: <%= f.collection_select :categoryId, Category.all, :id, :shortDescription %><br />
-Funding Goal: <%= f.text_field :fundingGoal %><br />
+Name: <%= f.text_field :name  %><br>
+Short Desc: <%= f.text_field :shortDescription %><br>
+Long Desc: <%= f.text_field :longDescription %><br>
+Start Date: <%= f.text_field :startDate %><br>
+End Date: <%= f.text_field :endDate %> <br>
+Category: <%= f.collection_select :categoryId, Category.all, :id, :shortDescription %><br>
+Picture(optional) <%= f.file_field :picture %> <br>
+Funding Goal: <%= f.text_field :fundingGoal %><br>
 <%= f.submit %>
 <% end %>
