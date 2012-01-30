@@ -1,0 +1,10 @@
+<div class="projectPreview">
+	<% if project.picture.exists? %>
+		<%= image_tag project.picture.url, :class => "projectPreviewImage" %>
+	<% end %>
+
+	<%= link_to project.name, project %><br>
+	<%= project.shortDescription %><br>
+	<%= project.endDate %><br>
+	<%= number_to_currency(project.fundingGoal) %>
+</div>
