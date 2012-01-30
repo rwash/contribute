@@ -4,7 +4,6 @@ art_project:
   shortDescription: "this is the greatest thing I've ever seen"
   longDescription: "omg"
   endDate: <%= Date.today + 1.days %>
-  startDate: <%= Date.today %>
   created_at: 2012-10-22 16:32:03.10 -5
   categoryId: 0
   fundingGoal: 150000
@@ -15,7 +14,6 @@ goggles:
   shortDescription: "my eyesss the goggles do noothing"
   longDescription: "blah blah"
   endDate: <%= Date.today + 1.days %>
-  startDate: <%= Date.today %>
   created_at: 2012-10-20 16:32:03.10 -5
   categoryId: 1
   fundingGoal: 200000
