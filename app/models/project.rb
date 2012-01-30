@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
 	has_one :category
+	has_attached_file :picture
 
 	#Validation constants
 	def self.MAX_NAME_LENGTH; 75; end
@@ -18,7 +19,7 @@ class Project < ActiveRecord::Base
 	validates :active, :presence => true
 
 	validates :endDate, :presence => true
-	validate :valid_start_end_date
+	#validate :valid_start_end_date
 
 	def initialize(attributes = nil, options = {})
 		super
