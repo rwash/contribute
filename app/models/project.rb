@@ -19,7 +19,6 @@ class Project < ActiveRecord::Base
 	validates :active, :presence => true
 
 	validates :endDate, :presence => true
-	#validate :valid_start_end_date
 
 	def initialize(attributes = nil, options = {})
 		super
