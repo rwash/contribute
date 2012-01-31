@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120125014812) do
+ActiveRecord::Schema.define(:version => 20120131211611) do
 
   create_table "categories", :force => true do |t|
     t.string   "shortDescription"
@@ -28,8 +28,12 @@ ActiveRecord::Schema.define(:version => 20120125014812) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "categoryId"
-    t.decimal  "fundingGoal",      :precision => 8, :scale => 2
     t.boolean  "active"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
+    t.integer  "fundingGoal"
   end
 
 end
