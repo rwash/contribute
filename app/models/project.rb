@@ -7,7 +7,6 @@ class Project < ActiveRecord::Base
 	def self.MAX_SHORT_DESC_LENGTH; 200; end
 	def self.MAX_LONG_DESC_LENGTH; 1000; end
 	def self.MIN_FUNDING_GOAL; 5; end
-	#todo: dates
 
 	#Validation implementation
 	validates :name, :presence => true, :uniqueness => true, :length => {:maximum => Project.MAX_NAME_LENGTH}
