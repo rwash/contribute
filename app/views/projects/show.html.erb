@@ -6,7 +6,7 @@ Description:<br>
 <%= @project.longDescription %><br>
 End Date: <%= @project.endDate %><br>
 Category: <%= Category.find(@project.categoryId).shortDescription %> <br>
-Funding Goal: <%= number_to_currency(@project.fundingGoal) %><br>
+Funding Goal: $<%= @project.fundingGoal %><br>
 <br>
 <%= link_to "Edit", edit_project_url(@project) %>
 <%= link_to "Back", projects_url %>
