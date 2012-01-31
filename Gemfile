@@ -47,5 +47,3 @@ gem 'paperclip'
 gem 'factory_girl_rails'
 gem 'shoulda-matchers'
 gem 'rspec-rails'
-
-gem 'paperclip'
