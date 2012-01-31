@@ -40,8 +40,8 @@ gem 'inherited_resources'
 #Used for default authentication/user account management
 gem 'devise'
 
-# Used for managing images an media. Will be uncommented when its used.
-# gem 'paperclip'
+# Used for managing images an media. 
+gem 'paperclip'
 
 #Testing framework
 gem 'factory_girl_rails'

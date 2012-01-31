@@ -1,13 +1,12 @@
-<h1> <%= @project.name %> </h1><br>
+<h1> <%= @project.name %> </h1>
 <% if @project.picture.exists? %>
-<%= image_tag @project.picture.url %><br>
+	<%= image_tag @project.picture.url, :class => "projectImage" %><br>
 <% end %>
-Short Desc: <%= @project.shortDescription %><br>
+Description:<br>
+<%= @project.longDescription %><br>
 End Date: <%= @project.endDate %><br>
-Created At: <%= @project.created_at %><br>
-Updated At: <%= @project.updated_at %><br>
 Category: <%= Category.find(@project.categoryId).shortDescription %> <br>
 Funding Goal: <%= number_to_currency(@project.fundingGoal) %><br>
-Active: <%= @project.active %><br>
 <br>
+<%= link_to "Edit", edit_project_url(@project) %>
 <%= link_to "Back", projects_url %>
