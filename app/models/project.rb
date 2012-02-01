@@ -13,10 +13,11 @@ class Project < ActiveRecord::Base
 	validates :short_description, :presence => true, :length => {:maximum => Project.MAX_SHORT_DESC_LENGTH}
 	validates :long_description, :presence => true, :length => {:maximum => Project.MAX_LONG_DESC_LENGTH}
 
-	validates :funding_goal, :presence => true, :numericality => { :greater_than_or_equal_to => Project.MIN_FUNDING_GOAL } 
+	validates :funding_goal, :presence => true, :numericality => { :greater_than_or_equal_to => Project.MIN_FUNDING_GOAL, :message => "must be at least $5" } 
 	validates :created_at, :presence => true
 	validates :active, :presence => true
 
+	validate :validate_end_date
 	validates :end_date, :presence => true
 
 	def end_date=(end_date)
@@ -27,5 +28,13 @@ class Project < ActiveRecord::Base
 		super
 		self.active = true
 		self.created_at = Date.today
+	end
+
+	def validate_end_date
+		if !end_date
+			return
+		elsif end_date <= Date.today
+			errors.add(:end_date, "has to be in the future")
+		end
 	end
 end
