@@ -1,6 +1,6 @@
 <h1> <%= @project.name %> </h1>
 <% if @project.picture.exists? %>
-	<%= image_tag @project.picture.url, :class => "projectImage" %><br>
+	<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
 <% end %>
 Description:<br>
 <%= @project.longDescription %><br>

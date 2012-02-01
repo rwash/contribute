@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
 	has_one :category
-	has_attached_file :picture
+	has_attached_file :picture, :styles => {:show => "200x200>", :thumb => "100x100>"}
 
 	#Validation constants
 	def self.MAX_NAME_LENGTH; 75; end
