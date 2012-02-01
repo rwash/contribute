@@ -19,6 +19,10 @@ class Project < ActiveRecord::Base
 
 	validates :endDate, :presence => true
 
+	def endDate=(endDate)
+		super(Timeliness.parse(endDate, :format => 'mm/dd/yy'))
+	end
+
 	def initialize(attributes = nil, options = {})
 		super
 		self.active = true
