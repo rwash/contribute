@@ -1,3 +1,3 @@
 $(function (){
-	$('#project_endDate').datepicker();
+	$('#project_end_date').datepicker();
 	});

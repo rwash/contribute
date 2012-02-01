@@ -11,28 +11,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120131211611) do
+ActiveRecord::Schema.define(:version => 20120129014803) do
+
   create_table "categories", :force => true do |t|
-    t.string   "shortDescription"
-    t.text     "longDescription"
+    t.string   "short_description"
+    t.text     "long_description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "projects", :force => true do |t|
     t.string   "name"
-    t.string   "shortDescription"
-    t.text     "longDescription"
-    t.date     "endDate"
+    t.string   "short_description"
+    t.text     "long_description"
+    t.integer  "funding_goal"
+    t.date     "end_date"
+    t.integer  "category_id"
+    t.boolean  "active"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "categoryId"
-    t.boolean  "active"
     t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
-    t.integer  "fundingGoal"
   end
 
 end

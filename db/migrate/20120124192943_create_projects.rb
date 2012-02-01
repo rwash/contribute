@@ -2,11 +2,12 @@ class CreateProjects < ActiveRecord::Migration
   def up
     create_table :projects do |t|
 			t.string :name
-			t.string :shortDescription
-			t.text	:longDescription
-			t.decimal :fundingGoal
-			t.date :startDate
-			t.date :endDate
+			t.string :short_description
+			t.text	:long_description
+			t.integer :funding_goal
+			t.date :end_date
+			t.integer :category_id
+			t.boolean :active
 
       t.timestamps
     end

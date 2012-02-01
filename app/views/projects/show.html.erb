@@ -3,10 +3,10 @@
 	<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
 <% end %>
 Description:<br>
-<%= @project.longDescription %><br>
-End Date: <%= @project.endDate %><br>
-Category: <%= Category.find(@project.categoryId).shortDescription %> <br>
-Funding Goal: $<%= @project.fundingGoal %><br>
+<%= @project.long_description %><br>
+End Date: <%= @project.end_date %><br>
+Category: <%= Category.find(@project.category_id).short_description %> <br>
+Funding Goal: $<%= @project.funding_goal %><br>
 <br>
 <%= link_to "Edit", edit_project_url(@project) %>
 <%= link_to "Back", projects_url %>

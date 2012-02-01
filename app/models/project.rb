@@ -10,17 +10,17 @@ class Project < ActiveRecord::Base
 
 	#Validation implementation
 	validates :name, :presence => true, :uniqueness => true, :length => {:maximum => Project.MAX_NAME_LENGTH}
-	validates :shortDescription, :presence => true, :length => {:maximum => Project.MAX_SHORT_DESC_LENGTH}
-	validates :longDescription, :presence => true, :length => {:maximum => Project.MAX_LONG_DESC_LENGTH}
+	validates :short_description, :presence => true, :length => {:maximum => Project.MAX_SHORT_DESC_LENGTH}
+	validates :long_description, :presence => true, :length => {:maximum => Project.MAX_LONG_DESC_LENGTH}
 
-	validates :fundingGoal, :presence => true, :numericality => { :greater_than_or_equal_to => Project.MIN_FUNDING_GOAL } 
+	validates :funding_goal, :presence => true, :numericality => { :greater_than_or_equal_to => Project.MIN_FUNDING_GOAL } 
 	validates :created_at, :presence => true
 	validates :active, :presence => true
 
-	validates :endDate, :presence => true
+	validates :end_date, :presence => true
 
-	def endDate=(endDate)
-		super(Timeliness.parse(endDate, :format => 'mm/dd/yy'))
+	def end_date=(end_date)
+		super(Timeliness.parse(end_date, :format => 'mm/dd/yy'))
 	end
 
 	def initialize(attributes = nil, options = {})
