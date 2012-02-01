@@ -1,6 +1,6 @@
 <div class="projectPreview">
 	<% if project.picture.exists? %>
-		<%= image_tag project.picture.url, :class => "projectPreviewImage" %>
+		<%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
 	<% end %>
 
 	<%= link_to project.name, project %><br>
