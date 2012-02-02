@@ -21,7 +21,6 @@ class Project < ActiveRecord::Base
 	validates :end_date, :presence => true
 
 	def end_date=(end_date)
-		puts "SETTING END DATE"
 		write_attribute(:end_date, Timeliness.parse(end_date, :format => 'mm/dd/yy'))
 	end
 
