@@ -14,7 +14,7 @@ class Project < ActiveRecord::Base
 	validates :short_description, :presence => true, :length => {:maximum => Project.MAX_SHORT_DESC_LENGTH}
 	validates :long_description, :presence => true, :length => {:maximum => Project.MAX_LONG_DESC_LENGTH}
 
-	validates :funding_goal, :presence => true, :numericality => { :greater_than_or_equal_to => Project.MIN_FUNDING_GOAL, :message => "must be at least $5" } 
+	validates :funding_goal, :numericality => { :greater_than_or_equal_to => Project.MIN_FUNDING_GOAL, :message => "must be at least $5" } 
 	validates :created_at, :presence => true
 	validates :active, :presence => true
 
