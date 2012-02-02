@@ -3,3 +3,8 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    attributes:
+      project:
+        picture_content_type: "Picture file type"
