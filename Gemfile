@@ -23,7 +23,9 @@ end
 # gem 'capistrano'
 
 # To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
+#gem 'ruby-debug19', :require => 'ruby-debug'
+#gem 'linecache19'
+#gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
 
 #End Rails Defaults
 
@@ -47,5 +49,3 @@ gem 'paperclip'
 gem 'factory_girl_rails'
 gem 'shoulda-matchers'
 gem 'rspec-rails'
-
-gem 'timeliness'

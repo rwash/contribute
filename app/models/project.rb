@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
 	has_one :category
-	has_attached_file :picture, :styles => {:show => "200x200>", :thumb => "100x100>"}
+	#Setting whiny to false makes it not spit verbose errors out if something like identify goes wrong
+	has_attached_file :picture, :styles => {:show => "200x200>", :thumb => "100x100>"}, :whiny => false
 
 	#Validation constants
 	def self.MAX_NAME_LENGTH; 75; end
@@ -20,8 +21,10 @@ class Project < ActiveRecord::Base
 	validate :validate_end_date
 	validates :end_date, :presence => true
 
-	def end_date=(end_date)
-		write_attribute(:end_date, Timeliness.parse(end_date, :format => 'mm/dd/yy'))
+	validates_attachment_content_type :picture, :content_type => /^image/, :message => "must be jpg, png, or gif"
+
+	def end_date=(val)
+		write_attribute(:end_date, Date.strptime(val, '%m/%d/%Y'))
 	end
 
 	def initialize(attributes = nil, options = {})
