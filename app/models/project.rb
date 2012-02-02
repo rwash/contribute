@@ -19,12 +19,12 @@ class Project < ActiveRecord::Base
 	validates :active, :presence => true
 
 	validate :validate_end_date
-	validates :end_date, :presence => true
+	validates :end_date, :presence => { :message => "must be of form 'MM/DD/YYYY'" }
 
 	validates_attachment_content_type :picture, :content_type => /^image/, :message => "must be jpg, png, or gif"
 
 	def end_date=(val)
-		write_attribute(:end_date, Date.strptime(val, '%m/%d/%Y'))
+		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
 	end
 
 	def initialize(attributes = nil, options = {})
