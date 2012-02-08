@@ -22,6 +22,7 @@ class Project < ActiveRecord::Base
 	validates :end_date, :presence => { :message => "must be of form 'MM/DD/YYYY'" }
 
 	validates_attachment_content_type :picture, :content_type => /^image/, :message => "must be jpg, png, or gif"
+	validates_attachment_size :picture, :less_than => 150000, :message => "cannot be larger than 150KB"
 
 	def end_date=(val)
 		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
@@ -36,7 +37,7 @@ class Project < ActiveRecord::Base
 	def validate_end_date
 		if !end_date
 			return
-		elsif end_date <= Date.today
+		elsif end_date < Date.today + 1
 			errors.add(:end_date, "has to be in the future")
 		end
 	end

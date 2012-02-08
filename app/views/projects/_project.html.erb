@@ -6,5 +6,5 @@
 	<%= link_to project.name, project %><br>
 	<%= project.short_description %><br>
 	<%= project.end_date %><br>
-	$<%= project.funding_goal %>
+	<%= number_to_currency(project.funding_goal, :precision => 0) %>
 </div>
