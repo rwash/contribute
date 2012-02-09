@@ -42,6 +42,10 @@ class Project < ActiveRecord::Base
 		end
 	end
 
+	#Overriding to_param makes it so that whenever a url is built for a project, it substitues
+	#the name of the project instead of the id of the project. This way, we can still refer
+	#to params[:id] but it's actually the name. We didn't change the param to :name because
+	#it was much more code that would be more error prone
 	def to_param
 		self.name
 	end
