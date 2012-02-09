@@ -41,4 +41,8 @@ class Project < ActiveRecord::Base
 			errors.add(:end_date, "has to be in the future")
 		end
 	end
+
+	def to_param
+		self.name
+	end
 end
