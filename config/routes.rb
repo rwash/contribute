@@ -1,4 +1,5 @@
 Contribute::Application.routes.draw do
+	#The :id being passed through the routes is really the name of the project
   resources :projects
 
   # The priority is based upon order of creation:

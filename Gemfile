@@ -46,7 +46,7 @@ gem 'devise'
 gem 'paperclip'
 
 #Testing framework
-gem 'factory_girl_rails'
+gem 'factory_girl_rails', '~> 1.2'
 gem 'shoulda-matchers'
 gem 'rspec-rails'
 
