@@ -11,6 +11,7 @@
 <div id="navigationOptions">
 	<%= link_to "Home", projects_path %> | 
 	<% if user_signed_in? %>
+		<%= link_to "Edit Profile", edit_user_registration_path %> | 
 		<%= link_to "Sign Out", destroy_user_session_path, :method => :delete %>
  	<% else %>
 		<%= link_to "Register", new_user_registration_path %> | <%= link_to "Sign In", new_user_session_path %>
