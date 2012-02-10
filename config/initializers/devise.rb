@@ -7,7 +7,10 @@ Devise.setup do |config|
   config.mailer_sender = "gethelp@contribute.cas.msu.edu"
 
   # Configure the class responsible to send e-mails.
-  config.mailer = "Devise::Mailer"
+  # config.mailer = "Devise::Mailer"
+
+  # Automatically apply schema changes in tableless databases
+  config.apply_schema = false
 
   # ==> ORM configuration
   # Load and configure the ORM. Supports :active_record (default) and
@@ -43,13 +46,19 @@ Devise.setup do |config|
   config.strip_whitespace_keys = [ :email ]
 
   # Tell if authentication through request.params is enabled. True by default.
-  config.params_authenticatable = true
+  # It can be set to an array that will enable params authentication only for the
+  # given strategies, for example, `config.params_authenticatable = [:database]` will
+  # enable it only for database (email + password) authentication.
+  # config.params_authenticatable = true
 
   # Tell if authentication through HTTP Basic Auth is enabled. False by default.
-  config.http_authenticatable = false
+  # It can be set to an array that will enable http authentication only for the
+  # given strategies, for example, `config.http_authenticatable = [:token]` will
+  # enable it only for token authentication.
+  # config.http_authenticatable = false
 
   # If http headers should be returned for AJAX requests. True by default.
-  config.http_authenticatable_on_xhr = true
+  # config.http_authenticatable_on_xhr = true
 
   # The realm used in Http Basic Authentication. "Application" by default.
   # config.http_authentication_realm = "Application"
@@ -58,6 +67,13 @@ Devise.setup do |config|
   # to behave the same regardless if the e-mail provided was right or wrong.
   # Does not affect registerable.
   # config.paranoid = true
+
+  # By default Devise will store the user in session. You can skip storage for
+  # :http_auth and :token_auth by adding those symbols to the array below.
+  # Notice that if you are skipping storage for all authentication paths, you
+  # may want to disable generating routes to Devise's sessions controller by
+  # passing :skip => :sessions to `devise_for` in your config/routes.rb
+  config.skip_session_storage = [:http_auth]
 
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
@@ -69,7 +85,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  config.pepper = "d84kgf04kdengjgt76o34nr8fj4875jdekje8fk43kwkdhg9gfk4keolfjg84jrjg37df0ecvv63367xkfm9423bhnb9n0mn0v98d7wegh3n4n5nrk57h39d9gwe45nh"
+  config.pepper = "ca58e79403e6ab04866dbeab5681fadee75c86ea035bbab8a3799e4fd61abd7be14c89a3dae117778a792caddb31a3e6ad051e6faf12dd9128e7c66bc6dcdc97"
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -77,7 +93,13 @@ Devise.setup do |config|
   # able to access the website for two days without confirming his account,
   # access will be blocked just in the third day. Default is 0.days, meaning
   # the user cannot access the website without confirming his account.
-  config.confirm_within = 0.days
+  config.allow_unconfirmed_access_for = 0.days
+
+  # If true, requires any email changes to be confirmed (exctly the same way as
+  # initial account confirmation) to be applied. Requires additional unconfirmed_email
+  # db field (see migrations). Until confirmed new email is stored in
+  # unconfirmed email column, and copied to email column on successful confirmation.
+  config.reconfirmable = true
 
   # Defines which key will be used when confirming an account
   config.confirmation_keys = [ :email ]
@@ -86,15 +108,12 @@ Devise.setup do |config|
   # The time the user will be remembered without asking for credentials again.
   config.remember_for = 2.weeks
 
-  # If true, a valid remember token can be re-used between multiple browsers.
-  config.remember_across_browsers = false
-
   # If true, extends the user's remember period when remembered via cookie.
   config.extend_remember_period = true
 
   # If true, uses the password salt as remember token. This should be turned
   # to false if you are not using database authenticatable.
-  config.use_salt_as_remember_token = false
+  config.use_salt_as_remember_token = true
 
   # Options to be passed to the created cookie. For instance, you can set
   # :secure => true in order to force SSL only cookies.
@@ -145,7 +164,7 @@ Devise.setup do |config|
   # Time interval you can reset your password with a reset password key.
   # Don't put a too small interval or your users won't have the time to
   # change their passwords.
-  config.reset_password_within = 2.hours
+  config.reset_password_within = 6.hours
 
   # ==> Configuration for :encryptable
   # Allow you to use another encryption algorithm besides bcrypt (default). You can use
@@ -159,15 +178,11 @@ Devise.setup do |config|
   # Defines name of the authentication token params key
   # config.token_authentication_key = :auth_token
 
-  # If true, authentication through token does not store user in session and needs
-  # to be supplied on each request. Useful if you are using the token as API token.
-  # config.stateless_token = false
-
   # ==> Scopes configuration
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "users/sessions/new". It's turned off by default because it's slower if you
   # are using only default views.
-  # config.scoped_views = false
+  config.scoped_views = false
 
   # Configure the default scope given to Warden. By default it's the first
   # devise role declared in your routes (usually :user).
@@ -186,9 +201,8 @@ Devise.setup do |config|
   # If you have any extra navigational formats, like :iphone or :mobile, you
   # should add them to the navigational formats lists.
   #
-  # The :"*/*" and "*/*" formats below is required to match Internet
-  # Explorer requests.
-  config.navigational_formats = [:"*/*", "*/*", :html]
+  # The "*/*" below is required to match Internet Explorer requests.
+  config.navigational_formats = ["*/*", :html]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
