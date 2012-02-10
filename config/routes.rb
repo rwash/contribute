@@ -1,4 +1,6 @@
 Contribute::Application.routes.draw do
+  devise_for :users
+
 	#The :id being passed through the routes is really the name of the project
   resources :projects
 
