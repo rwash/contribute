@@ -15,6 +15,8 @@ Contribute::Application.configure do
 
   # Don't care if the mailer can't send
   #config.action_mailer.raise_delivery_errors = false
+
+	# Tell Devise where to link back to in it's confirmation e-mail
 	config.action_mailer.default_url_options = { :host => 'orithena.cas.msu.edu:4450' }
 
   # Print deprecation notices to the Rails logger
