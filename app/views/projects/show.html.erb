@@ -1,4 +1,6 @@
 <h1> <%= @project.name %> </h1>
+<h2><%= @project.user.location %> </h2>
+<h3>By: <%= @project.user.name %> </h3>
 <% if @project.picture.exists? %>
 	<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
 <% end %>

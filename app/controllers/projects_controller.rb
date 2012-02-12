@@ -7,4 +7,10 @@ class ProjectsController < InheritedResources::Base
 		@projects = Project.limit(8).where("active = 1").order("end_date ASC")
 		index!
 	end
+
+	def create
+		@project = Project.new(params[:project])
+		@project.user_id = current_user.id
+		create!
+	end
 end
