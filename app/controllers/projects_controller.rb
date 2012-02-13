@@ -1,4 +1,6 @@
 class ProjectsController < InheritedResources::Base
+	authorize_resource
+	
 	actions :all, :except => [ :destroy ]
 	#This allows us to use project names instead of ids for the routes
 	before_filter :set_current_project_by_name, :only => [ :show, :edit, :update ]

@@ -8,7 +8,8 @@ Project.create(name: 'Art Proj1',
 	updated_at: '1/27/2012',
 	category_id: 1,
 	funding_goal: 1500,
-	active: true)
+	active: true,
+	user_id: 3)
 
 Project.create(name: 'Art Proj2',
 	short_description: 'this is a short desc for proj 2',
@@ -18,7 +19,8 @@ Project.create(name: 'Art Proj2',
 	updated_at: '2/06/2012',
 	category_id: 2,
 	funding_goal: 2000,
-	active: true)
+	active: true,
+	user_id: 3)
 
 Category.delete_all
 
