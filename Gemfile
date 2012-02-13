@@ -50,4 +50,8 @@ gem 'factory_girl_rails', '~> 1.2'
 gem 'shoulda-matchers'
 gem 'rspec-rails'
 
+#datetime parser
 gem 'timeliness'
+
+#authorization gem
+gem 'cancan'
