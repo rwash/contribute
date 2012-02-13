@@ -10,7 +10,7 @@ End Date: <%= @project.end_date %><br>
 Category: <%= Category.find(@project.category_id).short_description %> <br>
 Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %><br>
 <br>
-<% if @project.user_id == current_user.id %>
+<% if can? :update, @project %>
 	<%= link_to "Edit", edit_project_url(@project) %>
 <% end %>
 <%= link_to "Back", projects_url %>
