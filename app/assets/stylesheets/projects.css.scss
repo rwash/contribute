@@ -3,13 +3,20 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .projectPreview {
-	margin: 10px;
+	margin: 30px;
 	padding: 10px;
-	border: 5px solid black;
-	width: 500px;
-	height: 160px;
+	border: 1px solid #999;
+	border-radius: 15px;
+	box-shadow: 7px 7px 3px #000;
+	width: 250px;
+	height: 400px;
 
-	a {color: #5d8fd2;}
+	a {
+		color: #5d8fd2;
+		font-size: 24px;
+		text-decoration: none;
+		&:hover{ color: #0F0;}
+	}
 }
 
 .projectPreviewImage {
@@ -23,7 +30,7 @@
 
 .progressBar {
 	width: 25px;
-	height: 160px;
+	height: 400px;
 	display:table-cell;
 	vertical-align:bottom;
 	
