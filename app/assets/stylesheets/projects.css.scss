@@ -3,7 +3,11 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .projectPreview {
-	background: url(contribute/app/assets/images/project_preview_divider.png);
+	background:{ 
+		image: url(project_preview_divider.png);
+		repeat: no-repeat;
+		position: bottom;
+	}
 	margin: 30px;
 	padding: 10px;
 	border: 1px solid #999;
@@ -25,11 +29,14 @@
 }
 
 .project_footer{
+	position: absolute;
 	}
 
 .projectPreviewImage {
-	float: left;
-	margin-right: 5px;
+	padding: {
+		top: 10px;
+		bottom: 10px;
+	}
 }
 
 .projectImage {
