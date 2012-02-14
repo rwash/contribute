@@ -3,6 +3,8 @@
 <h3>By: <%= @project.user.name %> </h3>
 <% if @project.picture.exists? %>
 	<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
+<% else %>
+	<%= image_tag "BlockSShow.png", :class => "projectImage" %>
 <% end %>
 Description:<br>
 <%= @project.long_description %><br>
