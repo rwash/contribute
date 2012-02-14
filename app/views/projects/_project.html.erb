@@ -6,9 +6,21 @@
 		<!-- The value inside ths div tags should be the funding percentage completed -->
 		<div class="progressBar">70</div>
 	</div>
+	
 
 	<%= link_to project.name, project %><br>
+	<p>By: <%= project.user.name %></p>
 	<%= project.short_description %><br>
-	<%= project.end_date %><br>
-	<%= number_to_currency(project.funding_goal, :precision => 0) %>
+	
+	<div class="project_footer">
+	<ul>
+	<li><%= project.end_date %></li>
+	<li>Project End Date</li>
+	</ul>
+
+	<ul>
+	<li><%= number_to_currency(project.funding_goal, :precision => 0) %></li>
+	<li>Pledged</li>
+	</ul>
+	</div>
 </div>
