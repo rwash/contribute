@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120212192656) do
+ActiveRecord::Schema.define(:version => 20120214194027) do
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
@@ -59,6 +59,10 @@ ActiveRecord::Schema.define(:version => 20120212192656) do
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
