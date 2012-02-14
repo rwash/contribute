@@ -4,9 +4,6 @@ class Project < ActiveRecord::Base
 	#owner relationship
 	belongs_to :user
 
-	#contributor relationship
-	#has_many :contributors
-
 	#Setting whiny to false makes it not spit verbose errors out if something like identify goes wrong
 	has_attached_file :picture, :styles => {:show => "200x200>", :thumb => "100x100>"}, :whiny => false
 
