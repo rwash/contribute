@@ -1,6 +1,8 @@
 <div class="projectPreview">
 	<% if project.picture.exists? %>
 		<%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
+	<% else %>
+		<%= image_tag "BlockSThumb.png", :class => "projectPreviewImage" %>
 	<% end %>
 	<div class="floatRight">
 		<!-- The value inside ths div tags should be the funding percentage completed -->

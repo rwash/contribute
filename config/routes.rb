@@ -1,6 +1,9 @@
 Contribute::Application.routes.draw do
-  devise_for :users, :controllers => { :registrations => :registrations } #explicitly use our subclass controller
-	resources :users, :only => [:show]
+ 	#explicitly use our subclass controller
+  devise_for :users, :controllers => { :registrations => :registrations } do		
+		get 'users/show/:id', :to => 'registrations#show', :as => :user
+	end
+#	resources :users, :only => [:show]
 
 	#The :id being passed through the routes is really the name of the project
   resources :projects
