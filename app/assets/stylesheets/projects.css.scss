@@ -2,16 +2,44 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.projectPreview {
+#header {
+	border-bottom: {
+		style: solid;
+		width: 1px;
+		color: #000;
+	}
+}
+
+.logo {
+	width: 300px;
+	margin: {
+		left: 80px;
+	}
+}
+
+#navigationOptions {
+	position: absolute;
+	top: 20px;
+	right: 40px;
+}
+
+#projectPreview {
 	background:{ 
 		image: url(project_preview_divider.png);
 		repeat: no-repeat;
 		position: bottom;
 	}
-	margin: 30px;
+	margin: {
+		top: 100px;
+		left: 130px;
+	}
 	padding: 10px;
-	border: 1px solid #999;
-	border-radius: 15px;
+	border: {
+		width: 1px;
+		style: solid;
+		color: #999;
+		radius: 15px;
+	}
 	box-shadow: 7px 7px 3px #000;
 	width: 250px;
 	height: 400px;
@@ -40,7 +68,10 @@
 }
 
 .projectImage {
-	float: left;
+	padding: {
+		top: 20px;
+		bottom: 20px;
+	}
 }
 
 .progressBar {
@@ -48,9 +79,28 @@
 	height: 400px;
 	display:table-cell;
 	vertical-align:bottom;
-	
 }
 
 .floatRight {
 	float: right;
+}
+
+
+#new_user {
+	border: {
+		style: outset;
+		width: 3px;
+		color: black;
+		radius: 15px;
+	}
+	width: 300px;
+	padding: {
+		left: 20px;
+		bottom: 10px;
+	}
+	margin: {
+		left: 400px;
+		top: 100px;
+	}
+	background-color: #CFCFCF;
 }
