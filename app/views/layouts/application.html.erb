@@ -8,6 +8,9 @@
 </head>
 <body>
 
+<div id="header">
+<%= image_tag "lightbulb5_contribute_logo.png", :class => "logo" %>
+
 <div id="navigationOptions">
 	<%= link_to "Home", root_path %> | 
 	<% if user_signed_in? %>
@@ -18,7 +21,7 @@
 		<%= link_to "Register", new_user_registration_path %> | <%= link_to "Sign In", new_user_session_path %>
  	<% end %>
 </div>
-
+</div>
 <% if flash[:alert] %>
 	<p class="flash-error"><%= flash[:alert] %></p>
 <% end %>
