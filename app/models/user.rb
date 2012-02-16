@@ -15,4 +15,5 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :picture, :content_type => /^image/, :message => "must be jpg, png, or gif"
   validates_attachment_size :picture, :less_than => 150000, :message => "cannot be larger than 150KB"
 
+	validates :name, :presence => true
 end
