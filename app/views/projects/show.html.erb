@@ -1,6 +1,23 @@
+<div id ="projectHead" align="center">
 <h1> <%= @project.name %> </h1>
 <h2><%= @project.user.location %> </h2>
 <h3>By: <%= @project.user.name %> </h3>
+
+<ul>
+<li>End Date: <%= @project.end_date %></li>
+<li>Category: <%= Category.find(@project.category_id).short_description %></li>
+<li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
+</ul>
+
+<br>
+<% if can? :update, @project %>
+        <%= link_to "Edit", edit_project_url(@project) %>
+<% end %>
+
+</div>
+
+
+<div id="projectContent" align="center">
 <% if @project.picture? %>
 	<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
 <% else %>
@@ -9,11 +26,7 @@
 <br>
 Description:<br>
 <%= @project.long_description %><br>
-End Date: <%= @project.end_date %><br>
-Category: <%= Category.find(@project.category_id).short_description %> <br>
-Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %><br>
-<br>
-<% if can? :update, @project %>
-	<%= link_to "Edit", edit_project_url(@project) %>
-<% end %>
+</div>
+
 <%= link_to "Back", projects_url %>
+

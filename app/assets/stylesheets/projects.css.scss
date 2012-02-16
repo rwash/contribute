@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+/***** Layout *******/
+
 #header {
 	border-bottom: {
 		style: solid;
@@ -23,9 +25,16 @@
 	right: 40px;
 }
 
+
+
+
+
+/**** Project Preview *****/
+
+
 #projectPreview {
 	background:{ 
-		image: url(project_preview_divider.png);
+/*		image: url(project_preview_divider.png);*/
 		repeat: no-repeat;
 		position: bottom;
 	}
@@ -85,6 +94,39 @@
 	float: right;
 }
 
+
+/******* Project Show *******/
+
+#projectHead {
+	width: 800px;
+	margin-left: 230px;
+	border: {
+		style: solid;
+		width: 1px;
+		color: #000;
+	}
+	li {
+		display: inline;
+		padding-left: 30px;
+	}
+
+	ul {
+		list-style: none;
+	}
+}
+
+#projectContent {
+	border: {
+		style: solid;
+		width: 1px;
+		color: #000;
+	}
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+
+/******* New User ********/
 
 #new_user {
 	border: {
