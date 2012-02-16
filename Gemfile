@@ -55,3 +55,9 @@ gem 'timeliness'
 
 #authorization gem
 gem 'cancan'
+
+#picture caching
+gem 'carrierwave'
+
+#for resizing in carrierwave
+gem 'rmagick'

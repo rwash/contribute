@@ -4,8 +4,8 @@ class Project < ActiveRecord::Base
 	#owner relationship
 	belongs_to :user
 
-	#Setting whiny to false makes it not spit verbose errors out if something like identify goes wrong
-	has_attached_file :picture, :styles => {:show => "200x200>", :thumb => "100x100>"}, :whiny => false
+	#has_attached_file :picture, :styles => {:show => "200x200", :thumb => "100x100"}, :whiny => false
+	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
 	#Validation constants
 	def self.MAX_NAME_LENGTH; 75; end

@@ -8,7 +8,7 @@
 	<%= link_to project.name, project %><br>
 
 	<div align="center">
-	<% if project.picture.exists? %>
+	<% if project.picture? %>
                 <%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
         <% else %>
                 <%= image_tag "BlockSThumb.png", :class => "projectPreviewImage" %>
