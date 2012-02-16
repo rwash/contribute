@@ -1,5 +1,9 @@
-<p>Welcome <%= @resource.email %>!</p>
+<p>Hey <%= @resource.name %>,</p>
 
-<p>You can confirm your account through the link below:</p>
+<p>Welcome to Contribute!</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+<p>You can confirm your account through the link below:<br/>
+<%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+
+<p>Sincerely,<br/>
+The Contribute Team</p>
