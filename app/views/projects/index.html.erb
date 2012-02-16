@@ -1,5 +1,19 @@
-<% @projects.each do |project| %>
-	<%= render project %>
-<% end %>
+<div class="column1">
+	<% @projects1.each do |project| %>
+		<%= render project%>
+	<% end %>
+</div>
+<div class="column2">
+	<% @projects2.each do |project| %>
+		<%= render project%>
+	<% end %>
+</div>
+<div class="column3">
+	<% @projects3.each do |project| %>
+		<%= render project%>
+	<% end %>
+</div>
 <br>
-<%= link_to "Create Project", new_project_url %>
+<% if user_signed_in? %>
+	<%= link_to "Create Project", new_project_url %>
+<% end %>

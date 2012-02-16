@@ -1,24 +1,24 @@
-<div id="projectPreview">
+<div class="projectPreview">
 	<div class="floatRight">
 		<!-- The value inside ths div tags should be the funding percentage completed -->
 		<div class="progressBar">70</div>
 	</div>
-	
+
 
 	<%= link_to project.name, project %><br>
 
 	<div align="center">
 	<% if project.picture.exists? %>
-                <%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
-        <% else %>
-                <%= image_tag "BlockSThumb.png", :class => "projectPreviewImage" %>
-        <% end %>
+								<%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
+				<% else %>
+								<%= image_tag "BlockSThumb.png", :class => "projectPreviewImage" %>
+				<% end %>
 	</div>
 
 	<p>By: <%= project.user.name %></p>
-        <%= project.short_description %><br>
+				<%= project.short_description %><br>
 
-	
+
 	<div class="project_footer">
 	<ul>
 	<li><%= project.end_date %></li>
