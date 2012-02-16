@@ -1,0 +1,7 @@
+<% if @project.picture? %>
+Current Picture: <%= image_tag(@project.picture.url(:thumb)) %><br>
+<% end %>
+New Picture: (optional) 
+<%= f.file_field :picture %>
+<%= f.hidden_field :picture_cache %>
+<br>

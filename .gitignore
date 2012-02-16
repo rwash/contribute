@@ -16,3 +16,4 @@
 
 # Ignore pictures for Paperclip
 /public/system/pictures
+/public/uploads

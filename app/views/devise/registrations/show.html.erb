@@ -1,4 +1,4 @@
-<% if @user.picture.exists? %>
+<% if @user.picture? %>
   <%= image_tag @user.picture.url(:show), :class => "userImage" %><br>
 <% end %>
 <h1> <%= @user.name %> </h1>
