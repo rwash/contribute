@@ -9,24 +9,24 @@
 
 	<div align="center">
 		<% if project.picture? %>
-						<%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
+			<%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
 		<% else %>
-						<%= image_tag "BlockSThumb.png", :class => "projectPreviewImage" %>
+			<%= image_tag "BlockSThumb.png", :class => "projectPreviewImage" %>
 		<% end %>
 	</div>
 
 	<p>By: <%= project.user.name %></p>
-				<%= project.short_description %><br>
+	<%= project.short_description %><br>
 
 
 	<div class="project_footer">
 	<ul>
 	<li><%= project.end_date %></li>
-	<li>Project End Date</li>
+	<li><%= number_to_currency(project.funding_goal, :precision => 0) %></li>
 	</ul>
 
 	<ul>
-	<li><%= number_to_currency(project.funding_goal, :precision => 0) %></li>
+	<li>End Date</li>
 	<li>Pledged</li>
 	</ul>
 	</div>
