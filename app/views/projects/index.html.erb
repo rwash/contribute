@@ -1,5 +1,9 @@
 <div id="createBox">
-	<h1>Create a Project</h1>
+	<% if user_signed_in? %>
+		<h1><%= link_to "Create a Project", new_project_url %></h1>
+	<% else %>
+		<h1><%= link_to "Create a Project", new_user_session_path %></h1>
+	<% end %>
 	<p>Blurb about getting your project funded</p>
 	<p>Reasons to create a project.</p>
 	<p>Linked to create project page</p>
@@ -7,7 +11,7 @@
 
 
 <div id="fundBox">
-	<h1>Fund a Project</h1>
+	<h1><%= link_to "Fund a Project", root_path %></h1>
 	<p>Blurb about funding a project</p>
 	<p>Why you should fund</p>
 	<p>Linked to categories page? or something </p>
