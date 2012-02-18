@@ -1,6 +1,7 @@
 class ProjectsController < InheritedResources::Base
 	actions :all, :except => [ :destroy ]
 
+	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update ]
 	#This allows us to use project names instead of ids for the routes
 	before_filter :set_current_project_by_name, :only => [ :show, :edit, :update ]
 	#This is authorization through CanCan. The before_filter handles load_resource

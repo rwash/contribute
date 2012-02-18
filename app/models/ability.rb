@@ -2,13 +2,9 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+		user ||= User.new
 		can :read, Project, :active => true
-
-		unless user.nil?
-			can :create, Project
-			can :update, Project, :active => true, :user_id => user.id
-		else
-			cannot [:create, :update], Project
-		end
+		can :create, Project
+		can :update, Project, :active => true, :user_id => user.id
  end
 end
