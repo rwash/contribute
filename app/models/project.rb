@@ -25,6 +25,8 @@ class Project < ActiveRecord::Base
 	validate :validate_end_date
 	validates :end_date, :presence => { :message => "must be of form 'MM/DD/YYYY'" }
 
+	validates :picture, :file_size => {:maximum => 0.15.megabytes.to_i }
+
 	def end_date=(val)
 		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
 	end
