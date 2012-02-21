@@ -14,6 +14,11 @@
 /log/*.log
 /tmp
 
-# Ignore pictures for Paperclip
-/public/system/pictures
+# Ignore pictures for Carrierwave
 /public/uploads
+# And Paperclip while it's still used...
+/public/system/pictures
+
+# Ignore a couple hidden files
+.viminfo
+.sass-cache
