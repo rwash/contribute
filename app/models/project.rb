@@ -1,40 +1,36 @@
-class Project < ActiveRecord::Base
-	has_one :category
+MAX_NAME_LENGTH = 75
+MAX_SHORT_DESC_LENGTH = 200
+MAX_LONG_DESC_LENGTH = 1000
+MIN_FUNDING_GOAL = 5
 
-	#owner relationship
+class Project < ActiveRecord::Base
 	belongs_to :user
 
-	#has_attached_file :picture, :styles => {:show => "200x200", :thumb => "100x100"}, :whiny => false
+	has_one :category
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
-	#Validation constants
-	def self.MAX_NAME_LENGTH; 75; end
-	def self.MAX_SHORT_DESC_LENGTH; 200; end
-	def self.MAX_LONG_DESC_LENGTH; 1000; end
-	def self.MIN_FUNDING_GOAL; 5; end
-
-	#Validation implementation
-	validates :name, :presence => true, :uniqueness => true, :length => {:maximum => Project.MAX_NAME_LENGTH}
-	validates :short_description, :presence => true, :length => {:maximum => Project.MAX_SHORT_DESC_LENGTH}
-	validates :long_description, :presence => true, :length => {:maximum => Project.MAX_LONG_DESC_LENGTH}
-
-	validates :funding_goal, :numericality => { :greater_than_or_equal_to => Project.MIN_FUNDING_GOAL, :message => "must be at least $5" } 
+	validates :name, :presence => true, :uniqueness => true, :length => {:maximum => MAX_NAME_LENGTH}
+	validates :short_description, :presence => true, :length => {:maximum => MAX_SHORT_DESC_LENGTH}
+	validates :long_description, :presence => true, :length => {:maximum => MAX_LONG_DESC_LENGTH}
+	validates :funding_goal, :numericality => { :greater_than_or_equal_to => MIN_FUNDING_GOAL, :message => "must be at least $5" } 
 	validates :created_at, :presence => true
 	validates :active, :presence => true
-
 	validate :validate_end_date
 	validates :end_date, :presence => { :message => "must be of form 'MM/DD/YYYY'" }
-
 	validates :picture, :file_size => {:maximum => 0.15.megabytes.to_i }
-
-	def end_date=(val)
-		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
-	end
-
+	
 	def initialize(attributes = nil, options = {})
 		super
 		self.active = true
 		self.created_at = Date.today
+	end
+
+	def end_date=(val)
+		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
+	end
+	
+	def funding_goal=(val)  
+		write_attribute(:funding_goal, val.to_s.gsub(/,/, '').to_f)
 	end
 
 	def validate_end_date
