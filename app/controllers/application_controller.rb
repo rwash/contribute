@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
  protect_from_forgery
 
 	rescue_from CanCan::AccessDenied do |exception|
-		redirect_to root_url, :alert => 'You must be signed in to perform this action'
+		redirect_to root_url, :alert => exception.message
 	end
 
  	def set_current_project_by_name

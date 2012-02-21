@@ -11,3 +11,8 @@ en:
       #https://github.com/jnicklas/carrierwave/blob/master/lib/carrierwave/locale/en.yml
       extension_white_list_error: "must be of one the following types: jpg, jpeg, png, gif"
       rmagick_processing_error: "must be of one the following types: jpg, jpeg, png, gif"
+  unauthorized:
+    read:
+      project: "This project is no longer active."
+    update:
+      project: "This project is no longer active or you do not own it."
