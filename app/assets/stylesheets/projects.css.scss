@@ -144,16 +144,15 @@
 /******* Project Show *******/
 
 #projectHead {
-	width: 800px;
-	margin-left: 230px;
+	margin-top: -22px;
 	border: {
-		style: solid;
+		style: none solid solid;
 		width: 1px;
 		color: #000;
 	}
 	li {
 		display: inline;
-		padding-left: 30px;
+		padding-left: 70px;
 	}
 
 	ul {
@@ -169,11 +168,33 @@
 	}
 	margin-left: 50px;
 	margin-right: 50px;
+	margin-top: -20px;
+}
+
+/******* New/Edit Project ******/
+
+#newEditProject {
+	width: 800px;
+	margin-left: 200px;
+	border: {
+		style: solid outset outset;
+		width: 1px 3px;
+		color: #000;
+	}
+	padding: {
+		top: 15px;
+		bottom: 15px;
+		left: 100px;
+	}
+}
+
+#form{
+	margin-left: 30px;
 }
 
 
 /******* New User ********/
-
+/*
 #new_user {
 	border: {
 		style: outset;
@@ -191,4 +212,39 @@
 		top: 100px;
 	}
 	background-color: #CFCFCF;
+}
+*/
+
+/****** footer *******/
+
+#aboutContribute {
+	border: {
+		style: solid;
+		weight: 1px;
+		color: #000;
+	}
+	margin-top: 100px;
+}
+
+#footer {
+	border: {
+                style: solid;
+                weight: 1px;
+                color: #000;
+        }
+	margin-left: 200px;
+	margin-right: 200px;
+	margin-top: -3px;
+}
+
+#copyright {
+	text-align: center;
+	font-size: 12px;
+	padding: 5px;
+	margin-top: -3px;
+	border: {
+                style: solid;
+                weight: 1px;
+                color: #000;
+        }
 }
