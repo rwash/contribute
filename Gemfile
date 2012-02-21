@@ -41,6 +41,10 @@ gem 'inherited_resources'
 
 #Used for default authentication/user account management
 gem 'devise'
+#Used for omniauth integration with Devise
+gem 'omniauth-facebook'
+#authorization gem
+gem 'cancan'
 
 # Used for managing images an media. 
 gem 'paperclip'
@@ -53,11 +57,7 @@ gem 'rspec-rails'
 #datetime parser
 gem 'timeliness'
 
-#authorization gem
-gem 'cancan'
-
 #picture caching
 gem 'carrierwave'
-
 #for resizing in carrierwave
 gem 'rmagick'

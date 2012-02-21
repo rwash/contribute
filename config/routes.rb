@@ -1,6 +1,6 @@
 Contribute::Application.routes.draw do
  	#explicitly use our subclass controller
-  devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations } do		
+  devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations, :omniauth_callbacks => :omniauth_callbacks } do		
 		get 'users/show/:id', :to => 'registrations#show', :as => :user
 	end
 
