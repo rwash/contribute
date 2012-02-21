@@ -1,4 +1,3 @@
-# Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
@@ -8,7 +7,7 @@ en:
         picture_content_type: "Picture file type"
   errors:
     messages:
-      wrong_size: "is the wrong size (should be %{file_size})"
-      size_too_small: "is too small (should be at least %{file_size})"
-      size_too_big: "is too big (should be at most %{file_size})"
-
+      #Carrierwave
+      #https://github.com/jnicklas/carrierwave/blob/master/lib/carrierwave/locale/en.yml
+      extension_white_list_error: "must be of one the following types: jpg, jpeg, png, gif"
+      rmagick_processing_error: "must be of one the following types: jpg, jpeg, png, gif"
