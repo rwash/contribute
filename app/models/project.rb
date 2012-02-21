@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
 	end
 	
 	def funding_goal=(val)  
-		write_attribute(:funding_goal, val.to_s.gsub(/,/, '').to_f)
+		write_attribute(:funding_goal, val.to_s.gsub(/,/, '').to_i)
 	end
 
 	def validate_end_date
