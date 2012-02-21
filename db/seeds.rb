@@ -9,7 +9,8 @@ Project.create(name: 'Art Proj1',
 	category_id: 1,
 	funding_goal: 1500,
 	active: true,
-	user_id: 3)
+	user_id: 1,
+	url_name: 'art+proj1')
 
 Project.create(name: 'Art Proj2',
 	short_description: 'this is a short desc for proj 2',
@@ -20,7 +21,8 @@ Project.create(name: 'Art Proj2',
 	category_id: 2,
 	funding_goal: 2000,
 	active: true,
-	user_id: 3)
+	user_id: 1,
+	url_name: 'art+proj2')
 
 Category.delete_all
 
@@ -34,6 +36,9 @@ Category.create(short_description: 'Movie',
 	created_at: '1/25/2012',
 	updated_at: '1/26/2012')
 
+User.delete_all
 
-
-
+User.create(
+	name: 'Test User',
+	email: 'test@test.com',
+	password: 'tester')

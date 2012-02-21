@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 		redirect_to root_url, :alert => exception.message
 	end
 
- 	def set_current_project_by_name
-		@project = Project.find_by_name(params[:id])
+ 	def set_current_project_by_url_name
+		@project = Project.find_by_url_name(params[:id])
 	end
 end
