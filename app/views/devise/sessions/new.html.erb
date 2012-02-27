@@ -1,3 +1,4 @@
+<div id="sign_in">
 <h2>Sign in</h2>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
@@ -16,3 +17,5 @@
 
 <%= link_to "Forgot your password?", new_user_password_path %><br/>
 <%= link_to "Resend confirmation email", new_confirmation_path(resource_name) %>
+
+</div>

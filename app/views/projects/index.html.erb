@@ -1,21 +1,22 @@
-<div id="createBox">
+<div id="alignBox">
+      <div id="createFundBox">
 	<% if user_signed_in? %>
 		<h1><%= link_to "Create a Project", new_project_url %></h1>
 	<% else %>
 		<h1><%= link_to "Create a Project", new_user_session_path %></h1>
 	<% end %>
-	<p>Blurb about getting your project funded</p>
-	<p>Reasons to create a project.</p>
+	<p>Blurb about getting your project funded. Reasons to create a project.</p>
 	<p>Linked to create project page</p>
 </div>
 
+      <div id="createFundBox">
 
-<div id="fundBox">
 	<h1><%= link_to "Fund a Project", root_path %></h1>
-	<p>Blurb about funding a project</p>
-	<p>Why you should fund</p>
+	<p>Blurb about funding a project. Why you should fund?</p>
 	<p>Linked to categories page? or something </p>
+      </div>
 </div>
+
 
 <div class="column1">
 	<% @projects1.each do |project| %>

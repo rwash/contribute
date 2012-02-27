@@ -8,7 +8,7 @@
   <div class="name"><%= f.label :name %><br />
   <%= f.text_field :name %></div>
 
-  <div class="email"><%= f.label :email %><br />
+  <div class="email"><%= f.label :email %><br/>
   <%= f.email_field :email %></div>
 
   <div class="password"><%= f.label :password %><br />
@@ -19,6 +19,6 @@
 
   <div><%= f.submit "Sign up" %></div>
 <% end %>
-</div>
 
 <% link_to "Sign in", new_user_session_path %>
+</div>
