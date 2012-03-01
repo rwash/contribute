@@ -4,81 +4,77 @@
 
 
 /**** Index *****/
-
-#createFundBox {
-	display: inline-block;
-	background: #FFF;
+#createBox, #fundBox {
+	background: #e9e9e8;
 	border: {
-                style: outset;
-                width: 5px;
-                color: #666;		
+                style: solid;
+                width: 3px;
+                color: #000;
+		radius: 30px;
         }
-	width: 500px;
-        height: 150px; 
-	padding-left: 20px;
-	margin-top: 50px;
-	margin-left: 50px;
+	width: 400px;
+        height: 200px; 
+	padding-left: 10px;
 	h1 {
 		text-align: center;
-		line-height: 25px;
 	}
 	a {
 		text-decoration: none;
 	}
-	p {
-		line-height: 4px;
-	}
 }
 
-#alignBox {
-	display: inline-block;
-	margin-left: auto;
-	margin-right: auto;
+#createBox {
+	position: relative;
+	top: 50px;
+	left: 180px;
 }
 
-
+#fundBox {
+	position: absolute;
+	top: 215px;
+	left: 650px;
+}
 
 /**** Project Preview *****/
 
 .column2, .column3 {
 	position: absolute;
-	top: 295px;
+	top: 370px;
 }
 .column2{
-	margin-left: 340px;
+	margin-left: 320px;
 }
 
 .column3{
-	margin-left: 670px;
+	margin-left: 650px;
 }
 
 
 
 #projectPreview {
-	background:{
-		image: url(project_preview_divider.png), url(projects_background.png);
+	background:{ 
+		color: #e9e9e8;
+		image: url(project_preview_divider.png);		
 		repeat: no-repeat;
 		position: bottom;
 	}
 	margin: {
-		top: 150px;
-		left: 150px;
+		top: 100px;
+		left: 130px;
 	}
 	padding: 10px;
 	border: {
-		width: 0px;
+		width: 1px;
 		style: solid;
 		color: #999;
-		radius: 10px;
+		radius: 15px;
 	}
-	-moz-border-radius: 10px;
-	box-shadow: 10px 10px 5px #000;
-	-moz-box-shadow: 10px 10px 5px #000;
+	box-shadow: 7px 7px 3px #000;
 	width: 250px;
 	height: 400px;
 
 	a {
-		color: #000;
+		color: #5d8fd2;
 		font-size: 24px;
 		text-decoration: none;
 		/*&:hover{ color: #0F0;}*/
@@ -130,6 +126,12 @@
 /******* Project Show *******/
 
 #projectHead {
+	margin-top: -22px;
+	border: {
+		style: none solid solid;
+		width: 1px;
+		color: #000;
+	}
 	li {
 		display: inline;
 		padding-left: 70px;
@@ -141,52 +143,21 @@
 }
 
 #projectContent {
-	background: #A0AA8F;
 	border: {
 		style: solid;
-		width: 0px;
+		width: 1px;
 		color: #000;
 	}
-	margin: {
-		left: 50px;
-		right: 50px;
-	}
-	padding: {
-		top: 20px;
-		bottom: 20px;
-	}
+	margin-left: 50px;
+	margin-right: 50px;
+	margin-top: -20px;
 }
-
-
-#editLink {
-        position: absolute;
-        right: 100px;
-	width: 100px;
-	height: 20px;
-        border: {
-                style: outset;
-                size: 1px;
-                color: #000;
-                radius: 10px;
-        }
-        -moz-border-radius: 10px;
-        padding: 7px;
-}
-
-#editLink a{
-        text-decoration: none;
-        font-weight: bold;
-	font-size: 14px;
-}
-
-
 
 /******* New/Edit Project ******/
 
 #newEditProject {
-	width: 600px;
-	margin-left: 250px;
-	margin-top: 4px;
+	width: 800px;
+	margin-left: 200px;
 	border: {
 		style: solid outset outset;
 		width: 1px 3px;
@@ -201,4 +172,40 @@
 
 #form{
 	margin-left: 30px;
+}
+
+
+
+/****** footer *******/
+
+#aboutContribute {
+	border: {
+		style: solid;
+		weight: 1px;
+		color: #000;
+	}
+	margin-top: 100px;
+}
+
+#footer {
+	border: {
+                style: solid;
+                weight: 1px;
+                color: #000;
+        }
+	margin-left: 200px;
+	margin-right: 200px;
+	margin-top: -3px;
+}
+
+#copyright {
+	text-align: center;
+	font-size: 12px;
+	padding: 5px;
+	margin-top: -3px;
+	border: {
+                style: solid;
+                weight: 1px;
+                color: #000;
+        }
 }

@@ -1,0 +1,74 @@
+/* jquery orange: e88c21 */
+
+/* style sheet for layouts */
+
+
+html {
+	background: #FFFFF0;
+}
+
+a {
+	color: #000;
+}
+
+/***** Layout *******/
+
+#header {
+	background: #91c3cc;
+        box-shadow: 0px 5px 2px #000;
+	-moz-box-shadow: 0px 5px 2px #000;
+}
+
+.logo {
+        width: 200px;
+        margin: {
+                left: 100px;
+        }
+	border: none;
+}
+
+#navigationOptions {
+        position: absolute;
+        top: 20px;
+        right: 40px;
+}
+
+/****** footer *******/
+                
+#aboutContribute {
+	background: #FFF;
+        border: {
+                style: solid;
+                weight: 1px;
+                color: #000;
+        }
+        margin-top: 100px;
+
+	h3, p{
+		padding-left: 200px;
+	}
+}
+        
+#footer {
+	background: #FFF;
+        border: {
+                style: solid;
+                weight: 1px;
+                color: #000;
+        }
+        margin:  {
+		left: 200px;
+        	right: 200px;
+        	top: -3px;
+	}
+	padding-left: 20px;
+}               
+                
+#copyright {
+	background: inherit;
+        text-align: center;
+        font-size: 12px;
+        /*padding: 5px;
+        margin-top: -3px;*/
+}
+
