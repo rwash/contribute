@@ -8,5 +8,7 @@ Contribute::Application.routes.draw do
 	#The :id being passed through the routes is really the name of the project
   resources :projects
 
+	match 'pay' => 'payments#create_pay', :as => :pay
+	
   root :to => 'projects#index'
 end
