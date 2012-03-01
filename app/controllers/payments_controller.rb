@@ -24,10 +24,11 @@ class PaymentsController < ApplicationController
       "returnUrl" =>@returnURL,
       "cancelUrl"=>@cancelURL,
       "currencyCode"=>"USD", #params[:setpreapproval][:currency],
-      "startingDate" =>"2012-02-29", #params[:startDate],
+      "startingDate" =>Date.today.strftime("%Y-%m-%d"), #params[:startDate],
       "endingDate" =>"2012-06-12", #params[:endDate],
       "maxNumberOfPayments" =>"1", # params[:maxNumberOfPayments],
-      "maxTotalAmountOfAllPayments" =>"50.0", # params[:maxTotalAmountOfAllPayments],
+      "maxTotalAmountOfAllPayments" =>"50.00", # params[:maxTotalAmountOfAllPayments],
+      "maxAmountPerPayment" =>"50.00",
       "requestEnvelope.senderEmail"=>"androck1@gmail.com" #params[:email]
     }
     )  
@@ -50,7 +51,7 @@ class PaymentsController < ApplicationController
     	redirect_to root_path
 	end
 
-	def create_pay
+	def pay
     @host=request.host.to_s
     @port=request.port.to_s   
     @cancelURL="http://#{@host}:#{@port}#cancelled"
@@ -66,7 +67,8 @@ class PaymentsController < ApplicationController
        "receiverList.receiver[0].email"=>"seller_1330462024_biz@msu.edu",
        "receiverList.receiver[0].amount"=>"50.00",
        "currencyCode"=>"USD",
-       "actionType"=>"CREATE",
+       "actionType"=>"PAY",
+       "preapprovalKey"=>params[:key],
        "returnUrl" =>@returnURL,
        "cancelUrl"=>@cancelURL
      }
@@ -77,10 +79,9 @@ class PaymentsController < ApplicationController
         @response = session[:createpay_response]
 				@paykey = @response["payKey"]
         @paymentExecStatus=@response["paymentExecStatus"].to_s[2..-3] 
-        if (@paymentExecStatus.to_s=="CREATED")
-					urlPayKey = @paykey.to_s[2..-3] #trim off the brackets and quotes
-					logger.info "Redirect time!"
-					redirect_to "https://www.sandbox.paypal.com/webscr?cmd=_ap-payment&paykey=#{urlPayKey}"
+        if (@paymentExecStatus.to_s=="COMPLETED")
+					flash[:alert] = 'Payment completed successfully'	
+					redirect_to root_path
 				else
 		 			flash[:alert] = 'An error occured with the payment. Please try again.'
      			redirect_to root_path
