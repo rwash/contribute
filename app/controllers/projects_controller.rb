@@ -9,9 +9,9 @@ class ProjectsController < InheritedResources::Base
 
 	def index
 		@projects = Project.limit(9).where("active = 1").order("end_date ASC")
-		@projects1 = @projects.slice(0..2)
-		@projects2 = @projects.slice(3..5)
-		@projects3 = @projects.slice(6..8)
+		@projects1 = @projects.slice(0..2) || []
+		@projects2 = @projects.slice(3..5) || []
+		@projects3 = @projects.slice(6..8) || []
 		index!
 	end
 
