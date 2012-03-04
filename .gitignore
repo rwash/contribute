@@ -22,3 +22,6 @@
 # Ignore a couple hidden files
 .viminfo
 .sass-cache
+
+# Ignore nano temp files
+*.save
