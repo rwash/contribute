@@ -29,7 +29,9 @@ class ContributionsController < ApplicationController
 	def save
 		unless session[:contribution].nil? or session[:payment_key].nil?
 			@contribution = session[:contribution]
+			session[:contribution] = nil
 			@contribution.payment_key = session[:payment_key]
+			session[:payment_key] = nil
 			if @contribution.save
 				flash[:alert] = "Contribution entered successfully. Thanks for your support!"
 				redirect_to root_path
