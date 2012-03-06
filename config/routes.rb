@@ -1,4 +1,6 @@
 Contribute::Application.routes.draw do
+  get "payments/new"
+
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
 
 	devise_scope :user do
