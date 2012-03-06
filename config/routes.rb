@@ -4,9 +4,13 @@ Contribute::Application.routes.draw do
 	devise_scope :user do
 		get 'users/show/:id', :to => 'registrations#show', :as => :user
 	end
-  
-	match '/projects/:project/contribute' => 'contributions#new', :as => :new_contribution
-	resources :contributions
+
+	#Contribution resource routes  
+	match 'contribution/:project' => 'contributions#new', :as => :new_contribution
+	match 'contribution/save' => 'contributions#save', :as => :save_contribution
+	match 'contribution/cancel' => 'contributions#cancel', :as => :cancel_contribution
+	resources :contributions, :only => :create
+
 	#The :id being passed through the routes is really the name of the project
   resources :projects
 
