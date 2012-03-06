@@ -1,14 +1,25 @@
 class ContributionsController < ApplicationController
+
 	def new
-		@project = Project.find_by_name(params[:project])
+ 		@project = Project.find_by_name params[:project]
+		validate_project
+
 		@contribution = Contribution.new
 	end
 
 	def create
+ 		@project = Project.find_by_id params[:contribution][:project_id]
+		validate_project
+
 		@contribution = Contribution.new params[:contribution]
-		@contribution.project_id = @project.id
-		@contribution.user_id = current_user.id
+		if(user_signed_in?)
+			@contribution.user_id = current_user.id
+		end
+
+		#Worth considering alternatives if the performance on this is bad
+		#E.g. memcached, writing to the DB and marking record incomplete
 		session[:contribution] = @contribution
+
 		#Make API call
 		#Get preapproval key, store in session
 		#Redirect to payment gateway approval
@@ -25,6 +36,7 @@ class ContributionsController < ApplicationController
 			else
 				flash[:alert] = "An error occurred with your contribution. Please try again."
 				redirect_to root_path
+			end
 		end
 	end
 
@@ -39,5 +51,13 @@ class ContributionsController < ApplicationController
 
 	def executePayment
 		#Make API call
+	end
+
+protected
+	def validate_project
+		if !@project.isValid?
+			flash[:alert] = "The project you are trying to contribute to is inactive"
+			redirect_to root_path	
+		end
 	end
 end
