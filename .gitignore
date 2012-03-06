@@ -25,3 +25,4 @@
 
 # Ignore nano temp files
 *.save
+*.swp
