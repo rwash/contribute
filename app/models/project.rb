@@ -10,7 +10,7 @@ class Project < ActiveRecord::Base
 	has_one :category
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
-	validates :name, :presence => true, :uniqueness => true, :length => {:maximum => MAX_NAME_LENGTH}
+	validates :name, :presence => true, :uniqueness => { :case_sensitive => false }, :length => {:maximum => MAX_NAME_LENGTH}
 	validates :short_description, :presence => true, :length => {:maximum => MAX_SHORT_DESC_LENGTH}
 	validates :long_description, :presence => true, :length => {:maximum => MAX_LONG_DESC_LENGTH}
 	validates :funding_goal, :numericality => { :greater_than_or_equal_to => MIN_FUNDING_GOAL, :message => "must be at least $5" } 
