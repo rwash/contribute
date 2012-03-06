@@ -11,11 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120214194027) do
+ActiveRecord::Schema.define(:version => 20120302162610) do
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
     t.text     "long_description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "contributions", :force => true do |t|
+    t.string   "payment_key"
+    t.decimal  "amount",      :precision => 10, :scale => 0
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.binary   "complete"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -35,6 +45,19 @@ ActiveRecord::Schema.define(:version => 20120214194027) do
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.integer  "user_id"
+  end
+
+  create_table "transaction_requests", :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.string   "ip_address"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "card_type"
+    t.date     "card_expires_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "contribution_amt"
   end
 
   create_table "users", :force => true do |t|

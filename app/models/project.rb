@@ -5,6 +5,7 @@ MIN_FUNDING_GOAL = 5
 
 class Project < ActiveRecord::Base
 	belongs_to :user
+	has_many :contributions
 
 	has_one :category
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
