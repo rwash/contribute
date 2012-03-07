@@ -65,7 +65,8 @@ class MultiTokenRequest
 																						:verb => @@http_method,
 																						:uri  => uri.path })
 		params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
-		
+
+		puts get_cbui_url(params)		
 		return get_cbui_url(params)
 	end
 end
