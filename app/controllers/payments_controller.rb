@@ -1,4 +1,4 @@
-require 'amazon/fps/authorization_request'
+require 'amazon/fps/multi_token_request'
 require 'amazon/fps/recipient_request'
 
 class PaymentsController < ApplicationController
