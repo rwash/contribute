@@ -61,3 +61,6 @@ gem 'carrierwave'
 
 #for resizing in carrierwave
 gem 'rmagick'
+
+#rest interaction in pay request
+gem 'httparty'

@@ -1,72 +1,79 @@
-require 'uri'
-require 'amazon/fps/signatureutils'
+require 'net/http'
 
 module Amazon
 module FPS
 
 class PayRequest
+	include HTTParty
+	debug_output $stdout
 
-	#Set these values depending on the service endpoint you are going to hit
-	@@app_name = "CBUI"
-	@@http_method = "GET"
-	@@service_end_point = "https://fps.sandbox.amazonaws.com?"
-	@@cbui_version = "2009-01-09"
+  #Set these values depending on the service endpoint you are going to hit
+  @@app_name = "FPS"
+  @@http_method = "GET"
+  @@service_end_point = "https://fps.sandbox.amazonaws.com/"
+  @@version = "2008-09-17"
 
 	@@access_key = "AKIAJREG62RYG3LW53HA"
 	@@secret_key = "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"
 
-	def self.get_params(amount, pipeline, caller_reference, payment_reason, host_with_port, recipient_token)
-		params = {}
-		params["callerKey"] = @@access_key
-		params["recipientTokenList"] = recipient_token
+  def get_fps_default_parameters()
+    parameters = {}
+    parameters["Version"] = @@version
+    parameters["Timestamp"] = get_formatted_timestamp()
+    parameters["AWSAccessKeyId"] = @@access_key  
 
-		#params["transactionAmount"] = amount #required if you have an amount type
-		params["globalAmountLimit"] = amount
-		#params["amountType"] = "Exact" #this is the default
+    return parameters
+  end
 
-		params["pipelineName"] = pipeline
-		params["returnUrl"] = "http://#{host_with_port}"
-		params["version"] = @@cbui_version
-		params["callerReference"] = caller_reference unless caller_reference.nil?
-		params["paymentReason"] = payment_reason unless payment_reason.nil?
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = "2"
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
-	
-		return params
-	end
+  def get_fps_url(params)
+    fpsURL = @@service_end_point + "?"
+    isFirst = true
+    params.each { |k,v|
+      if(isFirst) then
+        isFirst = false
+      else
+        fpsURL << '&'
+      end
 
-	def self.get_cbui_url(params)
-		cbui_url = @@service_end_point + "?"
+      fpsURL << Amazon::FPS::SignatureUtils.urlencode(k)
+      unless(v.nil?) then
+        fpsURL << '='
+        fpsURL << Amazon::FPS::SignatureUtils.urlencode(v)
+      end
+    }
+    return fpsURL
+  end 
+  
+  def get_formatted_timestamp()
+    return Time.now.iso8601.to_s
+  end
 
-		isFirst = true
-		params.each { |k,v|
-			if(isFirst) then
-				isFirst = false
-			else
-				cbui_url << '&'
-			end
-
-			cbui_url << Amazon::FPS::SignatureUtils.urlencode(k)
-			unless(v.nil?) then
-				cbui_url << '='
-				cbui_url << Amazon::FPS::SignatureUtils.urlencode(v)
-			end
-		}
-		return cbui_url
-	end
-
-	def self.url(host_with_port, recipient_token)
-		uri = URI.parse(@@service_end_point)
-		params = get_params("50", "MultiUse", rand(9999999), "Testing Contribute", host_with_port, recipient_token)
-
-		signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => params, 
-																						:aws_secret_key => @@secret_key,
-																						:host => uri.host,
-																						:verb => @@http_method,
-																						:uri  => uri.path })
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+  def send(multi_use_token, recipient_token, amount)
+    uri = URI.parse(@@service_end_point)
 		
-		return get_cbui_url(params)
+		params = get_fps_default_parameters()
+
+		puts 'recptoken', recipient_token
+		puts 'multiuse_token', multi_use_token
+
+		params["Action"] = "Pay"
+    params["CallerReference"] = rand(9999999)
+		params["RecipientTokenId"] = recipient_token
+		params["SenderTokenId"] = multi_use_token
+		params["TransactionAmount.Value"] = amount
+		params["TransactionAmount.CurrencyCode"] = "USD"
+
+    #Sample GetTransactionStatusRequest
+    params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = "2"
+    params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
+    signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => params, 
+                                            :aws_secret_key => @@secret_key,
+                                            :host => uri.host,
+                                            :verb => @@http_method,
+                                            :uri  => uri.path })
+    params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+
+		return self.class.get(@@service_end_point, :query => params)
 	end
 end
 

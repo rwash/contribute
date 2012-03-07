@@ -14,7 +14,7 @@ Contribute::Application.routes.draw do
 	#The :id being passed through the routes is really the name of the project
   resources :projects
   resources :payments, :only => :new
-	match "/payments/authorization_return" => "payments#authorization_return", :via => :get
+	match "/payments/multi_token_return" => "payments#multi_token_return", :via => :get
 	match "/payments/recipient_return" => "payments#recipient_return", :via => :get
 
   root :to => 'projects#index'
