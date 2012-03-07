@@ -4,7 +4,7 @@ require 'amazon/fps/signatureutils'
 module Amazon
 module FPS
 
-class AuthorizationRequest
+class RecipientRequest
 
 	#Set these values depending on the service endpoint you are going to hit
 	@@app_name = "CBUI"
@@ -15,20 +15,14 @@ class AuthorizationRequest
 	@@access_key = "AKIAJREG62RYG3LW53HA"
 	@@secret_key = "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"
 
-	def self.get_cbui_params(amount, pipeline, caller_reference, payment_reason, host_with_port, recipient_token)
+	def self.get_cbui_params(pipeline, caller_reference, host_with_port)
 		params = {}
+		params["recipientPaysFee"] = true #what should we set this to?
 		params["callerKey"] = @@access_key
-		params["recipientTokenList"] = recipient_token
-
-		#params["transactionAmount"] = amount #required if you have an amount type
-		params["globalAmountLimit"] = amount
-		#params["amountType"] = "Exact" #this is the default
-
 		params["pipelineName"] = pipeline
 		params["returnUrl"] = "http://#{host_with_port}"
 		params["version"] = @@cbui_version
 		params["callerReference"] = caller_reference unless caller_reference.nil?
-		params["paymentReason"] = payment_reason unless payment_reason.nil?
 		params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = "2"
 		params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
 	
@@ -54,10 +48,11 @@ class AuthorizationRequest
 		}
 		return cbui_url
 	end
+		
 
-	def self.url(host_with_port, recipient_token)
+	def self.url(host_with_port)
 		uri = URI.parse(@@service_end_point)
-		params = get_cbui_params("50", "MultiUse", rand(9999999), "Testing Contribute", host_with_port, recipient_token)
+		params = get_cbui_params("Recipient", rand(9999999), host_with_port)
 
 		signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => params, 
 																						:aws_secret_key => @@secret_key,
