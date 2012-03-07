@@ -11,7 +11,7 @@ class PaymentsController < ApplicationController
 		puts params
 
 		recipient_token = params['tokenID']
-		redirect_to Amazon::FPS::AuthorizationRequest.url(self.request.host_with_port + '/payments/authorization_return',
+		redirect_to Amazon::FPS::MultiTokenRequest.url(self.request.host_with_port + '/payments/authorization_return',
 			recipient_token)
 	end
 
