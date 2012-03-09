@@ -12,8 +12,13 @@ class MultiTokenRequest
 	@@service_end_point = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
 	@@cbui_version = "2009-01-09"
 
-	@@access_key = "AKIAJREG62RYG3LW53HA"
-	@@secret_key = "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"
+# Mitch
+#	@@access_key = "AKIAJREG62RYG3LW53HA"
+#	@@secret_key = "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"
+
+# Andrew
+	@@access_key = "AKIAINGLDSXXU7EG4K7Q"
+	@@secret_key = "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"
 
 	def self.get_cbui_params(amount, pipeline, caller_reference, payment_reason, host_with_port, recipient_token)
 		params = {}
@@ -55,9 +60,9 @@ class MultiTokenRequest
 		return cbui_url
 	end
 
-	def self.url(host_with_port, recipient_token)
+	def self.url(amount, payment_reason, host_with_port, recipient_token)
 		uri = URI.parse(@@service_end_point)
-		params = get_cbui_params("50", "MultiUse", rand(9999999), "Testing Contribute", host_with_port, recipient_token)
+		params = get_cbui_params(amount, "MultiUse", rand(9999999), payment_reason, host_with_port, recipient_token)
 
 		signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => params, 
 																						:aws_secret_key => @@secret_key,

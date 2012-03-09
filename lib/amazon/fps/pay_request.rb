@@ -13,8 +13,13 @@ class PayRequest
   @@service_end_point = "https://fps.sandbox.amazonaws.com/"
   @@version = "2008-09-17"
 
-	@@access_key = "AKIAJREG62RYG3LW53HA"
-	@@secret_key = "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"
+# Mitch
+# @@access_key = "AKIAJREG62RYG3LW53HA"
+# @@secret_key = "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"
+
+# Andrew
+  @@access_key = "AKIAINGLDSXXU7EG4K7Q"
+  @@secret_key = "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"
 
   def get_fps_default_parameters()
     parameters = {}

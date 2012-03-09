@@ -19,6 +19,7 @@ class Project < ActiveRecord::Base
 	validate :validate_end_date
 	validates :end_date, :presence => { :message => "must be of form 'MM/DD/YYYY'" }
 	validates :picture, :file_size => {:maximum => 0.15.megabytes.to_i }
+	validates :payment_account_id, :presence => true
 
 	attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture_file_name, :picture_content_type, :picture_file_size
 	

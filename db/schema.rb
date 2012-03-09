@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302162610) do
+ActiveRecord::Schema.define(:version => 20120309163720) do
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20120302162610) do
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.integer  "user_id"
+    t.string   "payment_account_id"
   end
 
   create_table "transaction_requests", :force => true do |t|
