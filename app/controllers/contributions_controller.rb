@@ -42,14 +42,6 @@ class ContributionsController < ApplicationController
 		end
 	end
 
-	#Cancel URL from payment gateway
-	def cancel
-		session[:contribution] = nil
-		
-		flash[:alert] = "Contribution was cancelled"
-		redirect_to root_path
-	end
-
 	# This should likely not be externally accessible 
 	def executePayment
 		@contribution = Contribution.find_by_id(params[:id])
