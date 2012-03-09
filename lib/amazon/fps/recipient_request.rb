@@ -12,8 +12,13 @@ class RecipientRequest
 	@@service_end_point = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
 	@@cbui_version = "2009-01-09"
 
-	@@access_key = "AKIAJREG62RYG3LW53HA"
-	@@secret_key = "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"
+# Mitch
+# @@access_key = "AKIAJREG62RYG3LW53HA"
+# @@secret_key = "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"
+
+# Andrew
+  @@access_key = "AKIAINGLDSXXU7EG4K7Q"
+  @@secret_key = "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"
 
 	def self.get_cbui_params(pipeline, caller_reference, host_with_port)
 		params = {}
