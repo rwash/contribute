@@ -14,3 +14,40 @@
 .form_field {
 	margin-bottom: 20px;
 }
+
+
+/******* User Profile *******/
+
+#userProfile {
+	h1{
+		position: absolute;
+		top: 110px;
+		left: 450px;
+	}
+	h2 {
+		position: absolute;
+		top: 160px;
+		left: 450px;
+	}
+	h3 {
+		margin-left: 200px;
+	}
+}
+
+.userProjects {
+	margin-left: 200px;
+	li {
+		list-style: none;
+	}
+	a {
+		text-decoration: none;
+	}
+}
+
+.userImage {
+	margin: {
+		top: 50px;
+		left: 200px;
+	}
+}
+
