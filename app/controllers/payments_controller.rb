@@ -4,24 +4,24 @@ require 'amazon/fps/pay_request'
 
 class PaymentsController < ApplicationController
   def new
-		redirect_to Amazon::FPS::RecipientRequest.url(self.request.host_with_port + '/payments/recipient_return')
+		request = Amazon::FPS::RecipientRequest.new()
+		redirect_to request.url("#{self.request.host_with_port}/payments/recipient_return", rand(9999999)) #TODO: guid
   end
 
 	def recipient_return
-		puts params
-
 		session['recipient_token'] = params['tokenID'] #need to put this in DB
-		redirect_to Amazon::FPS::MultiTokenRequest.url(self.request.host_with_port + '/payments/multi_token_return',
-			session['recipient_token'])
+
+		request = Amazon::FPS::MultiTokenRequest.new()
+		redirect_to request.url("#{self.request.host_with_port}/payments/multi_token_return", rand(9999999), session['recipient_token'], 50, "Paying for contribution project")
+
 	end
 
 	def multi_token_return
-		puts params
-
 		multi_use_token = params['tokenID']
 
 		request = Amazon::FPS::PayRequest.new()
-		response =  request.send(multi_use_token, 
+		response =  request.send(rand(999999), 
+			multi_use_token, 
 			session['recipient_token'],
 			50)
 
