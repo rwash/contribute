@@ -7,7 +7,7 @@ module Amazon
 module FPS
 
 class MultiTokenRequest < BaseCbuiRequest
-	def url(return_url, caller_reference, recipient_token, amount, payment_reason)
+	def url(return_url, recipient_token, amount, payment_reason)
 			#Called from base class
 			params = get_default_params()
 
@@ -18,7 +18,6 @@ class MultiTokenRequest < BaseCbuiRequest
 			params["globalAmountLimit"] = amount
 			params["pipelineName"] = "MultiUse"
 			params["returnUrl"] = "http://#{return_url}"
-			params["callerReference"] = caller_reference unless caller_reference.nil?
 			params["paymentReason"] = payment_reason unless payment_reason.nil?
 
 			#Compute signature

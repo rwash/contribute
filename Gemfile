@@ -42,9 +42,6 @@ gem 'inherited_resources'
 #Used for default authentication/user account management
 gem 'devise'
 
-# Used for managing images an media. 
-gem 'paperclip'
-
 #Testing framework
 gem 'factory_girl_rails', '~> 1.2'
 gem 'shoulda-matchers'
@@ -58,9 +55,11 @@ gem 'cancan'
 
 #picture caching
 gem 'carrierwave'
-
 #for resizing in carrierwave
 gem 'rmagick'
 
-#rest interaction in pay request
+#REST interaction in pay request
 gem 'httparty'
+
+#GUID generation
+gem "uuidtools", "~> 2.1.2"

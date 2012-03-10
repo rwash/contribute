@@ -22,7 +22,7 @@ class BaseFpsRequest
     params["Version"] = @version
     params["Timestamp"] = get_formatted_timestamp()
     params["AWSAccessKeyId"] = @access_key  
-
+		params["callerReference"] = UUIDTools::UUID.random_create
 		params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = "2"
     params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
 
