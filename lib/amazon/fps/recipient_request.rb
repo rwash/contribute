@@ -1,67 +1,34 @@
 require 'uri'
 require 'amazon/fps/signatureutils'
+require 'amazon/fps/amazon_helper'
+require 'amazon/fps/base_cbui_request'
 
 module Amazon
 module FPS
 
-class RecipientRequest
+class RecipientRequest < BaseCbuiRequest
+		def url(return_url, caller_reference)
+			#Called from base class
+			params = get_default_params()
 
-	#Set these values depending on the service endpoint you are going to hit
-	@@app_name = "CBUI"
-	@@http_method = "GET"
-	@@service_end_point = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
-	@@cbui_version = "2009-01-09"
+			#Add in specific request parameters
+			params["recipientPaysFee"] = true #what should we set this to?
+			params["pipelineName"] = "Recipient"
+			params["returnUrl"] = "http://#{return_url}"
+			params["callerReference"] = caller_reference unless caller_reference.nil?
 
-	@@access_key = "AKIAJREG62RYG3LW53HA"
-	@@secret_key = "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"
-
-	def self.get_cbui_params(pipeline, caller_reference, host_with_port)
-		params = {}
-		params["recipientPaysFee"] = true #what should we set this to?
-		params["callerKey"] = @@access_key
-		params["pipelineName"] = pipeline
-		params["returnUrl"] = "http://#{host_with_port}"
-		params["version"] = @@cbui_version
-		params["callerReference"] = caller_reference unless caller_reference.nil?
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = "2"
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
-	
-		return params
-	end
-
-	def self.get_cbui_url(params)
-		cbui_url = @@service_end_point + "?"
-
-		isFirst = true
-		params.each { |k,v|
-			if(isFirst) then
-				isFirst = false
-			else
-				cbui_url << '&'
-			end
-
-			cbui_url << Amazon::FPS::SignatureUtils.urlencode(k)
-			unless(v.nil?) then
-				cbui_url << '='
-				cbui_url << Amazon::FPS::SignatureUtils.urlencode(v)
-			end
-		}
-		return cbui_url
-	end
-		
-
-	def self.url(host_with_port)
-		uri = URI.parse(@@service_end_point)
-		params = get_cbui_params("Recipient", rand(9999999), host_with_port)
-
-		signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => params, 
-																						:aws_secret_key => @@secret_key,
-																						:host => uri.host,
-																						:verb => @@http_method,
-																						:uri  => uri.path })
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
-		
-		return get_cbui_url(params)
+			#Compute signature
+			puts 'serviceendpoint', @service_end_point
+			uri = URI.parse(@service_end_point)
+			signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => params, 
+																							:aws_secret_key => @secret_key,
+																							:host => uri.host,
+																							:verb => @http_method,
+																							:uri  => uri.path })
+			params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+			
+			#return url
+			return AmazonHelper::get_url(@service_end_point, params)
 	end
 end
 

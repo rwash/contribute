@@ -1,73 +1,36 @@
 require 'uri'
 require 'amazon/fps/signatureutils'
+require 'amazon/fps/amazon_helper'
+require 'amazon/fps/base_cbui_request'
 
 module Amazon
 module FPS
 
-class MultiTokenRequest
+class MultiTokenRequest < BaseCbuiRequest
+	def url(return_url, caller_reference, recipient_token, amount, payment_reason)
+			#Called from base class
+			params = get_default_params()
 
-	#Set these values depending on the service endpoint you are going to hit
-	@@app_name = "CBUI"
-	@@http_method = "GET"
-	@@service_end_point = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
-	@@cbui_version = "2009-01-09"
+			#Add in specific request parameters
+			params["recipientTokenList"] = recipient_token
+			#params["transactionAmount"] = amount #required if you have an amount type
+			#params["amountType"] = "Exact" #this is the default
+			params["globalAmountLimit"] = amount
+			params["pipelineName"] = "MultiUse"
+			params["returnUrl"] = "http://#{return_url}"
+			params["callerReference"] = caller_reference unless caller_reference.nil?
+			params["paymentReason"] = payment_reason unless payment_reason.nil?
 
-	@@access_key = "AKIAJREG62RYG3LW53HA"
-	@@secret_key = "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"
+			#Compute signature
+			uri = URI.parse(@service_end_point)
+			signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => params, 
+																							:aws_secret_key => @secret_key,
+																							:host => uri.host,
+																							:verb => @http_method,
+																							:uri  => uri.path })
+			params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
 
-	def self.get_cbui_params(amount, pipeline, caller_reference, payment_reason, host_with_port, recipient_token)
-		params = {}
-		params["callerKey"] = @@access_key
-		params["recipientTokenList"] = recipient_token
-
-		#params["transactionAmount"] = amount #required if you have an amount type
-		params["globalAmountLimit"] = amount
-		#params["amountType"] = "Exact" #this is the default
-
-		params["pipelineName"] = pipeline
-		params["returnUrl"] = "http://#{host_with_port}"
-		params["version"] = @@cbui_version
-		params["callerReference"] = caller_reference unless caller_reference.nil?
-		params["paymentReason"] = payment_reason unless payment_reason.nil?
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = "2"
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
-	
-		return params
-	end
-
-	def self.get_cbui_url(params)
-		cbui_url = @@service_end_point + "?"
-
-		isFirst = true
-		params.each { |k,v|
-			if(isFirst) then
-				isFirst = false
-			else
-				cbui_url << '&'
-			end
-
-			cbui_url << Amazon::FPS::SignatureUtils.urlencode(k)
-			unless(v.nil?) then
-				cbui_url << '='
-				cbui_url << Amazon::FPS::SignatureUtils.urlencode(v)
-			end
-		}
-		return cbui_url
-	end
-
-	def self.url(host_with_port, recipient_token)
-		uri = URI.parse(@@service_end_point)
-		params = get_cbui_params("50", "MultiUse", rand(9999999), "Testing Contribute", host_with_port, recipient_token)
-
-		signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => params, 
-																						:aws_secret_key => @@secret_key,
-																						:host => uri.host,
-																						:verb => @@http_method,
-																						:uri  => uri.path })
-		params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
-
-		puts get_cbui_url(params)		
-		return get_cbui_url(params)
+			return AmazonHelper::get_url(@service_end_point, params)
 	end
 end
 
