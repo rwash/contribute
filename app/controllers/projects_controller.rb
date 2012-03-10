@@ -1,7 +1,9 @@
-class ProjectsController < InheritedResources::Base
-	actions :all, :except => [ :destroy ]
+require 'amazon/fps/recipient_request'
 
-	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update ]
+class ProjectsController < InheritedResources::Base
+	actions :all, :except => [ :create, :destroy ]
+
+	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :save ]
 	#This allows us to use project names instead of ids for the routes
 	before_filter :set_current_project_by_name, :only => [ :show, :edit, :update ]
 	#This is authorization through CanCan. The before_filter handles load_resource
@@ -18,6 +20,26 @@ class ProjectsController < InheritedResources::Base
 	def create
 		@project = Project.new(params[:project])
 		@project.user_id = current_user.id
-		create!
+		session[:project] = @project
+	
+		request = Amazon::FPS::RecipientRequest.new()
+
+		guid = rand(999999)
+		redirect_to request.url("#{self.request.host_with_port}/projects/save", guid)
+	end
+
+	def save
+		if !session[:project].nil? and !params[:tokenID].nil?
+			@project = session[:project]
+			session[:project] = nil
+			@project.payment_account_id = params[:tokenID]
+			if @project.save
+				flash[:alert] = "Project saved successfully. Here's to getting funded!"
+				redirect_to root_path
+			else
+				flash[:alert] = "An error occurred saving your project. Please try again."
+				redirect_to root_path
+			end
+		end
 	end
 end
