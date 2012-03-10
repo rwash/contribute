@@ -1,5 +1,8 @@
-class ContributionsController < ApplicationController
+require 'amazon/fps/multi_token_request'
+require 'amazon/fps/pay_request'
 
+
+class ContributionsController < ApplicationController
 	def new
  		@project = Project.find_by_name params[:project]
 		validate_project
@@ -20,18 +23,19 @@ class ContributionsController < ApplicationController
 		#E.g. memcached, writing to the DB and marking record incomplete
 		session[:contribution] = @contribution
 
-		#Make API call
-		#Get preapproval key, store in session
-		#Redirect to payment gateway approval
+		request = Amazon::FPS::MultiTokenRequest.new()
+		
+		puts 'recpttoken', @project.payment_account_id
+		guid = rand(99999999)
+		redirect_to request.url("#{self.request.host_with_port}/contributions/save", guid, @project.payment_account_id, @contribution.amount, @project.name)
 	end
 
 	#Return URL from payment gateway
 	def save
-		unless session[:contribution].nil? or session[:payment_key].nil?
+		if !session[:contribution].nil? and !params[:tokenID].nil?
 			@contribution = session[:contribution]
 			session[:contribution] = nil
-			@contribution.payment_key = session[:payment_key]
-			session[:payment_key] = nil
+			@contribution.payment_key = params[:tokenID]
 			if @contribution.save
 				flash[:alert] = "Contribution entered successfully. Thanks for your support!"
 				redirect_to root_path
@@ -42,17 +46,24 @@ class ContributionsController < ApplicationController
 		end
 	end
 
-	#Cancel URL from payment gateway
-	def cancel
-		session[:contribution] = nil
-		session[:payment_key] = nil
-		
-		flash[:alert] = "Contribution was cancelled"
-		redirect_to root_path
-	end
-
+	# This should likely not be externally accessible 
 	def executePayment
-		#Make API call
+		@contribution = Contribution.find_by_id(params[:id])
+
+    request = Amazon::FPS::PayRequest.new()
+		
+		guid = rand(999999)
+    response =  request.send(guid, @contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
+
+		logger.info response
+		result = response['PayResponse']['PayResult']
+		transaction_id = result['TransactionId']
+	  transaction_status = result['TransactionStatus']
+
+    if transaction_status == "Success"
+			@contribution.complete = true
+			@contribution.save
+		end
 	end
 
 protected
