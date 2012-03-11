@@ -27,13 +27,20 @@ describe Project do
 	describe 'funding goal' do
 		it 'succeeds with number that does not contain commas' do
 			project = FactoryGirl.build(:project, :funding_goal => 5000)
-			assert project.save, 'Correctly saved project with valid goal'
+			assert project.save, 'Failed to save project with valid goal'
 			assert_equal project.funding_goal, 5000
 		end
 		it 'succeeds with number that does contain commas' do
 			project = FactoryGirl.build(:project, :funding_goal => "5,000,000")
-			assert project.save, 'Correctly saved project with valid goal containing commas'
+			assert project.save, 'Failed to save project with valid goal containing commas'
 			assert_equal project.funding_goal, 5000000
+		end
+	end
+
+	describe 'payment account id' do
+		it 'is required' do
+			project = FactoryGirl.build(:project, :payment_account_id => '')
+			assert !project.save, 'Incorrectly saved project without payment account id'
 		end
 	end
 end
