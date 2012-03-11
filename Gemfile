@@ -64,3 +64,5 @@ gem 'rmagick'
 
 #rest interaction in pay request
 gem 'httparty'
+
+gem 'uuidtools'

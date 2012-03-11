@@ -24,7 +24,7 @@ class ProjectsController < InheritedResources::Base
 	
 		request = Amazon::FPS::RecipientRequest.new()
 
-		guid = rand(999999)
+		guid = UUIDTools::UUID.timestamp_create.to_s
 		redirect_to request.url("#{self.request.host_with_port}/projects/save", guid)
 	end
 
