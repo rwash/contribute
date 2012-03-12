@@ -37,6 +37,13 @@ describe Project do
 		end
 	end
 
+	describe 'user' do
+		it 'id is required' do
+			project = FactoryGirl.build(:project, :user_id => '')
+			assert !project.save, 'Incorrectly saved project without user id'
+		end
+	end
+
 	describe 'payment account id' do
 		it 'is required' do
 			project = FactoryGirl.build(:project, :payment_account_id => '')
