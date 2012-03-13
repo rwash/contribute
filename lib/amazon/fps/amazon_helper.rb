@@ -23,7 +23,7 @@ class AmazonHelper
   end 
 
 	def self.format_return_url(return_url)
-		return "https:#{return_url}"
+		return "http://#{return_url}"
 	end
 end
  

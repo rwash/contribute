@@ -17,7 +17,7 @@ class BaseCbuiRequest
 		params = {}
 		params["callerKey"] = @access_key
 		params["version"] = @cbui_version
-		params["callerReference"] = UUIDTools::UUID.random_create
+		params["callerReference"] = UUIDTools::UUID.random_create.to_s
 		params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = "2"
 		params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
 	

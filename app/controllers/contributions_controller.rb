@@ -14,18 +14,21 @@ class ContributionsController < ApplicationController
 		validate_project
 
 		@contribution = Contribution.new params[:contribution]
+		@contribution.payment_key = 'temp' #Needs to past initial validation
 		if(user_signed_in?)
 			@contribution.user_id = current_user.id
 		end
 
-		#Worth considering alternatives if the performance on this is bad
-		#E.g. memcached, writing to the DB and marking record incomplete
-		session[:contribution] = @contribution
-
-		request = Amazon::FPS::MultiTokenRequest.new("#{self.request.host_with_port}/contributions/save", @project.payment_account_id, @contribution.amount, @project.name)
+		if @contribution.valid?
+			#Worth considering alternatives if the performance on this is bad
+			#E.g. memcached, writing to the DB and marking record incomplete
+			session[:contribution] = @contribution
+			request = Amazon::FPS::MultiTokenRequest.new("#{self.request.host_with_port}/contributions/save", @project.payment_account_id, @contribution.amount, @project.name)
 		
-		puts 'recpttoken', @project.payment_account_id
-		redirect_to request.url()
+			redirect_to request.url()
+		else
+			render :action => :new
+		end
 	end
 
 	#Return URL from payment gateway
@@ -34,7 +37,7 @@ class ContributionsController < ApplicationController
 			@contribution = session[:contribution]
 			session[:contribution] = nil
 			@contribution.payment_key = params[:tokenID]
-			if @contribution.save
+			if @contribution.save and @contribution.payment_key != 'temp'
 				flash[:alert] = "Contribution entered successfully. Thanks for your support!"
 				redirect_to root_path
 			else
@@ -51,6 +54,7 @@ class ContributionsController < ApplicationController
     request = Amazon::FPS::PayRequest.new(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
 		
     response =  request.send()
+		puts 'execute payment response', response
 
 		logger.info response
 		result = response['PayResponse']['PayResult']

@@ -92,13 +92,14 @@
 		font-size: 13px;
 		padding-right: 10px;
 	}
+	position: relative;
 }
 
 .project_footer{
-	position: relative;
-	top: 110px;
-	margin-bottom: 5px;
-	}
+	line-height: 8px;
+	position: absolute;
+	bottom: -4px;
+}
 
 .projectPreviewImage {
 	padding: {
@@ -194,6 +195,9 @@
 	}
 	box-shadow: 0px px 10px black;
         -moz-box-shadow: 0px 0px 10px #000;
+	p {
+		padding-right: 100px;
+	}
 }
 
 #form{

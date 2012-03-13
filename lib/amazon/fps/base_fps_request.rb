@@ -22,8 +22,8 @@ class BaseFpsRequest
     params = {}
     params["Version"] = @version
     params["Timestamp"] = get_formatted_timestamp()
-    params["AWSAccessKeyId"] = @access_key  
-		params["callerReference"] = UUIDTools::UUID.random_create
+    params["AWSAccessKeyId"] = @access_key
+		params["CallerReference"] = UUIDTools::UUID.random_create.to_s
 		params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = "2"
     params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
 
@@ -43,10 +43,9 @@ class BaseFpsRequest
                                             :uri  => uri.path })
     @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
 
+		puts 'fps request parameters', @params
 		return self.class.get(@service_end_point, :query => @params)
 	end
-end
-
 end
 
 end
