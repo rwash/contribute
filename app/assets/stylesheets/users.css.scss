@@ -3,8 +3,18 @@
 /******* New User ********/
 
 #new_user, #sign_in, #edit_user {
-	margin-left: 500px;
+	margin-left: auto;
+	margin-right: auto;
 	margin-top: 50px;
+	width: 500px;
+}
+
+#new_user, #sign_in {
+	padding-left: 350px;
+}
+
+#edit_user {
+	padding-left: 150px;
 }
 
 #edit_user h2 {
@@ -19,23 +29,23 @@
 /******* User Profile *******/
 
 #userProfile {
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	position: relative;
 	h1{
 		position: absolute;
-		top: 110px;
-		left: 450px;
+		top: 25px;
+		left: 250px;
 	}
 	h2 {
 		position: absolute;
-		top: 160px;
-		left: 450px;
-	}
-	h3 {
-		margin-left: 200px;
+		top: 65px;
+		left: 250px;
 	}
 }
 
 .userProjects {
-	margin-left: 200px;
 	li {
 		list-style: none;
 	}
@@ -47,7 +57,36 @@
 .userImage {
 	margin: {
 		top: 50px;
-		left: 200px;
 	}
 }
 
+/*******Forgot/edit password******/
+
+#forgotPassword {
+	margin: {
+		top: 50px;
+		left: auto;
+		right: auto;
+	}
+	width: 250px;
+}
+
+#editPassword {
+	margin: {
+		top: 50px;
+		left: auto;
+		right: auto;
+	}
+	width: 250px;
+}
+
+
+/******Resend Email confirmation ******/
+#resendEmail {
+	margin: {
+		top: 50px;
+		left: auto;
+		right: auto;
+	}
+	width: 250px;
+}
