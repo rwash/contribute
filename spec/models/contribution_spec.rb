@@ -1,5 +1,10 @@
 require 'spec_helper'
 
 describe Contribution do
-  pending "add some examples to (or delete) #{__FILE__}"
+	describe 'payment key' do
+		it 'is required' do
+			contribution = FactoryGirl.build(:contribution, :payment_key => '')
+			assert !contribution.save, 'Incorrectly saved contribution without payment key'
+		end
+	end
 end
