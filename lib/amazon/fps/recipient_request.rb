@@ -7,7 +7,7 @@ module Amazon
 module FPS
 
 class RecipientRequest < BaseCbuiRequest
-	def url(return_url, caller_reference)
+	def url(return_url)
 		#Called from base class
 		params = get_default_params()
 
@@ -15,7 +15,6 @@ class RecipientRequest < BaseCbuiRequest
 		params["recipientPaysFee"] = true #what should we set this to?
 		params["pipelineName"] = "Recipient"
 		params["returnUrl"] = "http://#{return_url}"
-		params["callerReference"] = caller_reference unless caller_reference.nil?
 
 		#Compute signature
 		puts 'serviceendpoint', @service_end_point

@@ -5,11 +5,10 @@ module Amazon
 module FPS
 
 class PayRequest < BaseFpsRequest
-  def send(caller_reference, multi_use_token, recipient_token, amount)
+  def send(multi_use_token, recipient_token, amount)
 		params = get_default_parameters()
 
 		params["Action"] = "Pay"
-    params["CallerReference"] = caller_reference unless caller_reference.nil?
 		params["RecipientTokenId"] = recipient_token
 		params["SenderTokenId"] = multi_use_token
 		params["TransactionAmount.Value"] = amount

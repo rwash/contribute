@@ -8,5 +8,7 @@ FactoryGirl.define do
 		end_date { Date.today + 1 }
 		category_id 1
 		funding_goal 1000
+		payment_account_id 'adsfq42t354yw5ysdyw5ywsdfg6sd'
+		user_id 1
   end
 end

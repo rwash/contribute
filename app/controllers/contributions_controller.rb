@@ -26,8 +26,7 @@ class ContributionsController < ApplicationController
 		request = Amazon::FPS::MultiTokenRequest.new()
 		
 		puts 'recpttoken', @project.payment_account_id
-		guid = UUIDTools::UUID.timestamp_create.to_s
-		redirect_to request.url("#{self.request.host_with_port}/contributions/save", guid, @project.payment_account_id, @contribution.amount, @project.name)
+		redirect_to request.url("#{self.request.host_with_port}/contributions/save", @project.payment_account_id, @contribution.amount, @project.name)
 	end
 
 	#Return URL from payment gateway
@@ -52,8 +51,7 @@ class ContributionsController < ApplicationController
 
     request = Amazon::FPS::PayRequest.new()
 		
-		guid = UUIDTools::UUID.timestamp_create.to_s
-    response =  request.send(guid, @contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
+    response =  request.send(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
 
 		logger.info response
 		result = response['PayResponse']['PayResult']
