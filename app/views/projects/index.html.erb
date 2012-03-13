@@ -1,5 +1,7 @@
 <div id="alignBox">
       <div id="createFundBox">
+  <ul>
+    <li>
 	<% if user_signed_in? %>
 		<h1><%= link_to "Create a Project", new_project_url %></h1>
 	<% else %>
@@ -7,13 +9,16 @@
 	<% end %>
 	<p>Blurb about getting your project funded. Reasons to create a project.</p>
 	<p>Linked to create project page</p>
+    </li>
 </div>
 
-      <div id="createFundBox">
-
+<div id="createFundBox">
+    <li>
 	<h1><%= link_to "Fund a Project", root_path %></h1>
 	<p>Blurb about funding a project. Why you should fund?</p>
 	<p>Linked to categories page? or something </p>
+    </li>
+  </ul>
       </div>
 </div>
 
