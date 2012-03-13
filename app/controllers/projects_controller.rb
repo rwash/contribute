@@ -20,11 +20,14 @@ class ProjectsController < InheritedResources::Base
 	def create
 		@project = Project.new(params[:project])
 		@project.user_id = current_user.id
-		session[:project] = @project
-	
-		request = Amazon::FPS::RecipientRequest.new()
 
-		redirect_to request.url("#{self.request.host_with_port}/projects/save")
+		if @project.valid?
+			session[:project] = @project
+			request = Amazon::FPS::RecipientRequest.new()
+			redirect_to request.url("#{self.request.host_with_port}/projects/save")
+		else
+			render :action => :new
+		end
 	end
 
 	def save
