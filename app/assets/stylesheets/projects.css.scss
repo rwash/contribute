@@ -30,6 +30,8 @@
 }
 
 #alignBox {
+	display: inline;
+	li {list-style: none;}
 	margin-left: auto;
 	margin-right: auto;
 	width: 1000px;
@@ -184,10 +186,10 @@
 
 #newEditProject {
 	background: #DADAB5;
-	width: 600px;
 	margin-left: auto;
 	margin-right: auto;
 	width: 720px;
+	height: 500px;
 	margin-top: 50px;
 	padding: {
 		top: 15px;
