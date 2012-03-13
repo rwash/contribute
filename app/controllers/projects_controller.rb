@@ -20,8 +20,10 @@ class ProjectsController < InheritedResources::Base
 	def create
 		@project = Project.new(params[:project])
 		@project.user_id = current_user.id
-
-		if @project.valid?
+		@project.payment_account_id = 'temp'
+	
+		#We still want to validate payment_account_id, but not at create since it doesn't exist yet	
+		if @project.valid? 
 			session[:project] = @project
 			request = Amazon::FPS::RecipientRequest.new()
 			redirect_to request.url("#{self.request.host_with_port}/projects/save")
@@ -35,7 +37,7 @@ class ProjectsController < InheritedResources::Base
 			@project = session[:project]
 			session[:project] = nil
 			@project.payment_account_id = params[:tokenID]
-			if @project.save
+			if @project.save and @project.payment_account_id != 'temp'
 				flash[:alert] = "Project saved successfully. Here's to getting funded!"
 				redirect_to root_path
 			else
