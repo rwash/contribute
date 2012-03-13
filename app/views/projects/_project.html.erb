@@ -1,4 +1,5 @@
 <div id="projectPreview">
+
 	<div class="floatRight">
 		<!-- The value inside ths div tags should be the funding percentage completed -->
 		<div class="progressBar">70</div>
@@ -18,15 +19,19 @@
 	<%= project.short_description %><br>
 
 
-	<div class="project_footer">
-	<ul>
-	<li><%= project.end_date %></li>
-	<li><%= number_to_currency(project.funding_goal, :precision => 0) %></li>
-	</ul>
 
-	<ul>
-	<li>End Date</li>
-	<li>Pledged</li>
-	</ul>
-	</div>
+	<div class="project_footer">
+        <ul>
+        <li><%= project.end_date %></li>
+        <li><%= number_to_currency(project.funding_goal, :precision => 0) %></li>
+        </ul>
+
+        <ul>
+        <li>End Date</li>
+        <li>Pledged</li>
+        </ul>
+        </div>
+
+
+
 </div>
