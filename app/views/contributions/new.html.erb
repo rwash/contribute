@@ -1,9 +1,3 @@
 <h3>Contribute to <%= @project.name %></h3>
 
-<%= form_for @contribution do |f| %>
-
-<p>Amount: <%= f.text_field :amount %></p>
-<%= f.hidden_field :project_id, :value => @project.id %>
-
-<%= f.submit "Make Contribution" %>
-<% end %>
+<%= render "form" %>
