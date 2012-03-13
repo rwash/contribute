@@ -23,9 +23,7 @@ class ProjectsController < InheritedResources::Base
 		session[:project] = @project
 	
 		request = Amazon::FPS::RecipientRequest.new()
-
-		guid = UUIDTools::UUID.timestamp_create.to_s
-		redirect_to request.url("#{self.request.host_with_port}/projects/save", guid)
+		redirect_to request.url("#{self.request.host_with_port}/projects/save")
 	end
 
 	def save
