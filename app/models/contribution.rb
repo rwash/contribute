@@ -1,4 +1,5 @@
 MIN_CONTRIBUTION_AMT = 1
+UNDEFINED_PAYMENT_KEY = 'TEMP'
 
 class Contribution < ActiveRecord::Base
 	belongs_to :project
