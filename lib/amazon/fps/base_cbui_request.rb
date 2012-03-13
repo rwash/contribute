@@ -10,6 +10,7 @@ class BaseCbuiRequest
 
 		@access_key = Rails.application.config.aws_access_key
 		@secret_key = Rails.application.config.aws_secret_key
+		@params = get_default_params()
 	end
 
 	def get_default_params()
@@ -21,6 +22,18 @@ class BaseCbuiRequest
 		params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
 	
 		return params
+	end
+
+	def url()
+			uri = URI.parse(@service_end_point)
+			signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => @params, 
+																							:aws_secret_key => @secret_key,
+																							:host => uri.host,
+																							:verb => @http_method,
+																							:uri  => uri.path })
+			@params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+
+			return AmazonHelper::get_url(@service_end_point, @params)
 	end
 end
 
