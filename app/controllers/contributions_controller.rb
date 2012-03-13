@@ -1,7 +1,6 @@
 require 'amazon/fps/multi_token_request'
 require 'amazon/fps/pay_request'
 
-
 class ContributionsController < ApplicationController
 	def new
  		@project = Project.find_by_name params[:project]
@@ -23,10 +22,10 @@ class ContributionsController < ApplicationController
 		#E.g. memcached, writing to the DB and marking record incomplete
 		session[:contribution] = @contribution
 
-		request = Amazon::FPS::MultiTokenRequest.new()
+		request = Amazon::FPS::MultiTokenRequest.new("#{self.request.host_with_port}/contributions/save", @project.payment_account_id, @contribution.amount, @project.name)
 		
 		puts 'recpttoken', @project.payment_account_id
-		redirect_to request.url("#{self.request.host_with_port}/contributions/save", @project.payment_account_id, @contribution.amount, @project.name)
+		redirect_to request.url()
 	end
 
 	#Return URL from payment gateway
@@ -49,9 +48,9 @@ class ContributionsController < ApplicationController
 	def executePayment
 		@contribution = Contribution.find_by_id(params[:id])
 
-    request = Amazon::FPS::PayRequest.new()
+    request = Amazon::FPS::PayRequest.new(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
 		
-    response =  request.send(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
+    response =  request.send()
 
 		logger.info response
 		result = response['PayResponse']['PayResult']

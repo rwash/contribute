@@ -15,6 +15,7 @@ class BaseFpsRequest
 
 		@access_key = Rails.application.config.aws_access_key
 		@secret_key = Rails.application.config.aws_secret_key
+		@params = get_default_parameters()
 	end
 
   def get_default_parameters()
@@ -32,6 +33,20 @@ class BaseFpsRequest
   def get_formatted_timestamp()
     return Time.now.iso8601.to_s
   end
+
+  def send()
+		uri = URI.parse(@service_end_point)
+    signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => @params, 
+                                            :aws_secret_key => @secret_key,
+                                            :host => uri.host,
+                                            :verb => @http_method,
+                                            :uri  => uri.path })
+    @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+
+		return self.class.get(@service_end_point, :query => @params)
+	end
+end
+
 end
 
 end
