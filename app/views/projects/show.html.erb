@@ -37,3 +37,15 @@
 <%= link_to "Back", projects_url %>
 
 </div>
+
+<h3> Contributors </h3>
+<ul class="projectContributors">
+<% @project.contributions.each do |contribution|%>
+	<% unless contribution.user.nil? %>
+		<li><%= link_to contribution.user.name , contribution.user %></li><br/>
+	<% else %>
+		<li>Anonymous</li><br/>
+	<% end %>
+<% end %>
+</ul>
+
