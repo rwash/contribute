@@ -1,7 +1,6 @@
 require 'amazon/fps/multi_token_request'
 require 'amazon/fps/pay_request'
 
-
 class ContributionsController < ApplicationController
 	def new
  		@project = Project.find_by_name params[:project]
@@ -19,13 +18,14 @@ class ContributionsController < ApplicationController
 		if(user_signed_in?)
 			@contribution.user_id = current_user.id
 		end
-		
+
 		if @contribution.valid?
 			#Worth considering alternatives if the performance on this is bad
 			#E.g. memcached, writing to the DB and marking record incomplete
 			session[:contribution] = @contribution
-			request = Amazon::FPS::MultiTokenRequest.new()
-			redirect_to request.url("#{self.request.host_with_port}/contributions/save", @project.payment_account_id, @contribution.amount, @project.name)
+			request = Amazon::FPS::MultiTokenRequest.new("#{self.request.host_with_port}/contributions/save", @project.payment_account_id, @contribution.amount, @project.name)
+		
+			redirect_to request.url()
 		else
 			render :action => :new
 		end
@@ -54,9 +54,10 @@ class ContributionsController < ApplicationController
 	def executePayment
 		@contribution = Contribution.find_by_id(params[:id])
 
-    request = Amazon::FPS::PayRequest.new()
+    request = Amazon::FPS::PayRequest.new(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
 		
-    response =  request.send(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
+    response =  request.send()
+		puts 'execute payment response', response
 
 		logger.info response
 		result = response['PayResponse']['PayResult']

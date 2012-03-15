@@ -24,8 +24,8 @@ class ProjectsController < InheritedResources::Base
 	
 		if @project.valid? 
 			session[:project] = @project
-			request = Amazon::FPS::RecipientRequest.new()
-			redirect_to request.url("#{self.request.host_with_port}/projects/save")
+			request = Amazon::FPS::RecipientRequest.new("#{self.request.host_with_port}/projects/save")
+			redirect_to request.url()
 		else
 			render :action => :new
 		end

@@ -1,5 +1,5 @@
 <% if @user.picture? %>
-Current Picture: <%= image_tag(@user.picture.url(:thumb)) %><br>
+Current Picture <%= image_tag(@user.picture.url(:thumb)) %><br>
 <% end %>
 New Picture: (optional) 
 <%= f.file_field :picture %>
