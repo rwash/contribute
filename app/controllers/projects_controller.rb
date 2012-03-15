@@ -25,7 +25,7 @@ class ProjectsController < InheritedResources::Base
 		#We still want to validate payment_account_id, but not at create since it doesn't exist yet	
 		if @project.valid? 
 			session[:project] = @project
-			request = Amazon::FPS::RecipientRequest.new("#{self.request.host_with_port}/projects/save")
+			request = Amazon::FPS::RecipientRequest.new(save_project_url)
 			redirect_to request.url()
 		else
 			render :action => :new
@@ -33,6 +33,13 @@ class ProjectsController < InheritedResources::Base
 	end
 
 	def save
+		#puts 'project_save params', params
+		#puts 'save_project_url', save_project_url
+		#Amazon::FPS::AmazonHelper::valid_response(params, save_project_url)
+			#flash[:alert] = "An error occured saving your project.  Please try again (Signature did not validate)"
+			#redirect_to root_path
+		#end
+
 		if !session[:project].nil? and !params[:tokenID].nil?
 			@project = session[:project]
 			session[:project] = nil

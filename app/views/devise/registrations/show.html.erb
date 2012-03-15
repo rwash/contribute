@@ -10,8 +10,16 @@
 <h3> Created Projects </h3>
 	<ul class="userProjects">
 	<% @user.projects.each do |project|%>
-		<li><%= link_to project.name , project%></li>
-	<br>
+		<%= link_to project.name , project%><br>
 	<% end %>
 	</ul>
+<h3> Contributions </h3>
+	<ul class="userContributions">
+		<% @user.contributions.each do |contribution|%>
+			<%= link_to contribution.project.name, contribution.project %>
+			<% if can? :update, contribution %>
+				<%= link_to "[edit]", edit_contribution_url(contribution) %>
+			<% end %>
+			<br>
+		<% end %>
 </div>

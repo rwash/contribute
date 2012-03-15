@@ -23,7 +23,7 @@ class ContributionsController < ApplicationController
 			#Worth considering alternatives if the performance on this is bad
 			#E.g. memcached, writing to the DB and marking record incomplete
 			session[:contribution] = @contribution
-			request = Amazon::FPS::MultiTokenRequest.new("#{self.request.host_with_port}/contributions/save", @project.payment_account_id, @contribution.amount, @project.name)
+			request = Amazon::FPS::MultiTokenRequest.new(save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 		
 			redirect_to request.url()
 		else
