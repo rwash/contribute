@@ -14,7 +14,7 @@ class ContributionsController < ApplicationController
 		validate_project
 
 		@contribution = Contribution.new params[:contribution]
-		@contribution.payment_key = 'temp' #Needs to past initial validation
+		@contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
 		if(user_signed_in?)
 			@contribution.user_id = current_user.id
 		end
@@ -34,16 +34,21 @@ class ContributionsController < ApplicationController
 	#Return URL from payment gateway
 	def save
 		if !session[:contribution].nil? and !params[:tokenID].nil?
+			#Verify response status
+			#Verify signature received
 			@contribution = session[:contribution]
 			session[:contribution] = nil
 			@contribution.payment_key = params[:tokenID]
-			if @contribution.save and @contribution.payment_key != 'temp'
+			if @contribution.save
 				flash[:alert] = "Contribution entered successfully. Thanks for your support!"
 				redirect_to root_path
 			else
 				flash[:alert] = "An error occurred with your contribution. Please try again."
 				redirect_to root_path
 			end
+		else
+			flash[:alert] = "An error occurred with your contribution. Please try again."
+			redirect_to root_path
 		end
 	end
 

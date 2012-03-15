@@ -2,6 +2,7 @@ MAX_NAME_LENGTH = 75
 MAX_SHORT_DESC_LENGTH = 200
 MAX_LONG_DESC_LENGTH = 1000
 MIN_FUNDING_GOAL = 5
+UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
 
 class Project < ActiveRecord::Base
 	belongs_to :user
@@ -55,6 +56,14 @@ class Project < ActiveRecord::Base
 		else	
 			return true
 		end
+	end
+
+	def contributions_total
+		contributions.sum(:amount)
+	end
+
+	def contributions_percentage
+		(contributions_total.to_f / funding_goal.to_f) * 100
 	end
 
 	#Overriding to_param makes it so that whenever a url is built for a project, it substitues

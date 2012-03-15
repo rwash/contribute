@@ -5,9 +5,11 @@ $(function (){
 	// Expand the width so it fills width-wise, set the height so it's like a vertical bar
 	$('.progressBar').each(function() {
 		var value = parseInt($(this).text());
-		value = value + 1;
+		value = value + 1; //1 looks like 0. Pad it a little.
+		if(value > 100) { value = 100; }
+
 		$(this).empty().progressbar({value: value});
-		$( '.ui-progressbar-value' ).width('100%');
-		$( '.ui-progressbar-value' ).height(value + '%');
+		$(this).find('.ui-progressbar-value').width('100%');
+		$(this).find('.ui-progressbar-value').height(value + '%');
 	});
 });
