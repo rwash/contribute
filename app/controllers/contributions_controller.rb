@@ -34,6 +34,8 @@ class ContributionsController < ApplicationController
 	#Return URL from payment gateway
 	def save
 		if !session[:contribution].nil? and !params[:tokenID].nil?
+			#Verify response status
+			#Verify signature received
 			@contribution = session[:contribution]
 			session[:contribution] = nil
 			@contribution.payment_key = params[:tokenID]
