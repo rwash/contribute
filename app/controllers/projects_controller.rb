@@ -33,6 +33,8 @@ class ProjectsController < InheritedResources::Base
 
 	def save
 		if !session[:project].nil? and !params[:tokenID].nil?
+			#Check response status
+			#Verify signature
 			@project = session[:project]
 			session[:project] = nil
 			@project.payment_account_id = params[:tokenID]
