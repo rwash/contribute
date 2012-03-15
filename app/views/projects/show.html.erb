@@ -43,10 +43,16 @@
 <ul class="projectContributors">
 <% @project.contributions.each do |contribution|%>
 	<% unless contribution.user.nil? %>
-		<li><%= link_to contribution.user.name , contribution.user %></li><br/>
+		<li><%= link_to contribution.user.name , contribution.user %>
 	<% else %>
-		<li>Anonymous</li><br/>
+		<li>Anonymous
 	<% end %>
+
+	<% if can? :update, @project %>
+		- <%= number_to_currency(contribution.amount, :precision => 0) %>
+	<% end %>
+	
+	</li><br/>
 <% end %>
 </ul>
 
