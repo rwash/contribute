@@ -6,6 +6,8 @@ $(function (){
 	$('.progressBar').each(function() {
 		var value = parseInt($(this).text());
 		value = value + 1; //1 looks like 0. Pad it a little.
+		if(value > 100) { value = 100; }
+
 		$(this).empty().progressbar({value: value});
 		$(this).find('.ui-progressbar-value').width('100%');
 		$(this).find('.ui-progressbar-value').height(value + '%');
