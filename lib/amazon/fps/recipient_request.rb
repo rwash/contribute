@@ -13,7 +13,7 @@ class RecipientRequest < BaseCbuiRequest
 		#Add in specific request parameters
 		@params["recipientPaysFee"] = true #what should we set this to?
 		@params["pipelineName"] = "Recipient"
-		@params["returnUrl"] = AmazonHelper::format_return_url(return_url)
+		@params["returnUrl"] = return_url
 		puts 'returnUrl', @params["returnUrl"] 
 	end
 end

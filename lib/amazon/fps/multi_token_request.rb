@@ -16,7 +16,7 @@ class MultiTokenRequest < BaseCbuiRequest
 			#params["amountType"] = "Exact" #this is the default
 			@params["globalAmountLimit"] = amount
 			@params["pipelineName"] = "MultiUse"
-			@params["returnUrl"] = "http://#{return_url}"
+			@params["returnUrl"] = return_url
 			@params["paymentReason"] = payment_reason unless payment_reason.nil?
 	end
 end
