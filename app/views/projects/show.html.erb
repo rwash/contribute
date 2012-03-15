@@ -15,6 +15,7 @@
 	<ul>
 		<li>End Date: <%= @project.end_date %></li>
 		<li>Category: <%= Category.find(@project.category_id).short_description %></li>
+		<li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li>
 		<li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
 	</ul>
 	</div>
@@ -37,3 +38,21 @@
 <%= link_to "Back", projects_url %>
 
 </div>
+
+<h3> Contributors </h3>
+<ul class="projectContributors">
+<% @project.contributions.each do |contribution|%>
+	<% unless contribution.user.nil? %>
+		<li><%= link_to contribution.user.name , contribution.user %>
+	<% else %>
+		<li>Anonymous
+	<% end %>
+
+	<% if can? :update, @project %>
+		- <%= number_to_currency(contribution.amount, :precision => 0) %>
+	<% end %>
+	
+	</li><br/>
+<% end %>
+</ul>
+
