@@ -48,19 +48,6 @@ ActiveRecord::Schema.define(:version => 20120309163720) do
     t.string   "payment_account_id"
   end
 
-  create_table "transaction_requests", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "user_id"
-    t.string   "ip_address"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "card_type"
-    t.date     "card_expires_on"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.float    "contribution_amt"
-  end
-
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
