@@ -153,6 +153,7 @@ class SignatureUtilsForOutbound
     http_session.verify_mode = OpenSSL::SSL::VERIFY_PEER
     http_session.verify_depth = 5
 
+		puts 'url in sig utils', url
     res = http_session.start {|http_session|
       req = Net::HTTP::Get.new(url, {"User-Agent" => USER_AGENT_STRING})
       http_session.request(req)

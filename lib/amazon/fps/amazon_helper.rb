@@ -1,3 +1,5 @@
+require 'amazon/fps/signatureutilsforoutbound'
+
 module Amazon
 module FPS
 
@@ -22,8 +24,12 @@ class AmazonHelper
     return url
   end 
 
-	def self.format_return_url(return_url)
-		return "http://#{return_url}"
+	def self.valid_response(params, url_end_point)
+		access_key = Rails.application.config.aws_access_key
+		secret_key = Rails.application.config.aws_secret_key
+		utils = Amazon::FPS::SignatureUtilsForOutbound.new(access_key, secret_key)
+
+		puts 'validate stuff', utils.validate_request(:parameters => params, :url_end_point => url_end_point, :http_method => "GET")	
 	end
 end
  
