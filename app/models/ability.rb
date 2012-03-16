@@ -18,6 +18,8 @@ class Ability
 				false
 			end
 		end
-		can :create, Contribution
+		#TODO: Write the criteria for when a user can create a contribution
+		# E.g. if logged in, and haven't already contributed to this project and didn't create the project
+		#can :create, Contribution
  end
 end
