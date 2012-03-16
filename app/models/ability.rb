@@ -11,7 +11,13 @@ class Ability
 		can :save, Project
 
 		#Contributions
-		can :update, Contribution, :user_id => user.id
-		can :c
+		can :update, Contribution do |contribution|
+			unless user.id.nil?
+				contribution.user_id == user.id
+			else
+				false
+			end
+		end
+		can :create, Contribution
  end
 end
