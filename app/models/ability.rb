@@ -12,6 +12,6 @@ class Ability
 
 		#Contributions
 		can :update, Contribution, :user_id => user.id
-		can :c
+		can :create, Contribution
  end
 end
