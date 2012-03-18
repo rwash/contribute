@@ -18,6 +18,8 @@
 /public/uploads
 # And Paperclip while it's still used...
 /public/system/pictures
+# Precompiled Assets
+/public/assets
 
 # Ignore a couple hidden files
 .viminfo
