@@ -11,7 +11,16 @@ class Ability
 		can :save, Project
 
 		#Contributions
-		can :update, Contribution, :user_id => user.id
 		can :create, Contribution
+		can :update, Contribution do |contribution|
+			unless user.id.nil?
+				contribution.user_id == user.id
+			else
+				false
+			end
+		end
+		#TODO: Write the criteria for when a user can create a contribution
+		# E.g. if logged in, and haven't already contributed to this project and didn't create the project
+		#can :create, Contribution
  end
 end
