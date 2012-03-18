@@ -14,5 +14,7 @@ class Contribution < ActiveRecord::Base
 	def initialize(attributes = nil, options = {})
 		super
 		self.complete = false	
+		self.cancelled = false
+		self.waiting_cancellation = false
 	end
 end

@@ -149,7 +149,7 @@ class SignatureUtilsForOutbound
     uri = URI.parse(url)
     http_session = Net::HTTP.new(uri.host, uri.port)
     http_session.use_ssl = true
-    http_session.ca_file = 'ca-bundle.crt'
+    http_session.ca_file = '/etc/ssl/certs/ca-certificates.crt'
     http_session.verify_mode = OpenSSL::SSL::VERIFY_PEER
     http_session.verify_depth = 5
 
