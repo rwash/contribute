@@ -113,33 +113,24 @@ class ContributionsController < ApplicationController
 			#Verify response status
 			#Verify signature received
 			@contribution = session[:contribution]
-			@editing_contribution = Contribution.find_by_id(session[:editing_contribution_id])
-
 			session[:contribution] = nil
+			@editing_contribution = Contribution.find_by_id(session[:editing_contribution_id])
 			session[:editing_contribution_id] = nil
 
 			@contribution.payment_key = params[:tokenID]
 			if @contribution.valid?
-				#Cancel previous token
-				request = Amazon::FPS::CancelTokenRequest.new(@editing_contribution.payment_key)
-				response = request.send()
-
-				#If it was successful, we'll mark the record as cancelled
-				if response["Errors"].nil?
-					@editing_contribution.cancelled = 1
-				#otherwise we'll mark it as pending and try again later
-				else
-					@editing_contribution.waiting_cancellation = 1
-				end
-
-				if !@editing_contribution.save
-					flash[:alert] = "An error occured trying to cancel your previous contribution. Please try again."
+				if !cancel_contribution(@editing_contribution)
+					flash[:alert] = "An error occured trying to update your contribution. Please try again."
 					redirect_to root_path
 				end
 
-				@contribution.save
-				flash[:alert] = "Contribution successfully updated. Thanks for your support!"
-				redirect_to root_path
+				if @contribution.save
+					flash[:alert] = "Contribution successfully updated. Thanks for your support!"
+					redirect_to root_path
+				else
+					flash[:alert] = "An error trying to update your contribution. Please try again."
+					redirect_to root_path
+				end
 			else
 				flash[:alert] = "An error trying to update your contribution. Please try again."
 				redirect_to root_path
@@ -148,7 +139,6 @@ class ContributionsController < ApplicationController
 			flash[:alert] = "An error occurred trying to update contribution. Please try again."
 			redirect_to root_path
 		end
-
 	end
 
 protected
@@ -171,5 +161,20 @@ protected
 
 		@project = @editing_contribution.project
 		validate_project
+	end
+	
+	def cancel_contribution(contribution_to_cancel)
+		request = Amazon::FPS::CancelTokenRequest.new(contribution_to_cancel.payment_key)
+		response = request.send()
+
+		#If it was successful, we'll mark the record as cancelled
+		if response["Errors"].nil?
+			contribution_to_cancel.cancelled = 1
+		#otherwise we'll mark it as pending and try again later
+		else
+			contribution_to_cancel.waiting_cancellation = 1
+		end
+
+		contribution_to_cancel.save
 	end
 end
