@@ -7,4 +7,12 @@ class EmailManager < ActionMailer::Base
 
 		mail(:to => @user.email, :subject => "Contribute: #{@project.name} has been created")
 	end
+
+	def contribute_to_project(user, contribution)
+		@user = user
+		@contribution = contribution
+		@project = @contribution.project
+
+		mail(:to => @user.email, :subject => "Contribute: Your contribution to #{@project.name}")
+	end
 end
