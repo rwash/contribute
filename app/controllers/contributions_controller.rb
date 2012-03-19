@@ -5,6 +5,10 @@ require 'amazon/fps/cancel_token_request'
 class ContributionsController < ApplicationController
 	def new
  		@project = Project.find_by_name params[:project]
+
+		#Can the user contribute to this project?
+		authorize! :contribute, @project
+		#If so, validate project as well
 		validate_project
 
 		@contribution = Contribution.new
@@ -12,6 +16,8 @@ class ContributionsController < ApplicationController
 
 	def create
  		@project = Project.find_by_id params[:contribution][:project_id]
+
+		authorize! :contribute, @project
 		validate_project
 
 		@contribution = Contribution.new params[:contribution]
@@ -34,6 +40,10 @@ class ContributionsController < ApplicationController
 
 	#Return URL from payment gateway
 	def save
+		if !validate_amazon_response(save_contribution_url, true)
+			return
+		end
+
 		if !session[:contribution].nil? and !params[:tokenID].nil?
 			#Verify response status
 			#Verify signature received
@@ -178,6 +188,7 @@ protected
 		end
 
 		@project = @editing_contribution.project
+		authorize! :edit_contribution, @project
 		validate_project
 	end
 	
