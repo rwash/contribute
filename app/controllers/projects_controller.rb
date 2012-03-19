@@ -43,6 +43,8 @@ class ProjectsController < InheritedResources::Base
 			session[:project] = nil
 			@project.payment_account_id = params[:tokenID]
 			if @project.save 
+				successful_save()
+
 				flash[:alert] = "Project saved successfully. Here's to getting funded!"
 				redirect_to root_path
 			else
@@ -50,5 +52,9 @@ class ProjectsController < InheritedResources::Base
 				redirect_to root_path
 			end
 		end
+	end
+	
+	def successful_save()
+		EmailManager.add_project(current_user, @project).deliver
 	end
 end
