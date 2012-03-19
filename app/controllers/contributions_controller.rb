@@ -109,6 +109,10 @@ class ContributionsController < ApplicationController
 	end
 
 	def after_update
+		if !validate_amazon_response(save_project_url, true)
+			return
+		end
+
 		if !session[:contribution].nil? and !params[:tokenID].nil? and !session[:editing_contribution_id].nil?
 			#Verify response status
 			#Verify signature received

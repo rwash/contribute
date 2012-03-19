@@ -29,7 +29,11 @@ class AmazonHelper
 		secret_key = Rails.application.config.aws_secret_key
 		utils = Amazon::FPS::SignatureUtilsForOutbound.new(access_key, secret_key)
 
-		puts 'validate stuff', utils.validate_request(:parameters => params, :url_end_point => url_end_point, :http_method => "GET")	
+		#This is rails garbage we don't need to send to amazon
+		params.delete("controller")
+		params.delete("action")
+
+		return utils.validate_request(:parameters => params, :url_end_point => url_end_point, :http_method => "GET")	
 	end
 end
  

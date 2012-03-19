@@ -32,12 +32,9 @@ class ProjectsController < InheritedResources::Base
 	end
 
 	def save
-		#puts 'project_save params', params
-		#puts 'save_project_url', save_project_url
-		Amazon::FPS::AmazonHelper::valid_response(params, save_project_url)
-			#flash[:alert] = "An error occured saving your project.  Please try again (Signature did not validate)"
-			#redirect_to root_path
-		#end
+		if !validate_amazon_response(save_project_url, true)
+			return
+		end
 
 		if !session[:project].nil? and !params[:tokenID].nil?
 			#Check response status
