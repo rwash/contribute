@@ -41,6 +41,8 @@ class ContributionsController < ApplicationController
 			session[:contribution] = nil
 			@contribution.payment_key = params[:tokenID]
 			if @contribution.save
+				successful_save()				
+
 				flash[:alert] = "Contribution entered successfully. Thanks for your support!"
 				redirect_to root_path
 			else
@@ -50,6 +52,12 @@ class ContributionsController < ApplicationController
 		else
 			flash[:alert] = "An error occurred with your contribution. Please try again."
 			redirect_to root_path
+		end
+	end
+	
+	def successful_save()
+		if user_signed_in?
+			EmailManager.contribute_to_project(current_user, @contribution).deliver
 		end
 	end
 
