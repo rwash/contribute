@@ -12,8 +12,7 @@
     </div>
   <% end %>
 
-<p>Original Amount: <%= @editing_contribution.amount %>
+<p>Original Amount: <%= number_to_currency(@editing_contribution.amount, :precision => 0) %>
 <p>New Amount: <%= f.text_field :amount %></p>
 <%= f.submit "Update Contribution" %>
 <% end %>
-Note: this process will cancel your previous payment, and you will have to reauthenticate your edited contribution.
