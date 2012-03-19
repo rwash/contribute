@@ -15,4 +15,13 @@ class EmailManager < ActionMailer::Base
 
 		mail(:to => @user.email, :subject => "Contribute: Your contribution to #{@project.name}")
 	end
+
+	def edit_contribution(user, old_contribution, new_contribution)
+		@user = user
+		@old_contribution = old_contribution
+		@new_contribution = new_contribution
+		@project = @old_contribution.project
+
+		mail(:to => @user.email, :subject => "Contribute: Your edited contribution to #{@project.name}")
+	end
 end

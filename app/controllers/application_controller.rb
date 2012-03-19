@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
 			flash[:alert] = "An error occured validating your response from Amazon Payments.  Please try again"
 			redirect_to root_path
 		end
+
+		puts 'valid returnurl?', valid
 		return valid
 	end
 end

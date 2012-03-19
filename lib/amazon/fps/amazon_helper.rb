@@ -33,6 +33,7 @@ class AmazonHelper
 		params.delete("controller")
 		params.delete("action")
 
+		puts 'params in amazon helper', params
 		return utils.validate_request(:parameters => params, :url_end_point => url_end_point, :http_method => "GET")	
 	end
 end

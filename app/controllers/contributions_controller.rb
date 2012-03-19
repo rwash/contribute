@@ -117,7 +117,7 @@ class ContributionsController < ApplicationController
 	end
 
 	def after_update
-		if !validate_amazon_response(save_project_url, true)
+		if !validate_amazon_response(after_update_contribution_url, true)
 			return
 		end
 
@@ -137,6 +137,8 @@ class ContributionsController < ApplicationController
 				end
 
 				if @contribution.save
+					successful_update()
+
 					flash[:alert] = "Contribution successfully updated. Thanks for your support!"
 					redirect_to root_path
 				else
@@ -151,6 +153,10 @@ class ContributionsController < ApplicationController
 			flash[:alert] = "An error occurred trying to update contribution. Please try again."
 			redirect_to root_path
 		end
+	end
+
+	def successful_update()
+		EmailManager.edit_contribution(current_user, @editing_contribution, @contribution).deliver
 	end
 
 protected
