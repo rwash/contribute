@@ -1,0 +1,9 @@
+<p>Hey <%= @user.name %>,</p>
+
+<p>Congratulations on creating your project, <%= @project.name %>!</p>
+
+<p>Your project will be funded if it reaches it's goal of <%= @project.funding_goal by the end date of <%= @project.end_date.strftime("%m/%d/%Y") %>.</p>
+
+<p>Best of luck!</p>
+
+<%= render :partial => "signature" %>

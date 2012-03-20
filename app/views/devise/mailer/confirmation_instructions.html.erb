@@ -5,5 +5,5 @@
 <p>You can confirm your account through the link below:<br/>
 <%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
 
-<p>Sincerely,<br/>
-The Contribute Team</p>
+<%= render :partial => "signature" %>
+

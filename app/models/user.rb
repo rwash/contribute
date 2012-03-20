@@ -1,5 +1,6 @@
+require 'file_size_validator'
+
 class User < ActiveRecord::Base
-	require 'file_size_validator'
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
   # Include default devise modules. Others available are:

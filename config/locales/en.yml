@@ -17,6 +17,6 @@ en:
     update:
       project: "This project is no longer active or you do not own it."
     contribute:
-      project: "You may not contribute to this project"
+      project: "You may not contribute to this project."
     edit_contribution:
-      project: "You may not edit this contribution"
+      project: "You may not edit this contribution."

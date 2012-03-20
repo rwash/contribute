@@ -1,5 +1,5 @@
 class EmailManager < ActionMailer::Base
-  default from: "no-reply@contribute.cas.msu.edu"
+  default :from => "Contribute <gethelp@contribute.cas.msu.edu>" 
 
 	def add_project(user, project)
 		@user = user

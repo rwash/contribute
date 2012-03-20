@@ -1,3 +1,5 @@
+require 'file_size_validator'
+
 MAX_NAME_LENGTH = 75
 MAX_SHORT_DESC_LENGTH = 200
 MAX_LONG_DESC_LENGTH = 1000
@@ -24,7 +26,7 @@ class Project < ActiveRecord::Base
 	validates :category_id, :presence => true
 	validates :user_id, :presence => true
 
-	attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture_file_name, :picture_content_type, :picture_file_size
+	attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture, :picture_cache
 	
 	def initialize(attributes = nil, options = {})
 		super
