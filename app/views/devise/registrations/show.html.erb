@@ -1,6 +1,15 @@
 <div id="userProfile">
+
+
 	<% if @user.picture? %>
+<<<<<<< Updated upstream
 		<%= image_tag @user.picture.url(:show), :class => "userImage" %><br/>
+=======
+		<%= image_tag @user.picture.url(:show), :class => "userImage" %>
+	<% else %>
+		<%= image_tage "defultProfilePic.jpg", :class => "userImage" %>
+		<br>
+>>>>>>> Stashed changes
 	<% end %>
 
 	<h1> <%= @user.name %> </h1>

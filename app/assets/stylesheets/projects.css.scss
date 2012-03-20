@@ -57,8 +57,10 @@
 
 
 #projectPreview {
+	background: -moz-linear-gradient(top, #CCCCCC, #AAAAAA);
+	background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#999999));
 	background:{
-		image: url(project_preview_divider.png), url(projects_background.png);
+		/*image: url(project_preview_divider.png), url(projects_background.png);*/
 		repeat: no-repeat;
 		position: bottom;
 	}
@@ -98,8 +100,10 @@
 }
 
 .project_footer{
+	width: 233px;
 	line-height: 8px;
 	position: absolute;
+	left: 0px;
 	bottom: -4px;
 }
 
@@ -190,7 +194,6 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 720px;
-	height: 500px;
 	margin-top: 50px;
 	padding: {
 		top: 15px;
