@@ -18,7 +18,7 @@
 	<% @user.contributions.each do |contribution|%>
 		<li><%= link_to contribution.project.name, contribution.project %>
 		<% if can? :update, contribution %>
-			- <%= link_to "Edit", edit_contribution_url(contribution) %>
+			- <%= link_to "Edit Contribution", edit_contribution_url(contribution) %>
 		<% end %>
 		</li>
 	<% end %>
