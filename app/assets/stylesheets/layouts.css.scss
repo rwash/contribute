@@ -1,8 +1,9 @@
+
 /* style sheet for layouts */
 
 
 html {
-	background: #FFFFF0;
+	/*background: #FFFFF0;*/
 }
 
 a {
@@ -38,7 +39,7 @@ a {
 /****** footer *******/
                 
 #aboutContribute {
-	background: #FFF;
+	background: #FFFFF0;
         border: {
                 style: solid;
                 weight: 1px;
@@ -52,7 +53,7 @@ a {
 }
         
 #footer {
-	background: #FFF;
+	background: #FFFFF0;
         border: {
                 style: solid;
                 weight: 1px;
@@ -72,5 +73,6 @@ a {
         font-size: 12px;
         /*padding: 5px;
         margin-top: -3px;*/
+	position: relative;
 }
 
