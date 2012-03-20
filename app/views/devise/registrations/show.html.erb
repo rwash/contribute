@@ -2,7 +2,7 @@
 	<% if @user.picture? %>
 		<%= image_tag @user.picture.url(:show), :class => "userImage" %>
 	<% else %>
-		<%= image_tag "defultProfilePic.jpg", :class => "userImage" %>
+		<%= image_tag "defaultProfilePic.jpg", :class => "userImage" %>
 	<% end %>
 	<br>
 
