@@ -1,0 +1,7 @@
+<p>Hey <%= @user.name %>,</p>
+
+<p>You have successfully changed your contribution from $<%= @old_contribution.amount %> to $<%= @new_contribution.amount %> for <%= @project.name %>.</p>
+
+<p>Thanks for your support!</p>
+
+<%= render :partial => "signature" %>

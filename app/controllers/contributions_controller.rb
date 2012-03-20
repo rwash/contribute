@@ -92,7 +92,7 @@ class ContributionsController < ApplicationController
 	end
 
 	def edit
-		initialize_editing_contribution()
+		initialize_editing_contribution
 		
 		#else, create a new contribution
 		@contribution = Contribution.new
@@ -103,7 +103,7 @@ class ContributionsController < ApplicationController
 	end
 
 	def update
-		initialize_editing_contribution()
+		initialize_editing_contribution
 		@contribution = Contribution.new params[:contribution]
 
 		#Setup contribution parameters that aren't specified by user...
@@ -165,7 +165,7 @@ class ContributionsController < ApplicationController
 		end
 	end
 
-	def successful_update()
+	def successful_update
 		EmailManager.edit_contribution(current_user, @editing_contribution, @contribution).deliver
 	end
 
