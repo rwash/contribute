@@ -25,32 +25,35 @@ class ProjectsController < InheritedResources::Base
 		if @project.valid? 
 			session[:project] = @project
 			request = Amazon::FPS::RecipientRequest.new(save_project_url)
-			redirect_to request.url()
+			return redirect_to request.url
 		else
 			render :action => :new
 		end
 	end
 
 	def save
-		if !validate_amazon_response(save_project_url, true)
-			return
+		if session[:project].nil? or params[:tokenID].nil?
+			flash[:alert] = "An error occurred with your project. Please try again."	
+			return redirect_to root_path
 		end
 
-		if !session[:project].nil? and !params[:tokenID].nil?
-			#Check response status
-			#Verify signature
-			@project = session[:project]
-			session[:project] = nil
-			@project.payment_account_id = params[:tokenID]
-			if @project.save 
-				successful_save()
+    if !Amazon::FPS::AmazonHelper::valid_response?(params, save_project_url)
+			flash[:alert] = "An error occurred with your project. Please try again."	
+      return redirect_to root_path
+    end
 
-				flash[:alert] = "Project saved successfully. Here's to getting funded!"
-				redirect_to root_path
-			else
-				flash[:alert] = "An error occurred saving your project. Please try again."
-				redirect_to root_path
-			end
+		@project = session[:project]
+		session[:project] = nil
+		@project.payment_account_id = params[:tokenID]
+
+		if !@project.save 
+			flash[:alert] = "An error occurred with your project. Please try again."	
+			return redirect_to root_path
+		else
+			successful_save()
+
+			flash[:alert] = "Project saved successfully. Here's to getting funded!"
+			return redirect_to root_path
 		end
 	end
 	
