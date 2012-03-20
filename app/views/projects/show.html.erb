@@ -54,8 +54,6 @@
 
 	<% if can? :update, @project %>
 		- <%= number_to_currency(contribution.amount, :precision => 0) %>
-	<% elsif can? :update, contribution %>
-		- <%= number_to_currency(contribution.amount, :precision => 0) %> <%= link_to "Edit", edit_contribution_url(contribution) %>
 	<% end %>
 	
 	</li><br/>
