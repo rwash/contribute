@@ -1,11 +1,20 @@
 <div di ="projectContent">
 
-        <% if can? :update, @project %>
+<% if can? :update, @project %>
 	<div id="editLink">
-                <%= link_to "Edit this project", edit_project_url(@project) %>
-        </div>
-        <% end %>
+		<%= link_to "Edit this project", edit_project_url(@project) %>
+  </div>
+<% end %>
 
+<% if can? :contribute, @project %>
+	<div id="editLink">
+		<%= link_to "Contribute", new_contribution_url(@project) %>
+	</div>
+<% elsif can? :edit_contribution, @project %>
+	<div id="editLink">
+		<%= link_to "Edit Contribution", edit_contribution_url(Contribution.find_by_user_id(current_user.id)) %>
+	</div>
+<% end %>
 
 	<div id ="projectHead" align="center">
 	<h1><%= @project.name %></h1>
@@ -20,10 +29,6 @@
 	</ul>
 	</div>
 
-
-
-
-
 	<div id="projectContent" align="center">
 	<% if @project.picture? %>
 		<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
@@ -34,11 +39,6 @@
 	Description:<br>
 	<%= @project.long_description %><br>
 
-<% if can? :contribute, @project %>
-	<%= link_to "Contribute", new_contribution_url(@project) %>
-<% elsif can? :edit_contribution, @project %>
-	<%= link_to "Edit Contribution", edit_contribution_url(Contribution.find_by_user_id(current_user.id)) %>
-<% end %>
 <%= link_to "Back", projects_url %>
 
 </div>
