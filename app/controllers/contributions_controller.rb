@@ -20,12 +20,7 @@ class ContributionsController < ApplicationController
 		authorize! :contribute, @project
 		validate_project
 
-		@contribution = Contribution.new params[:contribution]
-		@contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
-		if(user_signed_in?)
-			@contribution.user_id = current_user.id
-		end
-
+		@contribution = prepare_contribution()
 		if @contribution.valid?
 			#Worth considering alternatives if the performance on this is bad
 			#E.g. memcached, writing to the DB and marking record incomplete
@@ -107,12 +102,9 @@ class ContributionsController < ApplicationController
 		@contribution = Contribution.new params[:contribution]
 
 		#Setup contribution parameters that aren't specified by user...
+		@contribution = prepare_contribution()
 		@contribution.project_id = @project.id
-		@contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
-		if(user_signed_in?)
-			@contribution.user_id = current_user.id
-		end
-
+		
 		if @contribution.valid?
 			#Put the logic of cancelling payments here
 			#First, send the new contribution
@@ -205,5 +197,16 @@ protected
 		end
 
 		contribution_to_cancel.save
+	end
+
+	def prepare_contribution
+		contribution = Contribution.new params[:contribution]
+
+		#Setup contribution parameters that aren't specified by user...
+		contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
+		if(user_signed_in?)
+			contribution.user_id = current_user.id
+		end
+		return contribution
 	end
 end
