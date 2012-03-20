@@ -99,11 +99,8 @@ class ContributionsController < ApplicationController
 		initialize_editing_contribution
 		@contribution = Contribution.new params[:contribution]
 
-<<<<<<< HEAD
 		#Setup contribution parameters that aren't specified by user...
 		@contribution = prepare_contribution()
-=======
->>>>>>> 1e33b63dac1205718649887ed3cd9ccc5de46680
 		@contribution.project_id = @project.id
 		
 		if @contribution.valid?
