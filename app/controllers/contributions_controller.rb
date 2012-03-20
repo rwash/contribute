@@ -32,7 +32,7 @@ class ContributionsController < ApplicationController
 			session[:contribution] = @contribution
 			request = Amazon::FPS::MultiTokenRequest.new(save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 		
-			redirect_to request.url()
+			redirect_to request.url
 		else
 			render :action => :new
 		end
@@ -40,32 +40,32 @@ class ContributionsController < ApplicationController
 
 	#Return URL from payment gateway
 	def save
-		if !validate_amazon_response(save_contribution_url, true)
-			return
+		if session[:contribution].nil? or params[:tokenID].nil?
+			flash[:alert] = "An error occurred with your contribution. Please try again."
+			redirect_to root_path
 		end
 
-		if !session[:contribution].nil? and !params[:tokenID].nil?
-			#Verify response status
-			#Verify signature received
-			@contribution = session[:contribution]
-			session[:contribution] = nil
-			@contribution.payment_key = params[:tokenID]
-			if @contribution.save
-				successful_save()				
-
-				flash[:alert] = "Contribution entered successfully. Thanks for your support!"
-				redirect_to root_path
-			else
-				flash[:alert] = "An error occurred with your contribution. Please try again."
-				redirect_to root_path
-			end
-		else
+		if !Amazon::FPS::AmazonHelper::valid_response?(params, save_contribution_url)
 			flash[:alert] = "An error occurred with your contribution. Please try again."
+			redirect_to root_path
+		end
+			
+		@contribution = session[:contribution]
+		session[:contribution] = nil
+		@contribution.payment_key = params[:tokenID]
+
+		if !@contribution.save
+			flash[:alert] = "An error occurred with your contribution. Please try again."
+			redirect_to root_path
+		else
+			successful_save
+
+			flash[:alert] = "Contribution entered successfully. Thanks for your support!"
 			redirect_to root_path
 		end
 	end
 	
-	def successful_save()
+	def successful_save
 		if user_signed_in?
 			EmailManager.contribute_to_project(current_user, @contribution).deliver
 		end
@@ -114,8 +114,6 @@ class ContributionsController < ApplicationController
 		end
 
 		if @contribution.valid?
-			#Put the logic of cancelling payments here
-			#First, send the new contribution
 			session[:contribution] = @contribution
 			session[:editing_contribution_id] = @editing_contribution.id
 			request = Amazon::FPS::MultiTokenRequest.new(after_update_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
@@ -127,40 +125,39 @@ class ContributionsController < ApplicationController
 	end
 
 	def after_update
-		if !validate_amazon_response(after_update_contribution_url, true)
-			return
+		if session[:contribution].nil? or params[:tokenID].nil? or session[:editing_contribution_id].nil?
+			flash[:alert] = "An error occurred trying to update contribution. Please try again."
+			redirect_to root_path
 		end
 
-		if !session[:contribution].nil? and !params[:tokenID].nil? and !session[:editing_contribution_id].nil?
-			#Verify response status
-			#Verify signature received
-			@contribution = session[:contribution]
-			session[:contribution] = nil
-			@editing_contribution = Contribution.find_by_id(session[:editing_contribution_id])
-			session[:editing_contribution_id] = nil
+    if !Amazon::FPS::AmazonHelper::valid_response?(params, after_update_contribution_url)
+      flash[:alert] = "An error occurred with your contribution. Please try again."
+      redirect_to root_path
+    end
 
-			@contribution.payment_key = params[:tokenID]
-			if @contribution.valid?
-				if !cancel_contribution(@editing_contribution)
-					flash[:alert] = "An error occured trying to update your contribution. Please try again."
-					redirect_to root_path
-				end
+		@contribution = session[:contribution]
+		session[:contribution] = nil
+		@editing_contribution = Contribution.find_by_id(session[:editing_contribution_id])
+		session[:editing_contribution_id] = nil
+		@contribution.payment_key = params[:tokenID]
 
-				if @contribution.save
-					successful_update()
+		if !@contribution.valid?
+			flash[:alert] = "An error trying to update your contribution. Please try again."
+			redirect_to root_path
+		end
 
-					flash[:alert] = "Contribution successfully updated. Thanks for your support!"
-					redirect_to root_path
-				else
-					flash[:alert] = "An error trying to update your contribution. Please try again."
-					redirect_to root_path
-				end
-			else
-				flash[:alert] = "An error trying to update your contribution. Please try again."
-				redirect_to root_path
-			end
+		if !@contribution.save
+			flash[:alert] = "An error trying to update your contribution. Please try again."
+			redirect_to root_path
+		end
+
+		if !cancel_contribution(@editing_contribution)
+			flash[:alert] = "An error occured trying to update your contribution. Please try again."
+			redirect_to root_path
 		else
-			flash[:alert] = "An error occurred trying to update contribution. Please try again."
+			successful_update
+
+			flash[:alert] = "Contribution successfully updated. Thanks for your support!"
 			redirect_to root_path
 		end
 	end
@@ -194,10 +191,10 @@ protected
 	
 	def cancel_contribution(contribution_to_cancel)
 		request = Amazon::FPS::CancelTokenRequest.new(contribution_to_cancel.payment_key)
-		response = request.send()
+		response = request.send
 
 		#If it was successful, we'll mark the record as cancelled
-		if response["Errors"].nil?
+		if response["Errors"].nil? #TODO: Is this a good enough error check?
 			contribution_to_cancel.cancelled = 1
 		#otherwise we'll mark it as pending and try again later
 		else
