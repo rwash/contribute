@@ -26,7 +26,7 @@ class Ability
 			!user.id.nil? and !project.contributions.find_by_user_id(user.id).nil?
 		end
 		can :update, Contribution do |contribution|
-			user.id.nil? and contribution.user_id == user.id
+			!user.id.nil? and contribution.user_id == user.id
 		end
 	end
 end
