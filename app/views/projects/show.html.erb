@@ -1,9 +1,7 @@
-<div di ="projectContent">
-
 <% if can? :update, @project %>
 	<div id="editLink">
 		<%= link_to "Edit this project", edit_project_url(@project) %>
-  </div>
+	</div>
 <% end %>
 
 <% if can? :contribute, @project %>
@@ -16,7 +14,7 @@
 	</div>
 <% end %>
 
-	<div id ="projectHead" align="center">
+<div id ="projectHead" align="center">
 	<h1><%= @project.name %></h1>
 	<h2><%= @project.user.location %> </h2>
 	<h3>By: <%= @project.user.name %> </h3>
@@ -27,9 +25,9 @@
 		<li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li>
 		<li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
 	</ul>
-	</div>
+</div>
 
-	<div id="projectContent" align="center">
+<div id="projectContent" align="center">
 	<% if @project.picture? %>
 		<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
 	<% else %>
@@ -38,9 +36,7 @@
 	<br>
 	Description:<br>
 	<%= @project.long_description %><br>
-
-<%= link_to "Back", projects_url %>
-
+	<%= link_to "Back", projects_url %>
 </div>
 
 <h3> Contributors </h3>
@@ -59,4 +55,3 @@
 	</li><br/>
 <% end %>
 </ul>
-
