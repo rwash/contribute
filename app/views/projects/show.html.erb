@@ -12,7 +12,7 @@
 	</div>
 <% elsif can? :edit_contribution, @project %>
 	<div id="editLink">
-		<%= link_to "Edit Contribution", edit_contribution_url(Contribution.find_by_user_id(current_user.id)) %>
+		<%= link_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)) %>
 	</div>
 <% end %>
 

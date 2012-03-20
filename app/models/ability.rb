@@ -22,7 +22,7 @@ class Ability
 
 		#If the user is logged in, doesn't own the project,  and has a contribution on this project, they can edit
 		can :edit_contribution, Project do |project|
-			!user.id.nil? and project.contributions.find_by_user_id(user.id).nil?
+			!user.id.nil? and !project.contributions.find_by_user_id(user.id).nil?
 		end
  end
 end
