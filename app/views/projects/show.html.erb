@@ -1,4 +1,4 @@
-<div di ="projectContent">
+<div id="projectContent">
 
 <% if can? :update, @project %>
 	<div id="editLink">
@@ -17,46 +17,46 @@
 <% end %>
 
 	<div id ="projectHead" align="center">
-	<h1><%= @project.name %></h1>
-	<h2><%= @project.user.location %> </h2>
-	<h3>By: <%= @project.user.name %> </h3>
+		<h1><%= @project.name %></h1>
+		<h2><%= @project.user.location %> </h2>
+		<h3>By: <%= @project.user.name %> </h3>
 
-	<ul>
-		<li>End Date: <%= @project.end_date %></li>
-		<li>Category: <%= Category.find(@project.category_id).short_description %></li>
-		<li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li>
-		<li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
-	</ul>
+		<ul>
+			<li>End Date: <%= @project.end_date %></li>
+			<li>Category: <%= Category.find(@project.category_id).short_description %></li>
+			<li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li>
+			<li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
+		</ul>
 	</div>
 
 	<div id="projectContent" align="center">
-	<% if @project.picture? %>
-		<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
-	<% else %>
-		<%= image_tag "BlockSShow.png", :class => "projectImage" %>
-	<% end %>
-	<br>
-	Description:<br>
-	<%= @project.long_description %><br>
-
-<%= link_to "Back", projects_url %>
-
+		<% if @project.picture? %>
+			<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
+		<% else %>
+			<%= image_tag "BlockSShow.png", :class => "projectImage" %>
+		<% end %>
+		<br>
+		Description:<br>
+		<%= @project.long_description %><br>
+		<%= link_to "Back", projects_url %>
+	</div>
 </div>
 
-<h3> Contributors </h3>
-<ul class="projectContributors">
-<% @project.contributions.each do |contribution|%>
-	<% unless contribution.user.nil? %>
-		<li><%= link_to contribution.user.name , contribution.user %>
-	<% else %>
-		<li>Anonymous
-	<% end %>
+<div id="projectContributors">
+	<h3> Contributors </h3>
+	<ul class="projectContributors">
+	<% @project.contributions.each do |contribution|%>
+		<% unless contribution.user.nil? %>
+			<li><%= link_to contribution.user.name , contribution.user %>
+		<% else %>
+			<li>Anonymous
+		<% end %>
 
-	<% if can? :update, @project %>
-		- <%= number_to_currency(contribution.amount, :precision => 0) %>
+		<% if can? :update, @project %>
+			- <%= number_to_currency(contribution.amount, :precision => 0) %>
+		<% end %>
+		
+		</li><br/>
 	<% end %>
-	
-	</li><br/>
-<% end %>
-</ul>
-
+	</ul>
+</div>

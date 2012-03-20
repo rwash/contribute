@@ -1,7 +1,6 @@
 <div id="userProfile">
 	<% if @user.picture? %>
-		<%= image_tag @user.picture.url(:show), :class => "userImage" %>
-		<br>
+		<%= image_tag @user.picture.url(:show), :class => "userImage" %><br/>
 	<% end %>
 
 	<h1> <%= @user.name %> </h1>
@@ -10,16 +9,18 @@
 	<h3> Created Projects </h3>
 	<ul class="userProjects">
 	<% @user.projects.each do |project|%>
-		<%= link_to project.name , project%><br>
+		<li><%= link_to project.name , project%></li>
 	<% end %>
 	</ul>
-<h3> Contributions </h3>
+
+	<h3> Contributions </h3>
 	<ul class="userContributions">
-		<% @user.contributions.each do |contribution|%>
-			<%= link_to contribution.project.name, contribution.project %>
-			<% if can? :update, contribution %>
-				<%= link_to "[edit]", edit_contribution_url(contribution) %>
-			<% end %>
-			<br>
+	<% @user.contributions.each do |contribution|%>
+		<li><%= link_to contribution.project.name, contribution.project %>
+		<% if can? :update, contribution %>
+			- <%= link_to "Edit", edit_contribution_url(contribution) %>
 		<% end %>
+		</li>
+	<% end %>
+	</ul>
 </div>
