@@ -30,4 +30,12 @@ Contribute::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+	# Amazon Payments Configuration
+  Contribute::Application.config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
+  Contribute::Application.config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
+
+  Contribute::Application.config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
+  Contribute::Application.config.aws_secret_key = "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"
+
 end
