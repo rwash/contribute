@@ -35,7 +35,6 @@ Contribute::Application.configure do
 	Contribute::Application.config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
 	Contribute::Application.config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
 
-	#TODO: Change this to contribute AWS Account
-	Contribute::Application.config.aws_access_key = "AKIAJREG62RYG3LW53HA"
-	Contribute::Application.config.aws_secret_key = "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"
+	Contribute::Application.config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
+	Contribute::Application.config.aws_secret_key = "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"
 end
