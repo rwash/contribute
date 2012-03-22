@@ -61,4 +61,13 @@ Contribute::Application.configure do
 	# Tell Devise where to link back to in its confirmation e-mails
 	config.action_mailer.default_url_options = { :host => 'contribute.cas.msu.edu' }
 
+	#Amazon Payments Configuration
+	Contribute::Application.config.amazon_cbui_endpoint = "https://authorize.payments.amazon.com/cobranded-ui/actions/start"
+	Contribute::Application.config.amazon_fps_endpoint = "https://fps.amazonaws.com/"
+
+
+	# AWS API keys for our interaction with FPS
+	Contribute::Application.config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
+	Contribute::Application.config.aws_secret_key = "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"
+
 end
