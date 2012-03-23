@@ -8,7 +8,7 @@ Contribute::Application.routes.draw do
 	#Contribution resource routes  
 	match 'contributions/new/:project' => 'contributions#new', :as => :new_contribution
 	match 'contributions/save' => 'contributions#save', :as => :save_contribution
-	match 'contributions/after_update' => 'contributions#after_update', :as => :after_update_contribution
+	match 'contributions/update_save' => 'contributions#update_save', :as => :update_save_contribution
 	match 'contributions/execute/:id' => 'contributions#executePayment', :as => :execute_contribution
 	resources :contributions, :only => [:create, :edit, :show, :update]
 

@@ -5,6 +5,8 @@ require 'amazon/fps/cancel_token_request'
 ERROR_STRING = "An error occurred with your contribution. Please try again."
 
 class ContributionsController < ApplicationController
+  before_filter :authenticate_user!, :only => [ :new, :create, :save, :edit, :update, :update_save ]
+
 	def new
  		@project = Project.find_by_name params[:project]
 
@@ -59,40 +61,16 @@ class ContributionsController < ApplicationController
 			return redirect_to root_path
 		end
 	end
-	
-	def successful_save
-		if user_signed_in?
-			EmailManager.contribute_to_project(current_user, @contribution).deliver
-		end
-	end
 
-	#TODO: This should not be externally accessible 
-	def executePayment
-		@contribution = Contribution.find_by_id(params[:id])
-
-    request = Amazon::FPS::PayRequest.new(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
-		
-    response =  request.send()
-
-		logger.info response
-		result = response['PayResponse']['PayResult']
-		transaction_id = result['TransactionId']
-	  transaction_status = result['TransactionStatus']
-
-    if transaction_status == "Success"
-			@contribution.complete = true
-			@contribution.save
-		end
+	# Routing for edit and update doesn't work unless route for show exists	
+	def show
+		raise ActionController::RoutingError.new('Not Found')
 	end
 
 	def edit
 		initialize_editing_contribution
 		
 		@contribution = Contribution.new
-	end
-
-	def show
-		raise ActionController::RoutingError.new('Not Found')
 	end
 
 	def update
@@ -106,7 +84,7 @@ class ContributionsController < ApplicationController
 		if @contribution.valid?
 			session[:contribution] = @contribution
 			session[:editing_contribution_id] = @editing_contribution.id
-			request = Amazon::FPS::MultiTokenRequest.new(after_update_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
+			request = Amazon::FPS::MultiTokenRequest.new(update_save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 		
 			return redirect_to request.url
 		else
@@ -114,13 +92,13 @@ class ContributionsController < ApplicationController
 		end
 	end
 
-	def after_update
+	def update_save
 		if session[:contribution].nil? or params[:tokenID].nil? or session[:editing_contribution_id].nil?
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
 
-    if !Amazon::FPS::AmazonHelper::valid_response?(params, after_update_contribution_url)
+    if !Amazon::FPS::AmazonHelper::valid_response?(params, update_save_contribution_url)
 			flash[:alert] = ERROR_STRING
       return redirect_to root_path
     end
@@ -152,8 +130,23 @@ class ContributionsController < ApplicationController
 		end
 	end
 
-	def successful_update
-		EmailManager.edit_contribution(current_user, @editing_contribution, @contribution).deliver
+	#TODO: This should not be externally accessible 
+	def executePayment
+		@contribution = Contribution.find_by_id(params[:id])
+
+    request = Amazon::FPS::PayRequest.new(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
+		
+    response =  request.send()
+
+		logger.info response
+		result = response['PayResponse']['PayResult']
+		transaction_id = result['TransactionId']
+	  transaction_status = result['TransactionStatus']
+
+    if transaction_status == "Success"
+			@contribution.complete = true
+			@contribution.save
+		end
 	end
 
 protected
@@ -201,5 +194,15 @@ protected
 			contribution.user_id = current_user.id
 		end
 		return contribution
+	end
+
+	def successful_save
+		if user_signed_in?
+			EmailManager.contribute_to_project(current_user, @contribution).deliver
+		end
+	end
+
+	def successful_update
+		EmailManager.edit_contribution(current_user, @editing_contribution, @contribution).deliver
 	end
 end

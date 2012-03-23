@@ -2,15 +2,13 @@
 	<div id="editLink">
 		<%= link_to "Edit this project", edit_project_url(@project) %>
 	</div>
-<% end %>
-
-<% if can? :contribute, @project %>
-	<div id="editLink">
-		<%= link_to "Contribute", new_contribution_url(@project) %>
-	</div>
 <% elsif can? :edit_contribution, @project %>
 	<div id="editLink">
 		<%= link_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)) %>
+	</div>
+<% else %>
+	<div id="editLink">
+		<%= link_to "Contribute", new_contribution_url(@project) %>
 	</div>
 <% end %>
 
@@ -42,11 +40,7 @@
 <h3> Contributors </h3>
 <ul class="projectContributors">
 <% @project.contributions.each do |contribution|%>
-	<% unless contribution.user.nil? %>
-		<li><%= link_to contribution.user.name , contribution.user %>
-	<% else %>
-		<li>Anonymous
-	<% end %>
+	<li><%= link_to contribution.user.name , contribution.user %>
 
 	<% if can? :update, @project %>
 		- <%= number_to_currency(contribution.amount, :precision => 0) %>
