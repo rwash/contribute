@@ -81,15 +81,20 @@ class ContributionsController < ApplicationController
 		@contribution = prepare_contribution()
 		@contribution.project_id = @project.id
 		
-		if @contribution.valid?
-			session[:contribution] = @contribution
-			session[:editing_contribution_id] = @editing_contribution.id
-			request = Amazon::FPS::MultiTokenRequest.new(update_save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
-		
-			return redirect_to request.url
-		else
-			render :action => :edit	
+		if !@contribution.valid?
+			return render :action => :edit	
 		end
+
+		if @contribution.amount < @editing_contribution.amount
+			@contribution.errors.add(:amount, "can't be less than the original amount")
+			return render :action => :edit	
+		end
+	
+		session[:contribution] = @contribution
+		session[:editing_contribution_id] = @editing_contribution.id
+		request = Amazon::FPS::MultiTokenRequest.new(update_save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
+	
+		return redirect_to request.url
 	end
 
 	def update_save

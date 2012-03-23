@@ -14,5 +14,6 @@
 
 <p>Original Amount: <%= number_to_currency(@editing_contribution.amount, :precision => 0) %>
 <p>New Amount: <%= f.text_field :amount %></p>
+<p>The new amount cannot be less than the original amount.</p>
 <%= f.submit "Update Contribution" %>
 <% end %>
