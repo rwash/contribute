@@ -50,14 +50,15 @@ class ProjectsController < InheritedResources::Base
 			flash[:alert] = "An error occurred with your project. Please try again."	
 			return redirect_to root_path
 		else
-			successful_save()
+			successful_save
 
 			flash[:alert] = "Project saved successfully. Here's to getting funded!"
 			return redirect_to root_path
 		end
 	end
-	
-	def successful_save()
+
+protected	
+	def successful_save
 		EmailManager.add_project(current_user, @project).deliver
 	end
 end

@@ -6,7 +6,8 @@ class Contribution < ActiveRecord::Base
 	belongs_to :user
 
 	validates :payment_key, :presence => true
-	validates :amount, :presence => :true, :numericality => { :greater_than_or_equal_to => MIN_CONTRIBUTION_AMT, :message => "must be at least $1" }
+	validates_numericality_of :amount, :greater_than_or_equal_to => MIN_CONTRIBUTION_AMT, :message => "must be at least $1"
+	validates_numericality_of :amount, :only_integer => true, :message => "must be a whole dollar amount (no cents please)" 
 	validates :project_id, :presence => :true
 	validates :user_id, :presence => :true
 
@@ -18,4 +19,8 @@ class Contribution < ActiveRecord::Base
 		self.cancelled = false
 		self.waiting_cancellation = false
 	end
+
+  def amount=(val)
+    write_attribute(:amount, val.to_s.gsub(/,/, ''))
+  end
 end
