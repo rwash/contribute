@@ -63,3 +63,6 @@ gem 'httparty'
 
 #GUID generation
 gem "uuidtools", "~> 2.1.2"
+
+# Cache we're using is Dalli, the Ruby client for MemCache
+gem "dalli"
