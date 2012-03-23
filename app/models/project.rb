@@ -16,7 +16,8 @@ class Project < ActiveRecord::Base
 	validates :name, :presence => true, :uniqueness => { :case_sensitive => false }, :length => {:maximum => MAX_NAME_LENGTH}
 	validates :short_description, :presence => true, :length => {:maximum => MAX_SHORT_DESC_LENGTH}
 	validates :long_description, :presence => true, :length => {:maximum => MAX_LONG_DESC_LENGTH}
-	validates :funding_goal, :numericality => { :greater_than_or_equal_to => MIN_FUNDING_GOAL, :message => "must be at least $5" } 
+	validates_numericality_of :funding_goal, :greater_than_or_equal_to => MIN_FUNDING_GOAL, :message => "must be at least $5"
+	validates_numericality_of :funding_goal, :only_integer => true, :message => "must be a whole dollar amount (no cents please)"
 	validates :created_at, :presence => true
 	validates :active, :presence => true
 	validate :validate_end_date
@@ -39,7 +40,7 @@ class Project < ActiveRecord::Base
 	end
 	
 	def funding_goal=(val)  
-		write_attribute(:funding_goal, val.to_s.gsub(/,/, '').to_i)
+		write_attribute(:funding_goal, val.to_s.gsub(/,/, ''))
 	end
 
 	def validate_end_date
