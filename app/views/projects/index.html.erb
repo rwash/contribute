@@ -1,43 +1,46 @@
+<% cache("project_index_content", :expires_in => 1.minute) do %>
+
 <div id="alignBox">
-      <div id="createFundBox">
-  <ul>
-    <li>
-	<% if user_signed_in? %>
-		<h1><%= link_to "Create a Project", new_project_url %></h1>
-	<% else %>
-		<h1><%= link_to "Create a Project", new_user_session_path %></h1>
+	<%= link_to new_project_url do %>
+  <div id="createFundBox">
+		<ul>
+			<li>
+				<h1>Create a Project</h1>
+				<p>Blurb about getting your project funded. Reasons to create a project.</p>
+				<p>Linked to create project page</p>
+			</li>
+		</ul>
+	</div>
 	<% end %>
-	<p>Blurb about getting your project funded. Reasons to create a project.</p>
-	<p>Linked to create project page</p>
-    </li>
-</div>
 
-<div id="createFundBox">
-    <li>
-	<h1><%= link_to "Fund a Project", root_path %></h1>
-	<p>Blurb about funding a project. Why you should fund?</p>
-	<p>Linked to categories page? or something </p>
-    </li>
-  </ul>
-      </div>
-
-
-<div class="column1">
-	<% @projects1.each do |project| %>
-		<%= render project%>
+	<%= link_to root_path do %>
+	<div id="createFundBox">
+		<ul>
+			<li>
+				<h1>Fund a Project</h1>
+				<p>Blurb about funding a project. Why you should fund?</p>
+				<p>Linked to categories page? or something </p>
+			</li>
+  	</ul>
+	</div>
 	<% end %>
-</div>
-<div class="column2">
-	<% @projects2.each do |project| %>
-		<%= render project%>
-	<% end %>
-</div>
-<div class="column3">
-	<% @projects3.each do |project| %>
-		<%= render project%>
-	<% end %>
-</div>
 
 
-
+	<div class="column1">
+		<% @projects1.each do |project| %>
+			<%= render project %>
+		<% end %>
+	</div>
+	<div class="column2">
+		<% @projects2.each do |project| %>
+			<%= render project %>
+		<% end %>
+	</div>
+	<div class="column3">
+		<% @projects3.each do |project| %>
+			<%= render project %>
+		<% end %>
+	</div>
 </div>
+
+<% end %>

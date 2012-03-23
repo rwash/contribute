@@ -61,11 +61,15 @@ class Project < ActiveRecord::Base
 	end
 
 	def contributions_total
-		contributions.sum(:amount)
+		Rails.cache.fetch("#{self.id}_contributions_total") do 
+			contributions.sum(:amount)
+		end
 	end
 
 	def contributions_percentage
-		(contributions_total.to_f / funding_goal.to_f) * 100
+		Rails.cache.fetch("#{self.id}_contributions_percentage") do 
+			(contributions_total.to_f / funding_goal.to_f) * 100
+		end
 	end
 
 	#Overriding to_param makes it so that whenever a url is built for a project, it substitues

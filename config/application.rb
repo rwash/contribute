@@ -44,5 +44,8 @@ module Contribute
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+		# Setting cache to be Dalli, the Ruby client for MemCache
+		ActionController::Base.cache_store = :dalli_store
   end
 end
