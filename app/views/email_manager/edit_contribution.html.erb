@@ -1,6 +1,6 @@
 <p>Hey <%= @user.name %>,</p>
 
-<p>You have successfully changed your contribution from $<%= @old_contribution.amount %> to $<%= @new_contribution.amount %> for <%= @project.name %>.</p>
+<p>You have successfully changed your contribution from <%= number_to_currency(@old_contribution.amount, :precision => 0) %> to <%= number_to_currency(@new_contribution.amount, :precision => 0) %> for <%= @project.name %>.</p>
 
 <p>Thanks for your support!</p>
 

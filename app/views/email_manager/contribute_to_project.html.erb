@@ -1,6 +1,6 @@
 <p>Hey <%= @user.name %>,<p>
 
-<p>You have successfully contributed $<%= @contribution.amount %> to <%= @project.name %>.</p>
+<p>You have successfully contributed <%= number_to_currency(@contribution.amount, :precision => 0) %> to <%= @project.name %>.</p>
 
 <p>Thanks for your support!</p>
 
