@@ -11,7 +11,8 @@ Contribute::Application.configure do
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
-  config.action_controller.perform_caching = false
+  #config.action_controller.perform_caching = false
+  config.action_controller.perform_caching = true
 
   # Don't care if the mailer can't send
   #config.action_mailer.raise_delivery_errors = false
@@ -35,6 +36,11 @@ Contribute::Application.configure do
 	Contribute::Application.config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
 	Contribute::Application.config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
 
-	Contribute::Application.config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
-	Contribute::Application.config.aws_secret_key = "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"
+#	These will be the real values when the account gets approved
+#	Contribute::Application.config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
+#	Contribute::Application.config.aws_secret_key = "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"
+
+# These are mine for now
+	Contribute::Application.config.aws_access_key = "AKIAINGLDSXXU7EG4K7Q"
+	Contribute::Application.config.aws_secret_key = "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"
 end
