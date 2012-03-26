@@ -16,8 +16,6 @@
 <p>Name: <%= f.text_field :name  %></p>
 <p><%= render :partial => "picture", :locals => {:f => f} %></p>
 <p>Category: <%= f.collection_select :category_id, Category.all, :id, :short_description %></p>
-<p>Funding Goal: $ <%= f.text_field :funding_goal, :size => 10 %></p>
-<p>End Date: <%= f.text_field :end_date, :size => 10, :id => "DatePickerEndDate", :value => @project.end_date.blank? ? '' : format_date(@project.end_date) %> </p>
  
 <p>Short Description:<br>
 	 <%= f.text_field :short_description%></p>

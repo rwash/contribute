@@ -1,11 +1,11 @@
 require 'amazon/fps/recipient_request'
 
 class ProjectsController < InheritedResources::Base
-	actions :all, :except => [ :create, :destroy ]
+	actions :all, :except => [ :create, :edit, :update ]
 
 	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :save ]
 	#This allows us to use project names instead of ids for the routes
-	before_filter :set_current_project_by_name, :only => [ :show, :edit, :update ]
+	before_filter :set_current_project_by_name, :only => [ :show, :edit, :update, :destroy ]
 	#This is authorization through CanCan. The before_filter handles load_resource
 	authorize_resource
 

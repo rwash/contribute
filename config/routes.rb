@@ -14,7 +14,7 @@ Contribute::Application.routes.draw do
 
 	#The :id being passed through the routes is really the name of the project
 	match 'projects/save' => 'projects#save', :as => :save_project
-  resources :projects
+  resources :projects, :only => [:index, :new, :create, :show, :destroy]
 
   root :to => 'projects#index'
 end

@@ -1,6 +1,6 @@
-<% if can? :update, @project %>
+<% if can? :destroy, @project %>
 	<div id="editLink">
-		<%= link_to image_tag("editProjectButton.png"), edit_project_url(@project) %>
+		<%= button_to "Delete this project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project? All contributions to it will also be deleted." %>
 	</div>
 <% elsif can? :edit_contribution, @project %>
 	<div id="editLink">
