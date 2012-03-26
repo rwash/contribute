@@ -69,7 +69,7 @@ class Project < ActiveRecord::Base
 
 	def contributions_percentage
 		Rails.cache.fetch("#{self.id}_contributions_percentage") do 
-			(contributions_total.to_f / funding_goal.to_f) * 100
+			((contributions_total.to_f / funding_goal.to_f) * 100).to_i
 		end
 	end
 
