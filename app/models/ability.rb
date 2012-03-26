@@ -7,7 +7,8 @@ class Ability
 		#Projects
 		can :read, Project, :active => true
 		can :create, Project
-		can :update, Project, :active => true, :user_id => user.id
+#		can :update, Project, :active => true, :user_id => user.id
+		can :destroy, Project, :active => true, :user_id => user.id
 		can :save, Project
 
 		#Contributions
