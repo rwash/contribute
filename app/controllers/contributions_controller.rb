@@ -7,6 +7,8 @@ ERROR_STRING = "An error occurred with your contribution. Please try again."
 class ContributionsController < ApplicationController
   before_filter :authenticate_user!, :only => [ :new, :create, :save, :edit, :update, :update_save ]
 
+	cache_sweeper :contribution_sweeper
+
 	def new
  		@project = Project.find_by_name params[:project]
 

@@ -42,14 +42,18 @@
 
 <h3> Contributors </h3>
 <ul class="projectContributors">
-<% @project.contributions.each do |contribution|%>
-	<li><%= link_to contribution.user.name , contribution.user %>
+<% if @project.contributions.size > 0 %>
+	<% @project.contributions.each do |contribution|%>
+		<li><%= link_to contribution.user.name , contribution.user %>
 
-	<% if can? :update, @project %>
-		- <%= number_to_currency(contribution.amount, :precision => 0) %>
+		<% if can? :update, @project %>
+			- <%= number_to_currency(contribution.amount, :precision => 0) %>
+		<% end %>
+		
+		</li><br/>
 	<% end %>
-	
-	</li><br/>
+<% else %>
+	<p>Be the first!</p>
 <% end %>
 </ul>
 </div>
