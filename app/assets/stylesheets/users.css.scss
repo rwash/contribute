@@ -10,6 +10,7 @@
 	margin-top: 50px;
 	width: 230px;
 }
+
 #edit_user h2 {
 	margin-left: -20px;
 }
@@ -38,15 +39,18 @@
 	}
 }
 
-.userProjects {
+.userProjects, .userContributions {
 	li {
 		list-style: none;
 	}
 	a {
 		text-decoration: none;
 	}
+	a:hover {
+		text-decoration: underline;
+	}
 }
-.userContributeions {}
+
 .userImage {
 	margin: {top: 50px;}
 }
