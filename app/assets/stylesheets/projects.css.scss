@@ -33,6 +33,7 @@
 		line-height: 25px;
 	}
 	a {text-decoration: none;}
+	a:hover {text-decoration: underline;}
 	p {
 		margin-right: 40px;
 		font-size: 14px;
@@ -92,6 +93,9 @@
 		color: #000;
 		font-size: 24px;
 		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
 	}
 	ul {list-style: none;}
 	li {
@@ -168,6 +172,18 @@
 	padding: {
 		top: 20px;
 		bottom: 20px;
+	}
+}
+
+.projectContributors {
+	li {
+		list-style: none;
+	}
+	a {
+		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
 	}
 }
 
