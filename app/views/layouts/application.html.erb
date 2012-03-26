@@ -1,11 +1,12 @@
-
 <!DOCTYPE html>
 <html>
-<title>Contribute</title>
 <head>
+	<title>Contribute</title>
 	<%= stylesheet_link_tag	"application" %>
 	<%= javascript_include_tag "application" %>
 	<%= csrf_meta_tags %>
+	<link type="image/png" rel="icon"  href="favicon.png">
+	<link href='http://fonts.googleapis.com/css?family=Voces' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
@@ -24,19 +25,22 @@
 </div>
 </div>
 
-
 <% if flash[:alert] %>
+  <div id="flash">
 	<p class="flash-error"><%= flash[:alert] %></p>
 <% end %>
 <% if flash[:notice] %>
 	<p class="flash-notice"><%= flash[:notice] %></p>
+  </div>
 <% end %>
+
 
 <%= yield %>
 
 <div id="aboutContribute">
         <h3>What is Contribute?</h3>
-        <p>Blurb about what Contribute is</p>
+        <p>Contribute is a crowdfunding website designed to help students at Michigan State University develop their projects and ideas. Alumni, students, and other supporters
+		are encouraged to fund projects so students can achieve their dreams. </p>
 </div>
 
 <div id="footer">

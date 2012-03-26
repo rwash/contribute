@@ -1,41 +1,44 @@
 <% if can? :update, @project %>
 	<div id="editLink">
-		<%= link_to "Edit this project", edit_project_url(@project) %>
+		<%= link_to image_tag("editProjectButton.png"), edit_project_url(@project) %>
 	</div>
 <% elsif can? :edit_contribution, @project %>
 	<div id="editLink">
-		<%= link_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)) %>
+		<%= link_to image_tag("editContributionButton.png"), edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)) %>
 	</div>
 <% else %>
 	<div id="editLink">
-		<%= link_to "Contribute", new_contribution_url(@project) %>
+		<%= link_to image_tag("contributeButton.png"), new_contribution_url(@project) %>
 	</div>
 <% end %>
 
-<div id ="projectHead" align="center">
+<div id="projectInfo">
+	<ul>
+                <li>End Date: <%= @project.end_date %></li>
+                <li>Category: <%= Category.find(@project.category_id).short_description %></li>
+                <li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li>
+                <li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
+        </ul>
+</div>
+
+<div id="projectWrapper">
+  <div id="projectContent" align="center">
+  <div id="projectHead" align="center">
 	<h1><%= @project.name %></h1>
 	<h2><%= @project.user.location %> </h2>
 	<h3>By: <%= @project.user.name %> </h3>
+  </div>
 
-	<ul>
-		<li>End Date: <%= @project.end_date %></li>
-		<li>Category: <%= Category.find(@project.category_id).short_description %></li>
-		<li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li>
-		<li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
-	</ul>
-</div>
-
-<div id="projectContent" align="center">
 	<% if @project.picture? %>
 		<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
 	<% else %>
 		<%= image_tag "BlockSShow.png", :class => "projectImage" %>
 	<% end %>
 	<br>
-	Description:<br>
-	<%= @project.long_description %><br>
+	<p>Description:<p><br/>
+	<%= @project.long_description %><br/>
 	<%= link_to "Back", projects_url %>
-</div>
+  </div>
 
 <h3> Contributors </h3>
 <ul class="projectContributors">
@@ -49,3 +52,4 @@
 	</li><br/>
 <% end %>
 </ul>
+</div>

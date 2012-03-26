@@ -1,42 +1,44 @@
 <div id="alignBox">
-	<%= link_to new_project_url do %>
   <div id="createFundBox">
-		<ul>
-			<li>
-				<h1>Create a Project</h1>
-				<p>Blurb about getting your project funded. Reasons to create a project.</p>
-				<p>Linked to create project page</p>
-			</li>
-		</ul>
-	</div>
-	<% end %>
+	<ul>
+		<li>
+			<h1><%= link_to "Create a Project", new_project_url %></h1>
+			<p>Do you want to create something, make a movie or build a robot? Have this great idea but don’t have the resources? 
+				Contribute can help make that happen. Start getting your project funded here so you can make that dream come true.</p>
+		</li>
+	</ul>
+  </div>
 
-	<%= link_to root_path do %>
-	<div id="createFundBox">
-		<ul>
-			<li>
-				<h1>Fund a Project</h1>
-				<p>Blurb about funding a project. Why you should fund?</p>
-				<p>Linked to categories page? or something </p>
-			</li>
-  	</ul>
-	</div>
-	<% end %>
-
-
-	<div class="column1">
-		<% @projects1.each do |project| %>
-			<%= render project %>
-		<% end %>
-	</div>
-	<div class="column2">
-		<% @projects2.each do |project| %>
-			<%= render project %>
-		<% end %>
-	</div>
-	<div class="column3">
-		<% @projects3.each do |project| %>
-			<%= render project %>
-		<% end %>
-	</div>
+  <div id="createFundBox">
+	<ul>
+		<li>
+			<h1><%= link_to "Fund a Project", root_path %></h1>
+			<p>Blurb about funding a project. Why you should fund?</p>
+			<p>Linked to categories page? or something </p>
+		</li>
+	</ul>
+  </div>
 </div>
+
+<div id="indexWrapper">
+  <div class="column1">
+	<% @projects1.each do |project| %>
+		<%= render project%>
+	<% end %>
+  </div>
+
+  <div class="column2">
+	<% @projects2.each do |project| %>
+		<%= render project%>
+	<% end %>
+  </div>
+
+  <div class="column3">
+	<% @projects3.each do |project| %>
+		<%= render project %>
+	<% end %>
+  </div>
+</div>
+
+
+
