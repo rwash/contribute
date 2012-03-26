@@ -9,21 +9,27 @@
 	<h1> <%= @user.name %> </h1>
 	<h2> <%= @user.location %> </h2>
 
-	<h3> Created Projects </h3>
-	<ul class="userProjects">
-	<% @user.projects.each do |project|%>
-		<li><%= link_to project.name , project%></li>
+	<% if @user.projects.size > 0 %>
+		<h3> Created Projects </h3>
+		<ul class="userProjects">
+		<% @user.projects.each do |project|%>
+			<li><%= link_to project.name , project%></li>
+		<% end %>
+		</ul>
 	<% end %>
-	</ul>
 
 	<h3> Contributions </h3>
 	<ul class="userContributions">
-	<% @user.contributions.each do |contribution|%>
-		<li><%= link_to contribution.project.name, contribution.project %>
-		<% if can? :update, contribution %>
-			- <%= link_to "Edit Contribution", edit_contribution_url(contribution) %>
+	<% if @user.contributions.size > 0 %>
+		<% @user.contributions.each do |contribution|%>
+			<li><%= link_to contribution.project.name, contribution.project %>
+			<% if can? :update, contribution %>
+				- <%= link_to "Edit Contribution", edit_contribution_url(contribution) %>
+			<% end %>
+			</li>
 		<% end %>
-		</li>
+	<% else %>
+		<p>None yet!</p>
 	<% end %>
 	</ul>
 </div>

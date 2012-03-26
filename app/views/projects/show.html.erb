@@ -14,11 +14,11 @@
 
 <div id="projectInfo">
 	<ul>
-                <li>End Date: <%= @project.end_date %></li>
-                <li>Category: <%= Category.find(@project.category_id).short_description %></li>
-                <li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li>
-                <li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
-        </ul>
+		<li>End Date: <%= @project.end_date %></li>
+		<li>Category: <%= Category.find(@project.category_id).short_description %></li>
+		<li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li>
+		<li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
+	</ul>
 </div>
 
 <div id="projectWrapper">
@@ -26,7 +26,7 @@
   <div id="projectHead" align="center">
 	<h1><%= @project.name %></h1>
 	<h2><%= @project.user.location %> </h2>
-	<h3>By: <%= @project.user.name %> </h3>
+	<h3>By: <%= link_to @project.user.name, @project.user %> </h3>
   </div>
 
 	<% if @project.picture? %>
