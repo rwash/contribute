@@ -46,7 +46,6 @@
 <% end %>
 
 <br/>
-<%= link_to "Back", root_path %><br/>
-<%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>
+<%= button_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure you want to delete your account? This will delete all of your projects and all the contributions to those projects.", :method => :delete %>
 
 </div>
