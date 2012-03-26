@@ -1,4 +1,6 @@
-/* Stylesheet for users */
+// Place all the styles related to the Users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
 
 /******* New User ********/
 
@@ -53,11 +55,9 @@
 		text-decoration: none;
 	}
 }
-
+.userContributeions {}
 .userImage {
-	margin: {
-		top: 50px;
-	}
+	margin: {top: 50px;}
 }
 
 /*******Forgot/edit password******/

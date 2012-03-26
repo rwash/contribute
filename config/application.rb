@@ -46,6 +46,6 @@ module Contribute
     config.assets.version = '1.0'
 
 		# Setting cache to be Dalli, the Ruby client for MemCache
-		config.cache_store = :dalli_store
+		#config.cache_store = :dalli_store
   end
 end

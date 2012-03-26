@@ -5,48 +5,59 @@
 
 /**** Index *****/
 
+#alignBox {
+        margin: {
+		left: auto;
+		right: auto;
+		top: 50px;
+	}
+        width: 1065px;
+	height: 200px;
+}
+
+
 #createFundBox {
-	display: inline-block;
-	background: #FFF;
+	display: inline-table;
+	margin-bottom: 0px;
+	background: #DADAB5;
+	width: 500px;
+        height: 190px;
+        padding-left: 20px;
 	border: {
                 style: outset;
                 width: 5px;
                 color: #666;		
         }
-	width: 500px;
-        height: 150px; 
-	padding-left: 20px;
-	margin-top: 50px;
 	h1 {
 		text-align: center;
 		line-height: 25px;
 	}
-	a {
-		text-decoration: none;
-	}
+	a {text-decoration: none;}
 	p {
-		line-height: 4px;
+		margin-right: 40px;
+		font-size: 14px;
 	}
-	li {
-		list-style: none;
-	}
+	ul{display: inline;}
+	li {list-style: none;}
 }
 
-#alignBox {
-	margin-left: auto;
-	margin-right: auto;
-	width: 1200px;
+#indexWrapper{
+	position: relative;
+	margin: {
+		left: auto;
+		right: auto;
+		top: 50px;
+	}
+	width: 1000px;
 }
 
-
-
-/**** Project Preview *****/
+/**** Project Partial *****/
 
 .column2, .column3 {
 	position: absolute;
-	top: 295px;
+	top: 0px;
 }
- .column2{
+.column2{
 	margin-left: 340px;
 }
 
@@ -64,11 +75,8 @@
 		repeat: no-repeat;
 		position: bottom;
 	}
-	margin: {
-		top: 150px;
-		left: 100px;
-	}
 	padding: 10px;
+	margin-bottom: 70px;
 	border: {
 		width: 0px;
 		style: solid;
@@ -80,17 +88,12 @@
 	-moz-box-shadow: 10px 10px 5px #000;
 	width: 250px;
 	height: 400px;
-
 	a {
 		color: #000;
 		font-size: 24px;
 		text-decoration: none;
 	}
-
-	ul {
-		list-style: none;
-	}
-
+	ul {list-style: none;}
 	li {
 		display: inline;
 		font-size: 13px;
@@ -114,13 +117,6 @@
 	}
 }
 
-.projectImage {
-	padding: {
-		top: 20px;
-		bottom: 20px;
-	}
-}
-
 .progressBar {
 	width: 25px;
 	height: 400px;
@@ -134,6 +130,12 @@
 
 
 /******* Project Show *******/
+#projectWrapper{
+	width: 780px;
+	margin: auto;
+	margin-top: 100px;
+	padding: 10px;
+}
 
 #projectHead {
 	li {
@@ -146,45 +148,43 @@
 	}
 }
 
+#projectInfo{
+	position: absolute;
+	margin: auto;
+	top: 200px;
+	left: -15px;
+	padding: 10px;
+	li {
+		list-style: none;
+		line-height: 50px;
+	}
+}
 #projectContent {
-	background: #A0AA8F;
-	border: {
-		style: solid;
-		width: 0px;
-		color: #000;
-	}
-	margin: {
-		left: 50px;
-		right: 50px;
-	}
+	border-left: {
+                style: solid;
+                width: 1px;
+                color: #000;
+        }
 	padding: {
 		top: 20px;
 		bottom: 20px;
 	}
 }
 
+.projectImage {
+        padding: {
+                top: 20px;
+                bottom: 20px;
+        }
+}
 
 #editLink {
         position: absolute;
-	right: 100px;
+	top: 120px;
+	right: 130px;
 	width: 120px;
 	height: 20px;
-        border: {
-                style: outset;
-                size: 1px;
-                color: #000;
-                radius: 10px;
-        }
-        -moz-border-radius: 10px;
-        padding: 7px;
 }
-
-#editLink a{
-        text-decoration: none;
-        font-weight: bold;
-	font-size: 14px;
-}
-
 
 
 /******* New/Edit Project ******/

@@ -1,32 +1,39 @@
-
-/* style sheet for layouts */
+// Place all the styles related to the Layouts here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
 
 
 html {
-	/*background: #FFFFF0;*/
+	background: #FFFFFF;
 }
 
+h1, h2, h3, p, a, li {
+	/*font-family: Arial, Helvetica, sans-serif;*/
+	/*font-family:  Georgia, "Times New Roman", Times, serif;*/
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
 a {
 	color: #000;
 }
 
 /***** Layout *******/
 
+
 #header {
 	background: -webkit-gradient(linear, left top, left bottom, from(#AFD4DA), to(#91c3cc));
         background: -moz-linear-gradient(bottom, #91c3cc, #AFD4DA);
 	box-shadow: 0px 5px 10px #000;
 	-moz-box-shadow: 0px 5px 10px #000;
-	margin-top: -8px;
-	margin-left: -8px;
-	margin-right: -8px;
+	margin: {
+		top: -8px;
+		left: -8px;
+		right: -8px;
+	}
 }
 
 .logo {
         width: 200px;
-        margin: {
-                left: 100px;
-        }
+        margin: {left: 100px;}
 	border: none;
 }
 
@@ -36,32 +43,44 @@ a {
         right: 40px;
 }
 
+#flash {
+	position: absolute;
+	text-align: center;
+}
+
 /****** footer *******/
                 
 #aboutContribute {
 	background: #FFFFF0;
-        border: {
+        width: 1200px;
+	border: {
                 style: solid;
                 weight: 1px;
                 color: #000;
         }
-        margin-top: 100px;
-
+        margin:{
+		top: 100px;
+		left: auto;
+		right: auto;
+	}
 	h3, p{
 		padding-left: 200px;
+		padding-right: 200px;
 	}
 }
         
 #footer {
 	background: #FFFFF0;
+	width: 800px;
+	left: 200px;
         border: {
                 style: solid;
                 weight: 1px;
                 color: #000;
         }
         margin:  {
-		left: 200px;
-        	right: 200px;
+		left: auto;
+        	right: auto;
         	top: -3px;
 	}
 	padding-left: 20px;
@@ -73,6 +92,5 @@ a {
         font-size: 12px;
         /*padding: 5px;
         margin-top: -3px;*/
-	position: relative;
-}
+	position: relative;}
 
