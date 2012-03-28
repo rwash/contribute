@@ -1,4 +1,3 @@
-require 'net/http'
 require 'amazon/fps/base_fps_request'
 
 module Amazon

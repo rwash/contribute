@@ -1,6 +1,4 @@
 require 'amazon/fps/multi_token_request'
-require 'amazon/fps/pay_request'
-require 'amazon/fps/cancel_token_request'
 
 ERROR_STRING = "An error occurred with your contribution. Please try again."
 
@@ -126,7 +124,7 @@ class ContributionsController < ApplicationController
 			return redirect_to root_path
 		end
 
-		if !cancel_contribution(@editing_contribution)
+		if !@editing_contribution.cancel
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		else
@@ -134,25 +132,6 @@ class ContributionsController < ApplicationController
 
 			flash[:alert] = "Contribution successfully updated. Thanks for your support!"
 			return redirect_to root_path
-		end
-	end
-
-	#TODO: This should not be externally accessible 
-	def executePayment
-		@contribution = Contribution.find_by_id(params[:id])
-
-    request = Amazon::FPS::PayRequest.new(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
-		
-    response =  request.send()
-
-		logger.info response
-		result = response['PayResponse']['PayResult']
-		transaction_id = result['TransactionId']
-	  transaction_status = result['TransactionStatus']
-
-    if transaction_status == "Success"
-			@contribution.complete = true
-			@contribution.save
 		end
 	end
 
@@ -177,21 +156,6 @@ protected
 		validate_project
 	end
 	
-	def cancel_contribution(contribution_to_cancel)
-		request = Amazon::FPS::CancelTokenRequest.new(contribution_to_cancel.payment_key)
-		response = request.send
-
-		#If it was successful, we'll mark the record as cancelled
-		if response["Errors"].nil? #TODO: Is this a good enough error check?
-			contribution_to_cancel.cancelled = 1
-		#otherwise we'll mark it as pending and try again later
-		else
-			contribution_to_cancel.waiting_cancellation = 1
-		end
-
-		contribution_to_cancel.save
-	end
-
 	def prepare_contribution
 		contribution = Contribution.new params[:contribution]
 

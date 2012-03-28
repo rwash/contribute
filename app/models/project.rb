@@ -19,7 +19,6 @@ class Project < ActiveRecord::Base
 	validates_numericality_of :funding_goal, :greater_than_or_equal_to => MIN_FUNDING_GOAL, :message => "must be at least $5"
 	validates_numericality_of :funding_goal, :only_integer => true, :message => "must be a whole dollar amount (no cents please)"
 	validates :created_at, :presence => true
-	validates :active, :presence => true
 	validate :validate_end_date
 	validates :end_date, :presence => { :message => "must be of form 'MM/DD/YYYY'" }
 	validates :picture, :file_size => {:maximum => 0.15.megabytes.to_i }
