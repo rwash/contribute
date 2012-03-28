@@ -1,4 +1,5 @@
 require 'net/http'
+require 'amazon/fps/signatureutils'
 
 module Amazon
 module FPS

@@ -69,3 +69,6 @@ gem "dalli"
 
 # Web server for testing
 gem "mongrel"
+
+# Task scheduler 
+gem 'whenever'

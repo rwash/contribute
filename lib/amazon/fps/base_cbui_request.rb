@@ -1,3 +1,7 @@
+require 'uri'
+require 'amazon/fps/signatureutils'
+require 'amazon/fps/amazon_helper'
+
 module Amazon
 module FPS
 

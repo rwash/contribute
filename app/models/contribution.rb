@@ -1,3 +1,6 @@
+require 'amazon/fps/pay_request'
+require 'amazon/fps/cancel_token_request'
+
 MIN_CONTRIBUTION_AMT = 1
 UNDEFINED_PAYMENT_KEY = 'TEMP'
 
@@ -23,4 +26,38 @@ class Contribution < ActiveRecord::Base
   def amount=(val)
     write_attribute(:amount, val.to_s.gsub(/,/, ''))
   end
+
+
+  def cancel
+    request = Amazon::FPS::CancelTokenRequest.new(self.payment_key)
+    response = request.send
+
+    #If it was successful, we'll mark the record as cancelled
+    if response["Errors"].nil? #TODO: Is this a good enough error check?
+      self.cancelled = 1
+    #otherwise we'll mark it as pending and try again later
+    else
+      self.waiting_cancellation = 1
+    end
+
+    self.save
+  end
+
+
+  def execute_payment
+    request = Amazon::FPS::PayRequest.new(self.payment_key, self.project.payment_account_id, self.amount)
+
+    response =  request.send()
+
+    result = response['PayResponse']['PayResult']
+    transaction_id = result['TransactionId']
+    transaction_status = result['TransactionStatus']
+
+		#TODO: Need to deal with pending case for sure
+    if transaction_status == "Success"
+      self.complete = true
+      self.save
+    end
+  end
+
 end
