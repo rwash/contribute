@@ -5,20 +5,23 @@
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
  
-  <div class="name"><%= f.label :name %><br />
-  <%= f.text_field :name %></div>
+  <div class="new_form">
+  <%= f.text_field :name, :placeholder => "Name" %></div>
 
-  <div class="email"><%= f.label :email %><br/>
-  <%= f.email_field :email %></div>
+  <div class="new_form">
+  <%= f.email_field :email, :placeholder => "Email Address" %></div>
 
-  <div class="password"><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+  <div class="new_form">
+  <%= f.password_field :password, :placeholder => "Password" %></div>
 
-  <div class="password_confirm"><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
+  <div class="new_form">
+  <%= f.password_field :password_confirmation, :placeholder => "Confirm Password" %></div>
+
+<br />
 
   <div><%= f.submit "Sign up" %></div>
+
 <% end %>
 
-<% link_to "Sign in", new_user_session_path %>
+<p><%= link_to "Already have an account? Sign in", new_user_session_path %></p>
 </div>

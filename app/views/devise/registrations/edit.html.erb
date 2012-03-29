@@ -6,21 +6,21 @@
   <%= devise_error_messages! %>
 
   <div class="form_field">
-    <%= f.label :name %><br />
+    <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
 
   <div class="form_field">
-    <%= f.label :location %><br />
+    <%= f.label :location %>
     <%= f.text_field :location %>
   </div>
 
   <div class="form_field">
-    <%= render :partial => "picture", :locals => {:f => f} %>
+    <%= render :partial => "picture", :locals => {:f => f} %><br />
   </div>
 
   <div class ="form_field">
-    <%= f.label :email %><br />
+    <%= f.label :email %>
     <%= f.email_field :email %>
   </div>
 
