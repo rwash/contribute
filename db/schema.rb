@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120326190842) do
+ActiveRecord::Schema.define(:version => 20120330155016) do
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20120326190842) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.binary   "cancelled"
-    t.binary   "waiting_cancellation"
+    t.integer  "waiting_cancellation"
   end
 
   create_table "projects", :force => true do |t|

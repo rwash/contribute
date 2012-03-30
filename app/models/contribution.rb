@@ -34,10 +34,12 @@ class Contribution < ActiveRecord::Base
 
     #If it was successful, we'll mark the record as cancelled
     if response["Errors"].nil? #TODO: Is this a good enough error check?
+			self.waiting_cancellation = 0
       self.cancelled = 1
     #otherwise we'll mark it as pending and try again later
     else
-      self.waiting_cancellation = 1
+      self.waiting_cancellation = self.waiting_cancellation + 1
+			#TODO: Tell the user? They should get an e-mail from Amazon when it actually does get cancelled
     end
 
     self.save
