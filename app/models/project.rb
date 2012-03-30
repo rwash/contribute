@@ -8,7 +8,7 @@ UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
 
 class Project < ActiveRecord::Base
 	belongs_to :user
-	has_many :contributions, :conditions => {:cancelled => 0, :waiting_cancellation => 0}, :dependent => :destroy
+	has_many :contributions, :conditions => {:cancelled => 0, :waiting_cancellation => 0}
 
 	has_one :category
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
@@ -78,5 +78,14 @@ class Project < ActiveRecord::Base
 	#it was much more code that would be more error prone
 	def to_param
 		self.name
+	end
+
+	def destroy
+    self.contributions.each do |contribution|
+      contribution.destroy
+    end
+
+    self.active = false
+    self.save
 	end
 end

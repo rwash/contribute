@@ -1,22 +1,26 @@
 <div id="alignBox">
+	<%= link_to new_project_url do %>
   <div id="createFundBox">
 	<ul>
 		<li>
-			<h1><%= link_to "Create a Project", new_project_url %></h1>
+			<h1>Create a Project</h1>
 			<p>Do you want to create something, make a movie or build a robot? Have this great idea but don’t have the resources? 
 				Contribute can help make that happen. Start getting your project funded here so you can make that dream come true.</p>
 		</li>
 	</ul>
   </div>
+	<% end %>
 
+	<%= link_to root_path do %>
   <div id="createFundBox">
 	<ul>
 		<li>
-			<h1><%= link_to "Browse Categories", root_path %></h1>
+			<h1>Browse Categories</h1>
 			<p align="center">Coming Soon! </p>
 		</li>
 	</ul>
   </div>
+	<% end %>
 </div>
 
 <div id="indexWrapper">

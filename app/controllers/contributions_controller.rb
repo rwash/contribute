@@ -3,7 +3,7 @@ require 'amazon/fps/multi_token_request'
 ERROR_STRING = "An error occurred with your contribution. Please try again."
 
 class ContributionsController < ApplicationController
-  before_filter :authenticate_user!, :only => [ :new, :create, :save, :edit, :update, :update_save ]
+  before_filter :authenticate_user!, :only => [ :new, :create, :save, :edit, :update, :update_save, :destroy ]
 
 	cache_sweeper :contribution_sweeper
 
