@@ -1,7 +1,7 @@
 #TODO: This needs to log somewehere
 
 namespace :contribute do
-	task :process_completed_projects => :environment do
+	task :completed_projects => :environment do
 		projects_to_process = Project.where("end_date = :today AND active = 1", { :today => Date.today})
 
 		projects_to_process.each do |project|
