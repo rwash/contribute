@@ -1,9 +1,9 @@
 require 'amazon/fps/recipient_request'
 
 class ProjectsController < InheritedResources::Base
-	actions :all, :except => [ :create, :edit, :update ]
+	actions :all, :except => [ :create, :edit, :update, :destroy ]
 
-	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :save ]
+	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save ]
 	#This allows us to use project names instead of ids for the routes
 	before_filter :set_current_project_by_name, :only => [ :show, :edit, :update, :destroy ]
 	#This is authorization through CanCan. The before_filter handles load_resource
@@ -53,6 +53,16 @@ class ProjectsController < InheritedResources::Base
 			successful_save
 
 			flash[:alert] = "Project saved successfully. Here's to getting funded!"
+			return redirect_to root_path
+		end
+	end
+
+	def destroy
+		if !@project.destroy
+			flash[:alert] = "Project could not be deleted. Please try again."
+			return redirect_to @project
+		else 
+			flash[:alert] = "Project successfully deleted. Sorry to see you go!"
 			return redirect_to root_path
 		end
 	end

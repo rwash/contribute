@@ -62,4 +62,7 @@ class Contribution < ActiveRecord::Base
     end
   end
 
+	def destroy
+		self.cancel	
+	end
 end
