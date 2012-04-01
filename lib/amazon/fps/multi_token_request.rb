@@ -1,4 +1,5 @@
 require 'amazon/fps/base_cbui_request'
+require 'amazon/fps/amazon_logger'
 
 module Amazon
 module FPS
@@ -15,6 +16,8 @@ class MultiTokenRequest < BaseCbuiRequest
 			@params["pipelineName"] = "MultiUse"
 			@params["returnUrl"] = return_url
 			@params["paymentReason"] = payment_reason unless payment_reason.nil?
+
+			AmazonLogger::log_multi_token_request(@params)
 	end
 end
 
