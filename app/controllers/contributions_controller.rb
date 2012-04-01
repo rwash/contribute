@@ -1,4 +1,5 @@
 require 'amazon/fps/multi_token_request'
+require 'amazon/fps/amazon_logger'
 
 ERROR_STRING = "An error occurred with your contribution. Please try again."
 
@@ -37,6 +38,8 @@ class ContributionsController < ApplicationController
 
 	#Return URL from payment gateway
 	def save
+		Amazon::FPS::AmazonLogger::log_multi_token_response(params)
+
 		if session[:contribution].nil? or params[:tokenID].nil?
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
