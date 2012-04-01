@@ -12,6 +12,11 @@ class AmazonLogger
 		save_record(log, params)
 	end
 
+	def self.log_recipient_token_response(params)
+		log = Logging::LogRecipientTokenResponse.new
+		save_record(log, params)
+	end
+
 protected
 	#dynamically assign param values to record in arguments
 	def self.save_record(record, params)
