@@ -1,4 +1,5 @@
 require 'amazon/fps/base_fps_request'
+require 'amazon/fps/amazon_logger'
 
 module Amazon
 module FPS
@@ -12,6 +13,10 @@ class PayRequest < BaseFpsRequest
 		@params["SenderTokenId"] = multi_use_token
 		@params["TransactionAmount.Value"] = amount
 		@params["TransactionAmount.CurrencyCode"] = "USD"
+	end
+
+	def log_request(params)
+		#AmazonLogger::log_pay_request(params)
 	end
 end
 

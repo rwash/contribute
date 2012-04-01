@@ -44,8 +44,11 @@ class BaseFpsRequest
                                             :uri  => uri.path })
     @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
 
-		puts 'fps request parameters', @params
-		return self.class.get(@service_end_point, :query => @params)
+		request = log_request(@params)
+		response = self.class.get(@service_end_point, :query => @params)
+		#log_response(response)
+
+		return response
 	end
 end
 
