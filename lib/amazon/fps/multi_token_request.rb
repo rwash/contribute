@@ -5,7 +5,7 @@ module Amazon
 module FPS
 
 class MultiTokenRequest < BaseCbuiRequest
-	def initialize(return_url, recipient_token, amount, payment_reason)
+	def initialize(session, return_url, recipient_token, amount, payment_reason)
 			super()
 
 			#Add in specific request parameters
@@ -17,7 +17,7 @@ class MultiTokenRequest < BaseCbuiRequest
 			@params["returnUrl"] = return_url
 			@params["paymentReason"] = payment_reason unless payment_reason.nil?
 
-			AmazonLogger::log_multi_token_request(@params)
+			AmazonLogger::log_multi_token_request(@params, session)
 	end
 end
 

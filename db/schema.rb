@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120401203306) do
+ActiveRecord::Schema.define(:version => 20120401214937) do
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
@@ -44,12 +44,12 @@ ActiveRecord::Schema.define(:version => 20120401203306) do
   create_table "log_multi_token_responses", :force => true do |t|
     t.string   "tokenID"
     t.string   "status"
-    t.string   "callerReference"
     t.string   "errorMessage"
     t.string   "warningCode"
     t.string   "warningMessage"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "log_multi_token_request_id"
   end
 
   create_table "log_recipient_token_responses", :force => true do |t|
