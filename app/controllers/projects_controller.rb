@@ -1,4 +1,5 @@
 require 'amazon/fps/recipient_request'
+require 'amazon/fps/amazon_logger'
 
 class ProjectsController < InheritedResources::Base
 	actions :all, :except => [ :create, :edit, :update, :destroy ]
@@ -32,6 +33,8 @@ class ProjectsController < InheritedResources::Base
 	end
 
 	def save
+		Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
+
 		if session[:project].nil? or params[:tokenID].nil?
 			flash[:alert] = "An error occurred with your project. Please try again."	
 			return redirect_to root_path
