@@ -51,7 +51,7 @@ class Contribution < ActiveRecord::Base
 
     response =  request.send()
 
-    result = response['PayResponse']['PayResult']
+    result = response['PayResult']
     transaction_id = result['TransactionId']
     transaction_status = result['TransactionStatus']
 

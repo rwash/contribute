@@ -95,7 +95,7 @@ class ContributionsController < ApplicationController
 	
 		session[:contribution] = @contribution
 		session[:editing_contribution_id] = @editing_contribution.id
-		request = Amazon::FPS::MultiTokenRequest.new(update_save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
+		request = Amazon::FPS::MultiTokenRequest.new(session, update_save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 	
 		return redirect_to request.url
 	end

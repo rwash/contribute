@@ -3,6 +3,9 @@ module FPS
 
 LOG_REQUEST_ID = 'log_request_id'
 
+VALID_REQUEST_ID = 'RequestId'
+INVALID_REQUEST_ID = 'RequestID'
+
 class AmazonLogger
 	def self.log_multi_token_request(params, session)
 		log = Logging::LogMultiTokenRequest.new
@@ -34,17 +37,11 @@ class AmazonLogger
 		if response['Errors'].nil?
 			log = Logging::LogPayResponse.new
 			log.log_pay_request_id = request.id
-			log.RequestId = response['ResponseMetadata']['RequestId'] unless response['ResponseMetadata'].nil?
+			log.RequestId = response['ResponseMetadata'][VALID_REQUEST_ID] unless response['ResponseMetadata'].nil?
 
 			save_record(log, response['PayResult']) unless response['PayResult'].nil?
 		else
-			response['Errors'].each_pair do |k, error_hash|
-				log = Logging::LogError.new
-				log.log_request_id = request.id
-				log.RequestId = response['RequestID']
-
-				save_record(log, error_hash)
-			end
+			save_errors(response['Errors'], response, request)
 		end
 	end
 
@@ -55,11 +52,16 @@ class AmazonLogger
 		return log
 	end
 
-	def self.log_cancel_response(params, request)
-		log = Logging::LogCancelResponse.new
-		log.log_cancel_request_id = request.id
+	def self.log_cancel_response(response, request)
+		if response['Errors'].nil?
+			log = Logging::LogCancelResponse.new
+			log.log_cancel_request_id = request.id
+			log.RequestId = response['ResponseMetadata'][VALID_REQUEST_ID] unless response['ResponseMetadata'].nil?
 
-		save_record(log, params)
+			log.save
+		else
+			save_errors(response['Errors'], response, request)
+		end
 	end
 
 protected
@@ -75,6 +77,16 @@ protected
 
 		#update_attributes will save to the db, if the record is not already
 		record.update_attributes(stripped_params)
+	end
+
+	def self.save_errors(errors_hash, response, request)
+		errors_hash.each_pair do |k, error_hash|
+			log = Logging::LogError.new
+			log.log_request_id = request.id
+			log.RequestId = response[INVALID_REQUEST_ID]
+
+			save_record(log, error_hash)
+		end
 	end
 end
 

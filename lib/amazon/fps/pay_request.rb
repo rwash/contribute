@@ -22,6 +22,14 @@ class PayRequest < BaseFpsRequest
 	def log_response(response, request)
 		AmazonLogger::log_pay_response(response, request)
 	end
+
+	def strip_response(response)
+		if !response['PayResponse'].nil? #When we convert from xml, the actual response parameters are within the keys 'Response' or 'PayResponse'
+			response = response['PayResponse']
+		else
+			response = response['Response']
+		end
+	end
 end
 
 end
