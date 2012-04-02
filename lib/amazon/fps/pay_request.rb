@@ -16,7 +16,11 @@ class PayRequest < BaseFpsRequest
 	end
 
 	def log_request(params)
-		#AmazonLogger::log_pay_request(params)
+		AmazonLogger::log_pay_request(params)
+	end
+
+	def log_response(response, request)
+		AmazonLogger::log_pay_response(response, request)
 	end
 end
 

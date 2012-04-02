@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120401214937) do
+ActiveRecord::Schema.define(:version => 20120402003047) do
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
@@ -32,6 +32,15 @@ ActiveRecord::Schema.define(:version => 20120401214937) do
     t.integer  "waiting_cancellation"
   end
 
+  create_table "log_errors", :force => true do |t|
+    t.integer  "log_request_id"
+    t.string   "Code"
+    t.string   "Message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "RequestId"
+  end
+
   create_table "log_multi_token_requests", :force => true do |t|
     t.string   "callerReference"
     t.string   "recipientTokenList"
@@ -50,6 +59,23 @@ ActiveRecord::Schema.define(:version => 20120401214937) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "log_multi_token_request_id"
+  end
+
+  create_table "log_pay_requests", :force => true do |t|
+    t.string   "CallerReference"
+    t.string   "RecipientTokenId"
+    t.string   "SenderTokenId"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "log_pay_responses", :force => true do |t|
+    t.string   "TransactionId"
+    t.string   "TransactionStatus"
+    t.string   "RequestId"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "log_pay_request_id"
   end
 
   create_table "log_recipient_token_responses", :force => true do |t|

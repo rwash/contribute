@@ -30,11 +30,22 @@ class AmazonLogger
 		return log
 	end
 	
-	def self.log_pay_response(params, request)
-		log = Logging::LogPayResponse.new
-		log.log_pay_request_id = request.id
+	def self.log_pay_response(response, request)
+		if response['Errors'].nil?
+			log = Logging::LogPayResponse.new
+			log.log_pay_request_id = request.id
+			log.RequestId = response['ResponseMetadata']['RequestId'] unless response['ResponseMetadata'].nil?
 
-		save_record(log, params)
+			save_record(log, response['PayResult']) unless response['PayResult'].nil?
+		else
+			response['Errors'].each_pair do |k, error_hash|
+				log = Logging::LogError.new
+				log.log_request_id = request.id
+				log.RequestId = response['RequestID']
+
+				save_record(log, error_hash)
+			end
+		end
 	end
 
 	def self.log_cancel_request(params)
