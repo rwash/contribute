@@ -47,11 +47,7 @@ class BaseFpsRequest
 
 		request = log_request(@params)
 		response = self.class.get(@service_end_point, :query => @params)
-		if !response['PayResponse'].nil? #When we convert from xml, the actual response parameters are within the keys 'Response' or 'PayResponse'
-			response = response['PayResponse']
-		else
-			response = response['Response']
-		end
+		response = strip_response(response)
 
 		log_response(response, request)
 		return response

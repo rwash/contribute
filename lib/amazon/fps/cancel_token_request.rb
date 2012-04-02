@@ -13,6 +13,23 @@ class CancelTokenRequest < BaseFpsRequest
 		#Don't need this for this request
 		@params.delete("CallerReference")
 	end
+
+	def log_request(params)
+		AmazonLogger::log_cancel_request(params)
+	end
+
+	def log_response(response, request)
+		AmazonLogger::log_cancel_response(response, request)
+	end
+
+	def strip_response(response)
+		if !response['CancelTokenResponse'].nil?
+			return response['CancelTokenResponse']
+		else
+			return response['Response']
+		end
+	end
+
 end
 
 end

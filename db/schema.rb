@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402003047) do
+ActiveRecord::Schema.define(:version => 20120402020658) do
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
@@ -30,6 +30,19 @@ ActiveRecord::Schema.define(:version => 20120402003047) do
     t.datetime "updated_at"
     t.binary   "cancelled"
     t.integer  "waiting_cancellation"
+  end
+
+  create_table "log_cancel_requests", :force => true do |t|
+    t.string   "TokenId"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "log_cancel_responses", :force => true do |t|
+    t.integer  "log_cancel_request_id"
+    t.string   "RequestId"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "log_errors", :force => true do |t|
