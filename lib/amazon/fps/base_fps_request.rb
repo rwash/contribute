@@ -6,6 +6,7 @@ module FPS
 
 class BaseFpsRequest
 	include HTTParty
+	format :xml
 	debug_output $stdout
 
 	def initialize
@@ -46,8 +47,13 @@ class BaseFpsRequest
 
 		request = log_request(@params)
 		response = self.class.get(@service_end_point, :query => @params)
-		#log_response(response)
+		if !response['PayResponse'].nil? #When we convert from xml, the actual response parameters are within the keys 'Response' or 'PayResponse'
+			response = response['PayResponse']
+		else
+			response = response['Response']
+		end
 
+		log_response(response, request)
 		return response
 	end
 end
