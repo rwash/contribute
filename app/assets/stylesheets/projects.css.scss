@@ -96,6 +96,19 @@
 		padding-right: 10px;
 	}
 	position: relative;
+	.ellipsisName  {
+		text-overflow:ellipsis;
+		white-space:nowrap; 
+		width:12em; 
+		overflow:hidden; 
+	}
+	.ellipsisDesc{
+		text-overflow:ellipsis;
+                /*white-space:nowrap;*/
+                width:12em;
+                overflow:hidden;
+		height: 400px;
+	}
 }
 
 .project_footer{
@@ -164,6 +177,8 @@
 	padding: {
 		top: 20px;
 		bottom: 20px;
+		left: 50px;
+		right: 50px;
 	}
 }
 

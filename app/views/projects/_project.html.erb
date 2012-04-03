@@ -3,8 +3,8 @@
 	<div class="floatRight">
 		<div class="contributionBar"><%= project.contributions_percentage %></div>
 	</div>
-
-	<%= link_to project.name, project %><br>
+	
+	<p class="ellipsisName"><%= link_to project.name, project %></p>
 
 	<div align="center">
 		<% if project.picture? %>
@@ -15,7 +15,9 @@
 	</div>
 
 	<p>By: <%= project.user.name %></p>
-	<%= project.short_description %><br>
+	<div class="ellipsisDesc">
+	<p><%= project.short_description %></p>
+	</div>
 
 	<div class="project_footer">
 <hr />
