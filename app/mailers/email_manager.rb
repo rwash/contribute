@@ -1,5 +1,5 @@
 class EmailManager < ActionMailer::Base
-  default :from => "Contribute <gethelp@contribute.cas.msu.edu>" 
+  default :from => Rails.application.config.from_address
 
 	def add_project(user, project)
 		@user = user
