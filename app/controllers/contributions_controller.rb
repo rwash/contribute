@@ -1,5 +1,6 @@
 require 'amazon/fps/multi_token_request'
 require 'amazon/fps/amazon_logger'
+require 'amazon/fps/amazon_validator'
 
 ERROR_STRING = "An error occurred with your contribution. Please try again."
 
@@ -40,12 +41,7 @@ class ContributionsController < ApplicationController
 	def save
 		Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
 
-		if session[:contribution].nil? or params[:tokenID].nil?
-			flash[:alert] = ERROR_STRING
-			return redirect_to root_path
-		end
-
-		if !Amazon::FPS::AmazonHelper::valid_response?(params, save_contribution_url)
+		if Amazon::FPS::AmazonValidator::invalid_multi_token_response?(save_contribution_url, session, params)
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
@@ -101,15 +97,10 @@ class ContributionsController < ApplicationController
 	end
 
 	def update_save
-		if session[:contribution].nil? or params[:tokenID].nil? or session[:editing_contribution_id].nil?
+		if Amazon::FPS::AmazonValidator::invalid_multi_token_response?(update_save_contribution_url, session, params) or session[:editing_contribution_id].nil?
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
-
-    if !Amazon::FPS::AmazonHelper::valid_response?(params, update_save_contribution_url)
-			flash[:alert] = ERROR_STRING
-      return redirect_to root_path
-    end
 
 		@contribution = session[:contribution]
 		session[:contribution] = nil
@@ -117,17 +108,13 @@ class ContributionsController < ApplicationController
 		session[:editing_contribution_id] = nil
 		@contribution.payment_key = params[:tokenID]
 
-		if !@contribution.valid?
-			flash[:alert] = ERROR_STRING
-			return redirect_to root_path
-		end
-
 		if !@contribution.save
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
 
 		if !@editing_contribution.cancel
+			@contribution.destroy
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		else
