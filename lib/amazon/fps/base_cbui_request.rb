@@ -1,6 +1,5 @@
 require 'uri'
 require 'amazon/fps/signatureutils'
-require 'amazon/fps/amazon_helper'
 
 module Amazon
 module FPS
@@ -37,8 +36,28 @@ class BaseCbuiRequest
 																							:uri  => uri.path })
 			@params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
 
-			return AmazonHelper::get_url(@service_end_point, @params)
+			return get_url(@service_end_point, @params)
 	end
+
+	def get_url(service_end_point, params)
+		url = service_end_point + "?"
+
+		isFirst = true
+		params.each { |k,v|
+			if(isFirst) then
+				isFirst = false
+			else
+				url << '&'
+			end
+
+			url << Amazon::FPS::SignatureUtils.urlencode(k)
+			unless(v.nil?) then
+				url << '='
+				url << Amazon::FPS::SignatureUtils.urlencode(v)
+			end
+			}
+		return url
+  end 
 end
 
 end
