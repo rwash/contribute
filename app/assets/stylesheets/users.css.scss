@@ -20,15 +20,27 @@
 }
 
 #edit_user{
-	width: 400px;
+	width: 900px;
 }
 
-#edit_user h2 {
+#edit_user h1 {
 	margin-left: -20px;
+	padding-bottom: 30px;
 }
 
 .form_field {
 	margin-bottom: 20px;
+}
+
+.current_password {
+	position: absolute;
+	margin: {
+		top: 40px;
+		left: 480px;
+	}
+	line-height: 10px;
+	width: 400px;
+	p {font-size: 20px;}
 }
 
 
@@ -37,7 +49,7 @@
 #userProfile {
 	margin-left: auto;
 	margin-right: auto;
-	/*width: 960px;*/
+	width: 960px;
 	position: relative;
 	h1{
 		position: absolute;
