@@ -51,21 +51,7 @@ class Contribution < ActiveRecord::Base
     request = Amazon::FPS::PayRequest.new(self.payment_key, self.project.payment_account_id, self.amount)
 
     response =  request.send()
-		if Amazon::FPS::AmazonValidator::invalid_payment_response?(response)
-			return false
-		end
-
-		result = response['PayResult']
-    transaction_id = result['TransactionId']
-    transaction_status = result['TransactionStatus']
-
-		#TODO: Need to deal with pending case for sure
-    if transaction_status == "Success"
-      self.complete = true
-      self.save
-    end
-
-		return true
+		return !Amazon::FPS::AmazonValidator::invalid_payment_response?(response)
   end
 
 	def destroy
