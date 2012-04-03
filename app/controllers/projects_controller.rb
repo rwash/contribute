@@ -1,5 +1,6 @@
 require 'amazon/fps/recipient_request'
 require 'amazon/fps/amazon_logger'
+require 'amazon/fps/amazon_validator'
 
 class ProjectsController < InheritedResources::Base
 	actions :all, :except => [ :create, :edit, :update, :destroy ]
@@ -35,15 +36,10 @@ class ProjectsController < InheritedResources::Base
 	def save
 		Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
 
-		if session[:project].nil? or params[:tokenID].nil?
+		if Amazon::FPS::AmazonValidator::invalid_recipient_response?(save_project_url, session, params)
 			flash[:alert] = "An error occurred with your project. Please try again."	
 			return redirect_to root_path
 		end
-
-    if !Amazon::FPS::AmazonHelper::valid_response?(params, save_project_url)
-			flash[:alert] = "An error occurred with your project. Please try again."	
-      return redirect_to root_path
-    end
 
 		@project = session[:project]
 		session[:project] = nil

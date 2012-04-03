@@ -1,5 +1,6 @@
 require 'amazon/fps/pay_request'
 require 'amazon/fps/cancel_token_request'
+require 'amazon/fps/amazon_validator'
 
 MIN_CONTRIBUTION_AMT = 1
 UNDEFINED_PAYMENT_KEY = 'TEMP'
@@ -33,7 +34,7 @@ class Contribution < ActiveRecord::Base
     response = request.send
 
     #If it was successful, we'll mark the record as cancelled
-    if response["Errors"].nil? #TODO: Is this a good enough error check?
+    if !Amazon::FPS::AmazonValidator::invalid_cancel_response?(response)
 			self.waiting_cancellation = 0
       self.cancelled = 1
     #otherwise we'll mark it as pending and try again later
@@ -50,8 +51,11 @@ class Contribution < ActiveRecord::Base
     request = Amazon::FPS::PayRequest.new(self.payment_key, self.project.payment_account_id, self.amount)
 
     response =  request.send()
+		if Amazon::FPS::AmazonValidator::invalid_payment_response?(response)
+			return false
+		end
 
-    result = response['PayResult']
+		result = response['PayResult']
     transaction_id = result['TransactionId']
     transaction_status = result['TransactionStatus']
 
@@ -60,6 +64,8 @@ class Contribution < ActiveRecord::Base
       self.complete = true
       self.save
     end
+
+		return true
   end
 
 	def destroy
