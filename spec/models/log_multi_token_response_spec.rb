@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe LogMultiTokenResponse do
+describe Logging::LogMultiTokenResponse do
   pending "add some examples to (or delete) #{__FILE__}"
 end
