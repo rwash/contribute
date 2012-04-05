@@ -34,6 +34,12 @@ Category.create(short_description: 'Movie',
 	created_at: '1/25/2012',
 	updated_at: '1/26/2012')
 
+ContributionStatus.delete_all
 
-
-
+ContributionStatus.create(name: 'None')
+ContributionStatus.create(name: 'Success')
+ContributionStatus.create(name: 'Pending')
+ContributionStatus.create(name: 'Failed')
+ContributionStatus.create(name: 'Cancelled')
+ContributionStatus.create(name: 'Retry_Pay')
+ContributionStatus.create(name: 'Retry_Cancel')
