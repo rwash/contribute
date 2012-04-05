@@ -1,24 +1,37 @@
-#TODO: This needs to log somewehere
+require 'logger'
+
+logger = Logger.new('log/cron_log.log')
 
 namespace :contribute do
 	task :completed_projects => :environment do
-		projects_to_process = Project.where("end_date = :today AND active = 1", { :today => Date.today})
+		projects_to_process = Project.where("end_date = :yesterday AND active = 1", { :yesterday => Date.yesterday})
+		logger.info "#{Date.today}: Found #{projects_to_process.size} projects to process"
 
 		projects_to_process.each do |project|
 			if(project.contributions_total < project.funding_goal)
+				logger.info "Project with id #{project.id} was not funded"
+				EmailManager.project_not_funded_to_owner(project).deliver
+
 				project.contributions.each do |contribution|
+					logger.info "Contribution with id #{contribution.id} is being cancelled"
+					EmailManager.project_not_funded_to_contributor(contribution).deliver
 					contribution.cancel		
-					#send e-mail
 				end
 			else
+				logger.info "Project with id #{project.id} was funded"
+				EmailManager.project_funded_to_owner(project).deliver
+
 				project.contributions.each do |contribution|
+					logger.info "Contribution with id #{contribution.id} is being executed"
 					contribution.execute_payment		
-					#send e-mail
+					EmailManager.project_funded_to_contributor(contribution).deliver
 				end
 			end
 
 			project.active = 0
 			project.save(:validate => false)
 		end
+
+		logger.info "#{Date.today}: All projects have been processed\n"
 	end
 end

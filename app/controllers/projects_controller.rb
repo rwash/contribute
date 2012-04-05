@@ -68,6 +68,6 @@ class ProjectsController < InheritedResources::Base
 
 protected	
 	def successful_save
-		EmailManager.add_project(current_user, @project).deliver
+		EmailManager.add_project(@project).deliver
 	end
 end
