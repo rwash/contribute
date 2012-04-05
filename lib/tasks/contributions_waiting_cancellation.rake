@@ -8,7 +8,7 @@ namespace :contribute do
 
 		contributions_to_process.each do |contribution|
 			contribution.cancel
-			if contribution.waiting_cancellation > 3
+			if contribution.retry_count > 3
 				contributions_still_failing.push contribution	
 			end
 		end
