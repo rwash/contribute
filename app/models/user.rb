@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :location, :picture, :picture_cache
 
 	has_many :projects, :dependent => :destroy
-	has_many :contributions, :conditions => {:cancelled => 0, :waiting_cancellation => 0}
+  has_many :contributions, :conditions => ["contribution_status_id not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus.Retry_Cancel, :fail => ContributionStatus.Failed, :cancelled => ContributionStatus.Cancelled}]
+
 
 	validates :name, :presence => true
 
