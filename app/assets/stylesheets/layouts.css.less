@@ -1,0 +1,445 @@
+@import "twitter/bootstrap/bootstrap";
+
+@import "twitter/bootstrap/responsive";
+
+// Set the correct sprite paths
+@iconSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings.png');
+@iconWhiteSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings-white.png');
+
+// Your custom LESS stylesheets goes here
+//
+// Since bootstrap was imported above you have access to its mixins which
+// you may use and inherit here
+//
+// If you'd like to override bootstrap's own variables, you can do so here as well
+// See http://twitter.github.com/bootstrap/less.html for their names and documentation
+
+
+
+
+body {
+        background: #AC8;
+}
+
+h1, h2, h3, p, a, li {
+        /*font-family: Arial, Helvetica, sans-serif;*/
+        /*font-family:  Georgia, "Times New Roman", Times, serif;*/
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+a {
+        color: #000;
+        text-decoration: underline;
+}
+
+a:hover {
+        text-decoration: none;
+}
+
+
+/***** Layout *******/
+
+
+#header {
+        background: -webkit-gradient(linear, left top, left bottom, from(#AFD4DA), to(#91c3cc));
+        background: -moz-linear-gradient(bottom, #91c3cc, #AFD4DA);
+        box-shadow: 0px 5px 10px #000;
+        -moz-box-shadow: 0px 5px 10px #000;
+        margin-top: -8px;
+        margin-left: -8px;
+        margin-right: -8px;
+}
+
+.logo {
+        width: 200px;
+        margin-left: 100px;
+        border: none;
+}
+
+#navigationOptions {
+        position: absolute;
+        top: 20px;
+        right: 40px;
+        margin-left: auto;
+}
+
+#flash {
+        position: absolute;
+}
+
+/****** footer *******/
+#footerWrapper {
+        width: 1200px;
+        margin: auto;
+}
+#aboutContribute {
+        background: #FFFFF0;
+        width: 1200px;
+        border:  solid, 1px, #000;
+        margin-top: 100px;
+        margin-left: auto;
+        margin-right: auto;
+        h3, p{
+                padding-left: 200px;
+                padding-right: 200px;
+        }
+}
+
+#footer {
+        background: #FFFFF0;
+        width: 800px;
+        left: 200px;
+        border:  solid, 1px, #000;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: -3px;
+        padding-left: 20px;
+}
+
+#copyright {
+        background: inherit;
+        text-align: center;
+        font-size: 12px;
+        /*padding: 5px;
+        margin-top: -3px;*/
+        position: relative;
+}
+
+
+/********************************* Projects **************************************/
+
+/**** Index *****/
+
+#alignBox {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+        width: 1065px;
+        height: 200px;
+        a {text-decoration:none;}
+}
+
+#createFundBox {
+        display: inline-table;
+        margin-bottom: 0px;
+        background: #FFFFF0;
+        width: 500px;
+        height: 190px;
+        padding-left: 20px;
+        border: outset, 5px, #666;
+        h1 {
+                text-align: center;
+                line-height: 25px;
+        }
+        a {text-decoration: none;}
+        a:hover {text-decoration: underline;}
+        p {
+                margin-right: 40px;
+                font-size: 14px;
+        }
+        ul{display: inline;}
+        li {list-style: none;}
+}
+
+
+
+/**** Project Partial *****/
+
+.column1, .column2, .column3 {
+        height: 420px;
+        width: 990px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+}
+
+#projectPreview {
+        margin-left: 30px;
+        margin-right: 30px;
+        float: left;
+        background: -moz-linear-gradient(top, #CCCCCC, #AAAAAA);
+        background: -webkit-gradient(linear, left top, left bottom, from(#DDDDDD), to(#999999));
+        background-repeat: no-repeat;
+        background-position: bottom;
+        padding: 10px;
+        border-width: 0px;
+        border-style: solid;
+        border-color: #999;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        box-shadow: 10px 10px 5px #000;
+        -moz-box-shadow: 10px 10px 5px #000;
+        width: 250px;
+        height: 400px;
+        a {
+                color: #000;
+                font-size: 24px;
+                text-decoration: none;
+        }
+        a:hover {
+                text-decoration: underline;
+        }
+        ul {list-style: none;}
+        li {
+                display: inline;
+                font-size: 13px;
+		padding-right: 10px;
+        }
+        position: relative;
+        .ellipsisName  {
+                text-overflow:ellipsis;
+                white-space:nowrap;
+                width:12em;
+                overflow:hidden;
+        }
+        .ellipsisDesc{
+                text-overflow:ellipsis;
+                /*white-space:nowrap;*/
+                width:12em;
+                overflow:hidden;
+                height: 400px;
+        }
+}
+
+.project_footer{
+        width: 233px;
+        line-height: 8px;
+        position: absolute;
+        left: 0px;
+        bottom: -4px;
+}
+
+.projectPreviewImage {
+        padding-top: 10px;
+        padding-bottom: 10px;
+}
+
+.contributionBar {
+        width: 25px;
+        height: 400px;
+        display:table-cell;
+        vertical-align:bottom;
+}
+
+.floatRight {
+        float: right;
+}
+
+
+
+/******* Project Show *******/
+#projectWrapper{
+        width: 780px;
+        margin: auto;
+        margin-top: 100px;
+        padding: 10px;
+}
+
+#projectHead {
+        li {
+                display: inline;
+                padding-left: 70px;
+        }
+
+        ul {
+                list-style: none;
+        }
+}
+
+#projectInfo{
+        position: absolute;
+        margin: auto;
+        top: 200px;
+        left: -15px;
+        padding: 10px;
+        li {
+                list-style: none;
+                line-height: 50px;
+        }
+}
+
+#projectContent {
+        border-left-style: solid;
+        border-left-width: 1px;
+        border-left-color: #000;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 50px;                                                    
+        padding-right: 50px;
+}
+
+.projectContributors {
+        li {
+                list-style: none;
+        }
+        a {
+                text-decoration: none;
+        }
+        a:hover {
+                text-decoration: underline;
+        }
+}
+
+.projectImage {
+        padding-top: 20px;
+        padding-bottom: 20px;
+}
+
+
+#editLink {
+        position: absolute;
+        top: 120px;
+        right: 130px;
+        width: 120px;
+        height: 20px;
+}
+
+
+
+/******* New/Edit Project ******/
+
+#newEditProject {
+        background: #DADAB5;
+        margin-left: auto;
+        margin-right: auto;
+        width: 720px;
+        margin-top: 50px;
+        padding-top: 15px;
+        padding-bottom: 35px;
+        padding-left: 100px;
+        box-shadow: 0px px 10px black;
+        -moz-box-shadow: 0px 0px 10px #000;
+        -webkit-box-shadow: 0px 0px 10px #000;
+        p {
+                padding-right: 100px;
+        }
+}
+
+#form{
+        margin-left: 30px;
+}
+
+#returnLink {
+        position: relative;
+}
+
+
+
+
+
+/************************************** Users ************************************/
+
+/******* New User ********/
+
+#new_user, #sign_in, #edit_user {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+        width: 230px;
+}
+
+#new_user p {
+        font-size: 13px;
+}
+
+.new_form {
+        padding-bottom: 10px;
+}
+
+#edit_user{
+        width: 900px;
+}
+
+#edit_user h1 {
+        margin-left: -20px;
+        padding-bottom: 30px;
+}
+
+.form_field {
+        margin-bottom: 20px;
+}
+
+.current_password {
+        position: absolute;
+        margin-top: 40px;
+        margin-left: 480px;
+        line-height: 10px;
+        width: 400px;
+        p {font-size: 20px;}
+}
+
+/******* User Profile *******/
+
+#userProfile {
+        margin-left: auto;
+        margin-right: auto;
+        width: 960px;
+        position: relative;
+        h1{
+                position: absolute;
+                top: 25px;
+                left: 250px;
+        }
+        h2 {
+                position: absolute;
+                top: 65px;
+                left: 250px;
+        }
+}
+
+.userProjects, .userContributions {
+        li {
+                list-style: none;
+        }
+        a {
+                text-decoration: none;
+        }
+        a:hover {
+                text-decoration: underline;
+        }
+}
+
+.userImage {
+        margin-top: 50px;
+}
+
+
+
+
+/*******Forgot/edit password******/
+
+#forgotPassword {
+        margin-top: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 250px;
+}
+
+#editPassword {
+        margin-top: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 250px;
+}
+
+
+/******Resend Email confirmation ******/
+#resendEmail {
+        margin-top: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 250px;
+}
+
+
+
+
+/************************************* Contributions *****************************************/
+
+#contribution {
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+
+}
+
