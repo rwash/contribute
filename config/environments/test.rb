@@ -41,10 +41,13 @@ Contribute::Application.configure do
   config.active_support.deprecation = :stderr
 
 	# Amazon Payments Configuration
-  Contribute::Application.config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
-  Contribute::Application.config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
+  config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
+  config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
 
-  Contribute::Application.config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
-  Contribute::Application.config.aws_secret_key = "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"
+  config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
+  config.aws_secret_key = "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"
 
+  #Email Configuration
+  config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
+  config.admin_address = "testenv@bitlab.cas.msu.edu"
 end

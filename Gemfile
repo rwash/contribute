@@ -72,3 +72,7 @@ gem "mongrel"
 
 # Task scheduler 
 gem 'whenever'
+
+#Bootstrap
+	gem "twitter-bootstrap-rails"
+

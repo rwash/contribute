@@ -33,6 +33,7 @@ class AmazonValidator
 		if !response["Errors"].nil?
 			return true
 		else
+			#TODO: There needs to be a case here for pending responses since they are still valid
 			return response["PayResult"]["TransactionStatus"] != "Success" unless response["PayResult"].nil?
 		end
 

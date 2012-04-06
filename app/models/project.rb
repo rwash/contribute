@@ -8,7 +8,7 @@ UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
 
 class Project < ActiveRecord::Base
 	belongs_to :user
-	has_many :contributions, :conditions => {:cancelled => 0, :waiting_cancellation => 0}
+  has_many :contributions, :conditions => ["contribution_status_id not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus.Retry_Cancel, :fail => ContributionStatus.Failed, :cancelled => ContributionStatus.Cancelled}]
 
 	has_one :category
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name

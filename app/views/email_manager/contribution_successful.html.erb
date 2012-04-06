@@ -1,0 +1,7 @@
+<p>Hey <%= @user.name %>,<p>
+
+<p>Your contribution of <%= number_to_currency(@contribution.amount, :precision => 0) %> to <%= @project.name %> has been successfully processed. You should be getting a confirmation e-mail from Amazon very soon.</p>
+
+<p>Thanks for your support!</p>
+
+<%= render :partial => "signature" %>

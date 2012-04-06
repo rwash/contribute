@@ -8,6 +8,7 @@ UNDEFINED_PAYMENT_KEY = 'TEMP'
 class Contribution < ActiveRecord::Base
 	belongs_to :project
 	belongs_to :user
+	belongs_to :contribution_status
 
 	validates :payment_key, :presence => true
 	validates_numericality_of :amount, :greater_than_or_equal_to => MIN_CONTRIBUTION_AMT, :message => "must be at least $1"
@@ -19,9 +20,8 @@ class Contribution < ActiveRecord::Base
 
 	def initialize(attributes = nil, options = {})
 		super
-		self.complete = false	
-		self.cancelled = false
-		self.waiting_cancellation = false
+		self.contribution_status = ContributionStatus.None
+		self.retry_count = 0
 	end
 
   def amount=(val)
@@ -35,12 +35,12 @@ class Contribution < ActiveRecord::Base
 
     #If it was successful, we'll mark the record as cancelled
     if !Amazon::FPS::AmazonValidator::invalid_cancel_response?(response)
-			self.waiting_cancellation = 0
-      self.cancelled = 1
-    #otherwise we'll mark it as pending and try again later
+      self.contribution_status = ContributionStatus.Cancelled
+			self.retry_count = 0
+			EmailManager.contribution_cancelled(self).deliver
     else
-      self.waiting_cancellation = self.waiting_cancellation + 1
-			#TODO: Tell the user? They should get an e-mail from Amazon when it actually does get cancelled
+			self.contribution_status = ContributionStatus.Retry_Cancel
+			self.retry_count = self.retry_count + 1
     end
 
     self.save
@@ -57,18 +57,25 @@ class Contribution < ActiveRecord::Base
 
 		result = response['PayResult']
     transaction_id = result['TransactionId']
-    transaction_status = result['TransactionStatus']
+    transaction.contribution_status = result['TransactionStatus']
 
-		#TODO: Need to deal with pending case for sure
-    if transaction_status == "Success"
-      self.complete = true
-      self.save
+    if transaction.contribution_status == "Success"
+      self.contribution_status = ContributionStatus.Success
+			self.retry_count = 0
+			EmailManager.contribution_successful(self).deliver
+		elsif transaction.contributions_status == "Pending"
+			self.contribution_status = ContributionStatus.Pending
+			self.retry_count = 0
+		else #TODO: elsif failure with retriable error code
+			self.contribution_status = ContributionStatus.Retry_Pay
+			self.retry_count = self.retry_count + 1
     end
 
-		return true
+    self.save
   end
 
 	def destroy
+		EmailManager.project_deleted_to_contributor(self).deliver
 		self.cancel	
 	end
 end

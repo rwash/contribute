@@ -278,3 +278,13 @@ AmazonError.create(error: 'UnverifiedEmailAddress_Sender',
 	retriable: 0,
 	email_user: 1,
 	email_admin: 0)
+
+ContributionStatus.delete_all
+
+ContributionStatus.create(name: 'None')
+ContributionStatus.create(name: 'Success')
+ContributionStatus.create(name: 'Pending')
+ContributionStatus.create(name: 'Failed')
+ContributionStatus.create(name: 'Cancelled')
+ContributionStatus.create(name: 'Retry_Pay')
+ContributionStatus.create(name: 'Retry_Cancel')

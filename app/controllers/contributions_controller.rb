@@ -114,7 +114,7 @@ class ContributionsController < ApplicationController
 		end
 
 		if !@editing_contribution.cancel
-			@contribution.destroy
+			@contribution.cancel
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		else
@@ -159,11 +159,11 @@ protected
 
 	def successful_save
 		if user_signed_in?
-			EmailManager.contribute_to_project(current_user, @contribution).deliver
+			EmailManager.contribute_to_project(@contribution).deliver
 		end
 	end
 
 	def successful_update
-		EmailManager.edit_contribution(current_user, @editing_contribution, @contribution).deliver
+		EmailManager.edit_contribution(@editing_contribution, @contribution).deliver
 	end
 end

@@ -28,8 +28,10 @@
 <% if flash[:alert] %>
   <div id="flash">
 	<p class="flash-error"><%= flash[:alert] %></p>
+  </div>
 <% end %>
 <% if flash[:notice] %>
+  <div id="flash" >
 	<p class="flash-notice"><%= flash[:notice] %></p>
   </div>
 <% end %>
