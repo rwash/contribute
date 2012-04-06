@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120405190115) do
+ActiveRecord::Schema.define(:version => 20120406162556) do
+
+  create_table "amazon_errors", :force => true do |t|
+    t.string   "description"
+    t.text     "message"
+    t.binary   "retriable"
+    t.binary   "email_user"
+    t.binary   "email_admin"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "error"
+  end
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
