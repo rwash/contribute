@@ -1,3 +1,5 @@
+<% cache({:action => 'index', :action_suffix => 'body'}, :expires_in => 1.minute) do %>
+
 <div id="alignBox">
 	<%= link_to new_project_url do %>
   <div id="createFundBox">
@@ -47,5 +49,4 @@
 </div>
 <% end %>
 
-
-
+<% end %>

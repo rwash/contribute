@@ -2,30 +2,30 @@ class ContributionStatus < ActiveRecord::Base
 	has_many :contributions
 
 	def self.None
-		ContributionStatus.find_by_name('None')
+		1
 	end
 
 	def self.Success
-		ContributionStatus.find_by_name('Success')
+		2
 	end
 
 	def self.Pending
-		ContributionStatus.find_by_name('Pending')
+		3
 	end
 
 	def self.Failed
-		ContributionStatus.find_by_name('Failed')
+		4
 	end
 
 	def self.Cancelled
-		ContributionStatus.find_by_name('Cancelled')
+		5
 	end
 
 	def self.Retry_Pay
-		ContributionStatus.find_by_name('Retry_Pay')
+		6
 	end
 
 	def self.Retry_Cancel
-		ContributionStatus.find_by_name('Retry_Cancel')
+		7
 	end
 end
