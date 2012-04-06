@@ -114,7 +114,7 @@ class ContributionsController < ApplicationController
 		end
 
 		if !@editing_contribution.cancel
-			@contribution.destroy
+			@contribution.cancel
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		else
