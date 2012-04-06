@@ -61,6 +61,8 @@ class ProjectsController < InheritedResources::Base
 			flash[:alert] = "Project could not be deleted. Please try again."
 			return redirect_to @project
 		else 
+			successful_destroy
+
 			flash[:alert] = "Project successfully deleted. Sorry to see you go!"
 			return redirect_to root_path
 		end
@@ -69,5 +71,9 @@ class ProjectsController < InheritedResources::Base
 protected	
 	def successful_save
 		EmailManager.add_project(@project).deliver
+	end
+
+	def successful_destroy
+		EmailManager.project_deleted_to_owner(@project).deliver	
 	end
 end

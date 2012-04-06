@@ -27,10 +27,26 @@ class EmailManager < ActionMailer::Base
 		mail(:to => @user.email, :subject => "Your edited contribution to #{@project.name}")
 	end
 
-	def failed_cancellations(contributions_waiting_cancellation)
-		@contributions = contributions_waiting_cancellation
+	def contribution_cancelled(contribution)
+		@contribution = contribution
+		@project = @contribution.project
+		@user = @contribution.user
 
-		mail(:to => @@admin_address, :subject => "Contributions waiting for cancellation for more than 3 days")
+		mail(:to => @user.email, :subject => "Your contribution to #{@project.name} was successfully cancelled")
+	end
+
+	def contribution_successful(contribution)
+		@contribution = contribution
+		@project = @contribution.project
+		@user = @contribution.user
+
+		mail(:to => @user.email, :subject => "Your contribution to #{@project.name} was successfully completed")
+	end
+
+	def failed_retries(contributions_still_failing)
+		@contributions = contributions_still_failing
+
+		mail(:to => @@admin_address, :subject => "#{Date.today}: Contributions failed more than 3 times")
 	end
 
 	def project_funded_to_owner(project)
@@ -52,7 +68,7 @@ class EmailManager < ActionMailer::Base
 		@project = @contribution.project
 		@user = @contribution.user
 
-		mail(:to => @user.email, :subject => "Project #{@project.name} was successfully funded!")
+		mail(:to => @user.email, :subject => "The project #{@project.name} was successfully funded!")
 	end
 
 	def project_not_funded_to_contributor(contribution)
@@ -60,6 +76,21 @@ class EmailManager < ActionMailer::Base
 		@project = @contribution.project
 		@user = @contribution.user
 
-		mail(:to => @user.email, :subject => "Project #{@project.name} was did not reach its funding goal")
+		mail(:to => @user.email, :subject => "The project #{@project.name} was did not reach its funding goal")
+	end
+
+	def project_deleted_to_owner(project)
+		@project = project
+		@user = @project.user
+
+		mail(:to => @user.email, :subject => "Your project #{@project.name} was successfully deleted")
+	end
+
+	def project_deleted_to_contributor(contribution)
+		@contribution = contribution
+		@project = @contribution.project
+		@user = @contribution.user
+
+		mail(:to => @user.email, :subject => "The project #{@project.name} has been deleted")
 	end
 end

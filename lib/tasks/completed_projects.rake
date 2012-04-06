@@ -4,8 +4,10 @@ logger = Logger.new('log/cron_log.log')
 
 namespace :contribute do
 	task :completed_projects => :environment do
+		logger.info "#{Date.today}: Starting completed_projects"
+
 		projects_to_process = Project.where("end_date = :yesterday AND active = 1", { :yesterday => Date.yesterday})
-		logger.info "#{Date.today}: Found #{projects_to_process.size} projects to process"
+		logger.info "Found #{projects_to_process.size} projects to process"
 
 		projects_to_process.each do |project|
 			if(project.contributions_total < project.funding_goal)
