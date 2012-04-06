@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402020658) do
+ActiveRecord::Schema.define(:version => 20120406162556) do
+
+  create_table "amazon_errors", :force => true do |t|
+    t.string   "description"
+    t.text     "message"
+    t.binary   "retriable"
+    t.binary   "email_user"
+    t.binary   "email_admin"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "error"
+  end
 
   create_table "categories", :force => true do |t|
     t.string   "short_description"
@@ -20,16 +31,19 @@ ActiveRecord::Schema.define(:version => 20120402020658) do
     t.datetime "updated_at"
   end
 
+  create_table "contribution_statuses", :force => true do |t|
+    t.string "name"
+  end
+
   create_table "contributions", :force => true do |t|
     t.string   "payment_key"
     t.integer  "amount"
     t.integer  "project_id"
     t.integer  "user_id"
-    t.binary   "complete"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.binary   "cancelled"
-    t.integer  "waiting_cancellation"
+    t.integer  "contribution_status_id"
+    t.integer  "retry_count"
   end
 
   create_table "log_cancel_requests", :force => true do |t|
@@ -117,19 +131,6 @@ ActiveRecord::Schema.define(:version => 20120402020658) do
     t.datetime "picture_updated_at"
     t.integer  "user_id"
     t.string   "payment_account_id"
-  end
-
-  create_table "transaction_requests", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "user_id"
-    t.string   "ip_address"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "card_type"
-    t.date     "card_expires_on"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.float    "contribution_amt"
   end
 
   create_table "users", :force => true do |t|
