@@ -28,16 +28,27 @@ class AmazonValidator
 		return !response["Errors"].nil?
 	end
 
-	#if there was errors in the response
-	def self.invalid_payment_response?(response)
-		if !response["Errors"].nil?
-			return true
+	#if the response contains errors or no transaction status
+	def self.get_transaction_status(response)
+		if !response['Errors'].nil? or response['PayResult'].nil? or response['PayResult']['TransactionStatus'].nil?
+			return ContributionStatus::FAILURE
 		else
-			#TODO: There needs to be a case here for pending responses since they are still valid
-			return response["PayResult"]["TransactionStatus"] != "Success" unless response["PayResult"].nil?
+			return response['PayResult']['TransactionStatus']
+		end
+	end
+
+	def self.get_error(response)
+		if response['Errors'].nil? or response['Errors']['Error'].nil? or response['Errors']['Error']['Code'].nil?
+			raise "Could not parse amazon error"
 		end
 
-		return true
+		error_code = response['Errors']['Error']['Code']
+		error = AmazonError.find_by_error(error_code)
+		if error.nil?
+			error = AmazonError.unknown_error(error_code)
+		end
+
+		return error
 	end
 
 protected
