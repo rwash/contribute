@@ -1,0 +1,9 @@
+users:
+  id: 1
+  email: mthelen2@gmail.com
+  encrypted_password: $2a$10$7/xIQjZR7lfXSKEwlvRwBOlJ6hMHJBYtrtKl8xuXGNxYXQeOpOPoi
+  name: Batman
+  confirmation_token: 5zsG3JzscUeSq
+  last_sign_in_at: 2012-04-03 02:42:23
+  last_sign_in_ip: 72.44.105.44
+  confirmation_sent_at: 2012-04-01 22:04:53	
