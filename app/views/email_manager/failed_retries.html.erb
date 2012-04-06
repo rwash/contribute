@@ -1,0 +1,20 @@
+<p>The following contributions have failed more than 3 times and should receive manual attention:</p>
+
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Payment Key</th>
+		<th>Retry Count</th>
+		<th>Status</th>
+	</tr>
+	<% @contributions.each do |contribution| %>
+	<tr>
+		<th><%= contribution.id %></th>
+		<th><%= contribution.payment_key %></th>
+		<th><%= contribution.retry_count %></th>	
+		<th><%= contribution.contribution_status.name %></th>
+	</tr>
+	<% end %>
+</table>
+
+<%= render :partial => "signature" %>

@@ -1,9 +1,21 @@
 <div id="edit_user">
 
-<h2>Edit <%= resource_name.to_s.humanize %> Profile</h2>
+<h1 align="center">Edit <%= resource_name.to_s.humanize %> Profile</h1>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :multipart => true, :method => :put }) do |f| %>
   <%= devise_error_messages! %>
+
+<div class="current_password", align="center">
+  <div class="form_field">
+    <p><%= f.label :current_password %> <p><i>(we need this to confirm your changes)</i></p>
+    <p><%= f.password_field :current_password, :placeholder  => "Current Password" %></p>
+  </div>
+
+  <div class="form_field">
+    <%= image_submit_tag("updateProfileButton.png") %>
+  </div>
+</div>
+
 
   <div class="form_field">
     <%= f.label :name %>
@@ -25,22 +37,13 @@
   </div>
 
   <div class="form_field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.label :new_password %> <i>(leave blank if you don't want to change it)</i><br />
     <%= f.password_field :password %>
   </div>
 
   <div class="form_field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation %>
-  </div>
-
-  <div class="form_field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password %>
-  </div>
-
-  <div class="form_field">
-    <%= f.submit "Update" %>
   </div>
 
 <% end %>
