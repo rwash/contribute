@@ -1,27 +1,3 @@
-Project.delete_all
-
-Project.create(name: 'Art Proj1',
-	short_description: 'this is a short desc',
-	long_description: 'this is a long desc',
-	end_date: '11/23/2012',
-	created_at: '1/25/2012',
-	updated_at: '1/27/2012',
-	category_id: 1,
-	funding_goal: 1500,
-	active: true,
-	user_id: 3)
-
-Project.create(name: 'Art Proj2',
-	short_description: 'this is a short desc for proj 2',
-	long_description: 'this is a long desc for proj 2',
-	end_date: '11/23/2013',
-	created_at: '3/12/2012',
-	updated_at: '2/06/2012',
-	category_id: 2,
-	funding_goal: 2000,
-	active: true,
-	user_id: 3)
-
 Category.delete_all
 
 Category.create(short_description: 'Music',
@@ -281,10 +257,10 @@ AmazonError.create(error: 'UnverifiedEmailAddress_Sender',
 
 ContributionStatus.delete_all
 
-ContributionStatus.create(name: 'None')
-ContributionStatus.create(name: 'Success')
-ContributionStatus.create(name: 'Pending')
-ContributionStatus.create(name: 'Failed')
-ContributionStatus.create(name: 'Cancelled')
-ContributionStatus.create(name: 'Retry_Pay')
-ContributionStatus.create(name: 'Retry_Cancel')
+ContributionStatus.create(id: 1, name: 'None')
+ContributionStatus.create(id: 2, name: 'Success')
+ContributionStatus.create(id: 3, name: 'Pending')
+ContributionStatus.create(id: 4, name: 'Failed')
+ContributionStatus.create(id: 5, name: 'Cancelled')
+ContributionStatus.create(id: 6, name: 'Retry_Pay')
+ContributionStatus.create(id: 7, name: 'Retry_Cancel')

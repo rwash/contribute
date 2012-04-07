@@ -1,42 +1,37 @@
 class ContributionStatus < ActiveRecord::Base
 	has_many :contributions
 
-	#Amazon transaction statuses
 	CANCELLED = "Cancelled"
 	FAILURE = "Failure"
 	PENDING = "Pending"
+	RESERVED = "Reserved"
 	SUCCESS = "Success"
-
-	#Our own statuses
-	NONE = 'None'
-	RETRY_PAY = "Retry_Pay"
-	RETRY_CANCEL = 'Retry_Cancel'
-
+	
 	def self.None
-		ContributionStatus.find_by_name(NONE)
+		1
 	end
 
 	def self.Success
-		ContributionStatus.find_by_name(SUCCESS)
+		2
 	end
 
 	def self.Pending
-		ContributionStatus.find_by_name(PENDING)
+		3
 	end
 
 	def self.Failed
-		ContributionStatus.find_by_name(FAILURE)
+		4
 	end
 
 	def self.Cancelled
-		ContributionStatus.find_by_name(CANCELLED)
+		5
 	end
 
 	def self.Retry_Pay
-		ContributionStatus.find_by_name(RETRY_PAY)
+		6
 	end
 
 	def self.Retry_Cancel
-		ContributionStatus.find_by_name(RETRY_CANCEL)
+		7
 	end
 end

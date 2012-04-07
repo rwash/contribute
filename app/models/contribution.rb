@@ -56,14 +56,14 @@ class Contribution < ActiveRecord::Base
 
 		puts 'transaction_status',transaction_status
 		#Handle Success
-		if transaction_status == ContributionStatus::SUCCESS
+		if transaction_status == ContributionStatus.Success
 			puts 'successful payment'
       self.contribution_status = ContributionStatus.Success
 			self.retry_count = 0
 			EmailManager.contribution_successful(self).deliver
 			
 		#Handle Pending
-		elsif transaction_status == ContributionStatus::PENDING
+		elsif transaction_status == ContributionStatus.Pending
 			puts 'pending'
 			self.contribution_status = ContributionStatus.Pending
 			self.retry_count = 0
