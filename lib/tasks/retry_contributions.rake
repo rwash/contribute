@@ -20,7 +20,7 @@ namespace :contribute do
 	end
 
 	def check_pending(fail_array, logger)
-		to_check_pending = Contribution.where("contribution_status_id = ?", ContributionStatus.Pending)
+		to_check_pending = Contribution.where("status = ?", ContributionStatus::PENDING)
 		logger.info "Found #{to_check_pending.size} contributions to check pending"
 	
 		to_check_pending.each do |contribution|
@@ -33,7 +33,7 @@ namespace :contribute do
 	end
 
 	def retry_pay(fail_array, logger)
-		to_retry_pay = Contribution.where("contribution_status_id = ?", ContributionStatus.Retry_Pay)
+		to_retry_pay = Contribution.where("status = ?", ContributionStatus::RETRY_PAY)
 		logger.info "Found #{to_retry_pay.size} contributions to retry pay"
 
 		to_retry_pay.each do |contribution|
@@ -46,7 +46,7 @@ namespace :contribute do
 	end
 
 	def retry_cancel(fail_array, logger)
-		to_retry_cancel = Contribution.where("contribution_status_id = ?", ContributionStatus.Retry_Cancel)
+		to_retry_cancel = Contribution.where("status = ?", ContributionStatus::RETRY_CANCEL)
 		logger.info "Found #{to_retry_cancel.size} contributions to retry cancel"
 
 		to_retry_cancel.each do |contribution|

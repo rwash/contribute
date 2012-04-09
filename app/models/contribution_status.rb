@@ -1,31 +1,41 @@
 class ContributionStatus < ActiveRecord::Base
-	has_many :contributions
+	NONE = 1
+	SUCCESS = 2
+	PENDING = 3
+	FAILURE = 4
+	CANCELLED = 5
+	RETRY_PAY = 6
+	RETRY_CANCEL = 7
 
-	def self.None
-		1
+	def self.string_to_status(string)
+		case string
+		when "Success"
+			SUCCESS
+		when "Pending"
+			PENDING
+		when "Cancelled"			
+			CANCELLED
+		when "Failure"
+			FAILURE
+		end
 	end
 
-	def self.Success
-		2
-	end
-
-	def self.Pending
-		3
-	end
-
-	def self.Failed
-		4
-	end
-
-	def self.Cancelled
-		5
-	end
-
-	def self.Retry_Pay
-		6
-	end
-
-	def self.Retry_Cancel
-		7
+	def self.status_to_string(status)
+		case status
+		when NONE
+			"None"
+		when SUCCESS
+			"Success"
+		when PENDING
+			"Pending"
+		when FAILURE
+			"Failure"
+		when CANCELLED
+			"Cancelled"
+		when RETRY_PAY
+			"Retry - Payment"
+		when RETRY_CANCEL
+			"Retry - Cancellation"
+		end
 	end
 end
