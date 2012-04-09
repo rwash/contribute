@@ -8,7 +8,6 @@ UNDEFINED_PAYMENT_KEY = 'TEMP'
 class Contribution < ActiveRecord::Base
 	belongs_to :project
 	belongs_to :user
-	belongs_to :contribution_status
 
 	validates :payment_key, :presence => true
 	validates_numericality_of :amount, :greater_than_or_equal_to => MIN_CONTRIBUTION_AMT, :message => "must be at least $1"
@@ -20,7 +19,7 @@ class Contribution < ActiveRecord::Base
 
 	def initialize(attributes = nil, options = {})
 		super
-		self.contribution_status = ContributionStatus.None
+		self.status = ContributionStatus::NONE
 		self.retry_count = 0
 	end
 
@@ -35,11 +34,11 @@ class Contribution < ActiveRecord::Base
 
     #If it was successful, we'll mark the record as cancelled
     if !Amazon::FPS::AmazonValidator::invalid_cancel_response?(response)
-      self.contribution_status = ContributionStatus.Cancelled
+      self.status = ContributionStatus::CANCELLED
 			self.retry_count = 0
 			EmailManager.contribution_cancelled(self).deliver
     else
-			self.contribution_status = ContributionStatus.Retry_Cancel
+			self.status = ContributionStatus::RETRY_CANCEL
 			self.retry_count = self.retry_count + 1
     end
 
@@ -57,17 +56,17 @@ class Contribution < ActiveRecord::Base
 
 		result = response['PayResult']
     transaction_id = result['TransactionId']
-    transaction.contribution_status = result['TransactionStatus']
+    transaction.status = result['TransactionStatus']
 
-    if transaction.contribution_status == "Success"
-      self.contribution_status = ContributionStatus.Success
+    if transaction.status == "Success"
+      self.status = ContributionStatus::SUCCESS
 			self.retry_count = 0
 			EmailManager.contribution_successful(self).deliver
 		elsif transaction.contributions_status == "Pending"
-			self.contribution_status = ContributionStatus.Pending
+			self.status = ContributionStatus::PENDING
 			self.retry_count = 0
 		else #TODO: elsif failure with retriable error code
-			self.contribution_status = ContributionStatus.Retry_Pay
+			self.status = ContributionStatus::RETRY_PAY
 			self.retry_count = self.retry_count + 1
     end
 
