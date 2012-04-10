@@ -5,7 +5,6 @@ require 'amazon/fps/amazon_validator'
 MIN_CONTRIBUTION_AMT = 1
 UNDEFINED_PAYMENT_KEY = 'TEMP'
 
-
 class Contribution < ActiveRecord::Base
 	belongs_to :project
 	belongs_to :user
@@ -53,6 +52,7 @@ class Contribution < ActiveRecord::Base
 				self.retry_count = self.retry_count + 1
 			elsif error.error == AmazonError::UNKNOWN
 				puts 'unknown error'
+				self.status = ContributionStatus::FAILURE
 				#TODO do what we do with pay
 			else
 				puts 'unretriable'
@@ -93,8 +93,6 @@ class Contribution < ActiveRecord::Base
 				puts 'unknown error'
 				self.status = ContributionStatus::FAILURE
 				#TODO: email appropriate people that we don't know what happened
-				#if error.email_user
-				#email user custom I don't know what happened, here's how to fix it
 				#if error.email_admin
 				#email admin to put the error in the amazon_errors table
 			else

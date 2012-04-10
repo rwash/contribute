@@ -57,6 +57,7 @@
 			<ul class="projectContributors">
 			<% if @project.contributions.size > 0 %>
 				<% @project.contributions.each do |contribution|%>
+<<<<<<< HEAD
 					<li><% if contribution.user.picture? %>
                 			 	<%= image_tag contribution.user.picture.url(:thumb) %>
         				    <% else %>
@@ -64,6 +65,10 @@
         					<% end %>
 						<%= link_to contribution.user.name , contribution.user %>
 						<% if can? :update, @project %>
+=======
+					<li><%= link_to contribution.user.name , contribution.user %>
+						<% if can? :destroy, @project %>
+>>>>>>> 23547dde208ce769b71c9b87e830dc1d86155268
 							- <%= number_to_currency(contribution.amount, :precision => 0) %>
 						<% end %>
 					</li><br/>
