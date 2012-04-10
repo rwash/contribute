@@ -54,25 +54,19 @@ class Contribution < ActiveRecord::Base
 		transaction_status = Amazon::FPS::AmazonValidator.get_transaction_status(response)
 
 		puts 'transaction_status', ContributionStatus.status_to_string(transaction_status)
-		#Handle Success
 		if transaction_status == ContributionStatus::SUCCESS
 			puts 'successful payment'
       self.status = ContributionStatus::SUCCESS
 			self.retry_count = 0
 			EmailManager.contribution_successful(self).deliver
-			
-		#Handle Pending
 		elsif transaction_status == ContributionStatus::PENDING
 			puts 'pending'
 			self.status = ContributionStatus::PENDING
 			self.retry_count = 0
-
-		#Handle Failure
 		else
 			puts 'failed payment'
 			error = Amazon::FPS::AmazonValidator.get_error(response)
 
-			#Handle status based on error type
 			if error.retriable
 				puts 'retriable'
 				self.status = ContributionStatus::RETRY_PAY
