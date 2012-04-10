@@ -41,7 +41,7 @@ class ContributionsController < ApplicationController
 	def save
 		Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
 
-		if Amazon::FPS::AmazonValidator::invalid_multi_token_response?(save_contribution_url, session, params)
+		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(save_contribution_url, session, params)
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
@@ -97,7 +97,7 @@ class ContributionsController < ApplicationController
 	end
 
 	def update_save
-		if Amazon::FPS::AmazonValidator::invalid_multi_token_response?(update_save_contribution_url, session, params) or session[:editing_contribution_id].nil?
+		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(update_save_contribution_url, session, params) or session[:editing_contribution_id].nil?
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
