@@ -13,3 +13,7 @@ $(function (){
 		$(this).find('.ui-progressbar-value').height(pbValue + '%');
 	});
 });
+
+
+
+$('#flash').fadeOut(500);
