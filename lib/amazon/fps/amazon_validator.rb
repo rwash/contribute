@@ -24,8 +24,12 @@ class AmazonValidator
 	end
 
 	#if the response contains errors or the transaction status was not a success
-	def self.invalid_cancel_response?(response)
-		return !response["Errors"].nil?
+	def self.get_cancel_status(response)
+		if !response["Errors"].nil?
+			return ContributionStatus::FAILURE
+		else
+			return ContributionStatus::SUCCESS
+		end
 	end
 
 	#if the response contains errors or no transaction status

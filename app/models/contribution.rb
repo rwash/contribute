@@ -33,14 +33,32 @@ class Contribution < ActiveRecord::Base
     request = Amazon::FPS::CancelTokenRequest.new(self.payment_key)
     response = request.send
 
+		cancel_status = Amazon::FPS::AmazonValidator.get_cancel_status(response)
+
+		puts 'cance;_status', ContributionStatus.status_to_string(cancel_status)
     #If it was successful, we'll mark the record as cancelled
-    if !Amazon::FPS::AmazonValidator::invalid_cancel_response?(response)
+    if cancel_status == ContributionStatus::SUCCESS
+			puts 'cancelled successfully'
       self.status = ContributionStatus::CANCELLED
 			self.retry_count = 0
 			EmailManager.contribution_cancelled(self).deliver
     else
-			self.status = ContributionStatus::RETRY_CANCEL
-			self.retry_count = self.retry_count + 1
+			puts 'failed cancellation'
+			error = Amazon::FPS::AmazonValidator.get_error(response)
+
+			#Handle status based on error type
+			if error.retriable
+				puts 'retriable'
+				self.status = ContributionStatus::RETRY_CANCEL
+				self.retry_count = self.retry_count + 1
+			elsif error.error == AmazonError::UNKNOWN
+				puts 'unknown error'
+				#TODO do what we do with pay
+			else
+				puts 'unretriable'
+				self.status = ContributionStatus::FAILURE
+				#email whomever needs to be
+			end
     end
 
     self.save
