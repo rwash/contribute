@@ -12,7 +12,6 @@
 	</div>
 <% end %>
 
-<div id="projectInfoWrapper">
 <div id="projectInfo">
 	<ul>
 		<li>End Date: <%= @project.end_date %></li>
@@ -21,12 +20,17 @@
 		<li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
 	</ul>
 </div>
-</div>
 
 <!-- --------------Bootstrap-tabs------------------- -->
 
 
 <div id="projectWrapper">
+	<div id="projectHead" align="center">
+          <h1><%= @project.name %></h1>
+          <h2><%= @project.user.location %> </h2>
+          <h3>By: <%= link_to @project.user.name, @project.user %> </h3>
+	</div>
+
 	<div id="tabs">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a</li>
@@ -37,10 +41,6 @@
 	<div class="tab-content">
 		<div class="tab-pane active" id="projectContent">
 			<div id="projectHead" align="center">
-				<h1><%= @project.name %></h1>
-				<h2><%= @project.user.location %> </h2>
-				<h3>By: <%= link_to @project.user.name, @project.user %> </h3>
-
 				<% if @project.picture? %>
 								<%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
 				<% else %>
@@ -57,7 +57,12 @@
 			<ul class="projectContributors">
 			<% if @project.contributions.size > 0 %>
 				<% @project.contributions.each do |contribution|%>
-					<li><%= link_to contribution.user.name , contribution.user %>
+					<li><% if contribution.user.picture? %>
+                			 	<%= image_tag contribution.user.picture.url(:thumb) %>
+        				    <% else %>
+                				<%= image_tag "defaultProfilePic.jpg", :class => "userImage" %>
+        					<% end %>
+						<%= link_to contribution.user.name , contribution.user %>
 						<% if can? :update, @project %>
 							- <%= number_to_currency(contribution.amount, :precision => 0) %>
 						<% end %>
@@ -70,6 +75,8 @@
 		</div>
 
 	</div>
+
+
 
 </div>
 <!-- -------------- end Bootstrap-tabs ------------------ -->
