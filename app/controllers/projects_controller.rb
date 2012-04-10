@@ -36,7 +36,7 @@ class ProjectsController < InheritedResources::Base
 	def save
 		Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
 
-		if Amazon::FPS::AmazonValidator::invalid_recipient_response?(save_project_url, session, params)
+		if !Amazon::FPS::AmazonValidator::valid_recipient_response?(save_project_url, session, params)
 			flash[:alert] = "An error occurred with your project. Please try again."	
 			return redirect_to root_path
 		end
