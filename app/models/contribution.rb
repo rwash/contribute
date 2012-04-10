@@ -1,6 +1,8 @@
 require 'amazon/fps/pay_request'
+require 'amazon/fps/get_transaction_status_request'
 require 'amazon/fps/cancel_token_request'
 require 'amazon/fps/amazon_validator'
+require 'amazon/fps/response_error'
 
 MIN_CONTRIBUTION_AMT = 1
 UNDEFINED_PAYMENT_KEY = 'TEMP'
@@ -35,7 +37,7 @@ class Contribution < ActiveRecord::Base
 
 		cancel_status = Amazon::FPS::AmazonValidator.get_cancel_status(response)
 
-		puts 'cance;_status', ContributionStatus.status_to_string(cancel_status)
+		puts 'cancel_status', ContributionStatus.status_to_string(cancel_status)
     #If it was successful, we'll mark the record as cancelled
     if cancel_status == ContributionStatus::SUCCESS
 			puts 'cancelled successfully'
@@ -77,10 +79,13 @@ class Contribution < ActiveRecord::Base
       self.status = ContributionStatus::SUCCESS
 			self.retry_count = 0
 			EmailManager.contribution_successful(self).deliver
+
+			self.transaction_id = response['PayResult']['TransactionId'] unless response['PayResult'].nil?
 		elsif transaction_status == ContributionStatus::PENDING
 			puts 'pending'
 			self.status = ContributionStatus::PENDING
 			self.retry_count = 0
+			self.transaction_id = response['PayResult']['TransactionId'] unless response['PayResult'].nil?
 		else
 			puts 'failed payment'
 			error = Amazon::FPS::AmazonValidator.get_error(response)
@@ -110,6 +115,17 @@ class Contribution < ActiveRecord::Base
 
     self.save
   end
+
+	def check_status
+		request = Amazon::FPS::GetTransactionStatusRequest.new(self.transaction_id)
+		response = request.send
+
+		if !response['Errors'].nil? or response['GetTransactionStatusResult'].nil? or response['GetTransactionStatusResult']['TransactionStatus'].nil?
+			return ContributionStatus::FAILURE
+		end
+
+		return ContributionStatus.string_to_status(response['GetTransactionStatusResult']['TransactionStatus'])
+	end
 
 	def destroy
 		EmailManager.project_deleted_to_contributor(self).deliver
