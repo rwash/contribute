@@ -33,7 +33,7 @@ class AmazonValidator
 		if !response['Errors'].nil? or response['PayResult'].nil? or response['PayResult']['TransactionStatus'].nil?
 			return ContributionStatus::FAILURE
 		else
-			return response['PayResult']['TransactionStatus']
+			return ContributionStatus.string_to_status(response['PayResult']['TransactionStatus'])
 		end
 	end
 

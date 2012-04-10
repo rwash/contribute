@@ -31,10 +31,6 @@ ActiveRecord::Schema.define(:version => 20120406201753) do
     t.datetime "updated_at"
   end
 
-  create_table "contribution_statuses", :force => true do |t|
-    t.string "name"
-  end
-
   create_table "contributions", :force => true do |t|
     t.string   "payment_key"
     t.integer  "amount"
@@ -42,7 +38,7 @@ ActiveRecord::Schema.define(:version => 20120406201753) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "contribution_status_id"
+    t.integer  "status"
     t.integer  "retry_count"
   end
 
