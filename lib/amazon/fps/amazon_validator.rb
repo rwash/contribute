@@ -63,11 +63,7 @@ protected
 
 	#these are acceptable status codes for the payment method
 	def self.valid_multi_token_status?(status)
-		if status != "SA" and status != "SB" and status != "SC"
-			return false
-		else
-			return true
-		end
+		return (status == "SA" or status == "SB" or status == "SC")
 	end
 end
 

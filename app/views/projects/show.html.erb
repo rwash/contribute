@@ -58,7 +58,7 @@
 			<% if @project.contributions.size > 0 %>
 				<% @project.contributions.each do |contribution|%>
 					<li><%= link_to contribution.user.name , contribution.user %>
-						<% if can? :update, @project %>
+						<% if can? :destroy, @project %>
 							- <%= number_to_currency(contribution.amount, :precision => 0) %>
 						<% end %>
 					</li><br/>
