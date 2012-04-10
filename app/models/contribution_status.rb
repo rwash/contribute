@@ -7,6 +7,8 @@ class ContributionStatus < ActiveRecord::Base
 	RETRY_PAY = 6
 	RETRY_CANCEL = 7
 
+	# This doesn't include all of our statuses because these
+	# are the only strings that come back from Amazon
 	def self.string_to_status(string)
 		case string
 		when "Success"
