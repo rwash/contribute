@@ -22,5 +22,9 @@
 set :output, "log/cron_log.log"
 
 every 1.day, :at => '12 am' do
-	rake "contribution:process_completed_projects"
+	rake "contribution:completed_projects"
+end
+
+every 1.hour do
+	rake "contribution:retry_contributions"
 end
