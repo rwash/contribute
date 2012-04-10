@@ -25,10 +25,11 @@
 
 
 <div id="projectWrapper">
+	<div id="projectHead" align="center">
           <h1><%= @project.name %></h1>
           <h2><%= @project.user.location %> </h2>
           <h3>By: <%= link_to @project.user.name, @project.user %> </h3>
-
+	</div>
 
 <div id="tabs">
   <ul class="nav nav-tabs">
