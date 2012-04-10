@@ -9,7 +9,6 @@ UNDEFINED_PAYMENT_KEY = 'TEMP'
 class Contribution < ActiveRecord::Base
 	belongs_to :project
 	belongs_to :user
-	belongs_to :contribution_status
 
 	validates :payment_key, :presence => true
 	validates_numericality_of :amount, :greater_than_or_equal_to => MIN_CONTRIBUTION_AMT, :message => "must be at least $1"
@@ -21,7 +20,7 @@ class Contribution < ActiveRecord::Base
 
 	def initialize(attributes = nil, options = {})
 		super
-		self.contribution_status = ContributionStatus.None
+		self.status = ContributionStatus::NONE
 		self.retry_count = 0
 	end
 
@@ -36,11 +35,11 @@ class Contribution < ActiveRecord::Base
 
     #If it was successful, we'll mark the record as cancelled
     if !Amazon::FPS::AmazonValidator::invalid_cancel_response?(response)
-      self.contribution_status = ContributionStatus.Cancelled
+      self.status = ContributionStatus::CANCELLED
 			self.retry_count = 0
 			EmailManager.contribution_cancelled(self).deliver
     else
-			self.contribution_status = ContributionStatus.Retry_Cancel
+			self.status = ContributionStatus::RETRY_CANCEL
 			self.retry_count = self.retry_count + 1
     end
 
@@ -54,18 +53,18 @@ class Contribution < ActiveRecord::Base
 		response = request.send 
 		transaction_status = Amazon::FPS::AmazonValidator.get_transaction_status(response)
 
-		puts 'transaction_status',transaction_status
+		puts 'transaction_status', ContributionStatus.status_to_string(transaction_status)
 		#Handle Success
-		if transaction_status == ContributionStatus.Success
+		if transaction_status == ContributionStatus::SUCCESS
 			puts 'successful payment'
-      self.contribution_status = ContributionStatus.Success
+      self.status = ContributionStatus::SUCCESS
 			self.retry_count = 0
 			EmailManager.contribution_successful(self).deliver
 			
 		#Handle Pending
-		elsif transaction_status == ContributionStatus.Pending
+		elsif transaction_status == ContributionStatus::PENDING
 			puts 'pending'
-			self.contribution_status = ContributionStatus.Pending
+			self.status = ContributionStatus::PENDING
 			self.retry_count = 0
 
 		#Handle Failure
@@ -76,11 +75,11 @@ class Contribution < ActiveRecord::Base
 			#Handle status based on error type
 			if error.retriable
 				puts 'retriable'
-				self.contribution_status = ContributionStatus.Retry_Pay
+				self.status = ContributionStatus::RETRY_PAY
 				self.retry_count = self.retry_count + 1
 			elsif error.error == AmazonError::UNKNOWN
 				puts 'unknown error'
-				self.contribution_status = ContributionStatus.Failed
+				self.status = ContributionStatus::FAILURE
 				#TODO: email appropriate people that we don't know what happened
 				#if error.email_user
 				#email user custom I don't know what happened, here's how to fix it
@@ -88,7 +87,7 @@ class Contribution < ActiveRecord::Base
 				#email admin to put the error in the amazon_errors table
 			else
 				puts 'we screwed up error'
-				self.contribution_status = ContributionStatus.Failed
+				self.status = ContributionStatus::FAILURE
 				#TODO: email appropriate people the template
 				#if error.email_user
 				#email error.message + here's how to redo your contribution
