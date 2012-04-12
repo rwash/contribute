@@ -25,6 +25,7 @@ every 1.day, :at => '12 am' do
 	rake "contribution:completed_projects"
 end
 
-every 1.hour do
+# How often should we check to see if things are still pending or failing?
+every 3.hours do
 	rake "contribution:retry_contributions"
 end
