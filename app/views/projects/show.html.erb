@@ -2,20 +2,16 @@
 $('.tabs').button()
 </script>
 
-<div class="btn-group">
-<% if can? :destroy, @project %>
-	<div id="editLink">
-		<%= button_to ("Delete Project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project? All contributions to it will also be deleted.", :class => 'btn btn-primary') %>
-	</div>
-<% elsif can? :edit_contribution, @project %>
-	<div class="btn-group">
-		<%= button_to ("Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)), :class => 'btn btn-primary') %>
-	</div>
-<% else %>
+<div class="projectBtn">
+  <% if can? :destroy, @project %>
+		<%= button_to "Delete Project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project? All contributions to it will also be deleted.", :class => 'btn btn-danger' %>
+  <% elsif can? :edit_contribution, @project %>
+		<%= button_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)), :class => 'btn btn-primary' %>
+  <% else %>
 	<div id="editLink">
 		<%= button_to "Contribute to this project", new_contribution_url(@project), :class => 'btn btn-primary' %>
 	</div>
-<% end %>
+  <% end %>
 </div>
 
 
