@@ -14,8 +14,5 @@ class User < ActiveRecord::Base
 	has_many :projects, :dependent => :destroy
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
 
-
 	validates :name, :presence => true
-
-	validates :picture, :file_size => {:maximum => 0.15.megabytes.to_i }
 end
