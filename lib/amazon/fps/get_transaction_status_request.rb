@@ -20,6 +20,15 @@ class GetTransactionStatusRequest < BaseFpsRequest
 			response = response['Response']
 		end
 	end
+
+	def log_request(params)
+		Amazon::FPS::AmazonLogger.log_get_transaction_request(params)
+	end
+
+	def log_response(response, request)
+		Amazon::FPS::AmazonLogger.log_get_transaction_response(response, request)
+	end
+
 end
 
 end

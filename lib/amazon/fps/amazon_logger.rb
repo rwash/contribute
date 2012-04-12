@@ -64,6 +64,26 @@ class AmazonLogger
 		end
 	end
 
+	def self.log_get_transaction_request(params)
+		log = Logging::LogGetTransactionRequest.new
+		save_record(log, params)
+
+		return log
+	end
+
+	def self.log_get_transaction_response(response, request)
+		if response['Errors'].nil?
+			log = Logging::LogGetTransactionResponse.new
+			log.log_get_transaction_request_id = request.id
+			log.RequestId = response['ResponseMetadata'][VALID_REQUEST_ID] unless response['ResponseMetadata'].nil?
+
+			save_record(log, response['GetTransactionStatusResult']) unless response['GetTransactionStatusResult'].nil?
+		else
+			save_errors(response['Errors'], response, request)
+		end
+
+	end
+
 protected
 	#dynamically assign param values to record in arguments
 	def self.save_record(record, params)

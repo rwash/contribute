@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120410190855) do
+ActiveRecord::Schema.define(:version => 20120412223155) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -62,6 +62,24 @@ ActiveRecord::Schema.define(:version => 20120410190855) do
     t.string   "Message"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "RequestId"
+  end
+
+  create_table "log_get_transaction_requests", :force => true do |t|
+    t.string   "TransactionId"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "log_get_transaction_responses", :force => true do |t|
+    t.string   "TransactionId"
+    t.string   "TransactionStatus"
+    t.string   "CallerReference"
+    t.string   "StatusCode"
+    t.string   "StatusMessage"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "log_get_transaction_request_id"
     t.string   "RequestId"
   end
 
