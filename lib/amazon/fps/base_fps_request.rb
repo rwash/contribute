@@ -52,13 +52,6 @@ class BaseFpsRequest
 		log_response(response, request)
 		return response
 	end
-
-	#override the lodding information stuff
-	def log_request(params)
-	end
-
-	def log_response(response, request)
-	end
 end
 
 end

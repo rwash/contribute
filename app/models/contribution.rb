@@ -117,13 +117,13 @@ class Contribution < ActiveRecord::Base
 		request = Amazon::FPS::GetTransactionStatusRequest.new(self.transaction_id)
 		response = request.send
 		
-		if !AmazonValidator::valid_transaction_status_response(response)
-			error = AmazonValidator::get_error(response)
+		if !Amazon::FPS::AmazonValidator::valid_transaction_status_response?(response)
+			error = Amazon::FPS::AmazonValidator::get_error(response)
 			#TODO: e-mail admin about transaction status request failing
 			return
 		end
 
-		transaction_status = AmazonValidator::get_transaction_status(response)
+		transaction_status = Amazon::FPS::AmazonValidator::get_transaction_status(response)
 		if transaction_status == ContributionStatus::SUCCESS
 			EmailManager.contribution_successful(self).deliver
 			self.retry_count = 0
