@@ -25,7 +25,8 @@ namespace :contribute do
 	
 		to_check_pending.each do |contribution|
 			logger.info "Contribution with id #{contribution.id} is checking status"
-			#TODO: contribution.check_status
+			contribution.update_status
+			# This value might need to be tweaked depending on how many e-mails it causes
 			if contribution.retry_count > 3
 				fail_array.push contribution
 			end
@@ -39,6 +40,7 @@ namespace :contribute do
 		to_retry_pay.each do |contribution|
 			logger.info "Contribution with id #{contribution.id} is retrying payment"
 			contribution.execute_payment
+			# This value might need to be tweaked depending on how many e-mails it causes
 			if contribution.retry_count > 3
 				fail_array.push contribution
 			end
@@ -52,6 +54,7 @@ namespace :contribute do
 		to_retry_cancel.each do |contribution|
 			logger.info "Contribution with id #{contribution.id} is retrying cancellation"
 			contribution.cancel
+			# This value might need to be tweaked depending on how many e-mails it causes
 			if contribution.retry_count > 3
 				fail_array.push contribution
 			end
