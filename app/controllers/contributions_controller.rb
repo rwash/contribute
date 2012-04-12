@@ -39,25 +39,29 @@ class ContributionsController < ApplicationController
 
 	#Return URL from payment gateway
 	def save
-		Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
-
-		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(save_contribution_url, session, params)
+		if session[:contribution].nil?
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
-			
 		@contribution = session[:contribution]
+
+		Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
+		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(save_contribution_url, session, params)
+			flash[:alert] = ERROR_STRING
+			return redirect_to @contribution.project
+		end
+			
 		session[:contribution] = nil
 		@contribution.payment_key = params[:tokenID]
 
 		if !@contribution.save
 			flash[:alert] = ERROR_STRING
-			return redirect_to root_path
+			return redirect_to @contribution.project
 		else
 			successful_save
 
 			flash[:alert] = "Contribution entered successfully. Thanks for your support!"
-			return redirect_to root_path
+			return redirect_to @contribution.project
 		end
 	end
 
@@ -97,12 +101,18 @@ class ContributionsController < ApplicationController
 	end
 
 	def update_save
-		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(update_save_contribution_url, session, params) or session[:editing_contribution_id].nil?
+		if session[:contribution].nil?
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
-
 		@contribution = session[:contribution]
+
+		Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
+		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(update_save_contribution_url, session, params) or session[:editing_contribution_id].nil?
+			flash[:alert] = ERROR_STRING
+			return redirect_to @contribution.project
+		end
+
 		session[:contribution] = nil
 		@editing_contribution = Contribution.find_by_id(session[:editing_contribution_id])
 		session[:editing_contribution_id] = nil
@@ -110,18 +120,18 @@ class ContributionsController < ApplicationController
 
 		if !@contribution.save
 			flash[:alert] = ERROR_STRING
-			return redirect_to root_path
+			return redirect_to @contribution.project
 		end
 
 		if !@editing_contribution.cancel
 			@contribution.cancel
 			flash[:alert] = ERROR_STRING
-			return redirect_to root_path
+			return redirect_to @contribution.project
 		else
 			successful_update
 
 			flash[:alert] = "Contribution successfully updated. Thanks for your support!"
-			return redirect_to root_path
+			return redirect_to @contribution.project
 		end
 	end
 
