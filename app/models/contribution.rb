@@ -36,7 +36,6 @@ class Contribution < ActiveRecord::Base
 		cancel_status = Amazon::FPS::AmazonValidator.get_cancel_status(response)
 
 		puts 'cancel_status', ContributionStatus.status_to_string(cancel_status)
-    #If it was successful, we'll mark the record as cancelled
     if cancel_status == ContributionStatus::SUCCESS
 			puts 'cancelled successfully'
       self.status = ContributionStatus::CANCELLED
@@ -46,7 +45,6 @@ class Contribution < ActiveRecord::Base
 			puts 'failed cancellation'
 			error = Amazon::FPS::AmazonValidator.get_error(response)
 
-			#Handle status based on error type
 			if error.retriable
 				puts 'retriable'
 				self.status = ContributionStatus::RETRY_CANCEL
@@ -54,23 +52,22 @@ class Contribution < ActiveRecord::Base
 			elsif error.error == AmazonError::UNKNOWN
 				puts 'unknown error'
 				self.status = ContributionStatus::FAILURE
-				#TODO do what we do with pay
+				#TODO: e-mail the admin
 			else
 				puts 'unretriable'
 				self.status = ContributionStatus::FAILURE
-				#email whomever needs to be
+				#TODO: Who do we e-mail? Do any of these cases mean a user error occured? Or just that we messed up?
 			end
     end
 
     self.save
   end
 
-
   def execute_payment
     request = Amazon::FPS::PayRequest.new(self.payment_key, self.project.payment_account_id, self.amount)
 
 		response = request.send 
-		transaction_status = Amazon::FPS::AmazonValidator.get_transaction_status(response)
+		transaction_status = Amazon::FPS::AmazonValidator.get_pay_status(response)
 
 		puts 'transaction_status', ContributionStatus.status_to_string(transaction_status)
 		if transaction_status == ContributionStatus::SUCCESS
@@ -85,6 +82,9 @@ class Contribution < ActiveRecord::Base
 			self.status = ContributionStatus::PENDING
 			self.retry_count = 0
 			self.transaction_id = response['PayResult']['TransactionId'] unless response['PayResult'].nil?
+		elsif transaction_status == ContributionStatus::CANCELLED
+			#TODO: Who do you e-mail? User could've cancelled or something could've gone wrong...
+			self.status = ContributionStatus::CANCELLED
 		else
 			puts 'failed payment'
 			error = Amazon::FPS::AmazonValidator.get_error(response)
@@ -96,32 +96,49 @@ class Contribution < ActiveRecord::Base
 			elsif error.error == AmazonError::UNKNOWN
 				puts 'unknown error'
 				self.status = ContributionStatus::FAILURE
-				#TODO: email appropriate people that we don't know what happened
-				#if error.email_admin
-				#email admin to put the error in the amazon_errors table
+				#TODO: email admin to put the error in the amazon_errors table
 			else
 				puts 'we screwed up error'
 				self.status = ContributionStatus::FAILURE
-				#TODO: email appropriate people the template
-				#if error.email_user
-				#email error.message + here's how to redo your contribution
-				#if error.email_admin
-				#an error occured on either the project owner or our application, error.description, error.message.  This is very bad.  Here is the information contribution.project contribution.project.user, this will have to be solved manually
+				if error.email_user
+				#TODO: email error.message + here's how to redo your contribution
+				if error.email_admin
+				#TODO: an error occured on either the project owner or our application, error.description, error.message.  This is very bad.  Here is the information contribution.project contribution.project.user, this will have to be solved manually
 			end
     end
 
     self.save
   end
 
-	def check_status
+	# Assumption is that we only use this on Pay calls that are pending
+	def update_status
 		request = Amazon::FPS::GetTransactionStatusRequest.new(self.transaction_id)
 		response = request.send
-
-		if !response['Errors'].nil? or response['GetTransactionStatusResult'].nil? or response['GetTransactionStatusResult']['TransactionStatus'].nil?
-			return ContributionStatus::FAILURE
+		
+		if !AmazonValidator::valid_transaction_status_response(response)
+			error = AmazonValidator::get_error(response)
+			#TODO: e-mail admin about transaction status request failing
+			return
 		end
 
-		return ContributionStatus.string_to_status(response['GetTransactionStatusResult']['TransactionStatus'])
+		transaction_status = AmazonValidator::get_transaction_status(response)
+		if transaction_status == ContributionStatus::SUCCESS
+			EmailManager.contribution_successful(self).deliver
+			self.retry_count = 0
+			self.status = ContributionStatus::SUCCESS
+		elsif transaction_status = ContributionStatus::FAILURE
+			#TODO: E-mail the user
+			self.retry_count = 0
+			self.status = ContributionStatus::FAILURE
+		elsif transaction_status = ContributionStatus::CANCELLED
+			#TODO: Who do you e-mail? User could've cancelled or something could've gone wrong...
+			self.retry_count = 0
+			self.status = ContributionStatus::CANCELLED
+		elsif transaction_status = ContributionStatus::PENDING
+			self.retry_count = self.retry_count + 1
+		end
+
+		self.save	
 	end
 
 	def destroy
