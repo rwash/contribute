@@ -13,5 +13,5 @@ $(function (){
 		$(this).find('.ui-progressbar-value').height(pbValue + '%');
 	});
 
-	$('#flash').fadeOut(500);
+	$('#flash').delay(6000).fadeOut(500);
 });
