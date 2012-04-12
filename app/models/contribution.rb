@@ -102,8 +102,10 @@ class Contribution < ActiveRecord::Base
 				self.status = ContributionStatus::FAILURE
 				if error.email_user
 				#TODO: email error.message + here's how to redo your contribution
+				end
 				if error.email_admin
 				#TODO: an error occured on either the project owner or our application, error.description, error.message.  This is very bad.  Here is the information contribution.project contribution.project.user, this will have to be solved manually
+				end
 			end
     end
 
