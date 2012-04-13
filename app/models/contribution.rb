@@ -3,10 +3,10 @@ require 'amazon/fps/get_transaction_status_request'
 require 'amazon/fps/cancel_token_request'
 require 'amazon/fps/amazon_validator'
 
-MIN_CONTRIBUTION_AMT = 1
-UNDEFINED_PAYMENT_KEY = 'TEMP'
-
 class Contribution < ActiveRecord::Base
+	MIN_CONTRIBUTION_AMT = 1
+	UNDEFINED_PAYMENT_KEY = 'TEMP'
+
 	belongs_to :project
 	belongs_to :user
 

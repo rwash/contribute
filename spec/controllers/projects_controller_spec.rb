@@ -44,7 +44,7 @@ describe ProjectsController do
 				response.should be_success
 			end
 			it "can't destroy a project they don't own" do
-				project = FactoryGirl.create(:project)
+				project = FactoryGirl.create(:project, user_id: user.id + 1)
 				sign_in user
 				get :destroy, :id => project.name
 				assert flash[:alert].include?("not authorized"), flash[:alert]

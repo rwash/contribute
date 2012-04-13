@@ -31,8 +31,8 @@ describe Contribution do
 			contribution = FactoryGirl.build(:contribution, :amount => "")
 			assert !contribution.save, "Incorrectly saved contribution without an amount"
 		end
-		it "is above 1" do
-			contribution = FactoryGirl.build(:contribution, :amount => 0)
+		it "fails below minimum" do
+			contribution = FactoryGirl.build(:contribution, :amount => (Contribution::MIN_CONTRIBUTION_AMT - 1))
 			assert !contribution.save, "Incorrectly saved contribution without amount below minimum contribution"
 		end
 		it "takes amounts with commas" do

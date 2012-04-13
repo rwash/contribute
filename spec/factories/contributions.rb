@@ -7,4 +7,25 @@ FactoryGirl.define do
 		project_id 1
 		user_id 1
   end
+
+  factory :contribution2, class: Contribution do
+		amount 300
+		payment_key 'asdf8qad73j39213ja8asd'
+		project_id 1 
+		user_id 2
+ end
+
+ factory :contribution3, class: Contribution do
+		amount 250
+		payment_key 'poiu8qad73j39213ja8asd'
+		project_id 1 
+		user_id 3 
+ end
+ 
+ factory :contribution4, class: Contribution do
+		amount 50
+		payment_key 'poiu8qad8fdo9213ja8asd'
+		project_id 1 
+		user_id 4 
+ end
 end

@@ -61,6 +61,8 @@ class ProjectsController < InheritedResources::Base
 			flash[:alert] = "Project could not be deleted. Please try again."
 			return redirect_to @project
 		else 
+			#TODO: This is inconsistent. Contribution sends the e-mail in the model. Project should too
+			# provided that we can assume save is successful always
 			successful_destroy
 
 			flash[:alert] = "Project successfully deleted. Sorry to see you go!"
