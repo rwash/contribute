@@ -1,12 +1,12 @@
 require 'file_size_validator'
 
-MAX_NAME_LENGTH = 75
-MAX_SHORT_DESC_LENGTH = 200
-MAX_LONG_DESC_LENGTH = 1000
-MIN_FUNDING_GOAL = 5
-UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
-
 class Project < ActiveRecord::Base
+	MAX_NAME_LENGTH = 75
+	MAX_SHORT_DESC_LENGTH = 200
+	MAX_LONG_DESC_LENGTH = 1000
+	MIN_FUNDING_GOAL = 5
+	UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
+
 	belongs_to :user
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
 
@@ -18,7 +18,6 @@ class Project < ActiveRecord::Base
 	validates :long_description, :presence => true, :length => {:maximum => MAX_LONG_DESC_LENGTH}
 	validates_numericality_of :funding_goal, :greater_than_or_equal_to => MIN_FUNDING_GOAL, :message => "must be at least $5"
 	validates_numericality_of :funding_goal, :only_integer => true, :message => "must be a whole dollar amount (no cents please)"
-	validates :created_at, :presence => true
 	validate :validate_end_date
 	validates :end_date, :presence => { :message => "must be of form 'MM/DD/YYYY'" }
 	validates :payment_account_id, :presence => true
@@ -30,7 +29,6 @@ class Project < ActiveRecord::Base
 	def initialize(attributes = nil, options = {})
 		super
 		self.active = true
-		self.created_at = Date.today
 	end
 
 	def end_date=(val)

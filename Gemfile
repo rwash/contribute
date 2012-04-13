@@ -14,9 +14,14 @@ end
 
 gem 'jquery-rails'
 
+gem 'rspec-rails', :group => [:test, :development]
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
+	gem 'factory_girl_rails', '~> 1.2'
+	gem 'shoulda-matchers'
+	gem 'guard-rspec'
+	gem 'capybara'
 end
 
 # Deploy with Capistrano
@@ -41,11 +46,6 @@ gem 'inherited_resources'
 
 #Used for default authentication/user account management
 gem 'devise'
-
-#Testing framework
-gem 'factory_girl_rails', '~> 1.2'
-gem 'shoulda-matchers'
-gem 'rspec-rails'
 
 #datetime parser
 gem 'timeliness'
@@ -74,5 +74,5 @@ gem "mongrel"
 gem 'whenever'
 
 #Bootstrap
-	gem "twitter-bootstrap-rails"
+gem "twitter-bootstrap-rails"
 
