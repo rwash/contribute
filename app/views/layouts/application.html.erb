@@ -10,30 +10,37 @@
 </head>
 <body>
 
+
+<script>
+    $(".alert").alert('close')
+</script>
+
+
 <div id="header">
 <%= link_to image_tag("lightbulb5_contribute_logo.png", :class => "logo"), root_path %>
 
 <div id="navigationOptions">
-	<%= link_to "Home", root_path %> | 
+	<!--<%= link_to "Home", root_path %> | -->
 	<% if user_signed_in? %>
-		<%= link_to "View Profile", current_user %> |
-		<%= link_to "Edit Profile", edit_user_registration_path %> | 
-		<%= link_to "Sign Out", destroy_user_session_path, :method => :delete %>
+		Welcome, <%= link_to current_user.name, current_user %>! 
+		<%= link_to "Edit Profile", edit_user_registration_path %>.
+		Not you? <%= link_to "Sign Out", destroy_user_session_path, :method => :delete %>
  	<% else %>
 		<%= link_to "Register", new_user_registration_path %> | <%= link_to "Sign In", new_user_session_path %>
  	<% end %>
 </div>
 </div>
 
-<div id="flash">
 <% if flash[:alert] %>
-	<%= flash[:alert] %>
+<div id="flash">
+	<div class="alert" ><a class="close" data-dismiss="alert">x</a><%= flash[:alert]%></div>
+</div>
 <% end %>
 <% if flash[:notice] %>
-	<div class="alert"><%= flash[:notice] %></div>
+<div id="flash">
+	<div class="alert"><a class="close" data-dismiss="alert">x</a><%= flash[:notice] %></div>
+</div>
 <% end %>
-  </div>
-
 
 <%= yield %>
 

@@ -2,6 +2,9 @@
 $('.tabs').button()
 </script>
 
+<div id="projectWrapper">
+
+
 <div class="projectBtn">
   <% if can? :destroy, @project %>
 		<%= button_to "Delete Project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project? All contributions to it will also be deleted.", :class => 'btn btn-danger' %>
@@ -27,10 +30,9 @@ $('.tabs').button()
 <!-- --------------Bootstrap-tabs------------------- -->
 
 
-<div id="projectWrapper">
 	<div id="projectHead" align="center">
           <h1><%= @project.name %></h1>
-          <h2><%= @project.user.location %> </h2>
+          <h2><%= @project.user.location %></h2>
           <h3>By: <%= link_to @project.user.name, @project.user %> </h3>
 	</div>
 
@@ -45,7 +47,7 @@ $('.tabs').button()
 
 <div class="tab-content">
   <div class="tab-pane active" id="projectContent">
-	<div id="projectHead" align="center">
+	<div align="center">
 
           <% if @project.picture? %>
                 <%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>

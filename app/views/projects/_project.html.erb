@@ -6,6 +6,7 @@
 	
 	<p class="ellipsisName"><%= link_to project.name, project %></p>
 
+	<%= link_to project do %>
 	<div align="center">
 		<% if project.picture? %>
 			<%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
@@ -13,6 +14,7 @@
 			<%= image_tag "BlockSThumb.png", :class => "projectPreviewImage" %>
 		<% end %>
 	</div>
+	<% end %>
 
 	<p>By: <%= project.user.name %></p>
 	<div class="ellipsisDesc">
