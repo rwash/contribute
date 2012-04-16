@@ -1,4 +1,7 @@
 <div id="userProfile">
+
+
+
 	<% if @user.picture? %>
 		<%= image_tag @user.picture.url(:show), :class => "userImage" %>
 	<% else %>
