@@ -76,3 +76,7 @@ gem 'whenever'
 #Bootstrap
 gem "twitter-bootstrap-rails"
 
+#Integration testing
+gem "capybara"
+
+gem 'selenium-webdriver', '>= 2.5.0'
