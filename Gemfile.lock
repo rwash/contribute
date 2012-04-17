@@ -223,6 +223,7 @@ DEPENDENCIES
   rmagick
   rspec-rails
   sass-rails (~> 3.1.5)
+  selenium-webdriver (>= 2.5.0)
   shoulda-matchers
   therubyracer
   timeliness
