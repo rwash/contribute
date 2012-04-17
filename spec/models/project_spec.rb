@@ -108,6 +108,7 @@ describe Project do
 			project = FactoryGirl.build(:project, :end_date => Date.today + 1)
 			assert project.save, 'Failed to save project with date of tomorrow'
 		end
+		#This tests validate_end_date
 		it 'fails when equal to today' do
 			project = FactoryGirl.build(:project, :end_date => Date.today)
 			assert !project.save, 'Incorrectly saved project with date of today'
@@ -137,6 +138,9 @@ describe Project do
 
 	#TODO: pictures
 
+#End Properties
+
+#Begin Methods	
 	describe 'contributions' do
 		#These are instance variables so they can be accessed outside of the before. If they're not
 		# in a before, they appear to like a before(:each) by default and cause duplicate errors 
@@ -179,9 +183,12 @@ describe Project do
 #			assert !@project.active
 #		end
 	end
-#End Properties
 
-#Begin Methods	
-
+	describe 'to_param' do
+		it 'returns name' do
+			project = FactoryGirl.create(:project)
+			assert_equal project.name, project.to_param			
+		end
+	end
 #End Methods
 end

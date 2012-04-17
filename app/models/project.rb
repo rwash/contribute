@@ -47,16 +47,6 @@ class Project < ActiveRecord::Base
 		end
 	end
 
-	#Currently this method only checks if the project is active
-	#But this should be more extensible
-	def isValid?
-		if !active
-			return false	
-		else	
-			return true
-		end
-	end
-
 	def contributions_total
 		Rails.cache.fetch("#{self.id}_contributions_total") do 
 			contributions.sum(:amount)
