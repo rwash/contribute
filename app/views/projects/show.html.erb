@@ -5,20 +5,16 @@ $('.tabs').button()
 <div id="projectWrapper">
 
 
-<div class="projectBtn">
-  <% if can? :destroy, @project %>
-		<%= button_to "Delete Project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project? All contributions to it will also be deleted.", :class => 'btn btn-danger' %>
-  <% elsif can? :edit_contribution, @project %>
-		<%= button_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)), :class => 'btn btn-primary' %>
-  <% else %>
-	<div id="editLink">
-		<%= button_to "Contribute to this project", new_contribution_url(@project), :class => 'btn btn-primary' %>
-	</div>
-  <% end %>
-</div>
-
-
-<div id="projectInfo">
+<div id="sideBar" class="well">
+  <div class="projectBtn" align="center">
+    <% if can? :destroy, @project %>
+		<%= button_to "Delete Project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project? All contributions to it will also be deleted.", :class => 'btn btn-danger btn-large' %>
+    <% elsif can? :edit_contribution, @project %>
+		<%= button_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)), :class => 'btn btn-primary btn-large' %>
+    <% else %>
+		<%= button_to "Contribute to this project", new_contribution_url(@project), :class => 'btn btn-success btn-large' %>
+    <% end %>
+  </div>
 	<ul>
 		<li>End Date: <%= @project.end_date %></li>
 		<li>Category: <%= Category.find(@project.category_id).short_description %></li>
@@ -29,60 +25,59 @@ $('.tabs').button()
 
 <!-- --------------Bootstrap-tabs------------------- -->
 
-
+<div id="projectMain">
 	<div id="projectHead" align="center">
           <h1><%= @project.name %></h1>
           <h2><%= @project.user.location %></h2>
           <h3>By: <%= link_to @project.user.name, @project.user %> </h3>
 	</div>
 
-<div id="tabs">
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a</li>
-    <li><a href="#projectContributors" data-toggle="tab">Contributions</a></li>
-  </ul>
-</div>
+	<div id="tabs">
+  	  <ul class="nav nav-tabs">
+	    <li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a</li>
+	    <li><a href="#projectContributors" data-toggle="tab">Contributions</a></li>
+  	  </ul>
+	</div>
 
 
 
-<div class="tab-content">
-  <div class="tab-pane active" id="projectContent">
-	<div align="center">
-
-          <% if @project.picture? %>
+	<div class="tab-content">
+  	  <div class="tab-pane active" id="projectContent" align="center">
+            <% if @project.picture? %>
                 <%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
-          <% else %>
+            <% else %>
                 <%= image_tag "BlockSShow.png", :class => "projectImage" %>
-          <% end %>
-          <br>
-          <p>Description:<p>
-          <%= @project.long_description %><br/>
-  	</div>
-  </div>
+            <% end %>
+            <br/>
+            <p>Description:<p>
+            <%= @project.long_description %><br/>
+    	  </div>
 
-  <div class="tab-pane" id="projectContributors">
-	<h3> Contributors </h3>
-	<ul class="projectContributors">
-	<% if @project.contributions.size > 0 %>
-          <% @project.contributions.each do |contribution|%>
+	  <div class="tab-pane" id="projectContributors">
+	    <h3> Contributors </h3>
+	    <ul class="projectContributors">
+	    <% if @project.contributions.size > 0 %>
+              <% @project.contributions.each do |contribution|%>
                 <li>
-		<% if contribution.user.picture? %>
-                  <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage" %>
-		<% else %>
-                  <%= image_tag "defaultProfilePic.jpg", :class => "userImage" %>
-        	<% end %>
+		  <% if contribution.user.picture? %>
+                    <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage" %>
+		  <% else %>
+                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage" %>
+        	  <% end %>
 
 		<%= link_to contribution.user.name , contribution.user %>
                 <% if can? :destroy, @project %>
                         - <%= number_to_currency(contribution.amount, :precision => 0) %>
                 <% end %>
                 </li><br/>
-          <% end %>
-	<% else %>
-          <p>Be the first!</p>
-	<% end %>
-	</ul>
-  </div>
+              <% end %>
+	    <% else %>
+              <p>Be the first!</p>
+	    <% end %>
+	    </ul>
+	</div>
+</div>
+
 </div>
 
 </div>
