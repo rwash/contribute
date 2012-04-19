@@ -28,3 +28,7 @@
 # Ignore nano temp files
 *.save
 *.swp
+
+# Ignore code coverage files
+/coverage
+/public/coverage

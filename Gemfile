@@ -27,6 +27,8 @@ group :test do
 	# Capybara is used for integration testing, the stuff you
 	# find in the spec/requests folder
 	gem 'capybara'
+	# Code coverage!
+	gem 'simplecov', :require => false
 end
 
 # Deploy with Capistrano
