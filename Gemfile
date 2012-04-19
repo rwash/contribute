@@ -100,3 +100,9 @@ gem 'whenever'
 # CSS framework used to make the site all nice and purty
 gem "twitter-bootstrap-rails"
 
+#Integration testing
+gem "capybara"
+
+gem 'selenium-webdriver', '>= 2.5.0'
+
+gem 'headless'

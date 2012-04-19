@@ -1,9 +1,29 @@
-users:
+batman:
   id: 1
-  email: mthelen2@gmail.com
-  encrypted_password: $2a$10$7/xIQjZR7lfXSKEwlvRwBOlJ6hMHJBYtrtKl8xuXGNxYXQeOpOPoi
-  name: Batman
-  confirmation_token: 5zsG3JzscUeSq
-  last_sign_in_at: 2012-04-03 02:42:23
-  last_sign_in_ip: 72.44.105.44
-  confirmation_sent_at: 2012-04-01 22:04:53	
+  email: 'mthelen2@gmail.com'
+  encrypted_password: '$2a$10$/urubMpQhNuH8GunJ2O6RukdPfNX9Tu27KR9L/fW3STIX52kQrXR2'
+  name: 'Batman'
+  sign_in_count: 1
+  current_sign_in_at: 2012-04-14 19:00:20
+  last_sign_in_at: 2012-04-14 19:00:20
+  current_sign_in_ip: '72.44.109.67'
+  last_sign_in_ip: '72.44.109.67'
+  confirmed_at: 2012-04-14 19:00:34
+  confirmation_sent_at: 2012-04-14 19:00:18
+  failed_attempts: 0
+  created_at: 2012-04-14 19:00:18
+  updated_at: 2012-04-14 19:00:34
+
+spiderman:
+  id: 2
+  email: 'thelen56@msu.edu'
+  encrypted_password: '$2a$10$opLGKnTqT8cKQIie7Eyd1.8Ri100MBrf4YBb71Z9WZ9ziog0b3sTu'
+  name: 'Spider Man'
+  sign_in_count: 3
+  current_sign_in_at: 2012-04-19 02:16:38
+  last_sign_in_at: 2012-04-10 15:42:34
+  confirmed_at: 2012-04-10 15:16:52
+  confirmation_sent_at: 2012-04-10 15:16:22 
+  failed_attempts: 0
+  created_at: 2012-04-10 15:16:22
+  updated_at: 2012-04-19 02:16:38
