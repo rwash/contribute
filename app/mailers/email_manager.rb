@@ -93,4 +93,43 @@ class EmailManager < ActionMailer::Base
 
 		mail(:to => @user.email, :subject => "The project #{@project.name} has been deleted")
 	end
+
+	def contribution_redo(error, contribution)
+		@contribution = contribution
+		@project = @contribution.project
+		@user = @contribution.user
+		@error = error
+
+		#TODO: fill in andrew
+	end
+
+	def unretriable_cancel_admin(error, contribution)
+		@contribution = contribution
+		@error = error
+
+		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed cancellation")
+	end
+
+	def unretriable_contribution_admin(error, contribution)
+		@contribution = contribution
+		@project = @contribution.project
+		@error = error
+
+		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed executing payment")
+	end
+
+	def update_contribution_admin(error, contribution)
+		@contribution = contribution
+		@error = error
+
+		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed checking its transaction status")
+	end
+
+	def redo_pending_contribution(contribution)
+		#@contribution = contribution
+		@project = contribution.project
+
+		#We're sorry to inform you, last time we checked your contribution to @project.name, it hadn't succeeded.  Please follow this link to redo your payment!
+		#TODO:fill in andrew
+	end
 end

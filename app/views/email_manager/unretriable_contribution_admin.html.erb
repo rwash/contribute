@@ -1,0 +1,11 @@
+<p>You are receiving an email because a contribution has failed payment and is unretriable.  There is a strong possibility, because of the nature of the error code that the error is the fault of the project owner or contribution application.  See the details below to resolve the issue.</p>
+
+<p>Details:</p>
+
+<p>Action: Contribution failed payment</p>
+
+<p>Contribution id: <%= @contribution.id %></p>
+
+<p>Project: <%= @project.name %></p>
+
+<%= render :partial => "error", :locals => {:error => @error} %>
