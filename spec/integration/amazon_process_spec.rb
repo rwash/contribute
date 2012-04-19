@@ -1,4 +1,4 @@
-riequire 'spec_helper'
+require 'spec_helper'
 require 'integration_helper'
 
 class AmazonProcessTesting
