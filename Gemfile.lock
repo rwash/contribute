@@ -79,6 +79,7 @@ GEM
     guard-rspec (0.7.0)
       guard (>= 0.10.0)
     has_scope (0.5.1)
+    headless (0.3.1)
     hike (1.2.1)
     httparty (0.8.1)
       multi_json
@@ -213,6 +214,7 @@ DEPENDENCIES
   devise
   factory_girl_rails (~> 1.2)
   guard-rspec
+  headless
   httparty
   inherited_resources
   jquery-rails
