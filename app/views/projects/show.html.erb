@@ -58,17 +58,20 @@ $('.tabs').button()
 	    <% if @project.contributions.size > 0 %>
               <% @project.contributions.each do |contribution|%>
                 <li>
+		<%= link_to contribution.user do %>
 		  <% if contribution.user.picture? %>
                     <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage" %>
 		  <% else %>
-                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage" %>
+                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"100"%>
         	  <% end %>
 
-		<%= link_to contribution.user.name , contribution.user %>
+		<%=contribution.user.name%>
                 <% if can? :destroy, @project %>
                         - <%= number_to_currency(contribution.amount, :precision => 0) %>
                 <% end %>
-                </li><br/>
+                <% end %>
+		</li>		
+		<br/>
               <% end %>
 	    <% else %>
               <p>Be the first!</p>
