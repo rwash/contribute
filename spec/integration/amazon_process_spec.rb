@@ -16,8 +16,8 @@ class AmazonProcessTesting
 		end
 
 		after :all do
-			#Project.delete_all
-			#Contribution.delete_all			
+			Project.delete_all
+			Contribution.delete_all			
 
 			@headless.destroy
 		end

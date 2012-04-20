@@ -2,6 +2,14 @@ require 'spec_helper'
 require 'requests_helper'
 
 describe 'Project permissions' do
+	before(:all) do
+    @headless = Headless.new
+    @headless.start
+	end
+
+	after(:all) do
+		@headless.destroy
+	end
 
 	describe 'permissions' do
 		context 'user is not signed in' do
