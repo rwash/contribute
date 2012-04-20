@@ -49,7 +49,7 @@ $('.tabs').button()
                 <%= image_tag "BlockSShow.png", :class => "projectImage" %>
             <% end %>
             <br/><br/>
-            <p><%= @project.long_description %></p><br/>
+            <%= simple_format(@project.long_description) %><br/>
     	  </div>
 
 	  <div class="tab-pane" id="projectContributors">

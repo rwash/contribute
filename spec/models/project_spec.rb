@@ -146,6 +146,8 @@ describe Project do
 		# in a before, they appear to like a before(:each) by default and cause duplicate errors 
 		before(:all) do
 			@project = FactoryGirl.create(:project)
+
+			Contribution.any_instance.stub(:destroy) { true }
 			@contribution = FactoryGirl.create(:contribution, :project_id => @project.id)
 			@contribution2 = FactoryGirl.create(:contribution2, :project_id => @project.id)
 			@contribution3 = FactoryGirl.create(:contribution3, :project_id => @project.id)
@@ -169,19 +171,18 @@ describe Project do
 			assert_equal @project.contributions_percentage, 65, "Contribution total was #{@project.contributions_percentage} but should have been 65"	
 		end
 
-# TODO: Why don't these stubs work? Email still gets called	
-#		it 'destroy cancels contributions and sets to inactive' do
-#			@contribution.stub(:destroyt => true}
-#			@contribution2.stub(:destroy => true}
-#			@contribution3.stub(:destroy => true}
+		it 'destroy cancels contributions and sets to inactive' do
+			EmailManager.stub_chain(:project_deleted_to_contributor, :deliver => true)
+			EmailManager.should_receive(:project_deleted_to_contributor).exactly(3).times
+#TODO: WHY?!
 #			@contribution.should_receive(:destroy).once
 #			@contribution2.should_receive(:destroy).once
 #			@contribution3.should_receive(:destroy).once
-#			
-#			@project.destroy
-#			
-#			assert !@project.active
-#		end
+			
+			@project.destroy
+			
+			assert !@project.active
+		end
 	end
 
 	describe 'to_param' do
