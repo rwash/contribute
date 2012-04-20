@@ -46,10 +46,9 @@ class Contribution < ActiveRecord::Base
 				self.status = ContributionStatus::RETRY_CANCEL
 				self.retry_count = self.retry_count + 1
 			else
-				if error.email_admin
-					#Notify the admin - this would be a rare case (and most likely our fault)
-					EmailManager.unretriable_cancel_admin(error, self)
-				end
+				#If the cancel failed, it won't matter to the user. Their contribution is 
+				#cancelled on our end, so it won't get executed
+				EmailManager.unretriable_cancel_to_admin(error, self)
 				self.status = ContributionStatus::FAILURE
 			end
     end
@@ -67,14 +66,13 @@ class Contribution < ActiveRecord::Base
       self.status = ContributionStatus::SUCCESS
 			self.retry_count = 0
 			EmailManager.contribution_successful(self).deliver
-
-			self.transaction_id = response['PayResult']['TransactionId'] unless response['PayResult'].nil?
+			self.transaction_id = response['PayResult']['TransactionId']
 		elsif transaction_status == ContributionStatus::PENDING
 			self.status = ContributionStatus::PENDING
 			self.retry_count = 0
-			self.transaction_id = response['PayResult']['TransactionId'] unless response['PayResult'].nil?
+			self.transaction_id = response['PayResult']['TransactionId']
 		elsif transaction_status == ContributionStatus::CANCELLED
-			#TODO: Who do you e-mail? User could've cancelled or something could've gone wrong... update: will this case ever happen?
+			EmailManager.cancelled_payment_to_admin(self)
 			self.status = ContributionStatus::CANCELLED
 		else
 			error = Amazon::FPS::AmazonValidator.get_error(response)
@@ -84,10 +82,10 @@ class Contribution < ActiveRecord::Base
 				self.retry_count = self.retry_count + 1
 			else
 				if error.email_user
-					EmailManager.redo_contribution(error, self)
+					EmailManager.unretriable_payment_to_user(error, self)
 				end
 				if error.email_admin
-					EmailManager.unretriable_contribution_admin(error, self)
+					EmailManager.unretriable_payment_to_admin(error, self)
 				end
 				self.status = ContributionStatus::FAILURE
 			end
@@ -113,12 +111,10 @@ class Contribution < ActiveRecord::Base
 			self.retry_count = 0
 			self.status = ContributionStatus::SUCCESS
 		elsif transaction_status = ContributionStatus::FAILURE
-			EmailManager.redo_pending_contribution(self)
-			self.retry_count = 0
+			EmailManager.unretriable_payment_to_user(self)
 			self.status = ContributionStatus::FAILURE
 		elsif transaction_status = ContributionStatus::CANCELLED
-			#TODO: Who do you e-mail? User could've cancelled or something could've gone wrong... update: again, should we even worry about this?
-			self.retry_count = 0
+			EmailManager.cancelled_payment_to_admin(self)
 			self.status = ContributionStatus::CANCELLED
 		elsif transaction_status = ContributionStatus::PENDING
 			self.retry_count = self.retry_count + 1
