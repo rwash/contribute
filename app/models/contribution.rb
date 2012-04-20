@@ -48,7 +48,7 @@ class Contribution < ActiveRecord::Base
 			else
 				#If the cancel failed, it won't matter to the user. Their contribution is 
 				#cancelled on our end, so it won't get executed
-				EmailManager.unretriable_cancel_to_admin(error, self)
+				EmailManager.unretriable_cancel_to_admin(error, self).deliver
 				self.status = ContributionStatus::FAILURE
 			end
     end
@@ -72,7 +72,7 @@ class Contribution < ActiveRecord::Base
 			self.retry_count = 0
 			self.transaction_id = response['PayResult']['TransactionId']
 		elsif transaction_status == ContributionStatus::CANCELLED
-			EmailManager.cancelled_payment_to_admin(self)
+			EmailManager.cancelled_payment_to_admin(self).deliver
 			self.status = ContributionStatus::CANCELLED
 		else
 			error = Amazon::FPS::AmazonValidator.get_error(response)
@@ -82,10 +82,10 @@ class Contribution < ActiveRecord::Base
 				self.retry_count = self.retry_count + 1
 			else
 				if error.email_user
-					EmailManager.unretriable_payment_to_user(error, self)
+					EmailManager.unretriable_payment_to_user(error, self).deliver
 				end
 				if error.email_admin
-					EmailManager.unretriable_payment_to_admin(error, self)
+					EmailManager.unretriable_payment_to_admin(error, self).deliver
 				end
 				self.status = ContributionStatus::FAILURE
 			end
@@ -101,7 +101,7 @@ class Contribution < ActiveRecord::Base
 		
 		if !Amazon::FPS::AmazonValidator::valid_transaction_status_response?(response)
 			error = Amazon::FPS::AmazonValidator::get_error(response)
-			EmailManager.update_contribution_admin(error, self)
+			EmailManager.failed_status_to_admin(error, self).deliver
 			return
 		end
 
@@ -110,13 +110,13 @@ class Contribution < ActiveRecord::Base
 			EmailManager.contribution_successful(self).deliver
 			self.retry_count = 0
 			self.status = ContributionStatus::SUCCESS
-		elsif transaction_status = ContributionStatus::FAILURE
-			EmailManager.unretriable_payment_to_user(self)
+		elsif transaction_status == ContributionStatus::FAILURE
+			EmailManager.failed_payment_to_user(self).deliver
 			self.status = ContributionStatus::FAILURE
-		elsif transaction_status = ContributionStatus::CANCELLED
-			EmailManager.cancelled_payment_to_admin(self)
+		elsif transaction_status == ContributionStatus::CANCELLED
+			EmailManager.cancelled_payment_to_admin(self).deliver
 			self.status = ContributionStatus::CANCELLED
-		elsif transaction_status = ContributionStatus::PENDING
+		elsif transaction_status == ContributionStatus::PENDING
 			self.retry_count = self.retry_count + 1
 		end
 
@@ -124,7 +124,6 @@ class Contribution < ActiveRecord::Base
 	end
 
 	def destroy
-		EmailManager.project_deleted_to_contributor(self).deliver
 		self.cancel	
 	end
 end

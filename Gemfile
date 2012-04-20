@@ -27,6 +27,11 @@ group :test do
 	# Capybara is used for integration testing, the stuff you
 	# find in the spec/requests folder
 	gem 'capybara'
+	# Driver for Capybara
+	gem 'selenium-webdriver', '>= 2.5.0'
+	# Allows integration tests to be run on machiness
+	# without a monitor
+	gem 'headless'
 	# Code coverage!
 	gem 'simplecov', :require => false
 end
@@ -99,10 +104,3 @@ gem 'whenever'
 # Bootstrap
 # CSS framework used to make the site all nice and purty
 gem "twitter-bootstrap-rails"
-
-#Integration testing
-gem "capybara"
-
-gem 'selenium-webdriver', '>= 2.5.0'
-
-gem 'headless'
