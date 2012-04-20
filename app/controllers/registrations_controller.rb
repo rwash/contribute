@@ -8,8 +8,9 @@ protected
 		user_path(resource)
 	end
 	
+	# Check out devise's source in lib/devise/controllers/helpers.rb
+	#	Look at after_sign_in_path_for
 	def after_sign_up_path_for(resource)
-		#TODO: unless trying to contribute or create a project
-		edit_user_registration_path(resource)
+		stored_location_for(resource) || edit_user_registration_path(resource)
 	end
 end
