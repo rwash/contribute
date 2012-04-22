@@ -27,7 +27,8 @@
 		<% @user.contributions.each do |contribution|%>
 			<li><%= link_to contribution.project.name, contribution.project %>
 			<% if can? :update, contribution %>
-				- <%= link_to "Edit Contribution", edit_contribution_url(contribution) %>
+				- <%=  %> 
+				<%= link_to "#{number_to_currency(contribution.amount, :precision => 0)}", edit_contribution_url(contribution) %>
 			<% end %>
 			</li>
 		<% end %>
