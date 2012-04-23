@@ -35,3 +35,6 @@
 
 #doc files
 /doc
+
+#Integration coverage
+/spec/integration/coverage

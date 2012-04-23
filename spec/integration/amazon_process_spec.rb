@@ -18,8 +18,6 @@ class AmazonProcessTesting
 		after :all do
 			Project.delete_all
 			Contribution.delete_all			
-
-			@headless.destroy
 		end
 
 		it "created a project successfully" do
