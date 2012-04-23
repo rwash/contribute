@@ -13,7 +13,7 @@
 		<h3> Created Projects </h3>
 		<ul class="userProjects">
 		<% @user.projects.each do |project|%>
-			<li><% render 'project/project', project %></li>
+			<li><% render 'project/project' %></li>
 			<li><%= link_to project.name, project%></li>
 		<% end %>
 		</ul>
