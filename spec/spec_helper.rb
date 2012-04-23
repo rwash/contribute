@@ -37,4 +37,5 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
+	Capybara.server_port = 3999
 end

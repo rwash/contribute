@@ -8,8 +8,8 @@ class AmazonProcessTesting
 		before :all do
 			Capybara.default_driver = :selenium
 
-			@project = FactoryGirl.build(:project)
-			@contribution = nil
+			@test1_project = FactoryGirl.build(:project)
+			@test2_project = FactoryGirl.create(:project2)
 
 			@headless = Headless.new
 			@headless.start
@@ -29,12 +29,12 @@ class AmazonProcessTesting
 			current_path.should == new_project_path
 
 			#fill in form
-			fill_in 'project_name' , :with => @project.name
+			fill_in 'project_name' , :with => @test1_project.name
 			#fill_in(:project_categroy_iid, :with => project.category_id)
-			fill_in 'project_funding_goal', :with => @project.funding_goal
-			fill_in 'DatePickerEndDate', :with => @project.end_date.strftime('%m/%d/%Y')
-			fill_in 'project_short_description', :with => @project.short_description
-			fill_in 'project_long_description', :with => @project.long_description
+			fill_in 'project_funding_goal', :with => @test1_project.funding_goal
+			fill_in 'DatePickerEndDate', :with => @test1_project.end_date.strftime('%m/%d/%Y')
+			fill_in 'project_short_description', :with => @test1_project.short_description
+			fill_in 'project_long_description', :with => @test1_project.long_description
 		
 			click_button 'Create Project'
 
@@ -47,38 +47,25 @@ class AmazonProcessTesting
 			find('a').click
 
 			#Now we should be back at contribute
-			current_path.should == project_path(@project)
+			current_path.should == project_path(@test1_project)
 			page.should have_content('Project saved successfully')
 
-			get_and_assert_project(@project.name)
+			get_and_assert_project(@test1_project.name)
 		end
 
 		it "should contribute successfully" do
-			@project = get_and_assert_project(@project.name)
-			#login with our contributor
-			login('thelen56@msu.edu', 'aaaaaa')
-
-			#visit the project page we've just created with a different user
-			visit project_path(@project.name)
-
-			#contribute!
-			click_button 'Contribute to this project'
-			current_path.should == new_contribution_path(@project.name)
-
-			fill_in 'contribution_amount', :with => 100
-			click_button 'Make Contribution'
-
-			make_amazon_payment('contribute_testing@hotmail.com', 'testing')
-
-			#Calling find first, so capybara will wait until it appears
-			page.should have_content('Contribution entered successfully')
-			current_path.should == project_path(@project.name)
+			generate_contribution(
+				'thelen56@msu.edu', #contribution login
+				'aaaaaa',
+				'contribute_testing@hotmail.com', #amazon login
+				'testing',
+				@test2_project, #the project to contribute to
+				100) #the amount
 		end
 
 		it "should edit contribution successfully" do
 			login('thelen56@msu.edu', 'aaaaaa')
-			@project = get_and_assert_project(@project.name)
-			@contribution = get_and_assert_contribution(@project.id)
+			@contribution = get_and_assert_contribution(@test2_project.id)
 
 			visit edit_contribution_path(@contribution)
 
@@ -89,9 +76,9 @@ class AmazonProcessTesting
 
 			page.should have_content('Contribution successfully updated')
 
-			cancelled_contribution = Contribution.where(:status => ContributionStatus::CANCELLED, :project_id => @project.id)
+			cancelled_contribution = Contribution.where(:status => ContributionStatus::CANCELLED, :project_id => @test2_project.id)
 
-			new_contribution = Contribution.where(:status => ContributionStatus::NONE, :project_id => @project.id)
+			new_contribution = Contribution.where(:status => ContributionStatus::NONE, :project_id => @test2_project.id)
 
 			cancelled_contribution.should_not be_nil
 			new_contribution.should_not be_nil

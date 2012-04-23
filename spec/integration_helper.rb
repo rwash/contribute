@@ -1,11 +1,10 @@
 def login(email, password)
-	visit(root_path)
-	click_link 'Sign In'
+	visit user_session_path	
 
 	fill_in 'Email', :with => email
 	fill_in 'Password', :with => password
 	click_button 'Sign in'
-
+	
 	page.should have_content('Signed in successfully')
 end
 
@@ -48,3 +47,35 @@ def make_amazon_payment(user, password)
 	#click_amazon_continue
 end
 
+def generate_contribution(user, password, amazon_user, amazon_password, project,amount)
+	#login
+	login(user, password)
+	
+	#go to project page
+	visit project_path(project)
+
+	#contribute!
+	click_button 'Contribute to this project'
+	current_path.should == new_contribution_path(project.name)
+
+	fill_in 'contribution_amount', :with => amount
+	click_button 'Make Contribution'
+
+	make_amazon_payment(amazon_user, amazon_password)
+
+	#Calling find first, so capybara will wait until it appears
+	page.should have_content('Contribution entered successfully')
+	current_path.should == project_path(project.name)
+
+	contribution = Contribution.last
+
+	contribution.should_not be_nil
+	contribution.project_id.should equal(project.id)
+
+	return contribution
+end
+
+#Used for amazon redirection
+def get_full_url(path)
+	return "http://127.0.0.1:#{Capybara.server_port}#{path}"
+end
