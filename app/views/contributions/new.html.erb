@@ -1,5 +1,13 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(function() {
+      $('#contribution_amount').focus();
+    });
+  </script>
+<% end %>
+
 <div id="contribution">
-<h3>Contribute to <%= @project.name %></h3>
-<br/>
-<%= render "form" %>
+	<h3>Contribute to <%= @project.name %></h3>
+	<br/>
+	<%= render "form" %>
 </div>
