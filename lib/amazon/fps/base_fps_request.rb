@@ -7,7 +7,6 @@ module FPS
 class BaseFpsRequest
 	include HTTParty
 	format :xml
-	debug_output $stdout
 
 	def initialize
 		@app_name = "FPS"
