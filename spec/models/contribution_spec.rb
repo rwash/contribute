@@ -149,18 +149,17 @@ describe Contribution do
 			assert_equal 'abcdefg', contribution.transaction_id
 		end
 
-#TODO: Why is the hash returned from the send call nil?
-#		it 'on pending, updates contribution status, sets retry count to 0, and sets transaction id' do
-#			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::PENDING }
-#
-#			contribution = FactoryGirl.create(:contribution)
-#			contribution.project.stub(:payment_account_id) { '123456' }
-#			contribution.execute_payment
-#
-#			assert_equal ContributionStatus::PENDING, contribution.status
-#			assert_equal 0, contribution.retry_count
-#			assert_equal 'abcdefg', contribution.transaction_id
-#		end
+		it 'on pending, updates contribution status, sets retry count to 0, and sets transaction id' do
+			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::PENDING }
+
+			contribution = FactoryGirl.create(:contribution)
+			contribution.project = mock_model(Project)
+			contribution.execute_payment
+
+			assert_equal ContributionStatus::PENDING, contribution.status
+			assert_equal 0, contribution.retry_count
+			assert_equal 'abcdefg', contribution.transaction_id
+		end
 	
 		it 'on cancelled, updates contribution status' do
 			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::CANCELLED }
