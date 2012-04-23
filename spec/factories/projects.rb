@@ -8,7 +8,7 @@ FactoryGirl.define do
 		end_date { Date.today + 1 }
 		category_id 1
 		funding_goal 1000
-		payment_account_id 'adsfq42t354yw5ysdyw5ywsdfg6sd'
+		payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
 		user_id 1
   end
 
@@ -19,7 +19,7 @@ FactoryGirl.define do
 		end_date { Date.today + 2 }
 		category_id 2 
 		funding_goal 3000
-		payment_account_id 'adsfq42t354asdf83w5ywsdfg6sd'
+		payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
 		user_id 2
   end
 end
