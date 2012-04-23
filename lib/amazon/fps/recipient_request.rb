@@ -13,7 +13,6 @@ class RecipientRequest < BaseCbuiRequest
 		@params["recipientPaysFee"] = true #what should we set this to?
 		@params["pipelineName"] = "Recipient"
 		@params["returnUrl"] = return_url
-		puts 'returnUrl', @params["returnUrl"] 
 	end
 end
 

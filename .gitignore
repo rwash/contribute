@@ -32,3 +32,6 @@
 # Ignore code coverage files
 /coverage
 /public/coverage
+
+#doc files
+/doc

@@ -6,8 +6,8 @@ class AmazonProcessTesting
 		fixtures :users
 
 		before :all do
-			Project.delete_all
-			Contribution.delete_all
+			Capybara.default_driver = :selenium
+
 			@project = FactoryGirl.build(:project)
 			@contribution = nil
 
@@ -49,7 +49,7 @@ class AmazonProcessTesting
 			find('a').click
 
 			#Now we should be back at contribute
-			current_path.should == root_path
+			current_path.should == project_path(@project)
 			page.should have_content('Project saved successfully')
 
 			get_and_assert_project(@project.name)
@@ -70,7 +70,7 @@ class AmazonProcessTesting
 			fill_in 'contribution_amount', :with => 100
 			click_button 'Make Contribution'
 
-			make_amazon_payment('thelen56@msu.edu', 'fartoofrail')
+			make_amazon_payment('contribute_testing@hotmail.com', 'testing')
 
 			#Calling find first, so capybara will wait until it appears
 			page.should have_content('Contribution entered successfully')

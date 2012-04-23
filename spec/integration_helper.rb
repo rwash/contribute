@@ -39,11 +39,12 @@ end
 def make_amazon_payment(user, password)
 	login_amazon(user, password)
 
-	#choose credit card radio button
-	choose 'existingCard_0'
+	#update: if your account has different payment options, you'll need to choose which one
+	#choose 'existingCard_0'
 	click_amazon_continue
 
-	#confirm again...
-	click_amazon_continue
+
+	#update: might have to confirm again
+	#click_amazon_continue
 end
 

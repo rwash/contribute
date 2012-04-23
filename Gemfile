@@ -104,3 +104,6 @@ gem 'whenever'
 # Bootstrap
 # CSS framework used to make the site all nice and purty
 gem "twitter-bootstrap-rails"
+
+#Documentation generation
+gem 'rdoc'
