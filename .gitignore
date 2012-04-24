@@ -38,3 +38,4 @@
 
 #Integration coverage
 /spec/integration/coverage
+/spec/coverage
