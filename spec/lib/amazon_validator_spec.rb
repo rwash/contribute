@@ -110,4 +110,41 @@ describe Amazon::FPS::AmazonValidator do
 			run_valid_cancel_status_test(ContributionStatus::FAILURE)
 		end
 	end
+
+	describe "get_pay_status" do
+		before :each do
+			@failed_response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
+			@successful_response = {"PayResult"=>{"TransactionId"=>"16RHAKMLO3MUTK8Q5PFG3FLFN5UULKVZ2H1", "TransactionStatus"=>"Pending"}, "ResponseMetadata"=>{"RequestId"=>"7e14f1f0-c2f9-4c56-8316-6b06cea3973a:0"}}
+		end
+		
+		it "should succeed on valid input" do
+			run_get_pay_status_test(@successful_response, ContributionStatus::PENDING)
+		end
+
+		it "should fail on invalid input" do
+			run_get_pay_status_test(@failed_response, ContributionStatus::FAILURE)
+		end
+	end
+
+	describe "get_error" do
+		before :each do
+      @response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
+		end
+
+		it "should return the correct error on valid input" do
+			expected = AmazonError.find_by_error("TokenNotActive_Sender")
+			expected.should_not be_nil
+
+			run_get_error_test(expected)
+		end
+
+		it "should return an unknown error on given input" do
+			expected = AmazonError.unknown_error("New_Error")
+			expected.should_not be_nil
+
+			@response["Errors"]["Error"]["Code"] = "New_Error"
+			run_get_error_test(expected)
+		end
+	end
+
 end

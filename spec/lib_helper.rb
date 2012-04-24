@@ -22,3 +22,15 @@ def run_valid_cancel_status_test(expected)
 	result.should equal(expected)
 end
 
+def	run_get_pay_status_test(response, expected)
+	result = Amazon::FPS::AmazonValidator.get_pay_status(response)
+	
+	result.should equal(expected)
+end
+
+def run_get_error_test(expected)
+	result = Amazon::FPS::AmazonValidator.get_error(@response)
+
+	result.error.should == expected.error
+end
+
