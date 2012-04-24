@@ -28,7 +28,7 @@
 <% if @projects1.count > 0 %>
   <div class="column1">
 	<% @projects1.each do |project| %>
-		<%= render project%>
+		<%= render :partial => 'shared/project', :locals => { :project => project } %>
 	<% end %>
   </div>
 <% end %>
@@ -36,7 +36,7 @@
 <% if @projects2.count > 0 %>
   <div class="column2">
 	<% @projects2.each do |project| %>
-		<%= render project%>
+		<%= render :partial => 'shared/project', :locals => { :project => project } %>
 	<% end %>
   </div>
 <% end %>
@@ -44,7 +44,7 @@
 <% if @projects3.count >0 %>
   <div class="column3">
 	<% @projects3.each do |project| %>
-		<%= render project %>
+		<%= render :partial => 'shared/project', :locals => { :project => project } %>
 	<% end %>
 </div>
 <% end %>

@@ -1,5 +1,3 @@
-require 'file_size_validator'
-
 class Project < ActiveRecord::Base
 	MAX_NAME_LENGTH = 75
 	MAX_SHORT_DESC_LENGTH = 200
