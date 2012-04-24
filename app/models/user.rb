@@ -1,5 +1,3 @@
-require 'file_size_validator'
-
 class User < ActiveRecord::Base
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
