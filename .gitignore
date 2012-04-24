@@ -39,3 +39,4 @@
 #Integration coverage
 /spec/integration/coverage
 /spec/coverage
+/spec/lib/coverage
