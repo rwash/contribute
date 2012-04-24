@@ -1,7 +1,4 @@
 <div id="userProfile">
-
-
-
 	<% if @user.picture? %>
 		<%= image_tag @user.picture.url(:show), :class => "userImage" %>
 	<% else %>
@@ -16,8 +13,8 @@
 		<h3> Created Projects </h3>
 		<ul class="userProjects">
 		<% @user.projects.each do |project|%>
-			<li><% render 'projects/project' %></li>
-			<li><%= link_to project.name , project%></li>
+			<li><% render 'project/project' %></li>
+			<li><%= link_to project.name, project%></li>
 		<% end %>
 		</ul>
 	<% end %>
