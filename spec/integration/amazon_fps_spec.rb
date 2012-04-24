@@ -32,7 +32,6 @@ class AmazonFpsTesting
 			request = Amazon::FPS::PayRequest.new(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
 			response = request.send()
 
-			puts response
 			response['Errors'].should be_nil
 			response['PayResult']['TransactionStatus'].should_not be_nil
 	
