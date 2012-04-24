@@ -43,7 +43,7 @@ def make_amazon_payment(user, password)
 	click_amazon_continue
 
 	#update: might have to confirm again
-	#click_amazon_continue
+	click_amazon_continue
 end
 
 def generate_contribution(user, password, amazon_user, amazon_password, project,amount)
@@ -62,9 +62,9 @@ def generate_contribution(user, password, amazon_user, amazon_password, project,
 
 	make_amazon_payment(amazon_user, amazon_password)
 
+	print page.html
 	#Calling find first, so capybara will wait until it appears
 	page.should have_content('Contribution entered successfully')
-
 	current_path.should == project_path(project.name)
 
 	contribution = Contribution.last
