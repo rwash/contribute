@@ -34,7 +34,6 @@ class AmazonValidator
 
 	#if the response contains errors or no transaction status
 	def self.get_pay_status(response)
-		puts 'get_pay_status', response
 		if !response['Errors'].nil? or response['PayResult'].nil? or response['PayResult']['TransactionStatus'].nil?
 			return ContributionStatus::FAILURE
 		else
