@@ -65,7 +65,7 @@ describe Contribution do
 
 #Begin Methods
 	describe "cancel" do
-		before(:all) do
+		before(:each) do
 			Amazon::FPS::CancelTokenRequest.any_instance.stub(:send) {}
 		end
 
@@ -131,7 +131,7 @@ describe Contribution do
 	end
 
 	describe "execute_payment" do
-		before(:all) do
+		before(:each) do
 			Amazon::FPS::PayRequest.any_instance.stub(:send => Hash[ 'PayResult' => Hash[ 'TransactionId' => 'abcdefg' ] ]) 
 		end
 
@@ -141,7 +141,7 @@ describe Contribution do
 			EmailManager.should_receive(:contribution_successful).once
 
 			contribution = FactoryGirl.create(:contribution)
-			contribution.project.stub(:payment_account_id) { '123456' }
+			contribution.project = mock_model(Project)
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::SUCCESS, contribution.status
@@ -149,18 +149,17 @@ describe Contribution do
 			assert_equal 'abcdefg', contribution.transaction_id
 		end
 
-#TODO: Why is the hash returned from the send call nil?
-#		it 'on pending, updates contribution status, sets retry count to 0, and sets transaction id' do
-#			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::PENDING }
-#
-#			contribution = FactoryGirl.create(:contribution)
-#			contribution.project.stub(:payment_account_id) { '123456' }
-#			contribution.execute_payment
-#
-#			assert_equal ContributionStatus::PENDING, contribution.status
-#			assert_equal 0, contribution.retry_count
-#			assert_equal 'abcdefg', contribution.transaction_id
-#		end
+		it 'on pending, updates contribution status, sets retry count to 0, and sets transaction id' do
+			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::PENDING }
+
+			contribution = FactoryGirl.create(:contribution)
+			contribution.project = mock_model(Project)
+			contribution.execute_payment
+
+			assert_equal ContributionStatus::PENDING, contribution.status
+			assert_equal 0, contribution.retry_count
+			assert_equal 'abcdefg', contribution.transaction_id
+		end
 	
 		it 'on cancelled, updates contribution status' do
 			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::CANCELLED }
@@ -168,7 +167,7 @@ describe Contribution do
 			EmailManager.should_receive(:cancelled_payment_to_admin).once
 
 			contribution = FactoryGirl.create(:contribution)
-			contribution.project.stub(:payment_account_id) { '123456' }
+			contribution.project = mock_model(Project)
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::CANCELLED, contribution.status
@@ -179,7 +178,7 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('retriable') }
 
 			contribution = FactoryGirl.create(:contribution, :retry_count => 2)
-			contribution.project.stub(:payment_account_id) { '123456' }
+			contribution.project = mock_model(Project)
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::RETRY_PAY, contribution.status
@@ -193,7 +192,7 @@ describe Contribution do
 			EmailManager.should_receive(:unretriable_payment_to_user).once
 
 			contribution = FactoryGirl.create(:contribution)
-			contribution.project.stub(:payment_account_id) { '123456' }
+			contribution.project = mock_model(Project)
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -206,7 +205,7 @@ describe Contribution do
 			EmailManager.should_receive(:unretriable_payment_to_admin).once
 
 			contribution = FactoryGirl.create(:contribution)
-			contribution.project.stub(:payment_account_id) { '123456' }
+			contribution.project = mock_model(Project)
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -221,7 +220,7 @@ describe Contribution do
 			EmailManager.should_receive(:unretriable_payment_to_user).once
 
 			contribution = FactoryGirl.create(:contribution)
-			contribution.project.stub(:payment_account_id) { '123456' }
+			contribution.project = mock_model(Project)
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -230,7 +229,7 @@ describe Contribution do
 	end
 
 	describe "update_status" do
-		before(:all) do
+		before(:each) do
 			Amazon::FPS::GetTransactionStatusRequest.any_instance.stub(:send) {}
 		end
 

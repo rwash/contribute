@@ -8,9 +8,6 @@ class AmazonProcessTesting
 		before :all do
 			Capybara.default_driver = :selenium
 
-			@test1_project = FactoryGirl.build(:project)
-			@test2_project = FactoryGirl.create(:project2)
-
 			@headless = Headless.new
 			@headless.start
 		end
@@ -20,70 +17,123 @@ class AmazonProcessTesting
 			Contribution.delete_all			
 		end
 
-		it "created a project successfully" do
-			#login with our project creator
-			login('mthelen2@gmail.com', 'aaaaaa')
+	
+		describe 'project' do
+			it "create successfully" do
+				project = FactoryGirl.build(:project)
 
-			#create a project
-			visit(new_project_path)
-			current_path.should == new_project_path
+				#login with our project creator
+				login('mthelen2@gmail.com', 'aaaaaa')
 
-			#fill in form
-			fill_in 'project_name' , :with => @test1_project.name
-			#fill_in(:project_categroy_iid, :with => project.category_id)
-			fill_in 'project_funding_goal', :with => @test1_project.funding_goal
-			fill_in 'DatePickerEndDate', :with => @test1_project.end_date.strftime('%m/%d/%Y')
-			fill_in 'project_short_description', :with => @test1_project.short_description
-			fill_in 'project_long_description', :with => @test1_project.long_description
-		
-			click_button 'Create Project'
+				#create a project
+				visit(new_project_path)
+				current_path.should == new_project_path
 
-			login_amazon('spartanfan10@hotmail.com', 'testing')
+				#fill in form
+				fill_in 'project_name' , :with => project.name
+				#fill_in(:project_categroy_iid, :with => project.category_id)
+				fill_in 'project_funding_goal', :with => project.funding_goal
+				fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
+				fill_in 'project_short_description', :with => project.short_description
+				fill_in 'project_long_description', :with => project.long_description
+			
+				click_button 'Create Project'
 
-			#Saying 'yes, we'll take your money'
-			click_amazon_continue
+				login_amazon('spartanfan10@hotmail.com', 'testing')
 
-			#Confirm, yes thank you for letting me take people's money
-			find('a').click
+				#Saying 'yes, we'll take your money'
+				click_amazon_continue
 
-			#Now we should be back at contribute
-			current_path.should == project_path(@test1_project)
-			page.should have_content('Project saved successfully')
+				#Confirm, yes thank you for letting me take people's money
+				find('a').click
 
-			get_and_assert_project(@test1_project.name)
+				#Now we should be back at contribute
+				current_path.should == project_path(project)
+				page.should have_content('Project saved successfully')
+
+				get_and_assert_project(project.name)
+			end
 		end
 
-		it "should contribute successfully" do
-			generate_contribution(
-				'thelen56@msu.edu', #contribution login
-				'aaaaaa',
-				'contribute_testing@hotmail.com', #amazon login
-				'testing',
-				@test2_project, #the project to contribute to
-				100) #the amount
-		end
-
-		it "should edit contribution successfully" do
-			login('thelen56@msu.edu', 'aaaaaa')
-			@contribution = get_and_assert_contribution(@test2_project.id)
-
-			visit edit_contribution_path(@contribution)
-
-			fill_in 'contribution_amount', :with => @contribution.amount + 5
-			click_button 'Update Contribution'
-
-			make_amazon_payment('contribute_testing@hotmail.com', 'testing')
-
-			page.wait_until() do
-				page.should have_content('Contribution successfully updated')
+		describe 'contribution' do
+			before :all do
+				@project = FactoryGirl.create(:project2)
 			end
 
-			cancelled_contribution = Contribution.where(:status => ContributionStatus::CANCELLED, :project_id => @test2_project.id)
+			it "with invalid amount should fail" do
+				login('thelen56@msu.edu', 'aaaaaa')
+				
+				#go to project page
+				visit project_path(@project)
 
-			new_contribution = Contribution.where(:status => ContributionStatus::NONE, :project_id => @test2_project.id)
+				#contribute!
+				click_button 'Contribute to this project'
+				current_path.should == new_contribution_path(@project.name)
 
-			cancelled_contribution.should_not be_nil
-			new_contribution.should_not be_nil
+				fill_in 'contribution_amount', :with => 'you_fail_me' 
+				click_button 'Make Contribution'
+
+				page.should have_content('Contribute to')
+				page.should have_content('prevented this contribution from being saved')
+			end
+
+			it "should contribute successfully" do
+				generate_contribution(
+					'thelen56@msu.edu', #contribution login
+					'aaaaaa',
+					'contribute_testing@hotmail.com', #amazon login
+					'testing',
+					@project, #the project to contribute to
+					100) #the amount
+			end
+
+			it "with smaller contribution amount should fail" do
+				login('thelen56@msu.edu', 'aaaaaa')
+				contribution = get_and_assert_contribution(@project.id)
+
+				visit edit_contribution_path(contribution)
+
+				fill_in 'contribution_amount', :with => contribution.amount - 5
+				click_button 'Update Contribution'
+
+				page.should have_content('Edit contribution to')
+				page.should have_content('prevented this contribution from being saved')
+			end
+
+			it "with invalid contribution amount should fail" do
+				login('thelen56@msu.edu', 'aaaaaa')
+				contribution = get_and_assert_contribution(@project.id)
+
+				visit edit_contribution_path(contribution)
+
+				fill_in 'contribution_amount', :with => 'you_fail_me'
+				click_button 'Update Contribution'
+
+				page.should have_content('Edit contribution to')
+				page.should have_content('prevented this contribution from being saved')
+			end
+
+			it "should edit contribution successfully" do
+				login('thelen56@msu.edu', 'aaaaaa')
+				contribution = get_and_assert_contribution(@project.id)
+
+				visit edit_contribution_path(contribution)
+
+				fill_in 'contribution_amount', :with => contribution.amount + 5
+				click_button 'Update Contribution'
+
+				make_amazon_payment('contribute_testing@hotmail.com', 'testing')
+
+				page.wait_until() do
+					page.should have_content('Contribution successfully updated')
+				end
+
+				cancelled_contribution = Contribution.where(:status => ContributionStatus::CANCELLED, :project_id => @project.id)
+				new_contribution = Contribution.where(:status => ContributionStatus::NONE, :project_id => @project.id)
+
+				cancelled_contribution.should_not be_nil
+				new_contribution.should_not be_nil
+			end
 		end
 	end
 end
