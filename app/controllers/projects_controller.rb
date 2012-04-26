@@ -24,8 +24,10 @@ class ProjectsController < InheritedResources::Base
 		@project.user_id = current_user.id
 		@project.payment_account_id = Project::UNDEFINED_PAYMENT_ACCOUNT_ID #To pass validation at valid?
 	
-		if @project.valid? 
-			session[:project] = @project
+		if @project.valid?
+			@project.save
+			session[:project_id] = @project.id
+
 			request = Amazon::FPS::RecipientRequest.new(save_project_url)
 			return redirect_to request.url
 		else
@@ -41,9 +43,11 @@ class ProjectsController < InheritedResources::Base
 			return redirect_to root_path
 		end
 
-		@project = session[:project]
-		session[:project] = nil
+		@project = Project.find_by_id(session[:project_id])
+		@project.confirmed = true
 		@project.payment_account_id = params[:tokenID]
+
+		session[:project_id] = nil
 
 		if !@project.save 
 			flash[:alert] = "An error occurred with your project. Please try again."	
