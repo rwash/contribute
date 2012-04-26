@@ -127,11 +127,9 @@ describe Amazon::FPS::AmazonValidator do
 	end
 
 	describe "get_error" do
-		before :each do
-      @response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
-		end
-
 		it "should return the correct error on valid input" do
+      @response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
+
 			expected = AmazonError.find_by_error("TokenNotActive_Sender")
 			expected.should_not be_nil
 
@@ -139,11 +137,19 @@ describe Amazon::FPS::AmazonValidator do
 		end
 
 		it "should return an unknown error on given input" do
+      @response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
+
 			expected = AmazonError.unknown_error("New_Error")
 			expected.should_not be_nil
 
 			@response["Errors"]["Error"]["Code"] = "New_Error"
 			run_get_error_test(expected)
+		end
+
+		it "should raise exception if errors is nill" do
+			response = { "unexpected" => "I don't do what you expect" }
+
+			lambda { Amazon::FPS::AmazonValidator.get_error(response) }.should raise_error
 		end
 	end
 
