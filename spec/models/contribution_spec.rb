@@ -132,7 +132,7 @@ describe Contribution do
 
 	describe "execute_payment" do
 		before(:each) do
-			Amazon::FPS::PayRequest.any_instance.stub(:send => Hash[ 'PayResult' => Hash[ 'TransactionId' => 'abcdefg' ] ]) 
+			Amazon::FPS::PayRequest.any_instance.stub(:send => { 'PayResult' => { 'TransactionId' => 'abcdefg'} }) 
 		end
 
 		it 'on success, updates contribution status, sets retry count to 0, sets transaction id, and sends e-mail to user' do
