@@ -27,6 +27,7 @@ class Project < ActiveRecord::Base
 	def initialize(attributes = nil, options = {})
 		super
 		self.active = true
+		self.confirmed = false
 	end
 
 	def end_date=(val)

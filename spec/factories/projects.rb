@@ -10,6 +10,7 @@ FactoryGirl.define do
 		funding_goal 1000
 		payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
 		user_id 1
+    confirmed true
   end
 
   factory :project2, class: Project do
@@ -21,5 +22,6 @@ FactoryGirl.define do
 		funding_goal 3000
 		payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
 		user_id 1
+    confirmed true
   end
 end
