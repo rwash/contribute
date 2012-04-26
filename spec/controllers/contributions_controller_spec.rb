@@ -10,6 +10,7 @@ describe ContributionsController do
 
 		after(:all) do
 			Project.delete_all
+			Contribution.delete_all
 		end
 
 		context 'user is not signed in' do
