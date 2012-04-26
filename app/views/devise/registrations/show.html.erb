@@ -23,7 +23,7 @@
 	<% if @user.contributions.size > 0 %>
 		<% @user.contributions.each do |contribution|%>
 			<li><%= link_to contribution.project.name, contribution.project %>
-			<% if can? :update, contribution %>
+			<% if @user == current_user %>
 				- <%=  %> 
 				<%= link_to "#{number_to_currency(contribution.amount, :precision => 0)}", edit_contribution_url(contribution) %>
 			<% end %>

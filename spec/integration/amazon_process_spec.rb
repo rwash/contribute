@@ -50,8 +50,12 @@ class AmazonProcessTesting
 				#Now we should be back at contribute
 				current_path.should == project_path(project)
 				page.should have_content('Project saved successfully')
-
+				
 				get_and_assert_project(project.name)
+
+				last_email.to.should eq(['mthelen2@gmail.com'])
+				last_email.subject.should match(project.name)
+				last_email.subject.should match('has been created')
 			end
 		end
 
@@ -85,6 +89,10 @@ class AmazonProcessTesting
 					'testing',
 					@project, #the project to contribute to
 					100) #the amount
+				
+				last_email.to.should eq(['thelen56@msu.edu'])
+				last_email.subject.should match(@project.name)
+				last_email.subject.should match('Your contribution to')
 			end
 
 			it "with smaller contribution amount should fail" do
@@ -133,6 +141,10 @@ class AmazonProcessTesting
 
 				cancelled_contribution.should_not be_nil
 				new_contribution.should_not be_nil
+
+				last_email.to.should eq(['thelen56@msu.edu'])
+				last_email.subject.should match(@project.name)
+				last_email.subject.should match('Your edited contribution to')
 			end
 		end
 	end
