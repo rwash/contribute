@@ -12,7 +12,8 @@ namespace :contribute do
 	end
 
 	def unconfirmed_projects(logger)
-		to_delete_projects = Project.where("confirmed = ? and created_at <= ?", false, (DateTime.now - 6.hours))
+		# Select projects that are unconfirmed and were created 6 hours ago or more
+		to_delete_projects = Project.where("confirmed = :confirmed and created_at <= :time", { :confirmed => false, :time => (DateTime.now - 6.hours) })
 		logger.info "Found #{to_delete_projects.size} unconfirmed projects to delete"
 	
 		to_delete_projects.each do |project|
