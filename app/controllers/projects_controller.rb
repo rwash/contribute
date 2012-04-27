@@ -12,7 +12,7 @@ class ProjectsController < InheritedResources::Base
 	authorize_resource
 
 	def index
-		@projects = Project.limit(9).where("active = 1").order("end_date ASC")
+		@projects = Project.limit(9).where("active = 1 and confirmed = 1").order("end_date ASC")
 		@projects1 = @projects.slice(0..2) || []
 		@projects2 = @projects.slice(3..5) || []
 		@projects3 = @projects.slice(6..8) || []
