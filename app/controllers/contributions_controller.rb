@@ -137,7 +137,7 @@ class ContributionsController < ApplicationController
 
 protected
 	def validate_project
-		if !@project.active
+		if !@project.active or !@project.confirmed
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path	
 		end
