@@ -40,3 +40,4 @@
 /spec/integration/coverage
 /spec/coverage
 /spec/lib/coverage
+/spec/controllers/coverage
