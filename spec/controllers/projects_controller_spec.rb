@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'controller_helper'
 
 describe ProjectsController do
   include Devise::TestHelpers
@@ -66,6 +67,15 @@ describe ProjectsController do
 	describe "functional tests:" do
 		render_views
 
+		before(:all) do
+			@user = FactoryGirl.create(:user)
+			@user.confirm!
+		end
+
+		after(:all) do
+			@user.delete
+		end
+
 		context "index action" do
 			it "should succeed" do
 				get "index"
@@ -76,13 +86,6 @@ describe ProjectsController do
 		context "create action" do
 			before(:all) do
 				UUIDTools::UUID.stub(:random_create){}
-
-				@user = FactoryGirl.create(:user)
-				@user.confirm!
-			end
-
-			after(:all) do
-				@user.delete
 			end
 
 			it "should succeed for signed in user" do
@@ -107,18 +110,11 @@ describe ProjectsController do
 		
 		context "destroy action" do
 			before(:all) do
-				@project = FactoryGirl.create(:project)
-
-				@user = FactoryGirl.create(:user)
-				@user.confirm!
-
-				@project.user_id = @user.id
-				@project.save
+				@project = FactoryGirl.create(:project, :user_id => @user.id)
 			end
 
 			after(:all) do
-				@project.delete unless @project.nil?
-				@user.delete
+				Project.delete_all
 			end
 
 			it "should succeed destroy" do
@@ -142,9 +138,6 @@ describe ProjectsController do
 
 		context "save action" do
 			before(:all) do
-				@user = FactoryGirl.create(:user)
-				@user.confirm!
-
 				@project = FactoryGirl.create(:project, :user_id => @user.id, :confirmed => false)
 			end
 		
@@ -154,8 +147,7 @@ describe ProjectsController do
 			end
 
 			after(:all) do
-				@project.delete
-				@user.delete
+				Project.delete_all
 			end
 
 			it "should succeed with valid input" do
