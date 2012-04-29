@@ -136,9 +136,54 @@ describe ProjectsController do
 				delete :destroy, :id => @project.name
 
 				response.should redirect_to(project_path(@project))
-
-				puts 'flash', flash[:alert]
 				assert flash[:alert].include?("could not be deleted"), flash[:alert]
+			end
+		end
+
+		context "save action" do
+			before(:all) do
+				@user = FactoryGirl.create(:user)
+				@user.confirm!
+
+				@project = FactoryGirl.create(:project, :user_id => @user.id, :confirmed => false)
+			end
+		
+			before(:each) do
+				@params = {"signature"=>"Vttw5Q909REPbf2YwvVn9DGAmz/rWQdKWSOj3tLxxYXBmCi7XvHSPgZGVAnNEo1O5SkSJavDod5j\n8XlUkZ99qn7CgqfAtOq0jnWEdmk4uYScfaHZNK6Xhw+KFCuTGBDn9tQoLVIpcXqRjds+aJ237Goh\n1J0btKmw1R363dFTLXA=", "refundTokenID"=>"C7Q3D4C4UP42186ADIE428XSRD3GCNBT1AN6E5TA43XF4QMDJSZNJD7RDQWGC5WV", "signatureVersion"=>"2", "signatureMethod"=>"RSA-SHA1", "certificateUrl"=>"https://fps.sandbox.amazonaws.com/certs/090911/PKICert.pem?requestId=bjzj0tpgedksa8xv8c5jns5i4d7ugwehryvxtzspigd3omooy0o", "tokenID"=>"C5Q3L4H4UL4U18BA1IE12MXSDDAGCEBV1A56A5T243XF8QTDJQZ1JD9RFQW5CCWG", "status"=>"SR", "callerReference"=>"8cc8eb48-7ed8-4fb4-81f2-fe83389d58f5", "controller"=>"projects", "action"=>"save"}
+				Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
+			end
+
+			after(:all) do
+				@project.delete
+				@user.delete
+			end
+
+			it "should succeed with valid input" do
+				sign_in @user
+				session[:project_id] = @project.id
+				get :save, @params
+				response.should redirect_to(project_path(@project))
+				assert flash[:alert].include?("saved successfully"), flash[:alert]
+			end
+
+			it "should handle unsuccessful input" do
+				sign_in @user
+				session[:project_id] = @project.id
+				@params["status"] = "NP"
+			
+				get :save, @params
+				response.should redirect_to(root_path)
+				assert flash[:alert].include?("error"), flash[:alert]
+			end
+
+			it "should handle unsuccessful input case: 2" do
+				Project.any_instance.stub(:save){false}
+				sign_in @user
+				session[:project_id] = @project.id
+			
+				get :save, @params
+				response.should redirect_to(root_path)
+				assert flash[:alert].include?("error"), flash[:alert]
 			end
 		end
 	end
