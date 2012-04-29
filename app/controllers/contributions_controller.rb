@@ -101,14 +101,14 @@ class ContributionsController < ApplicationController
 	end
 
 	def update_save
-		if session[:contribution].nil?
+		if session[:contribution].nil? or session[:editing_contribution_id].nil?
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
 		@contribution = session[:contribution]
 
 		Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
-		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(update_save_contribution_url, session, params) or session[:editing_contribution_id].nil?
+		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(update_save_contribution_url, session, params)
 			flash[:alert] = ERROR_STRING
 			return redirect_to @contribution.project
 		end
@@ -116,6 +116,7 @@ class ContributionsController < ApplicationController
 		session[:contribution] = nil
 		@editing_contribution = Contribution.find_by_id(session[:editing_contribution_id])
 		session[:editing_contribution_id] = nil
+
 		@contribution.payment_key = params[:tokenID]
 
 		if !@contribution.save
