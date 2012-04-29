@@ -4,10 +4,12 @@ require 'amazon/fps/signatureutils'
 module Amazon
 module FPS
 
+#The base fps request provides the foundation to perform the restful interactionbetween contribute and amazon.  We use HTTParty for this.  It differs from CBUI requests because the user is not redirected to amazon to sign in, the server just sends the request to amazon
 class BaseFpsRequest
 	include HTTParty
 	format :xml
 
+	#Like CBUI, the BaseFpsRequest initialize fills in common parameters within the contructor
 	def initialize
 		@app_name = "FPS"
   	@http_method = "GET"
@@ -31,10 +33,12 @@ class BaseFpsRequest
     return params
   end
 
+	#converts the current time to ISO 8601 format
   def get_formatted_timestamp()
     return Time.now.iso8601.to_s
   end
 
+	#the response for the created request is returned.  the request and response are logged within this function.  the signature is also created before being sent
   def send()
 		uri = URI.parse(@service_end_point)
     signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => @params, 
