@@ -12,7 +12,7 @@ class ProjectsController < InheritedResources::Base
 	authorize_resource
 
 	def index
-		@projects = Project.limit(9).where("active = 1").order("end_date ASC")
+		@projects = Project.limit(9).where("active = 1 and confirmed = 1").order("end_date ASC")
 		@projects1 = @projects.slice(0..2) || []
 		@projects2 = @projects.slice(3..5) || []
 		@projects3 = @projects.slice(6..8) || []
@@ -53,6 +53,8 @@ class ProjectsController < InheritedResources::Base
 			flash[:alert] = "An error occurred with your project. Please try again."	
 			return redirect_to root_path
 		else
+			#TODO: This is inconsistent. All the other project and contribution e-mails go through the 
+			# model. Might be worth doing that for this too.
 			successful_save
 
 			flash[:alert] = "Project saved successfully. Here's to getting funded!"
@@ -65,10 +67,6 @@ class ProjectsController < InheritedResources::Base
 			flash[:alert] = "Project could not be deleted. Please try again."
 			return redirect_to @project
 		else 
-			#TODO: This is inconsistent. Contribution sends the e-mail in the model. Project should too
-			# provided that we can assume save is successful always
-			successful_destroy
-
 			flash[:alert] = "Project successfully deleted. Sorry to see you go!"
 			return redirect_to root_path
 		end
@@ -77,9 +75,5 @@ class ProjectsController < InheritedResources::Base
 protected	
 	def successful_save
 		EmailManager.add_project(@project).deliver
-	end
-
-	def successful_destroy
-		EmailManager.project_deleted_to_owner(@project).deliver	
 	end
 end

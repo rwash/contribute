@@ -69,7 +69,7 @@ production:
   reconnect: false
   database: contribute_production
   pool: 5
-  username: robiso33
-  password: eeG6Iqui
+  username: contribute
+  password: contribute.1234
   socket: /var/run/mysqld/mysqld.sock
   

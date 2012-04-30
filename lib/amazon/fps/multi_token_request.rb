@@ -5,6 +5,8 @@ module Amazon
 module FPS
 
 class MultiTokenRequest < BaseCbuiRequest
+
+	#multi-token action specific parameters are filled in, logs the request
 	def initialize(session, return_url, recipient_token, amount, payment_reason)
 			super()
 
