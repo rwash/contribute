@@ -37,7 +37,7 @@ group :test do
 end
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
 
 # To use debugger (which I never got to work)
 #gem 'ruby-debug19', :require => 'ruby-debug'
