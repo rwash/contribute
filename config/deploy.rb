@@ -13,6 +13,7 @@ set :repository,  "ssh://rwash@orithena.cas.msu.edu/projects/contribute.git"
 #set :deploy_via, :remote_cache
 
 set :user, "rwash"
+set :use_sudo, false
 
 default_run_options[:pty] = true
 
