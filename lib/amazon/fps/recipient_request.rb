@@ -6,11 +6,12 @@ module Amazon
 module FPS
 
 class RecipientRequest < BaseCbuiRequest
+
+	#there are only a couple recipient-token specific parameters needed, so we are not bothering to log the request	
 	def initialize(return_url)
 		super()
 
-		#Add in specific request parameters
-		@params["recipientPaysFee"] = true #what should we set this to?
+		@params["recipientPaysFee"] = true
 		@params["pipelineName"] = "Recipient"
 		@params["returnUrl"] = return_url
 	end

@@ -67,6 +67,8 @@ class Project < ActiveRecord::Base
 	end
 
 	def destroy
+		EmailManager.project_deleted_to_owner(self).deliver	
+
     self.contributions.each do |contribution|
 			EmailManager.project_deleted_to_contributor(contribution).deliver
       contribution.destroy

@@ -37,12 +37,8 @@ Contribute::Application.configure do
 	config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
 
 #	These will be the real values when the account gets approved
-#	config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
-#	config.aws_secret_key = "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"
-
-# These are mine for now
-	config.aws_access_key = "AKIAINGLDSXXU7EG4K7Q"
-	config.aws_secret_key = "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"
+	config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
+	config.aws_secret_key = "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"
 
 	#Email Configuration
 	config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"

@@ -4,7 +4,10 @@ require 'amazon/fps/signatureutils'
 module Amazon
 module FPS
 
+#These calls redirect the user to amazon's web page in order to sign in and accept or make payments.  http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/CHAP_IntroductionUIPipeline.html
 class BaseCbuiRequest
+
+	#common parameters are filled in for the derived classes
 	def initialize
 		@app_name = "CBUI"
 		@http_method = "GET"
@@ -27,6 +30,7 @@ class BaseCbuiRequest
 		return params
 	end
 
+	#creates the signature from the incoming endpoint, and parameters.  Then returns the formatted url from get_url()
 	def url()
 			uri = URI.parse(@service_end_point)
 			signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => @params, 
@@ -39,6 +43,7 @@ class BaseCbuiRequest
 			return get_url(@service_end_point, @params)
 	end
 
+	#formats the incoming parameters into a nice query string that is appended to the endpoint.  we redirect the user to the returned url
 	def get_url(service_end_point, params)
 		url = service_end_point + "?"
 

@@ -3,6 +3,7 @@ require 'amazon/fps/base_fps_request'
 module Amazon
 module FPS
 
+#Will cancel a user's multi-token (or payment).  This is used when a contribution is edited, or a project fails
 class CancelTokenRequest < BaseFpsRequest
   def initialize(multi_use_token)
 		super()
