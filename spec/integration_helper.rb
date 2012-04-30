@@ -77,3 +77,26 @@ end
 def get_full_url(path)
 	return "http://127.0.0.1:#{Capybara.server_port}#{path}"
 end
+
+def assert_amazon_error(id)
+	log_error = Logging::LogError.find_by_log_request_id(id)
+
+	log_error.should_not be_nil
+	log_error.Code.should_not be_nil
+	log_error.Message.should_not be_nil
+	log_error.RequestId.should_not be_nil
+end
+
+def delete_logs()
+	Logging::LogCancelRequest.delete_all
+	Logging::LogCancelResponse.delete_all
+	Logging::LogError.delete_all
+	Logging::LogGetTransactionRequest.delete_all
+	Logging::LogGetTransactionResponse.delete_all
+	Logging::LogMultiTokenRequest.delete_all
+	Logging::LogMultiTokenResponse.delete_all
+	Logging::LogPayRequest.delete_all
+	Logging::LogPayResponse.delete_all
+	Logging::LogRecipientTokenResponse.delete_all
+end
+
