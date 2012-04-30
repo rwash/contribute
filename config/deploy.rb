@@ -3,21 +3,24 @@ $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require 'bundler/capistrano'
 require "rvm/capistrano" 
 
-set :rvm_ruby_string, 'ruby-1.9.3-p0' 
+set :rvm_ruby_string, 'ruby-1.9.3-p194' 
 
 set :application, "contribute"
 
 set :scm, :git
 set :branch, "master"
-set :repository,  "ssh://rockwe34@orithena.cas.msu.edu/projects/contribute.git"
+set :repository,  "ssh://rwash@orithena.cas.msu.edu/projects/contribute.git"
 #set :deploy_via, :remote_cache
+
+set :user, "rwash"
+
 default_run_options[:pty] = true
 
-set :deploy_to, "/projects/contribute"
+set :deploy_to, "/websites/contribute"
 
-role :web, "orithena.cas.msu.edu"                          # Your HTTP server, Apache/etc
-role :app, "orithena.cas.msu.edu"                          # This may be the same as your `Web` server
-role :db,  "orithena.cas.msu.edu", :primary => true # This is where Rails migrations will run
+role :web, "contribute.cas.msu.edu"                          # Your HTTP server, Apache/etc
+role :app, "contribute.cas.msu.edu"                          # This may be the same as your `Web` server
+role :db,  "contribute.cas.msu.edu", :primary => true # This is where Rails migrations will run
 
 namespace :deploy do
   task :start do ; end
