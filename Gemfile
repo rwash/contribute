@@ -107,3 +107,7 @@ gem "twitter-bootstrap-rails"
 
 #Documentation generation
 gem 'rdoc'
+
+
+#Pagination gem
+gem 'kaminari'

@@ -20,3 +20,10 @@ en:
       project: "You may not contribute to this project."
     edit_contribution:
       project: "You may not edit this contribution."
+  views:
+    pagination:
+      previous: "&lt; Previous"
+      next: "Next &gt;"
+      first: "&lt; First"
+      last: "Last &gt;"
+      truncate: "..."
