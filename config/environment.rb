@@ -5,3 +5,5 @@ require File.expand_path('../application', __FILE__)
 Contribute::Application.initialize!
 
 Date::DATE_FORMATS[:default] = "%m/%d/%Y"
+
+

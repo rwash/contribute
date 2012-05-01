@@ -99,6 +99,10 @@ GEM
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.6.5)
+    kaminari (0.13.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
     less (2.0.12)
       commonjs (~> 0.2.0)
       therubyracer (~> 0.9.9)
@@ -238,6 +242,7 @@ DEPENDENCIES
   inherited_resources
   jquery-rails
   json
+  kaminari
   mongrel
   mysql2
   rails (= 3.1.3)
