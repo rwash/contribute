@@ -12,7 +12,7 @@
 		<th><%= contribution.id %></th>
 		<th><%= contribution.payment_key %></th>
 		<th><%= contribution.retry_count %></th>	
-		<th><%= Contribution.status_to_string(contribution.status) %></th>
+		<th><%= ContributionStatus.status_to_string(contribution.status) %></th>
 	</tr>
 	<% end %>
 </table>
