@@ -173,9 +173,9 @@ describe Project do
 
 		it 'destroy cancels contributions and sets to inactive' do
 			EmailManager.stub_chain(:project_deleted_to_owner, :deliver => true)
-			EmailManager.should_receive(:project_deleted_to_owner).once
+			EmailManager.should_receive(:project_deleted_to_owner).with(@project).once
 			EmailManager.stub_chain(:project_deleted_to_contributor, :deliver => true)
-			EmailManager.should_receive(:project_deleted_to_contributor).exactly(3).times
+			EmailManager.should_receive(:project_deleted_to_contributor).with(instance_of(Contribution)).exactly(3).times
 #TODO: WHY?!
 #			@contribution.should_receive(:destroy).once
 #			@contribution2.should_receive(:destroy).once

@@ -72,9 +72,10 @@ describe Contribution do
 		it 'on success, updates contribution status, sets retry count to 0, and e-mails user' do
 			Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { ContributionStatus::SUCCESS }
 			EmailManager.stub_chain(:contribution_cancelled, :deliver => true)
-			EmailManager.should_receive(:contribution_cancelled).once
-
 			contribution = FactoryGirl.create(:contribution)
+
+			EmailManager.should_receive(:contribution_cancelled).with(contribution).once
+
 			contribution.cancel
 
 			assert_equal ContributionStatus::CANCELLED, contribution.status
@@ -96,9 +97,10 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { ContributionStatus::FAILURE }
 			Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_user') }
 			EmailManager.stub_chain(:unretriable_cancel_to_admin, :deliver => true)
-			EmailManager.should_receive(:unretriable_cancel_to_admin).once   
-
 			contribution = FactoryGirl.create(:contribution)
+
+			EmailManager.should_receive(:unretriable_cancel_to_admin).with(instance_of(AmazonError), contribution).once   
+
 			contribution.cancel
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -108,9 +110,10 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { ContributionStatus::FAILURE }
 			Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_admin') }
 			EmailManager.stub_chain(:unretriable_cancel_to_admin, :deliver => true)
-			EmailManager.should_receive(:unretriable_cancel_to_admin).once
-
 			contribution = FactoryGirl.create(:contribution)
+
+			EmailManager.should_receive(:unretriable_cancel_to_admin).with(instance_of(AmazonError), contribution).once   
+
 			contribution.cancel
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -120,9 +123,10 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { ContributionStatus::FAILURE }
 			Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_both') }
 			EmailManager.stub_chain(:unretriable_cancel_to_admin, :deliver => true)
-			EmailManager.should_receive(:unretriable_cancel_to_admin).once   
-
 			contribution = FactoryGirl.create(:contribution)
+
+			EmailManager.should_receive(:unretriable_cancel_to_admin).with(instance_of(AmazonError), contribution).once   
+
 			contribution.cancel
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -138,10 +142,11 @@ describe Contribution do
 		it 'on success, updates contribution status, sets retry count to 0, sets transaction id, and sends e-mail to user' do
 			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::SUCCESS }
 			EmailManager.stub_chain(:contribution_successful, :deliver => true)
-			EmailManager.should_receive(:contribution_successful).once
-
 			contribution = FactoryGirl.create(:contribution)
 			contribution.project = mock_model(Project)
+
+			EmailManager.should_receive(:contribution_successful).with(contribution).once
+
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::SUCCESS, contribution.status
@@ -164,10 +169,11 @@ describe Contribution do
 		it 'on cancelled, updates contribution status' do
 			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::CANCELLED }
 			EmailManager.stub_chain(:cancelled_payment_to_admin, :deliver => true)
-			EmailManager.should_receive(:cancelled_payment_to_admin).once
-
 			contribution = FactoryGirl.create(:contribution)
 			contribution.project = mock_model(Project)
+
+			EmailManager.should_receive(:cancelled_payment_to_admin).with(contribution).once
+
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::CANCELLED, contribution.status
@@ -189,10 +195,11 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::FAILURE }
 			Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_user') }
 			EmailManager.stub_chain(:unretriable_payment_to_user, :deliver => true)
-			EmailManager.should_receive(:unretriable_payment_to_user).once
-
 			contribution = FactoryGirl.create(:contribution)
 			contribution.project = mock_model(Project)
+
+			EmailManager.should_receive(:unretriable_payment_to_user).with(instance_of(AmazonError), contribution).once
+
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -202,10 +209,11 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_pay_status) { ContributionStatus::FAILURE }
 			Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_admin') }
 			EmailManager.stub_chain(:unretriable_payment_to_admin, :deliver => true)
-			EmailManager.should_receive(:unretriable_payment_to_admin).once
-
 			contribution = FactoryGirl.create(:contribution)
 			contribution.project = mock_model(Project)
+
+			EmailManager.should_receive(:unretriable_payment_to_admin).with(instance_of(AmazonError), contribution).once
+
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -216,11 +224,12 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_both') }
 			EmailManager.stub_chain(:unretriable_payment_to_admin, :deliver => true)
 			EmailManager.stub_chain(:unretriable_payment_to_user, :deliver => true)
-			EmailManager.should_receive(:unretriable_payment_to_admin).once
-			EmailManager.should_receive(:unretriable_payment_to_user).once
-
 			contribution = FactoryGirl.create(:contribution)
 			contribution.project = mock_model(Project)
+
+			EmailManager.should_receive(:unretriable_payment_to_admin).with(instance_of(AmazonError), contribution).once
+			EmailManager.should_receive(:unretriable_payment_to_user).with(instance_of(AmazonError), contribution).once
+
 			contribution.execute_payment
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -237,9 +246,10 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { false }
 			Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_both') }
 			EmailManager.stub_chain(:failed_status_to_admin, :deliver => true)
-			EmailManager.should_receive(:failed_status_to_admin).once
-
 			contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+
+			EmailManager.should_receive(:failed_status_to_admin).with(instance_of(AmazonError), contribution).once
+
 			contribution.update_status
 		end
 
@@ -247,9 +257,10 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { ContributionStatus::SUCCESS }
 			Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
 			EmailManager.stub_chain(:contribution_successful, :deliver => true)
-			EmailManager.should_receive(:contribution_successful).once
-
 			contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+
+			EmailManager.should_receive(:contribution_successful).with(contribution).once
+
 			contribution.update_status
 
 			assert_equal ContributionStatus::SUCCESS, contribution.status
@@ -260,9 +271,10 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { ContributionStatus::FAILURE }
 			Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
 			EmailManager.stub_chain(:failed_payment_to_user, :deliver => true)
-			EmailManager.should_receive(:failed_payment_to_user).once
-
 			contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+
+			EmailManager.should_receive(:failed_payment_to_user).with(contribution).once
+
 			contribution.update_status
 
 			assert_equal ContributionStatus::FAILURE, contribution.status
@@ -272,9 +284,10 @@ describe Contribution do
 			Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { ContributionStatus::CANCELLED }
 			Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
 			EmailManager.stub_chain(:cancelled_payment_to_admin, :deliver => true)
-			EmailManager.should_receive(:cancelled_payment_to_admin).once
-
 			contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+
+			EmailManager.should_receive(:cancelled_payment_to_admin).with(contribution).once
+
 			contribution.update_status
 
 			assert_equal ContributionStatus::CANCELLED, contribution.status

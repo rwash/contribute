@@ -121,7 +121,6 @@ class EmailManager < ActionMailer::Base
 	def cancelled_payment_to_admin(contribution)
 		@contribution = contribution
 		@project = @contribution.project
-		@error = error
 
 		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} was cancelled before payment could complete successfully")
 	end
@@ -130,14 +129,13 @@ class EmailManager < ActionMailer::Base
 		@contribution = contribution
 		@project = @contribution.project
 		@user = @contribution.user
-		@error = error
-
 
 		mail(:to => @user.email, :subject => "Attention! We need your help to fix your contribution to #{@project.name}!") 
 	end
 
 	def failed_status_to_admin(error, contribution)
 		@contribution = contribution
+		@project = @contribution.project
 		@error = error
 
 		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed checking its transaction status")
