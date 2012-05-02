@@ -28,4 +28,11 @@ FactoryGirl.define do
 		project_id 1 
 		user_id 4 
  end
+
+ factory :contribution5, class: Contribution do
+		amount 10
+		payment_key 'asdf83hd8fdo39213ja8ad'
+		project_id 1 
+		user_id 5 
+ end
 end
