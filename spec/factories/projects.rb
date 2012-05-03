@@ -24,4 +24,28 @@ FactoryGirl.define do
 		user_id 1
     confirmed true
   end
+
+  factory :project3, class: Project do
+		name 'Test Project 3'
+		short_description 'This is yet another test project'
+		long_description 'This is yet another project, of which the purpose is testing'
+		end_date { Date.today + 4 }
+		category_id 2 
+		funding_goal 600
+		payment_account_id '63asdrg51VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
+		user_id 1
+    confirmed true
+  end
+
+  factory :project4, class: Project do
+		name 'Test Project 4'
+		short_description 'This is yet, yet another test project'
+		long_description 'This is yet, yet another project, of which the purpose is testing'
+		end_date { Date.today + 6 }
+		category_id 1 
+		funding_goal 50000
+		payment_account_id '63asdrg51VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUasdfeI'
+		user_id 1
+    confirmed true
+  end
 end
