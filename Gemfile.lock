@@ -33,6 +33,9 @@ GEM
     ansi (1.4.2)
     arel (2.2.1)
     bcrypt-ruby (3.0.1)
+    bootstrap-kaminari-views (0.0.1)
+      kaminari (>= 0.13)
+      rails (>= 3.1)
     builder (3.0.0)
     cancan (1.6.7)
     capistrano (2.9.0)
@@ -228,6 +231,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-kaminari-views
   cancan
   capistrano
   capybara

@@ -27,7 +27,6 @@
 
 
 <div class="column1">
-<%= paginate @projects %>
 <% for project in @projects %>
 	<%= render :partial => 'shared/project', :locals => { :project => project } %>
 <% end %>
@@ -35,3 +34,4 @@
 
 
 <% end %>
+<%= paginate @projects %>
