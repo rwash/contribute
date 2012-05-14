@@ -111,3 +111,4 @@ gem 'rdoc'
 
 #Pagination gem
 gem 'kaminari'
+gem 'bootstrap-kaminari-views'
