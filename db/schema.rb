@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120426174505) do
+ActiveRecord::Schema.define(:version => 20120515201509) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -31,6 +31,14 @@ ActiveRecord::Schema.define(:version => 20120426174505) do
     t.datetime "updated_at"
   end
 
+  create_table "comments", :force => true do |t|
+    t.integer  "userid"
+    t.text     "content"
+    t.integer  "parentid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "contributions", :force => true do |t|
     t.string   "payment_key"
     t.integer  "amount"
@@ -41,13 +49,6 @@ ActiveRecord::Schema.define(:version => 20120426174505) do
     t.integer  "status"
     t.integer  "retry_count"
     t.string   "transaction_id"
-  end
-
-  create_table "dirty_projects", :force => true do |t|
-    t.integer  "project_id"
-    t.string   "session_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "log_cancel_requests", :force => true do |t|
