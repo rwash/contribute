@@ -14,7 +14,7 @@ development:
   reconnect: false
   database: main_contribute_development
   pool: 5
-  username: contribute_dev
+  username: root #contribute_dev
   password: contribute_dev
   socket: /var/run/mysqld/mysqld.sock
 
