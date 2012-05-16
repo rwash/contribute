@@ -43,4 +43,11 @@ Contribute::Application.configure do
 	#Email Configuration
 	config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
 	config.admin_address = "devenv@bitlab.cas.msu.edu"
+	
+	#Useing Email on localhost
+	# used with mailcatcher 'gem install mailcatcher', then just run by typing 'mailcatcher'
+	config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
+
 end
