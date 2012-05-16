@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Userid:</b>
+  <%= @comment.userid %>
+</p>
+
+<p>
+  <b>Content:</b>
+  <%= @comment.content %>
+</p>
+
+<p>
+  <b>Parentid:</b>
+  <%= @comment.parentid %>
+</p>
+
+
+<%= link_to 'Edit', edit_comment_path(@comment) %> |
+<%= link_to 'Back', comments_path %>
