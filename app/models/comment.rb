@@ -5,7 +5,9 @@ class Comment < ActiveRecord::Base
   has_many :children, :class_name => 'Comment'
   
   validates :content, :presence => true
-  # validates :userid, :presence => true
+  validates :userid, :presence => true
   
   attr_accessible :content, :user_id
+  
+  
 end
