@@ -36,6 +36,7 @@ $('.tabs').button()
   	  <ul class="nav nav-tabs">
 	    <li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a></li>
 	    <li><a href="#projectContributors" data-toggle="tab">Contributions</a></li>
+	    <li><a href="#projectComments" data-toggle="tab">Comments</a></li>
   	  </ul>
 	</div>
 
@@ -77,6 +78,13 @@ $('.tabs').button()
               <p>Be the first!</p>
 	    <% end %>
 	    </ul>
+	</div>
+	
+	<div class="tab-pane" id="projectComments">
+		<h3> Comments </h3>
+		<% @all_comments.each do |comment|%>
+			<%= comment.body %>
+		<% end %>
 	</div>
 </div>
 
