@@ -30,9 +30,9 @@ class CommentsController < InheritedResources::Base
         return redirect_to comments_path
       end
       
-    else
-      flash[:alert] = "Can't delete other peoples comments."
-      redirect_to comments_path
+      else
+        flash[:alert] = "Can't delete other peoples comments."
+        redirect_to comments_path
     end
   end
 end
