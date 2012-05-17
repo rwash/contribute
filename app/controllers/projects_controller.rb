@@ -78,6 +78,7 @@ class ProjectsController < InheritedResources::Base
     @project = Project.find(params[:id])
     @all_comments = @project.comment_threads
     @comment = Comment.new(params[:comment])
+    @comment.commentable_id = @project.id
   end
 protected	
 	def successful_save
