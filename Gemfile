@@ -112,3 +112,6 @@ gem 'rdoc'
 #Pagination gem
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+
+# Comments gem
+gem 'acts_as_commentable_with_threading'
