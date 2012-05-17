@@ -12,43 +12,11 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: main_contribute_development
+  database: contribute_development
   pool: 5
-  username: contribute_dev
-  password: contribute_dev
-  socket: /var/run/mysqld/mysqld.sock
-
-# A separate environment for each developer
-
-rick:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  database: rick_contribute_development
-  pool: 5
-  username: contribute_dev
-  password: contribute_dev
-  socket: /var/run/mysqld/mysqld.sock
-
-mitch:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  database: mitch_contribute_development
-  pool: 5
-  username: contribute_dev
-  password: contribute_dev
-  socket: /var/run/mysqld/mysqld.sock
-
-andrew:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  database: andrew_contribute_development
-  pool: 5
-  username: contribute_dev
-  password: contribute_dev
-  socket: /var/run/mysqld/mysqld.sock
+  username: root
+  password:
+  socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -59,9 +27,9 @@ test:
   reconnect: false
   database: contribute_test
   pool: 5
-  username: robiso33
-  password: eeG6Iqui
-  socket: /var/run/mysqld/mysqld.sock
+  username: root
+  password:
+  socket: /tmp/mysql.sock
 
 production:
   adapter: mysql2
@@ -69,7 +37,6 @@ production:
   reconnect: false
   database: contribute_production
   pool: 5
-  username: contribute
-  password: contribute.1234
-  socket: /var/run/mysqld/mysqld.sock
-  
+  username: root
+  password:
+  socket: /tmp/mysql.sock
