@@ -74,6 +74,11 @@ class ProjectsController < InheritedResources::Base
 		end
 	end
 
+  def show
+    @project = Project.find(params[:id])
+    
+    @all_comments = @project.comment_threads
+  end
 protected	
 	def successful_save
 		EmailManager.add_project(@project).deliver
