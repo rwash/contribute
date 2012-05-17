@@ -3,10 +3,10 @@ class CommentsController < InheritedResources::Base
     @comment = Comment.new(params[:comment])
     
     if user_signed_in? #from devise, check their github page for more info
-      @comment.userid = current_user.id
+      @comment.user_id = current_user.id
       
       if @comment.save
-        redirect_to @comment
+        redirect_to :id => nil
       else
         render :action => "new"
       end
