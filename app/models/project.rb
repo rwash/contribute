@@ -8,6 +8,7 @@ class Project < ActiveRecord::Base
 	belongs_to :user
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
 
+	has_many :comments
 	has_one :category
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
