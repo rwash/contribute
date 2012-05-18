@@ -82,7 +82,10 @@ $('.tabs').button()
 	
 	<div class="tab-pane" id="projectComments">
 	  <p><%= render "comment_list" %></p>
-	  <p class="comment"><%= render "comment_form" , :project => @project %></p>		
+	  <p class="comment">
+	  	<%= render "comment_form" , :project => @project if logged_in? %>
+	  	<%= "Log in the make a comment." if !logged_in? %>
+	  </p>		
 	</div>
 </div>
 
