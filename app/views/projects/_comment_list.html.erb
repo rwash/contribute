@@ -1,6 +1,7 @@
 <h3> Comments </h3><br>
 		
   <ul class="projectComments">
+  	<%= "There are no comments for this project." if @all_comments.size == 0 %>
     <% @all_comments.each do |comment|%>
       <div id="comment_body">
 	    <%= link_to comment.user do %>
