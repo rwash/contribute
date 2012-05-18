@@ -18,22 +18,22 @@ class CommentsController < InheritedResources::Base
     end
   end
   
-  def destroy
+  def delete
     @comment = Comment.find(params[:id])
 
     if comment_owner(@comment) # def in application_controller.rb
             
       if !@comment.delete
         flash[:alert] = "Comment could not be deleted."
-        return redirect_to @comment
       else 
         flash[:alert] = "Comment successfully deleted."
-        return redirect_to comments_path
       end
       
-      else
-        flash[:alert] = "Can't delete other peoples comments."
-        redirect_to comments_path
+    else
+      flash[:alert] = "Can't delete other peoples comments."
     end
+    
+    redirect_to :back
   end
+  
 end
