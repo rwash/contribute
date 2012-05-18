@@ -1,0 +1,21 @@
+<h3> Comments </h3><br>
+		
+  <ul class="projectComments">
+    <% @all_comments.each do |comment|%>
+      <div id="comment_body">
+	    <%= link_to comment.user do %>
+		  <% if comment.user.picture? %>
+            <%= image_tag comment.user.picture.url(:thumb), :class => "userImage" %>
+          <% else %>
+            <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"40"%>
+          <% end %>
+        <li>
+		  <%= comment.user.name %><br>
+		<% end %>
+	    <%= comment.body %>
+	    </li>
+	  </div>
+	  <br>
+      <hr>
+    <% end %>
+  </ul>
