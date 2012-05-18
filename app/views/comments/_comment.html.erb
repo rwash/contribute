@@ -1,8 +1,3 @@
-<h3> Comments </h3><br>
-		
-  <ul class="projectComments">
-  	<h4><%= "There are no comments for this project." if @all_comments.size == 0 %></h4>
-    <% @all_comments.each do |comment|%>
       <div id="comment_body">
 	    <%= link_to comment.user do %>
 		  <% if comment.user.picture? %>
@@ -19,7 +14,3 @@
 	  <div>
 	  	<%= link_to 'Delete', delete_comment_path(comment), :method => :delete %>
 	  </div>
-	  <br>
-      <hr>
-    <% end %>
-  </ul>
