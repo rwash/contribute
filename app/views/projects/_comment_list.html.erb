@@ -16,6 +16,9 @@
 	    <%= comment.body %>
 	    </li>
 	  </div>
+	  <div>
+	  	<%= link_to 'Delete', delete_comment_path(comment), :method => :delete %>
+	  </div>
 	  <br>
       <hr>
     <% end %>
