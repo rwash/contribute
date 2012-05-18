@@ -17,9 +17,11 @@
 	    </li>
 	  </div>
 	  <div>
-	  	<%= link_to 'Delete', delete_comment_path(comment), :method => :delete %>
+	  	<br><br>
+	  	<% if comment_owner(comment) %>
+	      <p class="btn btn-mini"><%= link_to 'delete', delete_comment_path(comment), :method => :delete %></p>
+	    <% end %>
 	  </div>
-	  <br>
       <hr>
     <% end %>
   </ul>

@@ -85,9 +85,11 @@ $('.tabs').button()
 	  <br>
 	  <p class="comment">
 	  	<%= render "comment_form" , :project => @project if logged_in? %>
+	  	<% if !logged_in? %>
 	  	<div class="alert">
-	  	  <%= link_to "You must log in to comment.", new_user_session_path if !logged_in? %> 
+	  	  <%= link_to "You must log in to comment.", new_user_session_path %> 
 	    </div>
+	    <% end %>
 	  </p>		
 	</div>
 </div>
