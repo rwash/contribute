@@ -81,29 +81,8 @@ $('.tabs').button()
 	</div>
 	
 	<div class="tab-pane" id="projectComments">
-		<h3> Comments </h3><br>
-		
-		
-		
-		<ul class="projectComments">
-		  <% @all_comments.each do |comment|%>
-		  <div>
-		  <li>
-		  <%= link_to comment.user do %>
-		  <% if comment.user.picture? %>
-                    <%= image_tag comment.user.picture.url(:thumb), :class => "userImage" %>
-		  <% else %>
-                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"40"%>
-          <% end %>
-		  <%= comment.user.name %><br>
-		  <% end %>
-	      <%= comment.body %>
-	      </li>
-	      <hr>
-	      </div>
-		  <% end %>
-		  <p class="comment"><%= render "comment_form" , :project => @project %></p>		
-	    </ul>
+	  <p><%= render "comment_list" %></p>
+	  <p class="comment"><%= render "comment_form" , :project => @project %></p>		
 	</div>
 </div>
 
