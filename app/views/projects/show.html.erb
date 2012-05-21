@@ -88,19 +88,13 @@ $('.tabs').button()
   			
     	<% @rootComments.each do |comment|%>
     		<%= render comment %>
-    		<%= render :partial => "comment_form", :locals => {:parent => comment} %>
-    		<% comment.children.each do |reply| %>
-    			<blockquote>
-		  			<%= render :partial => reply %>
-	  				<%= render :partial => "comment_form", :locals => {:parent => reply} %>
-    			</blockquote>
-	  		<% end %>
+    		<%= render :partial => "comment_form", :locals => {:parent => comment} if logged_in? %>
     	<% end %>
 	  </ul>
 	  </p>
 	  <br>
 	  <p class="comment">
-	  	<%#=render "comment_form" if logged_in? %>
+	  	<%= render :partial => "comment_form", :locals => {:parent => nil} if logged_in? %>
 	  	<% if !logged_in? %>
 	  	<div class="alert">
 	  	  <%= link_to "You must log in to comment.", new_user_session_path %> 
