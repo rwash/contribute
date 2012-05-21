@@ -11,7 +11,7 @@ class CommentsController < InheritedResources::Base
       if @comment.save
         redirect_to @project
         
-        if( true ) #params[:parentCommentId] != nil)
+        if(params[:parentCommentId] != nil)
           @parentComment = Comment.find(params[:parentCommentId])
           @comment.move_to_child_of(@parentComment)
         end
