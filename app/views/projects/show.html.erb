@@ -88,7 +88,9 @@ $('.tabs').button()
   			
     	<% @rootComments.each do |comment|%>
     		<%= render comment %>
+    		<div class="reply">
     		<%= render :partial => "comment_form", :locals => {:parent => comment} if logged_in? %>
+    		</div>
     	<% end %>
 	  </ul>
 	  </p>
@@ -107,4 +109,10 @@ $('.tabs').button()
 </div>
 
 </div>
+
+
+<script>
+$('.reply').hide();
+</script>
+
 <!-- -------------- end Bootstrap-tabs ------------------ -->
