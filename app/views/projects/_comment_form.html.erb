@@ -12,7 +12,7 @@
   
   <h4>Add a comment:</h4><%= f.text_area :body, :rows => 4, :class => 'span5' %> <br />
   <%= hidden_field_tag 'projectid', @project.id %>
-  <%= hidden_field_tag 'parentCommentId', @parentComment.id if @parentComment %>
+  <%= hidden_field_tag 'parentCommentId', parent.id %>
   <%= f.submit %>
   
 <% end %>
