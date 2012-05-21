@@ -3,16 +3,18 @@ class CommentsController < InheritedResources::Base
     @project = Project.find(params[:projectid])
     @comment = Comment.build_from( @project, current_user.id, params[:comment][:body] )
     
-    if(params[:parentComment] != nil)
-      @parentComment = Comment.find(params[:parentComment])
-      @comment.move_to_child_of(@parentComment)
-    end
+
     
     if user_signed_in? #from devise, check their github page for more info
       @comment.user_id = current_user.id
       
       if @comment.save
         redirect_to @project
+        
+        if( true ) #params[:parentCommentId] != nil)
+          @parentComment = Comment.find(params[:parentCommentId])
+          @comment.move_to_child_of(@parentComment)
+        end
       else
         redirect_to @project
       end

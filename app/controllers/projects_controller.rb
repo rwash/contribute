@@ -76,7 +76,7 @@ class ProjectsController < InheritedResources::Base
 
   def show
     @project = Project.find(params[:id])
-    @all_comments = @project.comment_threads
+    @rootComments = @project.root_comments
     @comment = Comment.new(params[:comment])
     @comment.commentable_id = @project.id
   end
