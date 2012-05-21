@@ -13,16 +13,19 @@
   </div>
   
   <div>
-	<br>
+	<br><br>
 	<% if comment_owner(comment) %>
-	  <button><%= link_to 'delete', delete_comment_path(comment), :method => :delete %></button>
+	<%= link_to_function 'reply', "$('.reply').show()" %>
+	  <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
 	<% end %>
   </div>
   
 	<% comment.children.each do |reply| %>
-	<blockquote>
-		<%= render reply %>
-		<%= render :partial => "comment_form", :locals => {:parent => reply} if logged_in? %>
-	</blockquote>
+	  <blockquote>
+	  <%= render reply %>
+	  <div class="reply">
+		    <%= render :partial => "comment_form", :locals => {:parent => reply} if logged_in? %>
+	  	</div>
+      </blockquote>
 	<% end %>
-  	<hr>
+	<hr>
