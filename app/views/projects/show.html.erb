@@ -81,7 +81,16 @@ $('.tabs').button()
 	</div>
 	
 	<div class="tab-pane" id="projectComments">
-	  <p><%= render "comment_list" %></p>
+	  <p>
+	  	<h3> Comments </h3><br>
+  		<ul class="projectComments">
+  			<h4><%= "There are no comments for this project." if @all_comments.size == 0 %></h4>
+  			
+    	<% @all_comments.each do |comment|%>
+	  		<%= render :partial => comment %>
+    	<% end %>
+	  </ul>
+	  </p>
 	  <br>
 	  <p class="comment">
 	  	<%= render "comment_form" , :project => @project if logged_in? %>
