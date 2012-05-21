@@ -13,12 +13,13 @@
   </div>
   
   <div>
-	<br>
+	<br><br>
 	<% if comment_owner(comment) %>
-	  <button><%= link_to 'delete', delete_comment_path(comment), :method => :delete %></button>
+	<%= link_to_function 'reply', "$('.reply').show()" %>
+	  <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
 	<% end %>
   </div>
-  	
+    	
   	<blockquote>
 	<%# @comment_depth +=1 if comment. %>
 	<% if @comment_depth < 3 %>
