@@ -60,7 +60,7 @@
 		  <%= comment.commentable_id %><br>
 	      <%= comment.body %><br><br>
 	      <% if comment_owner(comment) %>
-	      <p class="btn btn-mini"><%= link_to 'delete', delete_comment_path(comment), :method => :delete %></p>
+	      <button><%= link_to 'delete', delete_comment_path(comment), :method => :delete %></button>
 	      <% end %>
 	    </li>
 	  </div>
