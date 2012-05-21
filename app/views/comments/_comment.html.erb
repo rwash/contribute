@@ -18,11 +18,14 @@
 	  <button><%= link_to 'delete', delete_comment_path(comment), :method => :delete %></button>
 	<% end %>
   </div>
-  
-	<% comment.children.each do |reply| %>
-	<blockquote>
-		<%= render reply %>
-		<%= render :partial => "comment_form", :locals => {:parent => reply} if logged_in? %>
-	</blockquote>
+  	
+  	<blockquote>
+	<%# @comment_depth +=1 if comment. %>
+	<% if @comment_depth < 3 %>
+		<% comment.children.each do |reply| %>
+			<%= render reply %>
+			<%= render :partial => "comment_form", :locals => {:parent => reply} if logged_in? %>
+		<% end %>
 	<% end %>
+  	</blockquote>
   	<hr>
