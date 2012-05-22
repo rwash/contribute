@@ -8,13 +8,15 @@ class CommentsController < InheritedResources::Base
     if user_signed_in? #from devise, check their github page for more info
       @comment.user_id = current_user.id
       
-      if @comment.save
+      if @comment.valid?
+        @comment.save
         redirect_to @project
         
         if(params[:parentCommentId] != nil)
           @parentComment = Comment.find(params[:parentCommentId])
           @comment.move_to_child_of(@parentComment)
         end
+        
       else
         redirect_to @project
       end
