@@ -8,7 +8,7 @@
 	<li>
 	  <%= comment.user.name %><br>
 	<% end %>
-	<%= comment.body %>
+	<%= comment.body %><%= comment_depth %>
 	</li>
   </div>
   
@@ -21,10 +21,9 @@
   </div>
     	
   	<blockquote>
-	<%# @comment_depth +=1 if comment. %>
-	<% if @comment_depth < 3 %>
+  	<% if comment_depth < THREAD_DEPTH %>
 		<% comment.children.each do |reply| %>
-			<%= render reply %>
+			<%= render :partial => 'comments/comment', :object => reply, :locals =>{:comment_depth => comment_depth + 1} %>
 			<%= render :partial => "comment_form", :locals => {:parent => reply} if logged_in? %>
 		<% end %>
 	<% end %>
