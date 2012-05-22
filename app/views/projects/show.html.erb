@@ -87,7 +87,7 @@ $('.tabs').button()
   			<h4><%= "There are no comments for this project." if @rootComments.size == 0 %></h4>
   			
     	<% @rootComments.each do |comment|%>
-    		<%= render comment %>
+    		<%= render :partial => 'comments/comment', :object => comment, :locals =>{:comment_depth => 0} %>
     		<div class="reply">
     		<%= render :partial => "comment_form", :locals => {:parent => comment} if logged_in? %>
     		</div>
