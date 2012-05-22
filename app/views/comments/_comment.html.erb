@@ -17,7 +17,7 @@
 	<p>
 	<%= link_to_function 'reply', "$('.reply').show()" %>&nbsp;&nbsp;&nbsp;
 	<% if comment_owner(comment) %>
-	  <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
+  	  <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
 	<% end %>
 	</p>
 	</li>
