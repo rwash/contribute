@@ -73,14 +73,16 @@ class ProjectsController < InheritedResources::Base
 			return redirect_to root_path
 		end
 	end
-
+	
   def show
-    @project = Project.find(params[:id])
+    @project = Project.where(:name => params[:id])
     @rootComments = @project.root_comments
     @comment = Comment.new(params[:comment])
     @comment.commentable_id = @project.id
     @comment_depth = 0
   end
+
+  
 protected	
 	def successful_save
 		EmailManager.add_project(@project).deliver
