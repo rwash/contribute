@@ -3,8 +3,6 @@ class CommentsController < InheritedResources::Base
     @project = Project.find(params[:projectid])
     @comment = Comment.build_from( @project, current_user.id, params[:comment][:body] )
     
-
-    
     if user_signed_in? #from devise, check their github page for more info
       @comment.user_id = current_user.id
       
