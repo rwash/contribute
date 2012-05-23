@@ -75,7 +75,7 @@ class ProjectsController < InheritedResources::Base
 	end
 	
   def show
-    @project = Project.where(:name => params[:id])
+    @project = Project.where(:name => params[:id]).first
     
     @rootComments = @project.root_comments
     @comment = Comment.new(params[:comment])
