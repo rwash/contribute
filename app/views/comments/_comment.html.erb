@@ -1,37 +1,48 @@
-  <div id="comment_body">
-	<%= link_to comment.user do %>
-  	<% if comment.user.picture? %>
-    	<%= image_tag comment.user.picture.url(:thumb), :class => "userImage" %>
-  	<% else %>
-    	<%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"50"%>
-  	<% end %>
-	<li>
+<div id="comment_body">
+  <li>
+    <%= link_to comment.user do %>
+      <% if comment.user.picture? %>
+        <%= image_tag comment.user.picture.url(:thumb), :class => "userImage", :width=>"50" %>
+  	  <% else %>
+        <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"50"%>
+  	  <% end %>
 	  <span class="username"><%= comment.user.name %></span>
 	<% end %>
 	<% if comment.user_id == @project.user_id %>
-	  &nbsp;&nbsp;<span class="userBadge">project owner</span>
+	  &nbsp;&nbsp;<span class="userBadge"><%= link_to "project owner", comment.user %></span>
 	<% end %>
 	&nbsp;&nbsp;<span class="time"><%= time_ago_in_words(comment.created_at) %> ago</span><br>
 	<%= comment.body %>
-	<br><br>
+	<br>
+	<br>
 	<p>
-	<%= link_to_function 'reply', "$('.reply').show()" %>&nbsp;&nbsp;&nbsp;
+	<% if user_signed_in? %>
+	  <a href="#" class="show_hide" rel="#reply_<%= comment.id %>">reply</a>&nbsp;&nbsp;&nbsp;
+	<% else %>
+	<br>
+	<% end %>
 	<% if comment_owner(comment) %>
   	  <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
 	<% end %>
 	</p>
-	</li>
-  </div>
+    <div id="reply_<%= comment.id %>">
+      <%= render :partial => "comment_form", :locals => {:parent => comment} if logged_in? %>
+    </div>
+  </li>
+</div>
 
-  <div id="reply_body">
-  	<blockquote>
-  	<% if comment_depth < THREAD_DEPTH %>
-		<% comment.children.each do |reply| %>
-			<%= render :partial => 'comments/comment', :object => reply, :locals =>{:comment_depth => comment_depth + 1} %>
-			<div class="reply">
-			  <%= render :partial => "comment_form", :locals => {:parent => reply} if logged_in? %>
-			</div>
-		<% end %>
+<div id="reply_body">
+  <blockquote>
+    <% if comment_depth < THREAD_DEPTH %>
+	  <% comment.children.each do |reply| %>
+	    <%= render :partial => 'comments/comment', :object => reply, :locals =>{:comment_depth => comment_depth + 1} %>
+	  <% end %>
 	<% end %>
-  	</blockquote>
-  </div>
+  </blockquote>
+</div>
+  
+<style>
+#reply_<%= comment.id %> {
+	display:none;
+}
+</style>
