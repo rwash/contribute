@@ -19,6 +19,15 @@ development:
   socket: /var/run/mysqld/mysqld.sock
 
 # A separate environment for each developer
+jake:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: contribute_development
+  pool: 5
+  username: root
+  password: password
+  socket: /tmp/mysql.sock
 
 rick:
   adapter: mysql2
