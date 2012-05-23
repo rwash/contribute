@@ -50,7 +50,7 @@ module Contribute
 		config.action_controller.cache_store = :dalli_store
 		
 		# Comment thread depth for comments on Projects Pages
-		COMMENTS_DEPTH = 3
+		COMMENTS_DEPTH = 4
 		
   end
 end

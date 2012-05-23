@@ -57,10 +57,10 @@
     <% @user.comments.each do |comment|%>
       <div id="comment_body">
         <li>
-		  <%= comment.commentable_id %><br>
-	      <%= comment.body %><br><br>
+	      <%= comment.body %><br>
 	      <% if comment_owner(comment) %>
-	      <button><%= link_to 'delete', delete_comment_path(comment), :method => :delete %></button>
+	        <%= link_to "comment context", ("/projects/" + (comment.commentable_id).to_s) %>&nbsp;&nbsp;&nbsp;&nbsp;
+	        <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
 	      <% end %>
 	    </li>
 	  </div>

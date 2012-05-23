@@ -18,14 +18,14 @@
 
 
 <div id="header">
-<%= link_to image_tag("lightbulb5_contribute_logo.png", :class => "logo"), root_path %>
+<%= link_to image_tag("lightbulb6_contribute_logo.png", :class => "logo"), root_path %>
 
 <div id="navigationOptions">
 	<!--<%= link_to "Home", root_path %> | -->
 	<% if user_signed_in? %>
-		Welcome, <%= link_to current_user.name, current_user %>! 
-		<%= link_to "Edit Profile", edit_user_registration_path %>.
-		Not you? <%= link_to "Sign Out", destroy_user_session_path, :method => :delete %>
+		<%= link_to ("Welcome, " + current_user.name), current_user %>!&nbsp;&nbsp; | &nbsp;&nbsp; 
+		<%= link_to "Edit Profile", edit_user_registration_path %>.&nbsp;&nbsp; | &nbsp;&nbsp; 
+		<%= link_to "Sign Out", destroy_user_session_path, :method => :delete %>
  	<% else %>
 		<%= link_to "Register", new_user_registration_path %> | <%= link_to "Sign In", new_user_session_path %>
  	<% end %>
@@ -48,8 +48,7 @@
 <div id="footerWrapper">
 <div id="aboutContribute">
         <h3>What is Contribute?</h3>
-        <p>Contribute is a crowdfunding website designed to help students at Michigan State University develop their projects and ideas. Alumni, students, and other supporters
-		are encouraged to fund projects so students can achieve their dreams. </p>
+        <p>Contribute is a crowdfunding website designed to help students at Michigan State University develop their projects and ideas. Alumni, students, and other supporters are encouraged to fund projects so students can achieve their dreams. </p>
 </div>
 
 <div id="footer">
@@ -57,7 +56,7 @@
 </div>
 
 <div id="copyright">
-        <p>Copyright©2012</p>
+        <p>Copyright ©2012</p>
 </div>
 </div>
 
