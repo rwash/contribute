@@ -33,13 +33,14 @@ class CommentsController < InheritedResources::Base
     if comment_owner(@comment) # def in application_controller.rb
             
       if !@comment.delete
-        flash[:alert] = "Comment could not be deleted."
+        flash[:notice] = "Comment could not be deleted."
       else 
-        flash[:alert] = "Comment successfully deleted."
+        @comment.body == "[comment deleted]"
+        flash[:notice] = "Comment successfully deleted."
       end
       
     else
-      flash[:alert] = "Can't delete other peoples comments."
+      flash[:notice] = "Can't delete other peoples comments."
     end
     
     redirect_to :back

@@ -7,7 +7,7 @@
 (function ($) {
     $.fn.showHide = function (options) {
 
-		//default vars for the plugin
+		//default vars
         var defaults = {
             speed: 500,
 			easing: '',
@@ -25,9 +25,9 @@
              var toggleClick = $(this);
 		     // this reads the rel attribute of the button to determine which div id to toggle
 		     var toggleDiv = $(this).attr('rel');
-		     // toggle show/hide the correct div at the right speed easing effect
+		     // show/hide the correct div with the right speed and easing effect
 		     $(toggleDiv).slideToggle(options.speed, options.easing, function() {
-		     // this fires once the animation is completed
+		     // toggle link text once the animation is completed
 			 if(options.changeText==1){
 		     $(toggleDiv).is(":visible") ? toggleClick.text(options.hideText) : toggleClick.text(options.showText);
 			 }

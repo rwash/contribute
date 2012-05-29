@@ -6,6 +6,6 @@ Contribute::Application.initialize!
 
 Date::DATE_FORMATS[:default] = "%m/%d/%Y"
 
-THREAD_DEPTH = 4
+THREAD_DEPTH = 16
 
 
