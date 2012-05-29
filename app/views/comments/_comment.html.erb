@@ -24,7 +24,7 @@
 	<% else %>
 	<br>
 	<% end %>
-	<% if comment_owner(comment) %>
+	<% if comment_owner(comment) and comment.body != "comment deleted" %>
   	  <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
 	<% end %>
 	</p>
