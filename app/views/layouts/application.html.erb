@@ -24,7 +24,7 @@
 	<!--<%= link_to "Home", root_path %> | -->
 	<% if user_signed_in? %>
 		<%= link_to ("Welcome, " + current_user.name), current_user %>!&nbsp;&nbsp; | &nbsp;&nbsp; 
-		<%= link_to "Edit Profile", edit_user_registration_path %>.&nbsp;&nbsp; | &nbsp;&nbsp; 
+		<%= link_to "Edit Profile", edit_user_registration_path %>&nbsp;&nbsp; | &nbsp;&nbsp; 
 		<%= link_to "Sign Out", destroy_user_session_path, :method => :delete %>
  	<% else %>
 		<%= link_to "Register", new_user_registration_path %> | <%= link_to "Sign In", new_user_session_path %>
