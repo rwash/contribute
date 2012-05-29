@@ -14,7 +14,6 @@
 	&nbsp;&nbsp;<span class="time"><%= time_ago_in_words(comment.created_at) %> ago</span><br>
 	<%= simple_format(comment.body) %>
 	<br>
-	<br>
 	<p>
 	<% if user_signed_in? %>
 	  <a href="#" class="show_hide" rel="#reply_<%= comment.id %>">reply</a>&nbsp;&nbsp;&nbsp;
