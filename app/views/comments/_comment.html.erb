@@ -32,13 +32,13 @@
 </div>
 
 <div id="reply_body">
-  <reply>
+  <blockquote>
     <% if comment_depth < THREAD_DEPTH %>
 	  <% comment.children.each do |reply| %>
 	    <%= render :partial => 'comments/comment', :object => reply, :locals =>{:comment_depth => comment_depth + 1} %>
 	  <% end %>
 	<% end %>
-  </reply>
+  </blockquote>
 </div>
   
 <style>
