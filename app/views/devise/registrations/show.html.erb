@@ -59,7 +59,7 @@
         <li>
 	      <%= comment.body %><br>
 	      <% if comment_owner(comment) %>
-	        <%= link_to "comment context", comment.find_commentable %>&nbsp;&nbsp;&nbsp;&nbsp;
+	        <%= link_to "comment context", comment.find_commentable() %>&nbsp;&nbsp;&nbsp;&nbsp;
 	        <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
 	      <% end %>
 	    </li>
