@@ -3,6 +3,7 @@ class Comment < ActiveRecord::Base
 
   validates_presence_of :body
   validates_presence_of :user
+  validates_presence_of :commentable_id
 
   # NOTE: install the acts_as_votable plugin if you
   # want user to vote on the quality of comments.
