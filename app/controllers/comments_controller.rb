@@ -27,13 +27,17 @@ class CommentsController < InheritedResources::Base
   
   def delete
     @comment = Comment.find(params[:id])
-
+    
     if comment_owner(@comment) # def in application_controller.rb
-            
-      if !@comment.delete
-        flash[:alert] = "Comment could not be deleted."
-      else 
-        flash[:alert] = "Comment successfully deleted."
+      if(@comment.has_children?)
+        @comment.body = "DELETED"
+        @comment.save
+      else
+        if !@comment.delete
+          flash[:alert] = "Comment could not be deleted."
+        else 
+          flash[:alert] = "Comment successfully deleted."
+        end
       end
       
     else
