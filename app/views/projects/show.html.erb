@@ -36,6 +36,7 @@ $('.tabs').button()
   	  <ul class="nav nav-tabs">
 	    <li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a></li>
 	    <li><a href="#projectContributors" data-toggle="tab">Contributions</a></li>
+	    <li><a href="#projectComments" data-toggle="tab">Comments</a></li>
   	  </ul>
 	</div>
 
@@ -62,7 +63,7 @@ $('.tabs').button()
 		  <% if contribution.user.picture? %>
                     <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage" %>
 		  <% else %>
-                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"100"%>
+                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"100" %>
         	  <% end %>
 
 		<%=contribution.user.name%>
@@ -78,10 +79,40 @@ $('.tabs').button()
 	    <% end %>
 	    </ul>
 	</div>
+	
+	<div class="tab-pane" id="projectComments">
+	  <p>
+	  	<h3> Comments </h3><br>
+  		<ul class="projectComments">
+  			<h4><%= "There are no comments for this project." if @rootComments.size == 0 %></h4>
+  			
+    	<% @rootComments.each do |comment|%>
+    		<%= render :partial => 'comments/comment', :object => comment, :locals =>{:comment_depth => 0} %>
+    		<div class="reply">
+    		<%= render :partial => "comment_form", :locals => {:parent => comment} if logged_in? %>
+    		</div>
+    	<% end %>
+	  </ul>
+	  </p>
+	  <br>
+	  <p class="comment">
+	  	<%= render :partial => "comment_form", :locals => {:parent => nil} if logged_in? %>
+	  	<% if !logged_in? %>
+	  	<div class="alert">
+	  	  <%= link_to "You must log in to comment.", new_user_session_path %> 
+	    </div>
+	    <% end %>
+	  </p>		
+	</div>
 </div>
 
 </div>
 
 </div>
+
+
+<script>
+$('.reply').hide();
+</script>
+
 <!-- -------------- end Bootstrap-tabs ------------------ -->
-
