@@ -33,7 +33,7 @@ describe Comment do
     end
   end
   
-  describle 'delete' do
+  describe 'delete' do
     it 'will replace with DELETED if comment has children' do
       comment = FactoryGirl.build(:comment)
       comment2 = FactoryGirl.build(:comment)
