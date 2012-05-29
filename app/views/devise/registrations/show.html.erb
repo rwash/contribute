@@ -55,10 +55,10 @@
   <ul class="projectComments">
   	<h4><%= "This user has no comments." if @user.comments.size == 0 %></h4>
     <% @user.comments.each do |comment|%>
+      <% @project = Project.where(:id => comment.commentable_id).first %>
+      <%= link_to @project.name, Project.where(:id => comment.commentable_id).first %><br>
       <div id="comment_body">
         <li>
-          <% @project = Project.where(:id => comment.commentable_id).first %>
-          <%= link_to @project.name, Project.where(:id => comment.commentable_id).first, :class => "projectLink" %><br>
 	      <%= comment.body %><br>
 	      <% if comment_owner(comment) %>
 	        <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
