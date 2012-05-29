@@ -24,14 +24,10 @@
 	<div class="project_footer">
 <hr />
 		<ul>
-			<li><%= project.end_date %></li>
-			<li><%= number_to_currency(project.contributions_total, :precision => 0) %> / <%= number_to_currency(project.funding_goal, :precision => 0) %></li>
+			<li>End Date: <%= project.end_date %></li><br>
+			<li>Pledged: <%= number_to_currency(project.contributions_total, :precision => 0) %> / <%= number_to_currency(project.funding_goal, :precision => 0) %></li>
 		</ul>
 
-		<ul>
-			<li>End Date</li>
-			<li>Pledged</li>
-		</ul>
   </div>
 
 </div>

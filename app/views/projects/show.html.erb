@@ -2,6 +2,14 @@
 $('.tabs').button()
 </script>
 
+<script src="showHide.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+   $('.show_hide').showHide({			 			 
+	}); 
+});
+</script>
+
 <div id="projectWrapper">
 
 
@@ -37,6 +45,7 @@ $('.tabs').button()
 	    <li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a></li>
 	    <li><a href="#projectContributors" data-toggle="tab">Contributions</a></li>
 	    <li><a href="#projectComments" data-toggle="tab">Comments</a></li>
+	    <li><a href="#projectUpdates" data-toggle="tab">Updates</a></li>
   	  </ul>
 	</div>
 
@@ -88,9 +97,6 @@ $('.tabs').button()
   			
     	<% @rootComments.each do |comment|%>
     		<%= render :partial => 'comments/comment', :object => comment, :locals =>{:comment_depth => 0} %>
-    		<div class="reply">
-    		<%= render :partial => "comment_form", :locals => {:parent => comment} if logged_in? %>
-    		</div>
     	<% end %>
 	  </ul>
 	  </p>
@@ -104,15 +110,17 @@ $('.tabs').button()
 	    <% end %>
 	  </p>		
 	</div>
+	
+	<div class="tab-pane" id="projectUpdates">
+	  <h3> Updates </h3><br>
+      <ul class="projectUpdates">
+	  </ul>		
+	</div>
+	
 </div>
 
 </div>
 
 </div>
-
-
-<script>
-$('.reply').hide();
-</script>
 
 <!-- -------------- end Bootstrap-tabs ------------------ -->
