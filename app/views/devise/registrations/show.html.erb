@@ -58,7 +58,7 @@
       <div id="comment_body">
         <li>
           <% @project = Project.where(:id => comment.commentable_id).first %>
-          <span class="projectLink"><%= link_to @project.name, Project.where(:id => comment.commentable_id).first %></span><br>
+          <%= link_to @project.name, Project.where(:id => comment.commentable_id).first, :class => "projectLink" %><br>
 	      <%= comment.body %><br>
 	      <% if comment_owner(comment) %>
 	        <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
