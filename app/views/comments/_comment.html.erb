@@ -17,6 +17,7 @@
 	<% else %>
 	  <%= simple_format(comment.body) %>
 	<% end %>
+	<br>
 	<p>
 	<% if user_signed_in? %>
 	  <a href="#" class="show_hide" rel="#reply_<%= comment.id %>">reply</a>&nbsp;&nbsp;&nbsp;
