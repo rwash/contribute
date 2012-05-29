@@ -8,6 +8,6 @@ module ApplicationHelper
   end
   
   def comment_owner(comment)
-   logged_in? && current_user.id == comment.userid
+   logged_in? && current_user.id == comment.user_id
   end
 end
