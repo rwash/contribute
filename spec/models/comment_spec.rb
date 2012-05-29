@@ -32,7 +32,7 @@ describe Comment do
       assert !comment.save, 'Incorrectly saved comment without user id'
     end
   end
-  
+=begin
   describe 'delete' do
     it 'will replace with DELETED if comment has children' do
       comment = FactoryGirl.build(:comment)
@@ -46,7 +46,7 @@ describe Comment do
       assert comment2.body == "DELETED", 'comment body was not replaced with DELETED.'
     end
   end
-
+=end
   # Methods
   # its a gem so unless we add anything i think were ok  
 end
