@@ -36,7 +36,9 @@ describe Comment do
   describe 'delete' do
     it 'will replace with DELETED if comment has children' do
       comment = FactoryGirl.build(:comment)
+      comment.save
       comment2 = FactoryGirl.build(:comment)
+      comment2.save
       comment2.move_to_child_of(comment)
       assert comment.has_children?, 'comment2 did not become a child of comment.'
       comment2.delete
