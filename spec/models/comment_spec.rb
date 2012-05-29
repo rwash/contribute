@@ -32,6 +32,18 @@ describe Comment do
       assert !comment.save, 'Incorrectly saved comment without user id'
     end
   end
+  
+  describle 'delete' do
+    it 'will replace with DELETED if comment has children' do
+      comment = FactoryGirl.build(:comment)
+      comment2 = FactoryGirl.build(:comment)
+      comment2.move_to_child_of(comment)
+      assert comment.has_children?, 'comment2 did not become a child of comment.'
+      comment2.delete
+      assert comment2 != nil, 'Incorrectly deleted comment even though it had children.'
+      assert comment2.body == "DELETED", 'comment body was not replaced with DELETED.'
+    end
+  end
 
   # Methods
   # its a gem so unless we add anything i think were ok  
