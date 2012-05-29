@@ -28,7 +28,7 @@ describe Comment do
   
   describe 'user' do
     it 'id is required' do
-      comment = FacotryGirl.build(:comment, :user_id => '')
+      comment = FactoryGirl.build(:comment, :user_id => '')
       assert !comment.save, 'Incorrectly saved comment without user id'
     end
   end
