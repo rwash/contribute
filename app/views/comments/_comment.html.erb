@@ -13,7 +13,7 @@
 	<% end %>
 	&nbsp;&nbsp;<span class="time"><%= time_ago_in_words(comment.created_at) %> ago</span><br>
 	<% if comment.body == "comment deleted" %>
-	  <%= comment.body, :class => "deleted" %>
+	  <span class="deleted"><%= comment.body %></span>
 	<% else %>
 	  <%= simple_format(comment.body) %>
 	<% end %>
