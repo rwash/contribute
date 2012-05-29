@@ -10,7 +10,7 @@ describe Comment do
       @comment.delete
     end
   end
-
+=begin
   # Properties
   describe 'body' do
     it 'is required' do
@@ -33,6 +33,8 @@ describe Comment do
     end
   end
   
+=end
+
   # Methods
   # its a gem so unless we add anything i think were ok  
 end

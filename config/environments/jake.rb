@@ -17,8 +17,8 @@ Contribute::Application.configure do
   # Don't care if the mailer can't send
   #config.action_mailer.raise_delivery_errors = false
 
-	# Tell Devise where to link back to in its confirmation e-mail
-	config.action_mailer.default_url_options = { :host => 'orithena.cas.msu.edu' }
+  # Tell Devise where to link back to in its confirmation e-mail
+  config.action_mailer.default_url_options = { :host => 'orithena.cas.msu.edu' }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -32,16 +32,22 @@ Contribute::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-	#Amazon Payments Configuration
-	config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
-	config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
+  #Amazon Payments Configuration
+  config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
+  config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
 
-#	These will be the real values when the account gets approved
-	config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
-	config.aws_secret_key = "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"
+# These will be the real values when the account gets approved
+  config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
+  config.aws_secret_key = "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"
 
-	#Email Configuration
-	config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
-	config.admin_address = "devenv@bitlab.cas.msu.edu"
+  #Email Configuration
+  config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
+  config.admin_address = "devenv@bitlab.cas.msu.edu"
+  
+  #Useing Email on localhost
+  # used with mailcatcher 'gem install mailcatcher', then just run by typing 'mailcatcher'
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
 
 end
