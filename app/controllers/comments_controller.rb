@@ -35,7 +35,6 @@ class CommentsController < InheritedResources::Base
       if !@comment.delete
         flash[:notice] = "Comment could not be deleted."
       else 
-        @comment.body == "[comment deleted]"
         flash[:notice] = "Comment successfully deleted."
       end
       
