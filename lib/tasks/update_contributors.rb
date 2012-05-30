@@ -32,11 +32,11 @@ class CompletedProjects
 			@project.find(update.proejct_id)
 			@project.contributions.each do |contribution|
 				@@logger.info "User with contribution with id #{contribution.id} is being emailed with update"
-				EmailManager.project_update_to_contributor(contribution).deliver
+				EmailManager.project_update_to_contributor(update, contribution).deliver
 			end
 		
-			project.active = 0
-			project.save(:validate => false)
+			update.email_sent = true
+			update.save!
 		end
 	end
 end

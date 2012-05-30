@@ -144,7 +144,8 @@ class EmailManager < ActionMailer::Base
 	def project_update_to_contributor(update, contribution)
 		@update = update
 		@user = contribution.user
+		@project = contribution.project
 		
-		mail(:to => @user.email, :susbject => ""
+		mail(:to => @user.email, :susbject => "#{@project.name}: #{@update.title}"
 	end
 end
