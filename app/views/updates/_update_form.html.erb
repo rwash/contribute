@@ -11,6 +11,7 @@
   <% end %>
   
   <h4>Add a update:</h4><%= f.text_area :content, :rows => 4, :class => 'span5' %> <br />
-  <%= hidden_field_tag 'projectid', @project.id %>
+  <%= hidden_field_tag 'project_id', @project.id %>
   <%= f.submit :class => 'btn' %>
+  
 <% end %>
