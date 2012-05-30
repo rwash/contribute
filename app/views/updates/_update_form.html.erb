@@ -1,6 +1,3 @@
-<%
-=begin
-
 <%= form_for(@update) do |f| %>
   <% if @update.errors.any? %>
     <div id="errorExplanation">
@@ -13,10 +10,7 @@
     </div>
   <% end %>
   
-  <h4>Add a update:</h4><%= f.text_area :body, :rows => 4, :class => 'span5' %> <br />
+  <h4>Add an update:</h4><%= f.text_area, :rows => 4, :class => 'span5' %> <br />
   <%= f.submit :class => 'btn' %>
   
 <% end %>
-
-=end
-%>
