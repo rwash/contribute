@@ -13,7 +13,7 @@ class UpdatesController < InheritedResources::Base
         redirect_to @project
       end
     else
-      flash[:notice] = "You must be logged in to post an update."
+      flash[:notice] = "You must be logged in and be the project owner to post an update."
       redirect_to @project
     end
   end
