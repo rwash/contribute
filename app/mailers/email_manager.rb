@@ -140,4 +140,11 @@ class EmailManager < ActionMailer::Base
 
 		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed checking its transaction status")
 	end
+	
+	def project_update_to_contributor(update, contribution)
+		@update = update
+		@user = contribution.user
+		
+		mail(:to => @user.email, :susbject => ""
+	end
 end
