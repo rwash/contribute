@@ -114,7 +114,9 @@ $(document).ready(function(){
 	<div class="tab-pane" id="projectUpdates">
 	  <h3> Updates </h3><br>
       <ul class="projectUpdates">
-     <!-- UPDATES LIST GOES HERE -->
+       <% @updates.each do |update|%>
+    		<%= render :partial => 'updates/update', :object => update %>
+    	<% end %>
 	  </ul>
 	  <p class="update">
 	  	<%= render :partial => "updates/update_form" %>
