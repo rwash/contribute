@@ -4,6 +4,8 @@ class Project < ActiveRecord::Base
 	MAX_LONG_DESC_LENGTH = 1000
 	MIN_FUNDING_GOAL = 5
 	UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
+	
+	PROJ_STATES = ['unconfirmed', 'confirmed', 'inactive', 'active', 'nonfunded', 'funded' 'canceled']
 
 	belongs_to :user
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
