@@ -1,6 +1,5 @@
 Contribute::Application.routes.draw do
-  resources :comments
-  
+
   resources :comments do
     delete :delete, :on => :member
   end
@@ -10,11 +9,6 @@ Contribute::Application.routes.draw do
 	devise_scope :user do
 		get 'users/show/:id', :to => 'registrations#show', :as => :user
 	end
-	
-  resources :comments
-  resources :comments do
-    delete :delete, :on => :member
-  end
 
 	#Contribution resource routes  
 	match 'contributions/new/:project' => 'contributions#new', :as => :new_contribution
