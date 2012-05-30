@@ -70,9 +70,9 @@ $(document).ready(function(){
                 <li>
 		<%= link_to contribution.user do %>
 		  <% if contribution.user.picture? %>
-                    <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage" %>
+                    <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage", :width=>"50" %>
 		  <% else %>
-                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"100" %>
+                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"50" %>
         	  <% end %>
 
 		<%=contribution.user.name%>
