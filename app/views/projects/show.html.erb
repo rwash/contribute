@@ -102,7 +102,7 @@ $(document).ready(function(){
 	  </p>
 	  <br>
 	  <p class="comment">
-	  	<%= render :partial => "comment_form", :locals => {:parent => nil} if logged_in? %>
+	  	<%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? %>
 	  	<% if !logged_in? %>
 	  	<div class="alert">
 	  	  <%= link_to "You must log in to comment.", new_user_session_path %> 
@@ -114,9 +114,9 @@ $(document).ready(function(){
 	<div class="tab-pane" id="projectUpdates">
 	  <h3> Updates </h3><br>
       <ul class="projectUpdates">
-	  </ul>		
-	</div>
-	
+
+	  </p>		
+	</div>	
 </div>
 
 </div>

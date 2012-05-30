@@ -1,4 +1,6 @@
 Contribute::Application.routes.draw do
+  resources :updates
+
   resources :comments
   
   resources :comments do
