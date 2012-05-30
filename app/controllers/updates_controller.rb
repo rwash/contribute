@@ -1,9 +1,9 @@
 class UpdatesController < InheritedResources::Base
   def create
     @update = Update.new(params[:update])
-    @project = Project.where(:id => params[:projectid]).first
+    @project = Project.where(:id => params[:project_id]).first
     
-    if user_signed_in? && (@project.user.id == current_user.id)
+    if user_signed_in? && (@project.user_id == current_user.id)
       @update.user_id = current_user.id
       if @update.valid? && @update.save
         flash[:notice] = "Update saved succesfully."
