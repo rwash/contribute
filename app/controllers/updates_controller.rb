@@ -3,6 +3,7 @@ class UpdatesController < InheritedResources::Base
     @update = Update.new(params[:update])
     @project = Project.find(params[:project_id])
     @update.project_id = @project.id
+    @update.email_sent = false
     
     if user_signed_in? && (@project.user_id == current_user.id)
       @update.user_id = current_user.id
