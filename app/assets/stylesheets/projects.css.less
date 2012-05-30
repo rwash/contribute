@@ -137,12 +137,12 @@ position: relative;
 
 /******* Project Show *******/
 
-blockquote {
+.replyBlock {
   padding: 0 0 0 15px;
   margin: 0 0 18px;
   border-left: 2px solid #eeeeee;
 }
-blockquote p {
+.replyBlock p {
   margin-bottom: 5px;
 }
 
@@ -162,7 +162,7 @@ blockquote p {
 .username {
 	font-weight: bold;
 	font-size: 1.3em;
-	color: #252525
+	color: #252525;
 }
 
 #projectWrapper{
@@ -224,17 +224,11 @@ blockquote p {
 
 .projectComments{
 	.userImage{ padding-right: 10px; float: left;}
-	a { font-size: 14px; font-weight: bold;}
+	a { font-size: 20px; font-weight: bold;}
 	.comment { margin-top: 50px;}
 }
 
-#projectContent {
-        padding-top: 20px;
-        padding-bottom: 20px;
-}
-                
-
-.projectContributors {
+.projectComments {
         li {
                 list-style: none;
         }
@@ -246,7 +240,13 @@ blockquote p {
         }
 }
 
-.projectComments {
+#projectContent {
+        padding-top: 20px;
+        padding-bottom: 20px;
+}
+                
+
+.projectContributors {
         li {
                 list-style: none;
         }
@@ -314,5 +314,13 @@ blockquote p {
         
 #returnLink {
         position: relative;
+}
+
+.deleted {
+	color: #6e6e6e;
+	background-color: #dfdfdf;
+	font-weight: bold;
+	padding-right: 2px;
+	padding-left: 2px;
 }
 
