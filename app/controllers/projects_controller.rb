@@ -83,7 +83,7 @@ class ProjectsController < InheritedResources::Base
     @comment_depth = 0
     
     @update = Update.new(params[:update])
-    @updates = Update.where(:project => @project).all
+    @updates = Update.where(:project_id => @project.id)
   end
 
   
