@@ -1,0 +1,22 @@
+<%
+=begin
+
+<%= form_for(@update) do |f| %>
+  <% if @update.errors.any? %>
+    <div id="errorExplanation">
+      <h2><%= pluralize(@update.errors.count, "error") %> prohibited this update from being saved:</h2>
+        <ul>
+          <% @update.errors.full_messages.each do |msg| %>
+             <li><%= msg %></li>
+          <% end %>
+        </ul>
+    </div>
+  <% end %>
+  
+  <h4>Add a update:</h4><%= f.text_area :body, :rows => 4, :class => 'span5' %> <br />
+  <%= f.submit :class => 'btn' %>
+  
+<% end %>
+
+=end
+%>

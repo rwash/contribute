@@ -1,0 +1,20 @@
+<%
+=begin
+
+<div id="reply_body">
+<ul>
+  <li>
+    <%= link_to update.user do %>
+      <% if update.user.picture? %>
+        <%= image_tag update.user.picture.url(:thumb), :class => "userImage", :width=>"50" %>
+  	  <% else %>
+        <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"50"%>
+  	  <% end %>
+	  <span class="username"><%= update.user.name %></span>
+	<% end %>
+	<%= simple_format(updatecontent_columns%>
+</ul>
+</div>
+
+=end
+%>
