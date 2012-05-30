@@ -2,6 +2,8 @@ Contribute::Application.routes.draw do
   resources :comments do
     delete :delete, :on => :member
   end
+  
+  resources :updates 
 
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
 

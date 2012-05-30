@@ -10,7 +10,7 @@
     </div>
   <% end %>
   
-  <h4>Add an update:</h4><%= f.text_area :rows => 4, :class => 'span5' %> <br />
+  <h4>Add a update:</h4><%= f.text_area :content, :rows => 4, :class => 'span5' %> <br />
+  <%= hidden_field_tag 'projectid', @project.id %>
   <%= f.submit :class => 'btn' %>
-  
 <% end %>

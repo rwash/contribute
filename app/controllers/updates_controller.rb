@@ -1,7 +1,7 @@
 class UpdatesController < InheritedResources::Base
   def create
     @update = Update.new(params[:update])
-    @project = Project.find(:projectid)
+    @project = Project.where(:id => params[:projectid]).first
     
     if user_signed_in? && (@project.user.id == current_user.id)
       @update.user_id = current_user.id
