@@ -12,6 +12,7 @@ class Project < ActiveRecord::Base
   acts_as_commentable
 
 	has_many :comments
+	has_many :updates
 	has_one :category
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
