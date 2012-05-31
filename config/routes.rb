@@ -3,7 +3,7 @@ Contribute::Application.routes.draw do
     delete :delete, :on => :member
   end
   
-  resources :updates 
+  resources :updates, :only => [:create]
 
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
 
@@ -21,7 +21,7 @@ Contribute::Application.routes.draw do
 
 	#The :id being passed through the routes is really the name of the project
 	match 'projects/save' => 'projects#save', :as => :save_project
-	resources :projects, :only => [:index, :new, :create, :show, :destroy]
+	resources :projects, :only => [:index, :new, :create, :edit, :show, :destroy]
 
 	root :to => 'projects#index'
 

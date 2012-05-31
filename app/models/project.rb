@@ -5,7 +5,7 @@ class Project < ActiveRecord::Base
 	MIN_FUNDING_GOAL = 5
 	UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
 	
-	PROJ_STATES = ['unconfirmed', 'confirmed', 'inactive', 'active', 'nonfunded', 'funded' 'canceled']
+	PROJ_STATES = ['unconfirmed', 'inactive', 'active', 'nonfunded', 'funded' 'canceled']
 
 	belongs_to :user
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
 	has_many :comments
 	has_many :updates
 	has_one :category
+	has_one :state
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
 	validates :name, :presence => true, :uniqueness => { :case_sensitive => false }, :length => {:maximum => MAX_NAME_LENGTH}
