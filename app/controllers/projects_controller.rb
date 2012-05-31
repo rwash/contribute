@@ -115,7 +115,6 @@ class ProjectsController < InheritedResources::Base
   	@project = Project.where(:name => params[:id]).first
   end
 
-  
 protected	
 	def successful_save
 		EmailManager.add_project(@project).deliver
