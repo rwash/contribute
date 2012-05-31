@@ -15,6 +15,7 @@
 		<ul class="userProjects">
 		<% @user.projects.each do |project|%>		
 		    	<li><%= render :partial => 'shared/project', :locals => { :project => project } %></li>
+		    	<%= button_to "Activate Project", project_path(:id => project.name, :activate => true), :method => :put, :confirm => "Are you sure?" %>
 		<% end %>
 		</ul>
 		</div>

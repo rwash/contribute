@@ -16,6 +16,16 @@
 <p>Name: <%= f.text_field :name  %></p>
 <p><%= render :partial => "picture", :locals => {:f => f} %></p>
 <p>Category: <%= f.collection_select :category_id, Category.all, :id, :short_description %></p>
+
+<div class="row">
+  <div class="span1-5">
+    <%= f.label :end_date, "End Date: " %>
+  </div>
+  <div class="span4">
+    <%= f.text_field :end_date, :size => 10, :id => "DatePickerEndDate", :value => @project.end_date.blank? ? '' : format_date(@project.end_date) %>
+  </div>
+</div>
+
  
 <p>Short Description:<br>
 	 <%= f.text_field :short_description%></p>
