@@ -25,7 +25,6 @@ class ProjectsController < InheritedResources::Base
 		@project = Project.new(params[:project])
 		@project.user_id = current_user.id
 		@project.payment_account_id = Project::UNDEFINED_PAYMENT_ACCOUNT_ID #To pass validation at valid?
-		@proejct.state = PROJ_STATS[0] #unconfirmed
 	
 		if @project.valid?
 			@project.save
@@ -42,14 +41,12 @@ class ProjectsController < InheritedResources::Base
 		Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
 
 		if !Amazon::FPS::AmazonValidator::valid_recipient_response?(save_project_url, session, params)
-			flash[:alert] = "An error occurred with your project. Please try again."
-			@proejct.state = PROJ_STATS[0] #unconfirmed
+			flash[:alert] = "An error occurred with your project. Please try again."	
 			return redirect_to root_path
 		end
 
 		@project = Project.find_by_id(session[:project_id])
 		@project.confirmed = true
-		@proejct.state = PROJ_STATS[1] #inactive
 		@project.payment_account_id = params[:tokenID]
 
 		session[:project_id] = nil
@@ -89,7 +86,6 @@ class ProjectsController < InheritedResources::Base
     @updates = Update.where(:project_id => @project.id)
   end
 
-  
 protected	
 	def successful_save
 		EmailManager.add_project(@project).deliver

@@ -13,15 +13,42 @@
 		</div>
 	<% end %>
 
-<p>Name: <%= f.text_field :name  %></p>
-<p><%= render :partial => "picture", :locals => {:f => f} %></p>
-<p>Category: <%= f.collection_select :category_id, Category.all, :id, :short_description %></p>
- 
-<p>Short Description:<br>
-	 <%= f.text_field :short_description%></p>
+<div class="row">
+  <div class="span1-5">
+    <%= f.label :name, "Project Name: " %>
+  </div>
+  <div class="span4">
+    <%= f.text_field :name %>
+  </div>
+</div>
 
-<p>Long Description:<br>
-	<%= f.text_area :long_description, :size => "40x10" %></p>
-<%= f.submit %>
+<p><%= render :partial => "picture", :locals => {:f => f} %></p>
+
+<div class="row">
+  <div class="span1-5">
+    <%= f.label :category, "Category: " %>
+  </div>
+  <div class="span4">
+    <%= f.collection_select :category_id, Category.all, :id, :short_description %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span1-5">
+    <%= f.label :short_description, "Short Description: " %>
+  </div>
+  <div class="span4">
+    <%= f.text_field :short_description%>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span1-5">
+    <%= f.label :long_description, "Long Description: " %>
+  </div>
+  <div class="span4">
+    <%= f.text_area :long_description, :rows => 8, :class => 'span4' %></p>
+  </div>
+</div>
 </div>
 <% end %>
