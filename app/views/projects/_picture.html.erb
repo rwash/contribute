@@ -1,7 +1,13 @@
 <% if @project.picture? %>
 Current Picture: <%= image_tag(@project.picture.url(:thumb)) %><br>
 <% end %>
-New Picture: (optional) 
-<%= f.file_field :picture %>
-<%= f.hidden_field :picture_cache %>
-<br>
+
+<div class="row">
+  <div class="span1-5">
+    <%= f.label :picture, "New Picture (optional): " %>
+  </div>
+  <div class="span4">
+    <%= f.file_field :picture %>
+    <%= f.hidden_field :picture_cache %>
+  </div>
+</div>
