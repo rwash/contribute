@@ -8,7 +8,7 @@ class CompletedProjects
 	def self.run
 		@@logger.info "#{Date.today}: Starting completed_projects"
 
-		projects_to_process = Project.where("end_date = :yesterday AND active = 1", { :yesterday => Date.yesterday })
+		projects_to_process = Project.where("end_date = :yesterday AND state = 'active'", { :yesterday => Date.yesterday })
 		@@logger.info "Found #{projects_to_process.size} projects to process"
 
 		process_projects(projects_to_process)
@@ -19,7 +19,7 @@ class CompletedProjects
 	def self.run_all
 		@@logger.info "#{Date.today}: Starting all_completed_projects"
 
-		all_projects_to_process = Project.where("end_date <= :yesterday AND active = 1", { :yesterday => Date.yesterday })
+		all_projects_to_process = Project.where("end_date <= :yesterday AND state = 'active'", { :yesterday => Date.yesterday })
 		@@logger.info "Found #{all_projects_to_process.size} projects to process"
 
 		process_projects(all_projects_to_process)
