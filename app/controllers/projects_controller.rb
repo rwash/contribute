@@ -50,8 +50,9 @@ class ProjectsController < InheritedResources::Base
     
     if @project.active?
     	respond_with(@project)
+    else
+    	respond_with(current_user)
     end
-    respond_with(current_user)
 	end
 
 	def save
