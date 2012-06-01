@@ -46,8 +46,12 @@ class ProjectsController < InheritedResources::Base
 			flash[:notice] = "Successfully ACTIVATED project." 
     elsif @project.update_attributes(params[:project])  
       flash[:notice] = "Successfully updated project."  
-    end  
-    respond_with(@project)
+    end
+    
+    if @project.active?
+    	respond_with(@project)
+    end
+    respond_with(current_user)
 	end
 
 	def save
