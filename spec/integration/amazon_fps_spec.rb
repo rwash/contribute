@@ -11,8 +11,8 @@ class AmazonFpsTesting
 
 			Capybara.default_driver = :selenium
 
-			@test1_project = FactoryGirl.create(:project)
-			@test2_project = FactoryGirl.create(:project2)
+			@test1_project = FactoryGirl.create(:project, :state => 'active')
+			@test2_project = FactoryGirl.create(:project2, :state => 'active')
 
 			@headless = Headless.new
 			@headless.start
