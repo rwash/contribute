@@ -7,7 +7,7 @@ class Ability
 		#Projects
 		# can :read, Project, :active => true, :confirmed => true
 		can :read, Project do |p|
-			p.public_can_view?
+			p.public_can_view? || p.user_id == user.id
 		end
 		can :create, Project
 		# can :update, Project, :active => true, :user_id => user.id
