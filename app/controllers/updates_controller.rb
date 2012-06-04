@@ -9,15 +9,13 @@ class UpdatesController < InheritedResources::Base
       @update.user_id = current_user.id
       if @update.valid? && @update.save
         flash[:notice] = "Update saved succesfully."
-        redirect_to @project
       else
         flash[:error] = "Update failed to save."
-        redirect_to @project
       end
     else
       flash[:error] = "You must be logged in and be the project owner to post an update."
-      redirect_to @project
     end
+    redirect_to @project
   end
   
 end
