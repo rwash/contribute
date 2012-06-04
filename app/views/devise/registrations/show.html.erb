@@ -15,11 +15,27 @@
 		<% @user.projects.each do |project|%>
 			<div class="span3">
 	  	<%= render :partial => 'shared/project', :locals => { :project => project } %>
-	  	<% if logged_in? and project.user_id == current_user.id %>
-	  	  <%= button_to "Activate Project", project_path(:id => project.name, :activate => true), :method => :put, :confirm => "Are you sure?", :class => 'btn' %>
-	  	  <%= link_to "Edit this Project", edit_project_path(project) %>
-	  	<% elsif #can update helper here# %>
-	  	  <%= link_to "Update this Project", project, :class => 'edit_update_btn' %>
+	  	<% if logged_in? and project.user_id == current_user.id and project.can_confirm? %>
+	  	  <div class="row offset1-5">
+	  	    <div class="btn_row">
+	  	      <%= button_to "Edit", edit_project_path(project), :class => 'btn' %>
+	  	    </div>
+	  	  </div>  
+	  	<% elsif logged_in? and project.user_id == current_user.id and project.can_activate? %>
+	  	  <div class="row offset1-5">
+	  	    <div class="btn_row">
+	  	      <%= button_to "Edit", edit_project_path(project), :class => 'btn' %>
+	  	    </div>
+	  	    <div class="btn_row">
+	  	      <%= button_to "Activate", project_path(:id => project.name, :activate => true), :method => :put, :confirm => "Are you sure?", :class => 'btn' %>
+	  	    </div>
+	  	  </div>  
+	  	<% elsif logged_in? and project.user_id == current_user.id and project.can_update? %>
+	  	  <div class="row offset1-5">
+	  	    <div class="btn_row">
+	  	      <%= button_to "Update", project, :class => 'btn' %>
+	  	    </div>
+	  	  </div>
 	  	<% end %>
 			</div>
 		<% end %>
