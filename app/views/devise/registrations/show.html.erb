@@ -39,7 +39,7 @@
 	  	<% elsif logged_in? and project.user_id == current_user.id and project.active? %>
 	  	  <div class="row offset1-5">
 	  	    <div class="btn_row">
-	  	      <%= button_to "Update", project, :class => 'btn-primary' %>
+	  	      <%= button_to "Update", project, :method => 'get', :class => 'btn-primary' %>
 	  	    </div>
 	  	    <div class="btn_row">
 	  	      <%= button_to "Cancel", @project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be canceld.", :class => 'btn-danger' %>
@@ -48,7 +48,7 @@
 	  	  <% elsif logged_in? and project.user_id == current_user.id and (project.funded? or project.nonfunded?) %>
 	  	  <div class="row offset1-5">
 	  	    <div class="btn_row">
-	  	      <%= button_to "Update", project, :class => 'btn-primary' %>
+	  	      <%= button_to "Update", project, :method => 'get', :class => 'btn-primary' %>
 	  	    </div>
 	  	  </div>
 	  	<% end %>
