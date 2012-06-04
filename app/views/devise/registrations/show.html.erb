@@ -13,10 +13,14 @@
 		<h3> Created Projects </h3>
 		<div class="row">
 		<% @user.projects.each do |project|%>
-			<div class="span4">
+			<div class="span3">
 	  	<%= render :partial => 'shared/project', :locals => { :project => project } %>
-	  	<%= button_to "Activate Project", project_path(:id => project.name, :activate => true), :method => :put, :confirm => "Are you sure?" %>
-	  	<%= link_to "Edit this Project", edit_project_path(project) %>
+	  	<% if logged_in? and project.user_id == current_user.id %>
+	  	  <%= button_to "Activate Project", project_path(:id => project.name, :activate => true), :method => :put, :confirm => "Are you sure?", :class => 'btn' %>
+	  	  <%= link_to "Edit this Project", edit_project_path(project) %>
+	  	<% elsif #can update helper here# %>
+	  	  <%= link_to "Update this Project", project, :class => 'edit_update_btn' %>
+	  	<% end %>
 			</div>
 		<% end %>
 		</div>
