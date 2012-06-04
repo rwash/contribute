@@ -232,4 +232,19 @@ describe EmailManager do
 		last_email.body.encoded.should match(contribution.id.to_s)
 		last_email.body.encoded.should match(error.description)
 	end
+	
+	it "project update to contributor" do
+		project = FactoryGirl.create(:project)
+		user = FactoryGirl.create(:user)
+		contribution = FactoryGirl.create(:contribution, :project_id => project.id, :user_id => user.id)
+		update = FactoryGirl.create(:update, :project_id => project.id, :user_id => user.id)
+		
+		EmailManager.project_update_to_contributor(update, contribution).deliver
+		
+		last_email.to.should == [user.email] 
+		last_email.subject.should match(project.name)
+		last_email.subject.should match(update.title)
+		last_email.body.encoded.should match(user.name)
+		last_email.body.encoded.should match(project.name)
+	end
 end
