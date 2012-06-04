@@ -26,8 +26,14 @@ every 1.day, :at => '12 am' do
 end
 
 every 1.hour do
+	rake "contribution:update_contributors"
+end
+
+=begin
+every 1.hour do
 	rake "contribute:cleanup_unconfirmed"
 end
+=end
 
 # How often should we check to see if things are still pending or failing?
 every 3.hours do
