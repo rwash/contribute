@@ -45,7 +45,11 @@ class ProjectsController < InheritedResources::Base
 			@project.save!
 			flash[:notice] = "Successfully ACTIVATED project." 
     elsif @project.update_attributes(params[:project])  
-      flash[:notice] = "Successfully updated project."  
+      flash[:notice] = "Successfully updated project."
+      if @project.unconfirmed?
+				request = Amazon::FPS::RecipientRequest.new(save_project_url)
+				return redirect_to request.url
+      end 
     end
     
     if @project.active?
