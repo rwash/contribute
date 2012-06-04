@@ -66,9 +66,13 @@
   </div>
   <div class="span4">
     <%= f.text_area :long_description, :rows => 8, :class => 'span4' %>
-    <p><%= f.submit %></p>
   </div>
 </div>
-
+    <% if @project.unconfirmed? %>
+			<p><strong>*Amazon Payments*</strong></p>
+		  <p><em>The last step in creating your project is associating it with an Amazon Payments account so that your donations have somewhere to go when your project is funded.</p>
+		  <p>Clicking "Create Project" will redirect you to Amazon Payments. Once you've completed associating your account you will be brought back here.</em></p>
+		<% end %>
+    <p><%= f.submit %></p>
 </div>
 <% end %>
