@@ -1,3 +1,4 @@
+<div id="update_form">
 <%= form_for(@update) do |f| %>
   <% if @update.errors.any? %>
     <div id="errorExplanation">
@@ -9,9 +10,12 @@
         </ul>
     </div>
   <% end %>
+  <h3>New Update:</h3>
+  <br>
   <h4>Update title:</h4><%= f.text_field :title %>
-  <h4>Update:</h4><%= f.text_area :content, :rows => 4, :class => 'span5' %> <br />
+  <h4>Update body:</h4><%= f.text_area :content, :rows => 4, :class => 'span5' %> <br />
   <%= hidden_field_tag 'project_id', @project.id %>
   <%= f.submit :class => 'btn' %>
   
 <% end %>
+</div>
