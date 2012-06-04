@@ -93,7 +93,15 @@ class Project < ActiveRecord::Base
   	self.state == PROJ_STATES[0] || self.state == PROJ_STATES[1]
   end
   
-  def can_update? #active, funded or non-funded AND current user is project owner
+  def can_update? #active, funded or non-funded
   	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
+  end
+  
+  def can_activate? #inactive
+  	self.state == PROJ_STATES[1]
+  end
+  
+  def can_confirm? #inactive
+  	self.state == PROJ_STATES[0]
   end
 end
