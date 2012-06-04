@@ -4,6 +4,7 @@ describe Project do
 	describe 'valid case' do
 		before(:all) do
 			@project = FactoryGirl.create(:project)
+			@project.state = PROJ_STATES[2]
 		end
 
     after(:all) do
@@ -11,7 +12,7 @@ describe Project do
     end
 
 		it 'active is true' do
-			assert @project.active, "Project should be active"
+			assert @project.active?, "Project should be active"
 		end
 	end
 
@@ -183,7 +184,7 @@ describe Project do
 			
 			@project.destroy
 			
-			assert !@project.active
+			assert !@project.active?
 		end
 	end
 

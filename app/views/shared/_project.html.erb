@@ -24,6 +24,24 @@
 	<div class="project_footer">
 <hr />
 		<ul>
+			<li>State:
+			<% case project.state %>
+			<% when 'unconfirmed' %>
+				<span class="label label-warning">Unconfirmed</span>
+			<% when 'inactive' %>
+				<span class="label label-warning">Inactive</span>
+			<% when 'active' %>
+				<span class="label label-success">Active</span>
+			<% when 'funded' %>
+				<span class="label label-success">Funded!</span>
+			<% when 'nonfunded' %>
+				<span class="label label-inverse">Non-funded</span>
+			<% when 'canceled' %>
+				<span class="label label-inverse">Canceled</span>
+			<% else %>
+				<span class="label label-important">Somthing is Wrong</span>
+			<% end %>
+			</li><br>
 			<li>End Date: <%= project.end_date %></li><br>
 			<li>Pledged: <%= number_to_currency(project.contributions_total, :precision => 0) %> / <%= number_to_currency(project.funding_goal, :precision => 0) %></li>
 		</ul>

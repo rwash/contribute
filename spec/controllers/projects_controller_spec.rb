@@ -7,13 +7,14 @@ describe ProjectsController do
 	describe 'permissions' do
 		context 'user is not signed in' do
 			it "can view project" do
-				project = FactoryGirl.create(:project)
+				project = FactoryGirl.create(:project, :state => 'active')
 				get :show, :id => project.name
 				response.should be_success
 				project.delete
 			end
 			it "can't view inactive project" do
-				project = FactoryGirl.create(:project, :active => false)
+				# project = FactoryGirl.create(:project, :active => false)
+				project = FactoryGirl.create(:project, :state => 'inactive')
 				get :show, :id => project.name
 				response.should redirect_to(root_path)	
 				project.delete
@@ -55,7 +56,7 @@ describe ProjectsController do
 				project.delete
 			end
 			it "can destroy a project they do own" do
-				project = FactoryGirl.create(:project, :user_id => @user.id)
+				project = FactoryGirl.create(:project, :user_id => @user.id, :state => PROJ_STATES[1])
 				sign_in @user
 				get :destroy, :id => project.name
 				assert flash[:alert].include?("successfully deleted"), flash[:alert]
@@ -110,7 +111,7 @@ describe ProjectsController do
 		
 		context "destroy action" do
 			before(:all) do
-				@project = FactoryGirl.create(:project, :user_id => @user.id)
+				@project = FactoryGirl.create(:project, :user_id => @user.id, :state => PROJ_STATES[1])
 			end
 
 			after(:all) do
@@ -138,7 +139,7 @@ describe ProjectsController do
 
 		context "save action" do
 			before(:all) do
-				@project = FactoryGirl.create(:project, :user_id => @user.id, :confirmed => false)
+				@project = FactoryGirl.create(:project, :user_id => @user.id, :state => 'unconfirmed')
 			end
 		
 			before(:each) do
@@ -154,7 +155,8 @@ describe ProjectsController do
 				sign_in @user
 				session[:project_id] = @project.id
 				get :save, @params
-				response.should redirect_to(project_path(@project))
+				# response.should redirect_to(project_path(@project))
+				response.should redirect_to(@user)
 				assert flash[:alert].include?("saved successfully"), flash[:alert]
 			end
 

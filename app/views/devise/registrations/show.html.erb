@@ -11,13 +11,14 @@
 
 	<% if @user.projects.size > 0 %>
 		<h3> Created Projects </h3>
-		<div class="column1">
-		<ul class="userProjects">
-		<% @user.projects.each do |project|%>		
-		    	<li><%= render :partial => 'shared/project', :locals => { :project => project } %></li>
-		    	<%= button_to "Activate Project", project_path(:id => project.name, :activate => true), :method => :put, :confirm => "Are you sure?" %>
+		<div class="row">
+		<% @user.projects.each do |project|%>
+			<div class="span4">
+	  	<%= render :partial => 'shared/project', :locals => { :project => project } %>
+	  	<%= button_to "Activate Project", project_path(:id => project.name, :activate => true), :method => :put, :confirm => "Are you sure?" %>
+	  	<%= link_to "Edit this Project", edit_project_path(project) %>
+			</div>
 		<% end %>
-		</ul>
 		</div>
 	<% end %>
 
