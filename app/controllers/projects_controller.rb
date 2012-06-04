@@ -46,8 +46,13 @@ class ProjectsController < InheritedResources::Base
 			flash[:notice] = "Successfully ACTIVATED project." 
     elsif @project.update_attributes(params[:project])  
       flash[:notice] = "Successfully updated project."  
-    end  
-    respond_with(@project)
+    end
+    
+    if @project.active?
+    	respond_with(@project)
+    else
+    	respond_with(current_user)
+    end
 	end
 
 	def save
@@ -55,12 +60,11 @@ class ProjectsController < InheritedResources::Base
 
 		if !Amazon::FPS::AmazonValidator::valid_recipient_response?(save_project_url, session, params)
 			flash[:alert] = "An error occurred with your project. Please try again."
-			@proejct.state = PROJ_STATES[0] #unconfirmed
 			return redirect_to root_path
 		end
 
 		@project = Project.find_by_id(session[:project_id])
-		@project.confirmed = true
+		# @project.confirmed = true # We dont want to use this anymore.
 		@project.state = PROJ_STATES[1] #inactive
 		@project.payment_account_id = params[:tokenID]
 
@@ -75,7 +79,8 @@ class ProjectsController < InheritedResources::Base
 			successful_save
 
 			flash[:alert] = "Project saved successfully. Here's to getting funded!"
-			return redirect_to @project
+			# return redirect_to @project
+			return redirect_to current_user
 		end
 	end
 

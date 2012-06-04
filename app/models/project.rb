@@ -4,8 +4,6 @@ class Project < ActiveRecord::Base
 	MAX_LONG_DESC_LENGTH = 1000
 	MIN_FUNDING_GOAL = 5
 	UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
-	
-	# PROJ_STATES = ['unconfirmed', 'inactive', 'active', 'nonfunded', 'funded' 'canceled'] This is now in config/enviroment.rb
 
 	belongs_to :user
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
@@ -31,8 +29,8 @@ class Project < ActiveRecord::Base
 	
 	def initialize(attributes = nil, options = {})
 		super
-		self.active = true
-		self.confirmed = false
+		# self.active = true # We dont want to use this anymore.
+		# self.confirmed = false # We dont want to use this anymore.
 	end
 
 	def end_date=(val)
@@ -79,7 +77,19 @@ class Project < ActiveRecord::Base
       contribution.destroy
     end
 
-    self.active = false
+    # self.active = false # We dont want to use this anymore.
     self.save
 	end
+
+	def active?
+		self.state == PROJ_STATES[2] #active
+	end
+	
+	def public_can_view?
+  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4] #active, funded, or non-funded
+  end
+  
+  def can_edit?
+  	self.state == PROJ_STATES[0] || self.state == PROJ_STATES[1] #unconfirmed or inactive
+  end
 end

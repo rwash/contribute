@@ -6,7 +6,7 @@ describe ContributionsController do
 
 	describe 'permissions' do
 		before(:all) do
-			@project = FactoryGirl.create(:project)
+			@project = FactoryGirl.create(:project, :state => 'active')
 		end
 
 		after(:all) do
