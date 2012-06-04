@@ -121,7 +121,7 @@ $(document).ready(function(){
        <% end %>
 	  </ul>
 	  <p class="update">
-	  	<%= render :partial => "updates/update_form", :object => @update if logged_in? and @project.user_id == current_user.id %>
+	  	<%= render :partial => "updates/update_form", :object => @update if @project.can_update? and logged_in? and @project.user_id == current_user.id %>
 	  	<% if !logged_in? or @project.user_id != current_user.id  %>
 	  	<div class="alert">
 	  	  You can not update this project.
