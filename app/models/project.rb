@@ -80,12 +80,8 @@ class Project < ActiveRecord::Base
     # self.active = false # We dont want to use this anymore.
     self.save
 	end
-
-	def active?
-		self.state == PROJ_STATES[2] #active
-	end
 	
-	def public_can_view? #active, funded, or non-funded
+  def public_can_view? #active, funded, or non-funded
   	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
   end
   
@@ -103,5 +99,25 @@ class Project < ActiveRecord::Base
   
   def unconfirmed?
   	self.state == PROJ_STATES[0]
+  end
+  
+  def inactive?
+    self.state == PROJ_STATES[1]
+  end
+  
+  def active?
+		self.state == PROJ_STATES[2]
+	end
+  
+  def funded?
+    self.state == PROJ_STATES[3]
+  end
+  
+  def nonfunded?
+    self.state == PROJ_STATES[4]
+  end
+  
+  def cancelled?
+    self.state == PROJ_STATES[5]
   end
 end
