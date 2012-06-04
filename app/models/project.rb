@@ -85,11 +85,15 @@ class Project < ActiveRecord::Base
 		self.state == PROJ_STATES[2] #active
 	end
 	
-	def public_can_view?
-  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4] #active, funded, or non-funded
+	def public_can_view? #active, funded, or non-funded
+  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
   end
   
-  def can_edit?
-  	self.state == PROJ_STATES[0] || self.state == PROJ_STATES[1] #unconfirmed or inactive
+  def can_edit? #unconfirmed or inactive
+  	self.state == PROJ_STATES[0] || self.state == PROJ_STATES[1]
+  end
+  
+  def can_update? #active, funded or non-funded AND current user is project owner
+  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
   end
 end
