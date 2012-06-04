@@ -80,28 +80,33 @@ class Project < ActiveRecord::Base
     # self.active = false # We dont want to use this anymore.
     self.save
 	end
-
-	def active?
-		self.state == PROJ_STATES[2] #active
-	end
-	
-	def public_can_view? #active, funded, or non-funded
-  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
+  
+  def can_confirm? #unconfirmed
+    self.state == PROJ_STATES[0]
+  end
+  
+  def unconfirmed? #unconfirmed
+  	self.state == PROJ_STATES[0]
   end
   
   def can_edit? #unconfirmed or inactive
   	self.state == PROJ_STATES[0] || self.state == PROJ_STATES[1]
   end
   
-  def can_update? #active, funded or non-funded
-  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
-  end
-  
   def can_activate? #inactive
   	self.state == PROJ_STATES[1]
   end
   
-  def can_confirm? #inactive
-  	self.state == PROJ_STATES[0]
+  def active?
+    self.state == PROJ_STATES[2] #active
   end
+
+  def can_comment? #active, funded, or non-funded
+  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
+  end
+  
+  def can_update? #active, funded or non-funded
+  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
+  end
+  
 end
