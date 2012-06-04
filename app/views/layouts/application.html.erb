@@ -42,6 +42,11 @@
 	<div class="alert"><a class="close" data-dismiss="alert">x</a><%= flash[:notice] %></div>
 </div>
 <% end %>
+<% if flash[:error] %>
+<div id="flash">
+	<div class="alert alert-error"><a class="close" data-dismiss="alert">x</a><%= flash[:error] %></div>
+</div>
+<% end %>
 
 <div class="container">
   <%= yield %>
