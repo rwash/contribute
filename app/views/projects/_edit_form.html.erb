@@ -71,8 +71,16 @@
     <% if @project.unconfirmed? %>
 			<p><strong>*Amazon Payments*</strong></p>
 		  <p><em>The last step in creating your project is associating it with an Amazon Payments account so that your donations have somewhere to go when your project is funded.</p>
-		  <p>Clicking "Create Project" will redirect you to Amazon Payments. Once you've completed associating your account you will be brought back here.</em></p>
+		  <p>Clicking "Update Project" will redirect you to Amazon Payments. Once you've completed associating your account you will be brought back here.</em></p>
 		<% end %>
-    <p><%= f.submit %></p>
+		
+<div class="row">
+  <div class="span1-5">
+    &nbsp;
+  </div>
+  <div class="span2">
+    <%= f.submit :class => 'btn btn-success' %>
+  </div>
+</div>
 </div>
 <% end %>
