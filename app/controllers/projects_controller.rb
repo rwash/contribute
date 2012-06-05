@@ -43,7 +43,7 @@ class ProjectsController < InheritedResources::Base
 		if params[:activate] == 'true'
 			@project.state = PROJ_STATES[2] #active
 			@project.save!
-			flash[:notice] = "Successfully ACTIVATED project." 
+			flash[:notice] = "Successfully activated project." 
     elsif @project.update_attributes(params[:project])  
       flash[:notice] = "Successfully updated project."
     end
