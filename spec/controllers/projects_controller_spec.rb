@@ -30,9 +30,130 @@ describe ProjectsController do
 				response.should redirect_to(new_user_session_path)
 				project.delete
 			end
+			
+			# Start State Tests (These tests are added after those above. Some of the ones below may cover the same thing as one above.)
+			context 'project is unconfirmed,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[0])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				it 'can NOT view proejct' do
+					get :show, :id => @project.name
+					response.should redirect_to(root_path)
+				end
+				
+				it "can't destroy a project" do
+					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+			end
+			
+			context 'project is inactive,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[1])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				it 'can NOT view proejct' do
+					get :show, :id => @project.name
+					response.should redirect_to(root_path)
+				end
+				
+				it "can't destroy a project" do
+					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+			end
+			
+			context 'project is active,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[2])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				it 'CAN view proejct' do
+					get :show, :id => @project.name
+					response.should be_success
+				end
+				
+				it "can't destroy a project" do
+					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+			end
+			
+			context 'project is funded,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[4])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				it 'CAN view proejct' do
+					get :show, :id => @project.name
+					response.should be_success
+				end
+				
+				it "can't destroy a project" do
+					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+			end
+			
+			context 'project is nonfunded,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[3])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				it 'CAN view proejct' do
+					get :show, :id => @project.name
+					response.should be_success
+				end
+				
+				it "can't destroy a project" do
+					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+			end
+			
+			context 'project is canceled,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[5])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				it 'can NOT view proejct' do
+					get :show, :id => @project.name
+					response.should redirect_to(root_path)
+				end
+				
+				it "can't destroy a project" do
+					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+			end
 		end
 
-		context 'user is signed in' do
+		context 'user is signed in' do #START user IS signed in
 			before(:all) do
 				@user = FactoryGirl.create(:user)
 				@user.confirm!
@@ -61,6 +182,300 @@ describe ProjectsController do
 				get :destroy, :id => project.name
 				assert flash[:alert].include?("successfully deleted"), flash[:alert]
 				response.should redirect_to(root_path)
+			end
+			
+			#Again the tests below were added after those above and may test some of the same thing.
+			context 'project is unconfirmed,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[0])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				context 'user is NOT project owner' do
+					before(:all) do
+						@project.user_id = @user.id + 1
+					end
+				
+					it 'can NOT view proejct' do
+						get :show, :id => @project.name
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't destroy a project" do
+						get :destroy, :id => @project.name
+						response.should redirect_to(new_user_session_path)
+					end
+				end
+				
+				context 'user IS project owner' do
+					before(:all) do
+						@project.user_id = @user.id
+						@project.save!
+					end
+				
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "CAN destroy a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert flash[:alert].include?("successfully deleted"), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+				end
+			end
+			
+			context 'project is inactive,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[1])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				context 'user is NOT project owner' do
+					before(:all) do
+						@project.user_id = @user.id + 1
+					end
+				
+					it 'can NOT view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't destroy a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert !Project.find(@project.id).nil?
+						response.should redirect_to(root_path)
+					end
+				end
+				
+				context 'user IS project owner' do
+					before(:all) do
+						@project.user_id = @user.id
+						@project.save!
+					end
+				
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "CAN destroy a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert flash[:alert].include?("successfully deleted"), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+				end
+			end
+			
+			context 'project is active,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[2])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				context 'user is NOT project owner' do
+					before(:all) do
+						@project.user_id = @user.id + 1
+					end
+					
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "can't destroy a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert !Project.find(@project.id).nil?
+						response.should redirect_to(root_path)
+					end
+				end
+				
+				context 'user IS project owner' do
+					before(:all) do
+						@project.user_id = @user.id
+						@project.save!
+					end
+				
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "CAN cancel a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert flash[:alert].include?("Project successfully canceled."), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+				end
+			end
+			
+			context 'project is funded,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[4])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				context 'user is NOT project owner' do
+					before(:all) do
+						@project.user_id = @user.id + 1
+					end
+				
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "can't destroy a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert !Project.find(@project.id).nil?
+						response.should redirect_to(root_path)
+					end
+				end
+				
+				context 'user IS project owner' do
+					before(:all) do
+						@project.user_id = @user.id
+						@project.save!
+					end
+				
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "can NOT cancel or delete a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+				end
+			end
+			
+			context 'project is nonfunded,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[3])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				context 'user is NOT project owner' do
+					before(:all) do
+						@project.user_id = @user.id + 1
+					end
+					
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "can't destroy a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert !Project.find(@project.id).nil?
+						response.should redirect_to(root_path)
+					end
+				end
+				
+				context 'user IS project owner' do
+					before(:all) do
+						@project.user_id = @user.id
+						@project.save!
+					end
+				
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "can NOT cancel or delete a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+				end
+			end
+			
+			context 'project is canceled,' do
+				before(:all) do
+					@project = FactoryGirl.create(:project, :state => PROJ_STATES[5])
+				end
+
+				after(:all) do
+					@project.delete
+				end
+				
+				context 'user is NOT project owner' do
+					before(:all) do
+						@project.user_id = @user.id + 1
+						@project.save!
+					end
+				
+					it 'can NOT view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't destroy a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert !Project.find(@project.id).nil?
+						response.should redirect_to(root_path)
+					end
+				end
+				
+				context 'user IS project owner' do
+					before(:all) do
+						@project.user_id = @user.id
+						@project.save!
+					end
+				
+					it 'CAN view proejct' do
+						sign_in @user
+						get :show, :id => @project.name
+						response.should be_success
+					end
+					
+					it "can NOT cancel or delete a project" do
+						sign_in @user
+						get :destroy, :id => @project.name
+						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+				end
+
 			end
 		end
 	end

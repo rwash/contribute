@@ -97,14 +97,14 @@ class ProjectsController < InheritedResources::Base
 				flash[:alert] = "Project successfully deleted. Sorry to see you go!"
 				return redirect_to root_path
 			end
-		else 
+		elsif @project.state == PROJ_STATES[2]
 			#project will not be deleted but will be CANCELED and only visible to user
 			@project.state = PROJ_STATES[5] #canceled
 			@project.save!
 			flash[:alert] = "Project successfully canceled. Project is now only visible to you."
-			return redirect_to root_path
+		else
+			flash[:alert] = "You can not cancel or delete this project."
 		end
-		flash[:alert] = "Somthing went wrong. Check out the project destory action in the controller."
 		return redirect_to root_path
 	end
 	
