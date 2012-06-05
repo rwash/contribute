@@ -3,11 +3,7 @@ Current Picture: <%= image_tag(@project.picture.url(:thumb)) %><br>
 <% end %>
 
 <div class="row">
-  <div class="span1-5">
-    <%= f.label :picture, "New Picture (optional): " %>
-  </div>
-  <div class="span4">
+    <%= f.label :picture, "New Picture (optional): ", :class => 'pull-left' %> &nbsp; &nbsp; &nbsp; &nbsp;
     <%= f.file_field :picture %>
     <%= f.hidden_field :picture_cache %>
-  </div>
 </div>
