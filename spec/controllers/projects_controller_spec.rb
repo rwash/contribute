@@ -50,6 +50,11 @@ describe ProjectsController do
 					get :destroy, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
+				
+				it "can't edit a proejct" do
+					get :edit, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
 			end
 			
 			context 'project is inactive,' do
@@ -68,6 +73,11 @@ describe ProjectsController do
 				
 				it "can't destroy a project" do
 					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+				
+				it "can't edit a proejct" do
+					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
 			end
@@ -90,6 +100,11 @@ describe ProjectsController do
 					get :destroy, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
+				
+				it "can't edit a proejct" do
+					get :edit, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
 			end
 			
 			context 'project is funded,' do
@@ -108,6 +123,11 @@ describe ProjectsController do
 				
 				it "can't destroy a project" do
 					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+				
+				it "can't edit a proejct" do
+					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
 			end
@@ -130,6 +150,11 @@ describe ProjectsController do
 					get :destroy, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
+				
+				it "can't edit a proejct" do
+					get :edit, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
 			end
 			
 			context 'project is canceled,' do
@@ -148,6 +173,11 @@ describe ProjectsController do
 				
 				it "can't destroy a project" do
 					get :destroy, :id => @project.name
+					response.should redirect_to(new_user_session_path)
+				end
+				
+				it "can't edit a proejct" do
+					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
 			end
@@ -200,13 +230,22 @@ describe ProjectsController do
 					end
 				
 					it 'can NOT view proejct' do
+						sign_in @user
 						get :show, :id => @project.name
 						response.should redirect_to(root_path)
 					end
 					
 					it "can't destroy a project" do
+						sign_in @user
 						get :destroy, :id => @project.name
-						response.should redirect_to(new_user_session_path)
+						assert !Project.find(@project.id).nil?
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't edit a proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
+						response.should redirect_to(root_path)
 					end
 				end
 				
@@ -227,6 +266,12 @@ describe ProjectsController do
 						get :destroy, :id => @project.name
 						assert flash[:alert].include?("successfully deleted"), flash[:alert]
 						response.should redirect_to(root_path)
+					end
+					
+					it "CAN edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
+						response.should be_success
 					end
 				end
 			end
@@ -257,6 +302,12 @@ describe ProjectsController do
 						assert !Project.find(@project.id).nil?
 						response.should redirect_to(root_path)
 					end
+					
+					it "can't edit a proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
+						response.should redirect_to(root_path)
+					end
 				end
 				
 				context 'user IS project owner' do
@@ -276,6 +327,12 @@ describe ProjectsController do
 						get :destroy, :id => @project.name
 						assert flash[:alert].include?("successfully deleted"), flash[:alert]
 						response.should redirect_to(root_path)
+					end
+					
+					it "CAN edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
+						response.should be_success
 					end
 				end
 			end
@@ -306,6 +363,12 @@ describe ProjectsController do
 						assert !Project.find(@project.id).nil?
 						response.should redirect_to(root_path)
 					end
+					
+					it "can't edit a proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
+						response.should redirect_to(root_path)
+					end
 				end
 				
 				context 'user IS project owner' do
@@ -324,6 +387,12 @@ describe ProjectsController do
 						sign_in @user
 						get :destroy, :id => @project.name
 						assert flash[:alert].include?("Project successfully canceled."), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
 					end
 				end
@@ -349,10 +418,16 @@ describe ProjectsController do
 						response.should be_success
 					end
 					
-					it "can't destroy a project" do
+					it "can't destroy the project" do
 						sign_in @user
 						get :destroy, :id => @project.name
 						assert !Project.find(@project.id).nil?
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
 					end
 				end
@@ -373,6 +448,12 @@ describe ProjectsController do
 						sign_in @user
 						get :destroy, :id => @project.name
 						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
 					end
 				end
@@ -404,6 +485,12 @@ describe ProjectsController do
 						assert !Project.find(@project.id).nil?
 						response.should redirect_to(root_path)
 					end
+					
+					it "can't edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
+						response.should redirect_to(root_path)
+					end
 				end
 				
 				context 'user IS project owner' do
@@ -422,6 +509,12 @@ describe ProjectsController do
 						sign_in @user
 						get :destroy, :id => @project.name
 						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
 					end
 				end
@@ -454,6 +547,12 @@ describe ProjectsController do
 						assert !Project.find(@project.id).nil?
 						response.should redirect_to(root_path)
 					end
+					
+					it "can't edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
+						response.should redirect_to(root_path)
+					end
 				end
 				
 				context 'user IS project owner' do
@@ -472,6 +571,12 @@ describe ProjectsController do
 						sign_in @user
 						get :destroy, :id => @project.name
 						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						response.should redirect_to(root_path)
+					end
+					
+					it "can't edit the proejct" do
+						sign_in @user
+						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
 					end
 				end
