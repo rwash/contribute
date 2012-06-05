@@ -21,19 +21,14 @@
   <div class="header-inner">
     <div class="container">
       <%= link_to image_tag("lightbulb6_contribute_logo.png", :class => "logo"), root_path, :class => 'brand' %>
-      <div id="navigationOptions">
-      <% if user_signed_in? %>
-		<%= link_to ("Welcome, " + current_user.name), current_user %>!&nbsp;&nbsp; | &nbsp;&nbsp; 
-		<%= link_to "Edit Profile", edit_user_registration_path %>&nbsp;&nbsp; | &nbsp;&nbsp; 
-		<%= link_to "Sign Out", destroy_user_session_path, :method => :delete %>
- 	  <% else %>
-		<%= link_to "Register", new_user_registration_path %> | <%= link_to "Sign In", new_user_session_path %>
- 	  <% end %>
+      <div class="navigationOptions">
+        <%= link_to "Categories", root_url %><%= link_to "Create a Project", new_project_url %>
+        <div class="pull-right">
+        <% if user_signed_in? %><%= link_to 'Profile', current_user %><%= link_to "Edit Settings", edit_user_registration_path %><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %><% else %><%= link_to "Register", new_user_registration_path %> | <%= link_to "Sign In", new_user_session_path %><% end %></div>
       </div>
     </div>
   </div>
 </div>
-
 
 <% if flash[:alert] %>
 <div id="flash">
