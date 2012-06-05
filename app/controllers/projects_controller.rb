@@ -46,15 +46,13 @@ class ProjectsController < InheritedResources::Base
 			flash[:notice] = "Successfully ACTIVATED project." 
     elsif @project.update_attributes(params[:project])  
       flash[:notice] = "Successfully updated project."
-      if @project.unconfirmed?
-				request = Amazon::FPS::RecipientRequest.new(save_project_url)
-				return redirect_to request.url
-      end 
     end
     
-    if @project.active?
-    	respond_with(@project)
-    else
+    if @project.unconfirmed?
+    	session[:project_id] = @project.id
+			request = Amazon::FPS::RecipientRequest.new(save_project_url)
+			return redirect_to request.url
+    else 
     	respond_with(@project)
     end
 	end
@@ -68,7 +66,6 @@ class ProjectsController < InheritedResources::Base
 		end
 
 		@project = Project.find_by_id(session[:project_id])
-		# @project.confirmed = true # We dont want to use this anymore.
 		@project.state = PROJ_STATES[1] #inactive
 		@project.payment_account_id = params[:tokenID]
 
@@ -83,7 +80,6 @@ class ProjectsController < InheritedResources::Base
 			successful_save
 
 			flash[:alert] = "Project saved successfully. Here's to getting funded!"
-			# return redirect_to @project
 			return redirect_to current_user
 		end
 	end
