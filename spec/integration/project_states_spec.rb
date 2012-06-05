@@ -40,18 +40,23 @@ class AmazonProcessTesting
 
 				visit(project_path(project))
 				get_and_assert_project(project.name)
+				#project is now unconfirmed
 				
 				click_button('Edit Project')
 				page.should have_content('Amazon Payments')
 				
 				click_button('Update Project')
 				page.should have_content('Sign in with your Amazon account')
-				
 				login_amazon('spartanfan10@hotmail.com', 'testing')
-
 				click_amazon_continue
 				find('a').click
 				page.should have_content('Project saved successfully')
+				#project is no inactive
+				
+				click_button('Activate')
+				page.driver.browser.switch_to.alert.accept
+				page.should have_content('Successfully activated project.')
+				#project is now active
 				
 			end
 
