@@ -121,12 +121,11 @@ $(document).ready(function(){
 	</div>
 	
 	<div class="tab-pane" id="projectUpdates">
-	  <h3> Updates </h3><br>
       <ul class="projectUpdates">
       	<h4><%= "There are no updates for this project." if @updates.size == 0 %></h4>
       
        <% @updates.each do |update| %>
-         <%= render :partial => 'updates/update', :object => update %>
+         <%= render :partial => 'updates/update', :object => update, :collection => @updates %>
        <% end %>
 	  </ul>
 	  <p>&nbsp;</p>
