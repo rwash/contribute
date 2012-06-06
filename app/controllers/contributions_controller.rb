@@ -10,8 +10,7 @@ class ContributionsController < ApplicationController
 	cache_sweeper :contribution_sweeper
 
 	def new
- 		@project = Project.find_by_name params[:project]
-
+ 		@project = Project.find_by_name params[:project].gsub(/-/, ' ')
 		authorize! :contribute, @project
 		validate_project
 

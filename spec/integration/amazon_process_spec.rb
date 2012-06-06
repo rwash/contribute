@@ -72,7 +72,7 @@ class AmazonProcessTesting
 
 				#contribute!
 				click_button 'Contribute to this project'
-				current_path.should == new_contribution_path(@project.name)
+				current_path.should == new_contribution_path(@project)
 
 				fill_in 'contribution_amount', :with => 'you_fail_me' 
 				click_button 'Make Contribution'
