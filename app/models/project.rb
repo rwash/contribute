@@ -17,7 +17,7 @@ class Project < ActiveRecord::Base
 	validate :validate_end_date
 	validate :valid_state
 
-	validates :name, :presence => true, :uniqueness => { :case_sensitive => false }, :length => {:maximum => MAX_NAME_LENGTH}
+	validates :name, :presence => true, :uniqueness => { :case_sensitive => false }, :length => {:maximum => MAX_NAME_LENGTH}, :format => { :with => /\A[a-zA-Z0-9\s]+\z/, :message => "can contatin only letters, numbers, and spaces." }
 	validates :short_description, :presence => true, :length => {:maximum => MAX_SHORT_DESC_LENGTH}
 	validates :long_description, :presence => true, :length => {:maximum => MAX_LONG_DESC_LENGTH}
 	validates_numericality_of :funding_goal, :greater_than_or_equal_to => MIN_FUNDING_GOAL, :message => "must be at least $5"
