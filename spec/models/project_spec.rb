@@ -191,7 +191,7 @@ describe Project do
 	describe 'to_param' do
 		it 'returns name' do
 			project = FactoryGirl.create(:project)
-			assert_equal project.name, project.to_param			
+			assert_equal project.name.gsub(/\W/, '-') , project.to_param			
 		end
 	end
 #End Methods
