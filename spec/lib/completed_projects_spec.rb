@@ -52,6 +52,9 @@ describe CompletedProjects do
 #			to_funded2.should_receive(:execute_payment).once
 
 			CompletedProjects.run
+			
+			assert Project.find(funded.id).state == 'funded'
+			assert Project.find(not_funded.id).state == 'nonfunded'
 		end
 
 		it "run all works" do
