@@ -61,10 +61,6 @@ class Project < ActiveRecord::Base
 			((contributions_total.to_f / funding_goal.to_f) * 100).to_i
 		end
 	end
-	
-	def pretty_url
-		self.name.gsub(/\W/, '-')
-	end
 
 	#Overriding to_param makes it so that whenever a url is built for a project, it substitues
 	#the name of the project instead of the id of the project. This way, we can still refer
