@@ -59,9 +59,48 @@ describe ContributionsController do
 				response.should redirect_to(@project)
 				assert flash[:alert].include?("may not edit this contribution"), flash[:alert]
 			end
+			
+			describe 'after end_date but active' do
+				it 'cant contribute to project after end_date' do
+					project = FactoryGirl.build(:project, :state => 'active', :end_date => Date.yesterday)
+					project.save(:validate => false)
+					contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => project.id)
+					
+					sign_in @user
+					get :new, :project => project.name
+					response.should be_success
+					# assert flash[:alert].include?("The contribution period has ended."), flash[:alert]
+					
+					project.delete
+				end
+				
+				it 'can contribute to project on end_date' do
+					project = FactoryGirl.build(:project, :state => 'active', :end_date => Date.today)
+					project.save(:validate => false)
+					contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => project.id)
+					
+					sign_in @user
+					get :new, :project => project.name
+					response.should be_success
+										
+					project.delete
+				end
+				
+				it 'can contribute to project before end_date' do
+					project = FactoryGirl.build(:project, :state => 'active', :end_date => Date.tomorrow)
+					project.save(:validate => false)
+					contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => project.id)
+					
+					sign_in @user
+					get :new, :project => project.name
+					response.should be_success
+					
+					project.delete
+				end
+			end
 		end
 	end
-
+	
 	describe 'functional tests: ' do
 		before(:all) do
 			@user = FactoryGirl.create(:user)
@@ -71,7 +110,7 @@ describe ContributionsController do
 		after(:all) do 
 			@user.delete
 		end
-
+		
 		context 'save action' do
 			before(:all) do
 				@project = FactoryGirl.create(:project)
@@ -96,7 +135,7 @@ describe ContributionsController do
 				response.should redirect_to(@contribution.project)
 				assert flash[:alert].include?("entered successfully"), flash[:alert]
 			end
-
+			
 			it "should handle a nil contribution" do
 				sign_in @user
 				session[:contribution] = nil
