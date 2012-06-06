@@ -24,7 +24,7 @@ class Project < ActiveRecord::Base
 	validates :payment_account_id, :presence => true
 	validates :category_id, :presence => true
 	validates :user_id, :presence => true
-	validates :state, :presence => true
+	# validates :state, :presence => true (Cant do this just yet as it causes 47 of the tests to fail
 
 	attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture, :picture_cache
 	
