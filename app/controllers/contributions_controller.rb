@@ -10,8 +10,7 @@ class ContributionsController < ApplicationController
 	cache_sweeper :contribution_sweeper
 
 	def new
- 		@project = Project.find_by_name params[:project]
-
+ 		@project = Project.find_by_name params[:project].gsub(/-/, ' ')
 		authorize! :contribute, @project
 		validate_project
 
@@ -25,7 +24,7 @@ class ContributionsController < ApplicationController
 		validate_project
 
 		@contribution = prepare_contribution()
-		if @contribution.valid?
+		if @contribution.valid? && @project.end_date >= Date.today
 			#Worth considering alternatives if the performance on this is bad
 			#E.g. memcached, writing to the DB and marking record incomplete
 			session[:contribution] = @contribution
@@ -33,6 +32,7 @@ class ContributionsController < ApplicationController
 		
 			redirect_to request.url
 		else
+			flash[:alert] = "Sorry, this project's contribution period has endded and you can no longer contribute to the project."
 			render :action => :new
 		end
 	end
@@ -83,6 +83,11 @@ class ContributionsController < ApplicationController
 		#Setup contribution parameters that aren't specified by user...
 		@contribution = prepare_contribution()
 		@contribution.project_id = @project.id
+		
+		if @project.end_date < Date.today
+			flash[:error] = "You cannot edit your contribution because the project contribution period has ended."
+			return redirect_to @project	
+		end
 		
 		if !@contribution.valid?
 			return render :action => :edit	

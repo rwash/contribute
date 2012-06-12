@@ -13,18 +13,20 @@ class Project < ActiveRecord::Base
 	has_many :updates
 	has_one :category
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
+	
+	validate :validate_end_date
+	validate :valid_state
 
-	validates :name, :presence => true, :uniqueness => { :case_sensitive => false }, :length => {:maximum => MAX_NAME_LENGTH}
+	validates :name, :presence => true, :uniqueness => { :case_sensitive => false }, :length => {:maximum => MAX_NAME_LENGTH}, :format => { :with => /\A[a-zA-Z0-9\s]+\z/, :message => "can contatin only letters, numbers, and spaces." }
 	validates :short_description, :presence => true, :length => {:maximum => MAX_SHORT_DESC_LENGTH}
 	validates :long_description, :presence => true, :length => {:maximum => MAX_LONG_DESC_LENGTH}
 	validates_numericality_of :funding_goal, :greater_than_or_equal_to => MIN_FUNDING_GOAL, :message => "must be at least $5"
 	validates_numericality_of :funding_goal, :only_integer => true, :message => "must be a whole dollar amount (no cents please)"
-	validate :validate_end_date
 	validates :end_date, :presence => { :message => "must be of form 'MM/DD/YYYY'" }
 	validates :payment_account_id, :presence => true
 	validates :category_id, :presence => true
 	validates :user_id, :presence => true
-	# validates :state, :presence => true (Cant do this just yet as it causes 47 of the tests to fail
+	validates :state, :presence => true
 
 	attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture, :picture_cache
 	
@@ -61,13 +63,17 @@ class Project < ActiveRecord::Base
 			((contributions_total.to_f / funding_goal.to_f) * 100).to_i
 		end
 	end
+	
+	def valid_state
+		errors.add(:state, "Invalid value for state var. Check config/enviroment.rb") unless self.state == PROJ_STATES[0] || self.state == PROJ_STATES[1] || self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4] || self.state == PROJ_STATES[5]
+	end
 
 	#Overriding to_param makes it so that whenever a url is built for a project, it substitues
 	#the name of the project instead of the id of the project. This way, we can still refer
 	#to params[:id] but it's actually the name. We didn't change the param to :name because
 	#it was much more code that would be more error prone
 	def to_param
-		self.name
+		self.name.gsub(/\W/, '-')
 	end
 
 	def destroy

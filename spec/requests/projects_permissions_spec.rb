@@ -27,11 +27,11 @@ describe 'Project permissions' do
 				assert_equal project_path(project), current_path
 				project.delete
 			end
-			it "can't view inactive project" do
+			it "can view inactive project if owner" do
 				# project = FactoryGirl.create(:project, :active => false, :user_id => @user.id)
 				project = FactoryGirl.create(:project, :user_id => @user.id, :state => "inactive")
 				visit project_path(project)
-				assert_equal root_path, current_path
+				assert_equal project_path(project), current_path
 				project.destroy
 			end
 			it "can't create a project" do

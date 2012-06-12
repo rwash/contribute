@@ -25,8 +25,12 @@ every 1.day, :at => '12 am' do
 	rake "contribution:completed_projects"
 end
 
-every 1.hour do
+every :hour do
 	rake "contribution:update_contributors"
+end
+
+every :reboot do
+	rake "all_contribution:completed_projects"
 end
 
 =begin
