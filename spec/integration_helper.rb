@@ -55,7 +55,7 @@ def generate_contribution(user, password, amazon_user, amazon_password, project,
 
 	#contribute!
 	click_button 'Contribute to this project'
-	current_path.should == new_contribution_path(project.name)
+	current_path.should == new_contribution_path(project)
 
 	fill_in 'contribution_amount', :with => amount
 	click_button 'Make Contribution'
@@ -64,7 +64,7 @@ def generate_contribution(user, password, amazon_user, amazon_password, project,
 
 	#Calling find first, so capybara will wait until it appears
 	page.should have_content('Contribution entered successfully')
-	current_path.should == project_path(project.name)
+	current_path.should == project_path(project)
 
 	contribution = Contribution.last
 	contribution.should_not be_nil

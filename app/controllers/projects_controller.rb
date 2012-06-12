@@ -5,7 +5,7 @@ require 'amazon/fps/amazon_validator'
 class ProjectsController < InheritedResources::Base
 	actions :all, :except => [ :create, :edit, :update, :destroy ]
 
-	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save ]
+	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save]
 	#This allows us to use project names instead of ids for the routes
 	before_filter :set_current_project_by_name, :only => [ :show, :edit, :update, :destroy ]
 	#This is authorization through CanCan. The before_filter handles load_resource
@@ -39,7 +39,7 @@ class ProjectsController < InheritedResources::Base
 	end
 	
 	def update
-		@project = Project.where(:name => params[:id]).first
+		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
 		if params[:activate] == 'true'
 			@project.state = PROJ_STATES[2] #active
 			@project.save!
@@ -85,6 +85,8 @@ class ProjectsController < InheritedResources::Base
 	end
 
 	def destroy
+		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+		
 		if @project.state == PROJ_STATES[0] || @project.state == PROJ_STATES[1]
 			if !@project.destroy
 				flash[:alert] = "Project could not be deleted. Please try again."
@@ -105,7 +107,7 @@ class ProjectsController < InheritedResources::Base
 	end
 	
   def show
-    @project = Project.where(:name => params[:id]).first
+    @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
     
     @rootComments = @project.root_comments
     @comment = Comment.new(params[:comment])
@@ -117,7 +119,7 @@ class ProjectsController < InheritedResources::Base
   end
   
   def edit
-  	@project = Project.where(:name => params[:id]).first
+  	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
   end
 
 protected	

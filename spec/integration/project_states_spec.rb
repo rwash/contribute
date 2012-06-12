@@ -58,6 +58,7 @@ class AmazonProcessTesting
 				page.should have_content('Successfully activated project.')
 				#project is now active
 				
+				visit(project_path(project))
 				click_button('Cancel Project')
 				page.driver.browser.switch_to.alert.accept
 				page.should have_content('Project successfully canceled. Project is now only visible to you.')
