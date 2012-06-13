@@ -15,6 +15,7 @@ class Video < ActiveRecord::Base
   end
 
   def self.update_video(video, params)
+  	# may want to add a :dev_tab => "contribute", also may want to make the videos private ( but I like keeping them public.)
     yt_session.video_update(video.yt_video_id, video_options(params[:title], params[:description]))
     video.update_attributes(params)
   end
