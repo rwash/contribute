@@ -2,6 +2,15 @@ class Video < ActiveRecord::Base
   
   scope :completes,   where(:is_complete => true)
   scope :incompletes, where(:is_complete => false)
+  
+  def create_comment(comment)
+    begin
+      comments.create(:comment => comment)
+      Video.yt_session.add_comment(yt_video_id, comment)
+    rescue
+      false
+    end
+  end
     
   def self.yt_session
     @yt_session ||= YouTubeIt::Client.new(:username => YT_USERNAME , :password => YT_PASSWORD , :dev_key => YT_DEV_KEY)    
@@ -29,10 +38,10 @@ class Video < ActiveRecord::Base
 
   private
     def self.video_options(params)
-      opts = {:title => "Testing" ,
-             :description => "Testing",
+      opts = {:title => params[:title],
+             :description => params[:description],
              :category => "People",
              :keywords => ["test"]}
-      #params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
+      params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
     end
 end

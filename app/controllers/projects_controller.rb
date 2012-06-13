@@ -39,13 +39,12 @@ class ProjectsController < InheritedResources::Base
 	end
 	
 	def update
-		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
-		@video     = Video.find(params[:video][:id])  
+		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first 
 		if params[:activate] == 'true'
 			@project.state = PROJ_STATES[2] #active
 			@project.save!
 			flash[:notice] = "Successfully activated project." 
-    elsif @project.update_attributes(params[:project]) && Video.update_video(@video, params[:video])
+    elsif @project.update_attributes(params[:project])
       flash[:notice] = "Successfully updated project."
     end
     
@@ -122,13 +121,6 @@ class ProjectsController < InheritedResources::Base
   
   def edit
   	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
-  	@video = Video.new(:title => 'test', :description => 'testing')
-  	
-    if @video
-      @upload_info = Video.token_form([:title => @video.title, :description => @video.description], save_video_new_video_url(:video_id => @video.id))
-    else
-    	flash[:error] = "Somthing went wrong Jake."
-    end
   end
 
 protected	
