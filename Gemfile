@@ -115,3 +115,6 @@ gem 'bootstrap-kaminari-views'
 
 # Comments gem
 gem 'acts_as_commentable_with_threading'
+
+#YouTube Gem
+gem 'youtube_it'

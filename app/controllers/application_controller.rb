@@ -24,4 +24,10 @@ class ApplicationController < ActionController::Base
   def comment_owner(comment)
    logged_in? && current_user.id == comment.user_id
   end
+  
+  helper_method :yt_client
+
+  def yt_client
+    @yt_client ||= YouTubeIt::Client.new(:username => YT_USERNAME , :password => YT_PASSWORD , :dev_key => YT_DEV_KEY)
+  end
 end
