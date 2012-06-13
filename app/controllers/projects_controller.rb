@@ -122,6 +122,23 @@ class ProjectsController < InheritedResources::Base
   def edit
   	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
   end
+  
+  def upload
+  	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+  	
+  	if !@project.video_id.nil?
+  		@old_vid = Video.find(@project.video_id)
+  		Video.delete_video(@old_vid)
+  	end
+  	
+  	@video = Video.create(:title => @project.name, :description => @project.short_description)
+  	@project.video_id = @video.id
+  	@project.save!
+  	
+    if @video
+      @upload_info = Video.token_form(@video.title, @video.description, save_video_new_video_url(:video_id => @video.id))
+    end
+  end
 
 protected	
 	def successful_save

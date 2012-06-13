@@ -2,15 +2,6 @@ class Video < ActiveRecord::Base
   
   scope :completes,   where(:is_complete => true)
   scope :incompletes, where(:is_complete => false)
-  
-  def create_comment(comment)
-    begin
-      comments.create(:comment => comment)
-      Video.yt_session.add_comment(yt_video_id, comment)
-    rescue
-      false
-    end
-  end
     
   def self.yt_session
     @yt_session ||= YouTubeIt::Client.new(:username => YT_USERNAME , :password => YT_PASSWORD , :dev_key => YT_DEV_KEY)    
@@ -24,12 +15,12 @@ class Video < ActiveRecord::Base
   end
 
   def self.update_video(video, params)
-    yt_session.video_update(video.yt_video_id, video_options(params))
+    yt_session.video_update(video.yt_video_id, video_options(params[:title], params[:description]))
     video.update_attributes(params)
   end
 
-  def self.token_form(params, nexturl)
-    yt_session.upload_token(video_options(params), nexturl)
+  def self.token_form(title, description, nexturl)
+    yt_session.upload_token(video_options(title, description), nexturl)
   end
 
   def self.delete_incomplete_videos
@@ -37,11 +28,11 @@ class Video < ActiveRecord::Base
   end
 
   private
-    def self.video_options(params)
-      opts = {:title => params[:title],
-             :description => params[:description],
+    def self.video_options(title, description)
+      opts = {:title => title,
+             :description => description,
              :category => "People",
              :keywords => ["test"]}
-      params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
+      #params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
     end
 end

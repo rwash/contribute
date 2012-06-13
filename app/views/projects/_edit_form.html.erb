@@ -67,7 +67,7 @@
   </div>
 </div>
 <p><%= render :partial => "picture", :locals => {:f => f} %></p>
-
+<p><%= link_to "Add Video", upload_project_video_path(@project) %> </p>
 <br>
     <% if @project.unconfirmed? %>
 			<p><strong>*Amazon Payments*</strong></p>
