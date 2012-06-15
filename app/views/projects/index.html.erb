@@ -1,37 +1,11 @@
 <% cache({:action => 'index', :action_suffix => 'body'}, :expires_in => 1.minute) do %>
 
-<div id="alignBox">
-	<%= link_to new_project_url do %>
-  <div id="createFundBox">
-	<ul>
-		<li>
-			<h1>Create a Project</h1>
-			<p>Do you want to create something, make a movie or build a robot? Have this great idea but don’t have the resources? 
-				Contribute can help make that happen. Start getting your project funded here so you can make that dream come true.</p>
-		</li>
-	</ul>
-  </div>
-	<% end %>
+<div id="header">Michigan State University's crowd funding platform. Contribute to creativity.</div>
 
-	<%= link_to root_path do %>
-  <div id="createFundBox">
-	<ul>
-		<li>
-			<h1>Browse Categories</h1>
-			<p align="center">Coming Soon! </p>
-		</li>
-	</ul>
-  </div>
-	<% end %>
-</div>
-
-
-<div class="column1">
 <% for project in @projects %>
-	<%= render :partial => 'shared/project', :locals => { :project => project } %>
+  <div class="column"><%= render :partial => 'shared/project', :locals => { :project => project } %></div>
 <% end %>
-</div>
-
 
 <% end %>
+<br>
 <%= paginate @projects %>
