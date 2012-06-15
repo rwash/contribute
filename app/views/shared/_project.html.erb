@@ -1,51 +1,45 @@
-<div id="projectPreview">
-
-	<div class="floatRight">
-		<div class="contributionBar"><%= project.contributions_percentage %></div>
-	</div>
-	
-	<p class="ellipsisName"><%= link_to project.name, project %></p>
-
-	<%= link_to project do %>
-	<div align="center">
-		<% if project.picture? %>
-			<%= image_tag project.picture.url(:thumb), :class => "projectPreviewImage" %>
-		<% else %>
-			<%= image_tag "BlockSThumb.png", :class => "projectPreviewImage" %>
-		<% end %>
-	</div>
+<ul class="thumbnails">
+  <li class="project-span">
+    <div class="thumbnail">
+    <%= link_to project do %>
+      <% if project.picture? %>
+	    <%= image_tag project.picture.url(:thumb), :width => '230' %>
+	  <% else %>
+	    <%= image_tag "BlockSThumb.png" %>
+	  <% end %>
 	<% end %>
-
-	<p>By: <%= project.user.name %></p>
-	<div class="ellipsisDesc">
-	<p><%= project.short_description %></p>
-	</div>
-
-	<div class="project_footer">
-<hr />
-		<ul>
-			<li>State:
+      <h4 class="ellipsisName"><%= link_to project.name, project %></h4>
+      <p class="byline">by <%= link_to project.user.name, project.user %></p>
+      <p class="ellipsisDesc"><%= project.short_description %></p>
+      <hr>
+      <div class="project-footer">
+	    <div class="progress">
+	      <% if project.contributions_percentage >= 1 %>
+		    <div class="bar" style="width: <%= project.contributions_percentage %>%;"></div>
+		  <% else %>
+		    <div class="bar" style="width: 1%;"></div>
+		  <% end %>
+		</div>
+		<div class="money-raised"><span class="bold"><%= number_to_currency(project.contributions_total, :precision => 0) %></span> <span class="italic">raised</span></div>
+		<div class="time-left"><span class="bold"><%= distance_of_time_in_words(Time.now, project.end_date) %></span> <span class="italic">left</span></div>
+		<div class="state">
 			<% case project.state %>
-			<% when 'unconfirmed' %>
-				<span class="label label-warning">Unconfirmed</span>
-			<% when 'inactive' %>
+		  	  <% when 'unconfirmed' %>
+		  		<span class="label label-warning">Unconfirmed</span>
+			  <% when 'inactive' %>
 				<span class="label label-warning">Inactive</span>
-			<% when 'active' %>
-				<span class="label label-success">Active</span>
-			<% when 'funded' %>
+			  <% when 'active' %>
+			  <% when 'funded' %>
 				<span class="label label-success">Funded!</span>
-			<% when 'nonfunded' %>
-				<span class="label label-inverse">Non-funded</span>
-			<% when 'canceled' %>
+			  <% when 'nonfunded' %>
+				<span class="label label-inverse">Not Funded</span>
+			  <% when 'canceled' %>
 				<span class="label label-inverse">Canceled</span>
-			<% else %>
-				<span class="label label-important">Somthing is Wrong</span>
+			  <% else %>
+				<span class="label label-important">Error</span>
 			<% end %>
-			</li><br>
-			<li>End Date: <%= project.end_date %></li><br>
-			<li>Pledged: <%= number_to_currency(project.contributions_total, :precision => 0) %> / <%= number_to_currency(project.funding_goal, :precision => 0) %></li>
-		</ul>
-
-  </div>
-
-</div>
+		</div>
+      </div>
+    </div>
+  </li>
+</ul>
