@@ -1,4 +1,6 @@
 Contribute::Application.routes.draw do
+  mount Ckeditor::Engine => '/ckeditor'
+
   resources :comments do
     delete :delete, :on => :member
   end
@@ -24,5 +26,7 @@ Contribute::Application.routes.draw do
 	resources :projects, :only => [:index, :new, :create, :edit, :update, :show, :destroy]
 
 	root :to => 'projects#index'
+	
+	mount Ckeditor::Engine => "/ckeditor"
 
 end
