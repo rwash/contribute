@@ -21,7 +21,7 @@
 	  	      <%= button_to "Edit", edit_project_path(project), :method => 'get', :class => 'btn btn-info' %>
 	  	    </div>
 	  	    <div class="btn_row">
-	  	      <%= button_to "Delete", @project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn btn-danger' %>
+	  	      <%= button_to "Delete", project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn btn-danger' %>
 	  	    </div>
 	  	  </div>  
 	  	<% elsif logged_in? and project.user_id == current_user.id and project.inactive? %>
@@ -33,7 +33,7 @@
 	  	      <%= button_to "Activate", project_path(:id => project.name, :activate => true), :method => :put, :confirm => "Are you sure you want to activate this project? You will not be able to edit the project once it is active.", :class => 'btn btn-success' %>
 	  	    </div>
 	  	    <div class="btn_row">
-	  	      <%= button_to "Delete", @project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn btn-danger' %>
+	  	      <%= button_to "Delete", project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn btn-danger' %>
 	  	    </div>
 	  	  </div>  
 	  	<% elsif logged_in? and project.user_id == current_user.id and project.active? %>
@@ -42,7 +42,7 @@
 	  	      <%= button_to "Update", project, :method => 'get', :class => 'btn-primary' %>
 	  	    </div>
 	  	    <div class="btn_row">
-	  	      <%= button_to "Cancel", @project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be canceld.", :class => 'btn-danger' %>
+	  	      <%= button_to "Cancel", project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be canceld.", :class => 'btn-danger' %>
 	  	    </div>
 	  	  </div>
 	  	  <% elsif logged_in? and project.user_id == current_user.id and (project.funded? or project.nonfunded?) %>
@@ -92,8 +92,8 @@
   <ul class="projectComments">
   	<h4><%= "This user has no comments." if @user.comments.size == 0 %></h4>
     <% @user.comments.each do |comment|%>
-      <% @project = Project.where(:id => comment.commentable_id).first %>
-      <%= link_to @project.name, Project.where(:id => comment.commentable_id).first %><br>
+      <% @ComPro = Project.where(:id => comment.commentable_id).first %>
+      <%= link_to @ComPro.name, Project.where(:id => comment.commentable_id).first %><br>
       <div id="comment_body">
         <li>
 	      <%= comment.body %><br>
