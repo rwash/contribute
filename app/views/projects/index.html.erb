@@ -1,6 +1,7 @@
 <% cache({:action => 'index', :action_suffix => 'body'}, :expires_in => 1.minute) do %>
 
 <div id="header">Michigan State University's crowd funding platform. Contribute to creativity.</div>
+<div class="section-header">Newest Projects</div>
 
 <% for project in @projects %>
   <div class="column"><%= render :partial => 'shared/project', :locals => { :project => project } %></div>
