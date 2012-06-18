@@ -12,67 +12,70 @@
 		</ul>
 		</div>
 	<% end %>
+    
+    
+<p><%= render :partial => "picture", :locals => {:f => f} %></p>	
 
-<div class="row">
+<div class="row well">
   <div class="span1-5">
-    <%= f.label :name, "Project Name: ", :class => 'pull-right' %>
-  </div>
-  <div class="span4">
-    <%= f.text_field :name %>
-  </div>
-</div>
-
-<div class="row">
-  <div class="span1-5">
-    <%= f.label :category, "Category: ", :class => 'pull-right' %>
+    <%= f.label :category, "Category: ", :class => 'pull-right bold' %>
   </div>
   <div class="span4">
     <%= f.collection_select :category_id, Category.all, :id, :short_description %>
   </div>
 </div>
 
-<div class="row">
+<div class="row well">
   <div class="span1-5">
-    <%= f.label :funding_goal, "Funding Goal: $", :class => 'pull-right' %>
+    <%= f.label :name, "Project Name: ", :class => 'pull-right bold' %>
   </div>
   <div class="span4">
-    <%= f.text_field :funding_goal, :size => 10 %>
+    <%= f.text_field :name, :class => 'span3' %>
   </div>
 </div>
 
-<div class="row">
+<div class="row well">
   <div class="span1-5">
-    <%= f.label :end_date, "End Date: ", :class => 'pull-right' %>
+    <%= f.label :funding_goal, "Funding Goal: $", :class => 'pull-right bold' %>
   </div>
   <div class="span4">
-    <%= f.text_field :end_date, :size => 10, :id => "DatePickerEndDate", :value => @project.end_date.blank? ? '' : format_date(@project.end_date) %>
+    <%= f.text_field :funding_goal, :class => 'span3', :placeholder => '0.00' %>
   </div>
 </div>
 
-<div class="row">
+<div class="row well">
   <div class="span1-5">
-    <%= f.label :short_description, "Short Description: ", :class => 'pull-right' %>
+    <%= f.label :end_date, "End Date: ", :class => 'pull-right bold' %>
   </div>
   <div class="span4">
-    <%= f.text_field :short_description%>
+    <%= f.text_field :end_date, :class => 'span3', :id => "DatePickerEndDate", :value => @project.end_date.blank? ? '' : format_date(@project.end_date) %>
   </div>
 </div>
 
-<div class="row">
+<div class="row well">
   <div class="span1-5">
-    <%= f.label :long_description, "Long Description: ", :class => 'pull-right' %>
+    <%= f.label :short_description, "Short Description:", :class => 'pull-right bold' %>
   </div>
   <div class="span4">
-    <%= f.text_area :long_description, :rows => 8, :class => 'span4' %></p>
+    <%= f.text_area :short_description, :rows => 4, :class => 'span3' %>
   </div>
 </div>
-<p><%= render :partial => "picture", :locals => {:f => f} %></p>
-<br>
 
-<p><strong>*Amazon Payments*</strong></p>
+<div class="row well">
+  <div class="span1-5">
+    <%= f.label :long_description, "Long Description: ", :class => 'pull-right bold' %>
+  </div>
+  <div class="span4">
+    <%= f.text_area :long_description, :rows => 10, :class => 'span5' %></p>
+  </div>
+</div>
+
+<div class="row well">
+<h4>Amazon Payments*</h4>
   <p><em>The last step in creating your project is associating it with an Amazon Payments account so that your donations have somewhere to go when your project is funded.</p>
   <p>Clicking "Create Project" will redirect you to Amazon Payments. Once you've completed associating your account you will be brought back here.</em></p>
-
-<%= f.submit %>
+  <%= f.submit :class => 'btn btn-success btn-large pull-right' %>
+<p>&nbsp;</p>
+</div>
 </div>
 <% end %>
