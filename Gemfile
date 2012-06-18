@@ -75,6 +75,7 @@ gem 'carrierwave'
 # Dependency Carrierwave has to be able to resize pictures to more
 # useful sizes
 gem 'rmagick'
+gem "mini_magick"
 
 # REST interaction
 # Some Amazon interaction is the user through a browser, the rest
@@ -109,9 +110,12 @@ gem "twitter-bootstrap-rails"
 gem 'rdoc'
 
 
-#Pagination gem
+# Pagination gem
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 
 # Comments gem
 gem 'acts_as_commentable_with_threading'
+
+#Rich Text Editor gem
+gem "ckeditor", "3.7.1"
