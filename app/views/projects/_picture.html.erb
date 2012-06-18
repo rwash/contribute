@@ -2,8 +2,8 @@
 Current Picture: <%= image_tag(@project.picture.url(:thumb)) %><br>
 <% end %>
 
-<div class="row">
-    <%= f.label :picture, "New Picture (optional): ", :class => 'pull-left' %> &nbsp; &nbsp; &nbsp; &nbsp;
-    <%= f.file_field :picture %>
+<div class="row well">
+    <%= f.label :picture, "New Picture (optional): ", :class => 'pull-left bold' %> &nbsp; &nbsp; &nbsp; &nbsp;
+    <%= f.file_field :picture, :class => 'picture-btn' %>
     <%= f.hidden_field :picture_cache %>
 </div>
