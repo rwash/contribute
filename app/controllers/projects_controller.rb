@@ -108,7 +108,7 @@ class ProjectsController < InheritedResources::Base
 	
   def show
     @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
-    @video = Video.find(@project.video_id)
+    @video = Video.find(@project.video_id) if !@project.video_id.nil?
     
     @rootComments = @project.root_comments
     @comment = Comment.new(params[:comment])
