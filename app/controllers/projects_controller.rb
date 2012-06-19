@@ -88,7 +88,8 @@ class ProjectsController < InheritedResources::Base
 		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
 		
 		if @project.state == PROJ_STATES[0] || @project.state == PROJ_STATES[1]
-			if !@project.destroy
+			@project.destroy
+			if !@project.destroyed?
 				flash[:alert] = "Project could not be deleted. Please try again."
 				return redirect_to @project
 			else 
