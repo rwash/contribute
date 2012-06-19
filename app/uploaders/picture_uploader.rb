@@ -21,4 +21,12 @@ class PictureUploader < CarrierWave::Uploader::Base
 			raise CarrierWave::ProcessingError
 		end
 	end
+	
+	version :user do
+		begin
+			process :resize_to_fill => [170,170]
+		rescue
+			raise CarrierWave::ProcessingError
+		end
+	end
 end

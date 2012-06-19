@@ -82,14 +82,14 @@ $(document).ready(function(){
 
 
 	<div class="tab-content">
-  	  <div class="tab-pane active" id="projectContent" align="center">
+  	  <div class="tab-pane active" id="projectContent">
             <% if @project.picture? %>
                 <%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
             <% else %>
                 <%= image_tag "BlockSShow.png", :class => "projectImage" %>
             <% end %>
             <br/><br/>
-            <%= simple_format(@project.long_description) %><br/>
+            <%= raw(@project.long_description) %><br/>
     	  </div>
 
 	  <div class="tab-pane" id="projectContributors">
@@ -151,11 +151,6 @@ $(document).ready(function(){
 	  <p>&nbsp;</p>
 	  <p class="update">
 	  	<%= render :partial => "updates/update_form", :object => @update if @project.can_update? and logged_in? and @project.user_id == current_user.id %>
-	  	<% if !logged_in? or @project.user_id != current_user.id  %>
-	  	<div class="alert">
-	  	  You can not update this project.
-	    </div>
-	    <% end %>
 	  </p>		
 	</div>
 	
