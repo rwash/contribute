@@ -1,15 +1,26 @@
-<div id="userProfile">
-	<% if @user.picture? %>
-		<%= image_tag @user.picture.url(:show), :class => "userImage" %>
-	<% else %>
-		<%= image_tag "defaultProfilePic.jpg", :class => "userImage" %>
-	<% end %>
-	<br>
+<div class="profile-head">
+  <div class="row">
+    <div class="span2 thumbnail">
+      <% if @user.picture? %>
+        <%= image_tag @user.picture.url(:show) %>
+      <% else %>
+        <%= image_tag "defaultProfilePic.jpg", :width => '170' %>
+      <% end %>
+    </div>
+    <div class="span3">
+      <h1> <%= @user.name %> </h1>
+      <p>&nbsp;</p>
+      <blockquote>
+        <% if @user.location? %>
+          Location: <%= @user.location %><br>
+        <% end %>
+        Member Since: <%= @user.created_at.strftime("%B %d, %Y") %>
+      </blockquote>
+    </div>
+  </div>
+</div>
 
-	<h1> <%= @user.name %> </h1>
-	<h2> <%= @user.location %> </h2>
-
-	<% if @user.projects.size > 0 %>
+<% if @user.projects.size > 0 %>
 		<h3> Created Projects </h3>
 		<div class="row">
 		<% @user.projects.each do |project|%>
