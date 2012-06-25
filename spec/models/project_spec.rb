@@ -27,6 +27,13 @@ describe Project do
 			project2 = FactoryGirl.build(:project2, :name => project.name)	
 			assert !project2.save, 'Incorrectly saved project with duplicate name'	
 		end
+		
+		it 'can only contain letters and numbers' do
+			project = FactoryGirl.build(:project, :name => "Jake is cool 1234")
+			assert project.save, 'Project could not be saved with a title of only letters and numbers.'
+			project2 = FactoryGirl.build(:project2, :name => 'Sup D@wg.jpeg')
+			assert !project2.save, 'Project incorretly saved with a tile containing sysmbols other than A-Z,a-z, 0-9'
+		end
 
 		it 'fails with max length + 1' do
 			project = FactoryGirl.build(:project, :name => "a" * (Project::MAX_NAME_LENGTH + 1))

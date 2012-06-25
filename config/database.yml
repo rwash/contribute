@@ -25,9 +25,9 @@ jake:
   reconnect: false
   database: jake_contribute_development
   pool: 5
-  username: root
-  password: password
-  socket: /tmp/mysql.sock
+  username: contribute_dev
+  password: contribute_dev
+  socket: /var/run/mysqld/mysqld.sock
 
 rick:
   adapter: mysql2

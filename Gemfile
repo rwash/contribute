@@ -119,3 +119,6 @@ gem 'acts_as_commentable_with_threading'
 
 #Rich Text Editor gem
 gem "ckeditor", "3.7.1"
+
+#YouTube Gem
+gem 'youtube_it'

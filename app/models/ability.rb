@@ -17,7 +17,7 @@ class Ability
 		# can :destroy, Project, :active => true, :confirmed => true, :user_id => user.id
 		can :destroy, Project, :user_id => user.id
 		can :save, Project
-
+		can :upload, Project
 		#Contributions
 		# Make sure the user isn't a project owner and doesn't have a contribution already
 		can :contribute, Project do |project|

@@ -12,6 +12,7 @@ class Project < ActiveRecord::Base
 	has_many :comments
 	has_many :updates
 	has_one :category
+	has_one :video
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 	
 	validate :validate_end_date
