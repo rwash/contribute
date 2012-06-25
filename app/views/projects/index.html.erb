@@ -4,7 +4,13 @@
 <div class="section-header">Newest Projects</div>
 
 <% for project in @projects %>
-  <div class="column"><%= render :partial => 'shared/project', :locals => { :project => project } %></div>
+  <div class="column">
+    <ul class="thumbnails">
+      <li class="project-span">
+        <%= render :partial => 'shared/project', :locals => { :project => project } %>
+      </li>
+    </ul>  
+  </div>
 <% end %>
 
 <% end %>

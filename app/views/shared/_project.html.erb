@@ -1,5 +1,3 @@
-<ul class="thumbnails">
-  <li class="project-span">
     <div class="thumbnail">
     <%= link_to project do %>
       <% if project.picture? %>
@@ -32,7 +30,7 @@
 			  <% when 'funded' %>
 				<span class="label label-success">Funded!</span>
 			  <% when 'nonfunded' %>
-				<span class="label label-inverse">Not Funded</span>
+				<span class="label label-inverse">Unfunded</span>
 			  <% when 'canceled' %>
 				<span class="label label-inverse">Canceled</span>
 			  <% else %>
@@ -41,5 +39,3 @@
 		</div>
       </div>
     </div>
-  </li>
-</ul>
