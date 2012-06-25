@@ -1,6 +1,13 @@
 Contribute::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
 
+	resources :videos do    
+    new do
+       post :upload
+       get  :save_video
+     end
+  end
+ 
   resources :comments do
     delete :delete, :on => :member
   end
@@ -23,6 +30,7 @@ Contribute::Application.routes.draw do
 
 	#The :id being passed through the routes is really the name of the project
 	match 'projects/save' => 'projects#save', :as => :save_project
+	match 'projects/:id/edit/upload' => 'projects#upload', :as => :upload_project_video
 	resources :projects, :only => [:index, :new, :create, :edit, :update, :show, :destroy]
 
 	root :to => 'projects#index'

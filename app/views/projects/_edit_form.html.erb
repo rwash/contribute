@@ -70,6 +70,9 @@
   </div>
 </div>
       <div class="row well">
+<p><%= render :partial => "picture", :locals => {:f => f} %></p>
+<p><%= link_to "Add Video", upload_project_video_path(@project) %> </p>
+<br>
     <% if @project.unconfirmed? %>
         <h4>Amazon Payments*</h4>
         <p><em>The last step in creating your project is associating it with an Amazon Payments account so that your donations have somewhere to go when your project is funded.</p>

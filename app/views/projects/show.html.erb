@@ -88,6 +88,7 @@ $(document).ready(function(){
             <% else %>
                 <%= image_tag "BlockSShow.png", :class => "projectImage" %>
             <% end %>
+            <%= render @video if @video%>
             <br/><br/>
             <%= raw(@project.long_description) %><br/>
     	  </div>

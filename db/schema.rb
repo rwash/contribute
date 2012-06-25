@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20120618122303) do
     t.string   "payment_account_id"
     t.boolean  "confirmed"
     t.string   "state"
+    t.integer  "video_id"
   end
 
   create_table "updates", :force => true do |t|
@@ -225,5 +226,14 @@ ActiveRecord::Schema.define(:version => 20120618122303) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+
+  create_table "videos", :force => true do |t|
+    t.string   "title"
+    t.string   "description"
+    t.string   "yt_video_id"
+    t.boolean  "is_complete", :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

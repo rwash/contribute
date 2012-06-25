@@ -39,12 +39,12 @@ class ProjectsController < InheritedResources::Base
 	end
 	
 	def update
-		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first 
 		if params[:activate] == 'true'
 			@project.state = PROJ_STATES[2] #active
 			@project.save!
 			flash[:notice] = "Successfully activated project." 
-    elsif @project.update_attributes(params[:project])  
+    elsif @project.update_attributes(params[:project])
       flash[:notice] = "Successfully updated project."
     end
     
@@ -109,6 +109,7 @@ class ProjectsController < InheritedResources::Base
 	
   def show
     @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+    @video = Video.find(@project.video_id) if !@project.video_id.nil?
     
     @rootComments = @project.root_comments
     @comment = Comment.new(params[:comment])
@@ -121,6 +122,23 @@ class ProjectsController < InheritedResources::Base
   
   def edit
   	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+  end
+  
+  def upload
+  	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+  	
+  	if !@project.video_id.nil?
+  		@old_vid = Video.find(@project.video_id)
+  		Video.delete_video(@old_vid)
+  	end
+  	
+  	@video = Video.create(:title => @project.name, :description => @project.short_description)
+  	@project.video_id = @video.id
+  	@project.save!
+  	
+    if @video
+      @upload_info = Video.token_form(@video.title, @video.description, save_video_new_video_url(:video_id => @video.id))
+    end
   end
 
 protected	
