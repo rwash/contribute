@@ -34,7 +34,7 @@ class AmazonProcessTesting
 				fill_in 'project_funding_goal', :with => project.funding_goal
 				fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
 				fill_in 'project_short_description', :with => project.short_description
-				fill_in 'project_long_description', :with => project.long_description
+				fill_in_ckeditor 'project_long_description', :with => 'This is my message!'
 			
 				click_button 'Create Project'
 
