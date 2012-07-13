@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe Project do
+=begin
 	describe 'valid case' do
 		before(:all) do
-			@project = FactoryGirl.create(:project)
+			@project = FactoryGirl.create(:project)#1
 			@project.state = PROJ_STATES[2]
 		end
 
@@ -15,6 +16,7 @@ describe Project do
 			assert @project.active?, "Project should be active"
 		end
 	end
+=end
 
 	describe 'name' do
 		it 'is required' do
@@ -75,7 +77,7 @@ describe Project do
 		end
 
 		it 'saves with max length' do
-			project = FactoryGirl.build(:project, :long_description => "a" * (Project::MAX_LONG_DESC_LENGTH))
+			project = FactoryGirl.build(:project, :long_description => "a" * (Project::MAX_LONG_DESC_LENGTH))#2
 			assert project.save, 'Failed to save project with correct long description length'
 		end
 	end
@@ -90,7 +92,7 @@ describe Project do
       assert !project.save, "Incorrectly saved project without funding_goal below minimum project"
     end
     it "takes funding_goals with commas" do
-      project = FactoryGirl.build(:project, :funding_goal => '9,999,999')
+      project = FactoryGirl.build(:project, :funding_goal => '9,999,999')#3
       assert project.save, "Should have saved project with funding_goal with commas"
     end
     it "is an integer" do
@@ -101,7 +103,7 @@ describe Project do
 
 	describe 'end date' do
 		it 'succeeds with properly formatted date' do
-			project = FactoryGirl.build(:project, :end_date => '03/12/2020')
+			project = FactoryGirl.build(:project, :end_date => '03/12/2020')#4
 			assert project.save, 'Failed to save project with proper date'
 			assert_equal project.end_date.month, 3 
 			assert_equal project.end_date.day, 12 
@@ -113,7 +115,7 @@ describe Project do
 		end	
 
 		it 'succeeds when equal to tomorrow' do
-			project = FactoryGirl.build(:project, :end_date => Date.today + 1)
+			project = FactoryGirl.build(:project, :end_date => Date.today + 1)#5
 			assert project.save, 'Failed to save project with date of tomorrow'
 		end
 		#This tests validate_end_date
@@ -147,7 +149,7 @@ describe Project do
 	#TODO: pictures
 
 #End Properties
-
+=begin
 #Begin Methods	
 	describe 'contributions' do
 		#These are instance variables so they can be accessed outside of the before. If they're not
@@ -194,11 +196,12 @@ describe Project do
 			assert !@project.active?
 		end
 	end
-
+=end
 	describe 'to_param' do
 		it 'returns name' do
-			project = FactoryGirl.create(:project)
-			assert_equal project.name.gsub(/\W/, '-') , project.to_param			
+			@project = FactoryGirl.create(:project)
+			assert_equal @project.name.gsub(/\W/, '-') , @project.to_param		
+			@project.delete
 		end
 	end
 #End Methods

@@ -13,7 +13,6 @@ describe ProjectsController do
 				project.delete
 			end
 			it "can't view inactive project" do
-				# project = FactoryGirl.create(:project, :active => false)
 				project = FactoryGirl.create(:project, :state => 'inactive')
 				get :show, :id => project.name
 				response.should redirect_to(root_path)	

@@ -93,10 +93,10 @@ class ProjectsController < InheritedResources::Base
 	
 	def activate
 		@project = Project.find_by_name(params[:id].gsub(/-/, ' '))
-		@video = Video.find(@project.video_id)
+		@video = Video.find_by_id(@project.video_id)
 		
 		@project.state = PROJ_STATES[2] #active
-		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => @video.description, :category => 'People',:keywords => YT_TAGS, :private => false)
+		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => @video.description, :category => 'People',:keywords => YT_TAGS, :private => false) unless @video.nil?
 		
 		@project.save!
 		flash[:notice] = "Successfully activated project."
@@ -147,7 +147,7 @@ class ProjectsController < InheritedResources::Base
 			#project will not be deleted but will be CANCELED and only visible to user
 			@project.state = PROJ_STATES[5] #canceled
 			@project.save!
-			Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "#{@video.description}\n\n #{project_url(@project)}", :category => 'People',:keywords => YT_TAGS, :private => true)
+			Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "#{@video.description}\n\n #{project_url(@project)}", :category => 'People',:keywords => YT_TAGS, :private => true) if @video
 			flash[:alert] = "Project successfully canceled. Project is now only visible to you."
 		else
 			flash[:alert] = "You can not cancel or delete this project."
