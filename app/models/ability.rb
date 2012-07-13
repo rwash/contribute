@@ -5,19 +5,19 @@ class Ability
 		user ||= User.new
 
 		#Projects
-		# can :read, Project, :active => true, :confirmed => true
 		can :read, Project do |p|
 			p.public_can_view? || p.user_id == user.id
 		end
 		can :create, Project
-		# can :update, Project, :active => true, :user_id => user.id
 		can :update, Project do |p|
 			p.user_id == user.id and p.can_edit?
 		end
-		# can :destroy, Project, :active => true, :confirmed => true, :user_id => user.id
+		can :activate, Project, :user_id => user.id
+		
 		can :destroy, Project, :user_id => user.id
 		can :save, Project
 		can :upload, Project
+		
 		#Contributions
 		# Make sure the user isn't a project owner and doesn't have a contribution already
 		can :contribute, Project do |project|

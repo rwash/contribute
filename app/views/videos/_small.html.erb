@@ -1,0 +1,3 @@
+<!-- for more options checkout out https://developers.google.com/youtube/player_parameters#Parameters -->
+
+<%= raw yt_client.my_video(@video.yt_video_id).embed_html5({:class => 'video-player', :id => 'my-video', :width => '320', :height => '175', :frameborder => '0', :url_params => {:rel => "0"}})%>

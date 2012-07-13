@@ -15,8 +15,7 @@
     
     
 <p><%= render :partial => "picture", :locals => {:f => f} %></p>
-
-<%= link_to "Add Video", upload_project_video_path(@project) %>
+<p><%= render :partial => "videos/form", :locals => {:f => f} %></p>
 
 <div class="row well">
   <div class="span1-5">

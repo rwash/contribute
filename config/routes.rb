@@ -1,21 +1,16 @@
 Contribute::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
-
-	resources :videos do    
-    new do
-       post :upload
-       get  :save_video
-     end
-  end
- 
+  
+  #Comments
   resources :comments do
     delete :delete, :on => :member
   end
   
+  #Updates
   resources :updates, :only => [:create]
-
+  
+  #Users
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
-
 	devise_scope :user do
 		get 'users/show/:id', :to => 'registrations#show', :as => :user
 	end
@@ -30,8 +25,12 @@ Contribute::Application.routes.draw do
 
 	#The :id being passed through the routes is really the name of the project
 	match 'projects/save' => 'projects#save', :as => :save_project
+	match 'projects/:id/activate' => 'projects#activate', :as => :activate_project
 	match 'projects/:id/edit/upload' => 'projects#upload', :as => :upload_project_video
 	resources :projects, :only => [:index, :new, :create, :edit, :update, :show, :destroy]
+	
+	#Videos
+	match 'videos/:id/destroy' => 'videos#destroy', :as => :destroy_video
 
 	root :to => 'projects#index'
 	

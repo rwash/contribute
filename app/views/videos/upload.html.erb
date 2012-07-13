@@ -1,8 +1,0 @@
-<p>Step 2: upload a new video.</p>
-
-<%= form_tag @upload_info[:url], :multipart => true do %>
-  <%= hidden_field_tag :token, @upload_info[:token] %>
-  <%= label_tag :file %>
-  <%= file_field_tag :file %>
-  <%= submit_tag "Upload video" %>
-<% end %> 
