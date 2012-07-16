@@ -133,9 +133,8 @@ class AmazonProcessTesting
 
 				make_amazon_payment('contribute_testing@hotmail.com', 'testing')
 
-				page.wait_until() do
-					#page.should have_content('Contribution successfully updated')
-					page.should have_content('Contribution successfully updated. Thanks for your support!')
+				page.wait_until(10) do
+					page.should have_content('Contribution successfully updated.')
 				end
 
 				cancelled_contribution = Contribution.where(:status => ContributionStatus::CANCELLED, :project_id => @project.id)

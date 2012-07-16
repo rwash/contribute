@@ -149,13 +149,13 @@ describe Project do
 	#TODO: pictures
 
 #End Properties
-=begin
+
 #Begin Methods	
 	describe 'contributions' do
 		#These are instance variables so they can be accessed outside of the before. If they're not
 		# in a before, they appear to like a before(:each) by default and cause duplicate errors 
 		before(:all) do
-			@project = FactoryGirl.create(:project)
+			@project = FactoryGirl.create(:project, :state => "active")
 
 			Contribution.any_instance.stub(:destroy) { true }
 			@contribution = FactoryGirl.create(:contribution, :project_id => @project.id)
@@ -171,6 +171,7 @@ describe Project do
     	@contribution2.delete
     	@contribution3.delete
     	@contribution4.delete
+    	Project.delete_all
    end
 
 		it 'contributions_total is correct' do
@@ -193,13 +194,12 @@ describe Project do
 			
 			@project.destroy
 			
-			assert !@project.active?
 		end
 	end
-=end
+
 	describe 'to_param' do
 		it 'returns name' do
-			@project = FactoryGirl.create(:project)
+			@project = FactoryGirl.create(:project2)
 			assert_equal @project.name.gsub(/\W/, '-') , @project.to_param		
 			@project.delete
 		end
