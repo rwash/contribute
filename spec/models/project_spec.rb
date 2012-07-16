@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Project do
-=begin
+
 	describe 'valid case' do
 		before(:all) do
 			@project = FactoryGirl.create(:project)#1
@@ -16,7 +16,7 @@ describe Project do
 			assert @project.active?, "Project should be active"
 		end
 	end
-=end
+
 
 	describe 'name' do
 		it 'is required' do

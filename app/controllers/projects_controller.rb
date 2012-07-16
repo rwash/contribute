@@ -32,7 +32,7 @@ class ProjectsController < InheritedResources::Base
 				@video = Video.create(:title => @project.name, :description => @project.short_description, :project_id => @project.id)
 				@project.video_id = @video.id
 	    		     
-	      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "#{@video.description}\n\n #{project_url(@project)}", :category => 'People',:keywords => YT_TAGS, :private => true)
+	      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
 	      
 	      if @response
 		      @video.update_attributes(:yt_video_id => @response.unique_id, :is_complete => true)
@@ -67,7 +67,7 @@ class ProjectsController < InheritedResources::Base
 			@project.save!
 			@video.save!
     		     
-      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "#{@video.description}\n\n #{project_url(@project)}", :category => 'People',:keywords => YT_TAGS, :private => true)
+      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
       
       if @response
 	      @video.update_attributes(:yt_video_id => @response.unique_id, :is_complete => true)
@@ -96,7 +96,7 @@ class ProjectsController < InheritedResources::Base
 		@video = Video.find_by_id(@project.video_id)
 		
 		@project.state = PROJ_STATES[2] #active
-		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => @video.description, :category => 'People',:keywords => YT_TAGS, :private => false) unless @video.nil?
+		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "allowed") unless @video.nil?
 		
 		@project.save!
 		flash[:notice] = "Successfully activated project."
@@ -147,7 +147,7 @@ class ProjectsController < InheritedResources::Base
 			#project will not be deleted but will be CANCELED and only visible to user
 			@project.state = PROJ_STATES[5] #canceled
 			@project.save!
-			Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "#{@video.description}\n\n #{project_url(@project)}", :category => 'People',:keywords => YT_TAGS, :private => true) if @video
+			Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'People',:keywords => YT_TAGS, :private => true) if @video
 			flash[:alert] = "Project successfully canceled. Project is now only visible to you."
 		else
 			flash[:alert] = "You can not cancel or delete this project."
