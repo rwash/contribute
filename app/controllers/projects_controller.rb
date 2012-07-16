@@ -147,7 +147,7 @@ class ProjectsController < InheritedResources::Base
 			#project will not be deleted but will be CANCELED and only visible to user
 			@project.state = PROJ_STATES[5] #canceled
 			@project.save!
-			Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'People',:keywords => YT_TAGS, :private => true) if @video
+			@response = Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'People',:keywords => YT_TAGS, :list => "denied") if @video
 			flash[:alert] = "Project successfully canceled. Project is now only visible to you."
 		else
 			flash[:alert] = "You can not cancel or delete this project."
