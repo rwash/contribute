@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120711164645) do
+ActiveRecord::Schema.define(:version => 20120717164647) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(:version => 20120711164645) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "error"
+  end
+
+  create_table "approvals", :force => true do |t|
+    t.integer  "group_id"
+    t.integer  "project_id"
+    t.boolean  "approved"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "categories", :force => true do |t|
@@ -75,6 +83,26 @@ ActiveRecord::Schema.define(:version => 20120711164645) do
     t.integer  "retry_count"
     t.string   "transaction_id"
   end
+
+  create_table "groups", :force => true do |t|
+    t.string   "name",                 :default => ""
+    t.string   "description",          :default => ""
+    t.boolean  "open",                 :default => false
+    t.integer  "admin_user_id"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "groups_projects", :id => false, :force => true do |t|
+    t.integer "group_id",   :null => false
+    t.integer "project_id", :null => false
+  end
+
+  add_index "groups_projects", ["group_id", "project_id"], :name => "index_groups_projects_on_group_id_and_project_id", :unique => true
 
   create_table "log_cancel_requests", :force => true do |t|
     t.string   "TokenId"
