@@ -26,11 +26,26 @@ class ProjectsController < InheritedResources::Base
 		@project.user_id = current_user.id
 		@project.payment_account_id = Project::UNDEFINED_PAYMENT_ACCOUNT_ID #To pass validation at valid?
 		@project.state = PROJ_STATES[0] #unconfirmed
-	
+    
 		if @project.valid?
-			@project.save
+			unless params[:project][:video].nil?
+				@video = Video.create(:title => @project.name, :description => @project.short_description, :project_id => @project.id)
+				@project.video_id = @video.id
+	    		     
+	      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
+	      
+	      if @response
+		      @video.update_attributes(:yt_video_id => @response.unique_id, :is_complete => true)
+		      @video.save!
+		      Video.delete_incomplete_videos
+		    else
+		      Video.delete_video(@video)
+		    end
+	    end
+	    
+	    @project.save
 			session[:project_id] = @project.id
-
+			
 			request = Amazon::FPS::RecipientRequest.new(save_project_url)
 			return redirect_to request.url
 		else
@@ -40,11 +55,30 @@ class ProjectsController < InheritedResources::Base
 	
 	def update
 		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first 
-		if params[:activate] == 'true'
-			@project.state = PROJ_STATES[2] #active
+    
+  	if params[:project] && !params[:project][:video].nil?
+  		unless @project.video_id.nil?
+  			Video.delete_video(Video.find(@project.video_id))
+  		end
+  		
+			@video = Video.create(:title => @project.name, :description => @project.short_description)
+			@project.video_id = @video.id
+			@video.project_id = @project.id
 			@project.save!
-			flash[:notice] = "Successfully activated project." 
-    elsif @project.update_attributes(params[:project])
+			@video.save!
+    		     
+      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
+      
+      if @response
+	      @video.update_attributes(:yt_video_id => @response.unique_id, :is_complete => true)
+	      @video.save!
+	      Video.delete_incomplete_videos
+	    else
+	      Video.delete_video(@video)
+	    end
+    end
+    
+    if @project.update_attributes(params[:project])
       flash[:notice] = "Successfully updated project."
     end
     
@@ -55,6 +89,18 @@ class ProjectsController < InheritedResources::Base
     else 
     	respond_with(@project)
     end
+	end
+	
+	def activate
+		@project = Project.find_by_name(params[:id].gsub(/-/, ' '))
+		@video = Video.find_by_id(@project.video_id)
+		
+		@project.state = PROJ_STATES[2] #active
+		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "allowed") unless @video.nil?
+		
+		@project.save!
+		flash[:notice] = "Successfully activated project."
+		respond_with(@project)
 	end
 
 	def save
@@ -86,6 +132,7 @@ class ProjectsController < InheritedResources::Base
 
 	def destroy
 		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+		@video = Video.find(@project.video_id) unless @project.video_id.nil?
 		
 		if @project.state == PROJ_STATES[0] || @project.state == PROJ_STATES[1]
 			@project.destroy
@@ -100,6 +147,7 @@ class ProjectsController < InheritedResources::Base
 			#project will not be deleted but will be CANCELED and only visible to user
 			@project.state = PROJ_STATES[5] #canceled
 			@project.save!
+			@response = Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'People',:keywords => YT_TAGS, :list => "denied") if @video
 			flash[:alert] = "Project successfully canceled. Project is now only visible to you."
 		else
 			flash[:alert] = "You can not cancel or delete this project."
@@ -109,7 +157,11 @@ class ProjectsController < InheritedResources::Base
 	
   def show
     @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
-    @video = Video.find(@project.video_id) if !@project.video_id.nil?
+    @video = Video.find(@project.video_id) unless @project.video_id.nil?
+    #for some reason youtube returns the most recent upload if the video token is nil
+    if !@video.nil? && @video.yt_video_id.nil?
+    	@video = nil
+    end
     
     @rootComments = @project.root_comments
     @comment = Comment.new(params[:comment])
@@ -122,8 +174,9 @@ class ProjectsController < InheritedResources::Base
   
   def edit
   	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+  	@video = Video.find(@project.video_id) unless @project.video_id.nil?
   end
-  
+=begin  
   def upload
   	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
   	
@@ -135,12 +188,13 @@ class ProjectsController < InheritedResources::Base
   	@video = Video.create(:title => @project.name, :description => @project.short_description)
   	@project.video_id = @video.id
   	@project.save!
-  	
+
     if @video
       @upload_info = Video.token_form(@video.title, @video.description, save_video_new_video_url(:video_id => @video.id))
     end
-  end
 
+  end
+=end
 protected	
 	def successful_save
 		EmailManager.add_project(@project).deliver

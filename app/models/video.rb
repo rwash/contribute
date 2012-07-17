@@ -1,8 +1,9 @@
 class Video < ActiveRecord::Base
+  has_one :project
   
   scope :completes,   where(:is_complete => true)
   scope :incompletes, where(:is_complete => false)
-    
+  
   def self.yt_session
     @yt_session ||= YouTubeIt::Client.new(:username => YT_USERNAME , :password => YT_PASSWORD , :dev_key => YT_DEV_KEY)    
   end
@@ -36,4 +37,5 @@ class Video < ActiveRecord::Base
              :keywords => ["test"]}
       #params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
     end
+    
 end
