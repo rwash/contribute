@@ -31,7 +31,14 @@ Contribute::Application.routes.draw do
 	
 	#Videos
 	match 'videos/:id/destroy' => 'videos#destroy', :as => :destroy_video
-
+	
+	#Groups
+	match 'groups/index' => 'groups#index'
+	match 'groups/:id/admin' => 'groups#admin'
+	match 'groups/:id/submit' => 'groups#submit', :as => :submit_group
+	match 'groups/:id/approval' => 'groups#approval'
+	resources :groups
+	
 	root :to => 'projects#index'
 	
 	mount Ckeditor::Engine => "/ckeditor"

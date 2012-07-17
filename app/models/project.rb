@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 	belongs_to :user
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
   acts_as_commentable
-
+  has_and_belongs_to_many :groups
 	has_many :comments
 	has_many :updates
 	has_one :category
