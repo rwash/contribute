@@ -21,7 +21,8 @@ class UserPageTesting
 
 			current_path.should == user_path(@user)
 
-			find('div#userProfile').has_content?('Batman')
+			#find('div#userProfile').has_content?('Batman')
+			page.should have_content('Batman')
 		end
 
 		it "should edit successfully" do
@@ -39,7 +40,8 @@ class UserPageTesting
 			click_button 'Update Profile'
 
 			current_path.should == user_path(@user)	
-			find('div#userProfile').has_content?('The Hulk')
+			#find('div#edit_user').has_content?('The Hulk')
+			page.should have_content('The Hulk')
 		end
 
 		describe "redirect tests" do

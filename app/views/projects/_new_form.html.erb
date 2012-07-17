@@ -15,8 +15,7 @@
     
     
 <p><%= render :partial => "picture", :locals => {:f => f} %></p>
-
-<%= link_to "Add Video", upload_project_video_path(@project) %>
+<p><%= render :partial => "videos/form", :locals => {:f => f} %></p>
 
 <div class="row well">
   <div class="span1-5">
@@ -61,6 +60,7 @@
   <div class="span4">
     <%= f.text_area :short_description, :rows => 4, :class => 'span3' %>
   </div>
+  	<span class="help-block">This is used in the projects partial when featured on the homepage or when the project is embedded on another website.</span>
 </div>
 
 <div class="row well">

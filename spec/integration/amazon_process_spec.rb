@@ -34,11 +34,12 @@ class AmazonProcessTesting
 				#fill_in(:project_categroy_iid, :with => project.category_id)
 				fill_in 'project_funding_goal', :with => project.funding_goal
 				fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
-				fill_in 'project_short_description', :with => project.short_description
-				fill_in 'project_long_description', :with => project.long_description
-			
-				click_button 'Create Project'
+				fill_in 'project_short_description', :with => project.short_description				
+				fill_in_ckeditor 'project_long_description', :with => 'This is my message!'  
 
+				click_button 'Create Project'
+				get_and_assert_project(project.name)
+				
 				login_amazon('spartanfan10@hotmail.com', 'testing')
 
 				#Saying 'yes, we'll take your money'
@@ -132,8 +133,8 @@ class AmazonProcessTesting
 
 				make_amazon_payment('contribute_testing@hotmail.com', 'testing')
 
-				page.wait_until() do
-					page.should have_content('Contribution successfully updated')
+				page.wait_until(10) do
+					page.should have_content('Contribution successfully updated.')
 				end
 
 				cancelled_contribution = Contribution.where(:status => ContributionStatus::CANCELLED, :project_id => @project.id)
