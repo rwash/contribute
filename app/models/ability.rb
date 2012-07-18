@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
 		user ||= User.new
 
-		#Projects
+		# Projects
 		can :read, Project do |p|
 			p.public_can_view? || p.user_id == user.id
 		end
@@ -18,7 +18,7 @@ class Ability
 		can :save, Project
 		can :upload, Project
 		
-		#Contributions
+		# Contributions
 		# Make sure the user isn't a project owner and doesn't have a contribution already
 		can :contribute, Project do |project|
 			!user.id.nil? and project.user_id != user.id and project.contributions.find_by_user_id(user.id).nil? and project.end_date >= Date.today
@@ -28,5 +28,8 @@ class Ability
 		can :edit_contribution, Project do |project|
 			!user.id.nil? and !project.contributions.find_by_user_id(user.id).nil?
 		end
+		
+		# Groups
+		#can :admin, Group, :admin_user_id => nil
 	end
 end

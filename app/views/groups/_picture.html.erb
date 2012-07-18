@@ -1,0 +1,12 @@
+<%= f.hidden_field :picture_cache %>
+
+<div class="row well">
+    <% if @group.picture? %>
+      <%= f.label :picture, "New Picture (optional): ", :class => 'pull-left bold' %> &nbsp; &nbsp; &nbsp; &nbsp;
+      <%= f.file_field :picture, :class => 'picture-btn' %>
+      <div class="pull-right"> <span class="bold">Current Picture:</span> <%= image_tag @group.picture.url(:thumb), :width => '100' %></div>
+    <% else %>
+      <%= f.label :picture, "Group Picture (optional): ", :class => 'pull-left bold' %> &nbsp; &nbsp; &nbsp; &nbsp;
+      <%= f.file_field :picture, :class => 'picture-btn' %>
+    <% end %>
+</div>

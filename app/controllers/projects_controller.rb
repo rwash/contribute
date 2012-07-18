@@ -14,10 +14,7 @@ class ProjectsController < InheritedResources::Base
 
 	def index
 		@projects = Project.where(:state => PROJ_STATES[2]).order("end_date ASC").page(params[:page]).per(8)
-		#@projects = Project.limit(9).where("active = 1 and confirmed = 1").order("end_date ASC")
-		#@projects1 = @projects.slice(0..2) || []
-		#@projects2 = @projects.slice(3..5) || []
-		#@projects3 = @projects.slice(6..8) || []
+		@groups = Groups.order("created_at ASC").limit(3)
 		index!
 	end
 
