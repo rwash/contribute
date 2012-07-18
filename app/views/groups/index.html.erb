@@ -6,7 +6,7 @@
 <% @groups.each do |group| %>
 	<div class="group-container">
 	  <%= link_to group.name, group %><br>
-	  <%= image_tag group.picture.url(:thumb) if group.picture? %>
+	  <%= group.description %>
 	</div>
 <% end %>
 
