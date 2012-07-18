@@ -13,7 +13,7 @@
 	background-image: url(header_bg.png);
 	background-repeat: no-repeat;
 	height: 36px;
-	width: 960px;
+	width: 940px;
 	margin-top: 8px;
 	font-size: 14px;
 	font-style: italic;
@@ -25,9 +25,9 @@
 .section-header {
 	margin-right: auto;
 	margin-left: auto;
-	width: 975px;
+	width: 940px;
 	font-size: 20px;
-	padding-bottom: 5px;
+	margin-bottom: 20px;
 	margin-top: 35px;
 	color: #6b9199;
 	border-bottom: 4px solid #6b9199;
@@ -39,24 +39,30 @@
 		border-bottom: 1px dotted #636363;
 	}
 }
-.column {
-	float: left;
+.offset1-5 {
+	margin-left: 127px;
 }
 
 /**** Project Partial *****/
 
-.thumbnails {
-  margin-left: 15px;
-  margin-right: -85px;
+.thumbnails ul {
+  margin-left: 0px;
+  margin-right: 0px;
   list-style: none;
+  display: inline;
   *zoom: 1;
+}
+.thumbnails li {
+  margin-left: 16px;
 }
 .thumbnail {
 	background-color: #FFF;
 	color: #4a4848;
+	width: 213px;
 }
 .project-span {
-	width: 240px;
+	padding: 0px;
+	margin: 0px;	
 }
 .ellipsisName {
 	text-overflow: ellipsis;
@@ -88,7 +94,7 @@
 .ellipsisDesc {
 	text-overflow: ellipsis;
 	overflow: hidden;
-	height: 110px;
+	height: 100px;
 	padding-left: 4px;
 	padding-right: 5px;
 	font-size: 12px;

@@ -11,10 +11,6 @@ body {
 .italic {
 	font-style: italic;
 }
-.row {
-  	margin-left: 0px;
-  	*zoom: 1;
-}
 #navigation {
 	background-color: #4a4848;
 	height: 70px;
@@ -33,7 +29,7 @@ body {
 }
 #logo {
 	float: left;
-	margin-left: -60px;
+	margin-left: 0px;
 	padding-top: 2px;
 }
 #navigation-inner ul{
@@ -68,10 +64,13 @@ body {
 	}
 }
 #flash {
-	padding-top: 20px;
-	margin-right: auto;
-	margin-left: auto;
-	width: 960px;
+	width: 940px;
+	position: absolute;
+	top: 80px;
+	left: 50%;
+	margin-left: -470px;
+	opacity:0.95;
+	filter:alpha(opacity=95);
 	a {
 		text-decoration: none;
 		font-family: Arial, Helvetica, sans-serif;
