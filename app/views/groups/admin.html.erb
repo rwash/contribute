@@ -12,10 +12,11 @@
 
 <table class="table table-striped">
 <thead><tr><td>Id</td></tr></thead>
-<% @group.approvals.each do |a| %>
+<% @group.approvals.where(:approved => nil).each do |a| %>
 	<tr>
 	<td><%= a.project_id %></td>
-	<td><%= link_to 'Approve', '#' %></td>
+	<td><%= link_to 'Approve', approve_approval_path(@group, a) %></td>
+	<td><%= link_to 'Reject', reject_approvel_path(@group, a) %></td>
 	</tr>
 <% end %>
 </table>
