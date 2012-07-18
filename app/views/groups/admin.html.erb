@@ -1,16 +1,6 @@
 <h1>Group Admin Page!</h1>
 
 <table class="table table-striped">
-<thead><tr><td>Name</td></tr></thead>
-<% @group.projects.each do |p| %>
-	<tr>
-	<td><%= p.name %></td>
-	<td><%= link_to 'Approve', '#' %></td>
-	</tr>
-<% end %>
-</table>
-
-<table class="table table-striped">
 <thead><tr><td>Id</td></tr></thead>
 <% @group.approvals.where(:approved => nil).each do |a| %>
 	<tr>
