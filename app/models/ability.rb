@@ -30,6 +30,21 @@ class Ability
 		end
 		
 		# Groups
-		#can :admin, Group, :admin_user_id => nil
+		can :read, Group
+		can :create, Group
+		can :new_approval, Group
+		can :open_add, Group
+		can :edit, Group, :admin_user_id => user.id
+		can :update, Group, :admin_user_id => user.id
+		can :admin, Group, :admin_user_id => user.id
+		
+		#Aprovals
+		can :approve, Approval do |a|
+			Group.find(a.group_id).admin_user_id == user.id
+		end
+		can :reject, Approval do |a|
+			Group.find(a.group_id).admin_user_id == user.id
+		end
+		
 	end
 end
