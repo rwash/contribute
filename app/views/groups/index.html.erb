@@ -1,6 +1,13 @@
-<div id="header">Browse Groups.</div>
+<div id="header">
+	Browse Groups.<br>
+	<%= link_to "New Group", new_group_path, :class => 'btn' %>
+</div>
  
-  <% @groups.each do |group| %>
-    <div class="section-header"><%= link_to group.name, group %></div>
-	<br>
-  <% end %>
+<% @groups.each do |group| %>
+	<div class="group-container">
+	  <%= link_to group.name, group %><br>
+	  <%= group.description %>
+	</div>
+<% end %>
+
+<p>&nbsp;</p>
