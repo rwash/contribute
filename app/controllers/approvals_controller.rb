@@ -8,6 +8,8 @@ class ApprovalsController < InheritedResources::Base
 			flash[:error] = "You have already submitted a request. Please wait for the group owner to decide."
 		elsif @group.projects.include?(@project)
 			flash[:error] = "You project has already been approved and is in this group."
+		elsif @project.cancelled?
+			flash[:error] = "You cannot submit a canceled project to a group."
 		else
 			Approval.create(:group_id => @group.id, :project_id => @project.id)
 			flash[:notice] = "Your project has been submitted to the group owner for approval."
@@ -30,6 +32,7 @@ class ApprovalsController < InheritedResources::Base
 	def reject
 		@approval = Approval.find(params[:id])
 		
+		@approval.reason = params[:reason]
 		@approval.approved = false
 		@approval.save!
 		
