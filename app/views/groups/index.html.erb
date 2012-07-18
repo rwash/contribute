@@ -1,5 +1,6 @@
-<h1>This is the Group Index Page</h1>
-<% @groups.each do |g| %>
-	<%= link_to g.name, g %>
+<div id="header">Browse Groups.</div>
+ 
+  <% @groups.each do |group| %>
+    <div class="section-header"><%= link_to group.name, group %></div>
 	<br>
-<% end %>
+  <% end %>
