@@ -8,7 +8,7 @@ class PictureUploader < CarrierWave::Uploader::Base
 
 	version :thumb do
 		begin
-			process :resize_to_fill => [230,159]
+			process :resize_to_fill => [213,147]
 		rescue
 			raise CarrierWave::ProcessingError
 		end
@@ -24,7 +24,7 @@ class PictureUploader < CarrierWave::Uploader::Base
 	
 	version :user do
 		begin
-			process :resize_to_fill => [170,170]
+			process :resize_to_fill => [150,150]
 		rescue
 			raise CarrierWave::ProcessingError
 		end

@@ -1,9 +1,9 @@
     <div class="thumbnail">
     <%= link_to project do %>
       <% if project.picture? %>
-	    <%= image_tag project.picture.url(:thumb), :width => '230' %>
+	    <%= image_tag project.picture.url(:thumb), :width => '213' %>
 	  <% else %>
-	    <%= image_tag "BlockSThumb.png" %>
+	    <%= image_tag "BlockSThumb.png", :width => '213' %>
 	  <% end %>
 	<% end %>
       <h4 class="ellipsisName"><%= link_to project.name, project %></h4>
