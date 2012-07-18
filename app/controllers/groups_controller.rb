@@ -15,19 +15,8 @@ class GroupsController < InheritedResources::Base
 		end
 	end
 	
-	def submit
+	def new_approval
 		@group = Group.find(params[:id])
-		@projects = %w[Jake Is Cool]
-	end
-	
-	def approval
-		@group = Group.find(params[:id])
-		@project = Project.find(params[:project_id])
-		#@group.projects << @project
-		
-		Approval.create(:group_id => @group.id, :project_id => @project.id)
-		
-		redirect_to @group
 	end
 	
 	def admin
