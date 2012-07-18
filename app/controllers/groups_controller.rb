@@ -1,4 +1,6 @@
 class GroupsController < InheritedResources::Base
+	load_and_authorize_resource
+	
 	def index
 		@groups = Group.all
 	end
@@ -18,9 +20,9 @@ class GroupsController < InheritedResources::Base
 	def new_approval
 		@group = Group.find(params[:id])
 		if @group.open?
-			@submit_path = 'submit-approval'
-		else
 			@submit_path = 'open-add'
+		else
+			@submit_path = 'submit-approval'
 		end
 	end
 	
@@ -39,6 +41,7 @@ class GroupsController < InheritedResources::Base
 	end
 	
 	def admin
+		# authorize! :admin, @user if params[:user][:admin]
 		@group = Group.find(params[:id])
 	end
 end

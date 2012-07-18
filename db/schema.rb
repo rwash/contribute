@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120717164647) do
+ActiveRecord::Schema.define(:version => 20120718145304) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20120717164647) do
     t.datetime "picture_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "long_description"
   end
 
   create_table "groups_projects", :id => false, :force => true do |t|

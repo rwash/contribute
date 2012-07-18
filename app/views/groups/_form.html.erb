@@ -37,10 +37,19 @@
 
 <div class="row well">
   <div class="span1-5">
+    <%= f.label :long_description, "Long Description: ", :class => 'pull-right bold' %>
+  </div>
+  <div class="span8">
+    <%= f.cktext_area :long_description, :cols => 20, :rows => 20, :toolbar => 'Easy' %></p>
+  </div>
+</div>
+
+<div class="row well">
+  <div class="span1-5">
     <%= f.label :open, "Open: ", :class => 'pull-right bold' %>
   </div>
   <div class="span3">
-  	<%= f.select :open, %w[open closed] %>
+  	<%= f.select :open, options_for_select([ ["Open", true], ["Closed", false] ], @group.open)  %>
   </div>
      <span class="help-block">An open group allows anyone to submit a project to the group without approval by the groups admin. </span>
 </div>
