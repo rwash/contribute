@@ -1,20 +1,22 @@
 <div class="profile-head">
   <div class="row">
-    <div class="span2 thumbnail">
+    <div class="span2">
+    <div class="profile-pic thumbnail">
       <% if @user.picture? %>
         <%= image_tag @user.picture.url(:show) %>
       <% else %>
-        <%= image_tag "defaultProfilePic.jpg", :width => '210' %>
+        <%= image_tag "defaultProfilePic.jpg", :width => '150' %>
       <% end %>
+    </div>
     </div>
     <div class="span3" id="userProfile">
       <h1> <%= @user.name %> </h1>
       <p>&nbsp;</p>
       <blockquote>
         <% if @user.location? %>
-          Location: <%= @user.location %><br>
+          <strong>Location:</strong> <%= @user.location %><br>
         <% end %>
-        Member Since: <%= @user.created_at.strftime("%B %d, %Y") %>
+          &nbsp;<strong>Member Since:</strong> <%= @user.created_at.strftime("%B %d, %Y") %>
       </blockquote>
     </div>
   </div>
