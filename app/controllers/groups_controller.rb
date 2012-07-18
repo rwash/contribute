@@ -15,17 +15,25 @@ class GroupsController < InheritedResources::Base
 		end
 	end
 	
-	def submit
+	def new_approval
 		@group = Group.find(params[:id])
-		@projects = %w[Jake Is Cool]
+		if @group.open?
+			@submit_path = 'submit-approval'
+		else
+			@submit_path = 'open-add'
+		end
 	end
 	
-	def approval
+	def open_add
 		@group = Group.find(params[:id])
 		@project = Project.find(params[:project_id])
-		#@group.projects << @project
 		
-		Approval.create(:group_id => @group.id, :project_id => @project.id)
+		unless @group.projects.include?(@project)
+			@group.projects << @project
+			flash[:notice] = "Your project has been added to the group."
+		else
+			flash[:error] = "Your project is already in this group."
+		end
 		
 		redirect_to @group
 	end

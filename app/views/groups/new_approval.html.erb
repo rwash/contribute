@@ -2,7 +2,8 @@
   <h2>Submit Project</h2>
   <p>&nbsp;</p>
 
-<%= form_tag "approval" do %>
+
+<%= form_tag @submit_path do %>
 <div class="row well">
 	<div class="span1-5">
   	<%= label_tag :project_id, "Project: ", :class => 'pull-right bold' %>

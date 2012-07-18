@@ -4,4 +4,5 @@
 	 <%= p.name %>
 	 <br>
 <% end %>
-<%= link_to "Submit One of Your Projects to this group", submit_group_path(@group), :class => 'btn' %>
+<%= link_to "Submit One of Your Projects to this group", new_approval_path(@group), :class => 'btn' %>
+<%= link_to "Admin", group_admin_path(@group) %>
