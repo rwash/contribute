@@ -3,15 +3,15 @@
 <div id="header">Michigan State University's crowd funding platform. Contribute to creativity.</div>
 <div class="section-header">Newest Projects</div>
 
-<% for project in @projects %>
-  <div class="column">
-    <ul class="thumbnails">
+<div class="row offset1-5">
+  <ul class="thumbnails">
+    <% for project in @projects %>
       <li class="project-span">
         <%= render :partial => 'shared/project', :locals => { :project => project } %>
-      </li>
-    </ul>  
-  </div>
-<% end %>
+      </li>  
+    <% end %>
+  </ul>
+</div>
 
 <% end %>
 <%= paginate @projects %>
