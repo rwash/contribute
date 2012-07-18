@@ -37,6 +37,7 @@ Contribute::Application.routes.draw do
 	match 'groups/:id/admin' => 'groups#admin', :as => :group_admin
 	match 'groups/:id/new-approval' => 'groups#new_approval', :as => :new_approval
 	match 'groups/:id/submit-approval' => 'approvals#submit', :as => :submit_approval
+	match 'groups/:id/open-add' => 'groups#open_add'
 	match 'groups/:group_id/approvals/:id/approve' => 'approvals#approve', :as => :approve_approval
 	match 'groups/:group_id/approvals/:id/reject' => 'approvals#reject', :as => :reject_approvel
 	resources :groups
