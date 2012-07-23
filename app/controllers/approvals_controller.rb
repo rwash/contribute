@@ -11,8 +11,11 @@ class ApprovalsController < InheritedResources::Base
 		elsif @project.cancelled?
 			flash[:error] = "You cannot submit a canceled project to a group."
 		else
-			Approval.create(:group_id => @group.id, :project_id => @project.id)
+			@approval = Approval.create(:group_id => @group.id, :project_id => @project.id)
 			flash[:notice] = "Your project has been submitted to the group owner for approval."
+			if @project.active? || @project.funded? || @project.nonfunded?
+				EmailManager.project_to_group_approval(@approval, @project, @group).deliver
+			end
 		end
 		
 		redirect_to @group
@@ -26,16 +29,20 @@ class ApprovalsController < InheritedResources::Base
 		@approval.save!
 		@group.projects << Project.find(@approval.project_id)
 		
-		redirect_to :back
+		redirect_to group_admin_path(@group)
 	end
 	
 	def reject
 		@approval = Approval.find(params[:id])
+		@group = Group.find(params[:group_id])
+		@project = Project.find(@approval.project_id)
 		
 		@approval.reason = params[:reason]
 		@approval.approved = false
 		@approval.save!
 		
-		redirect_to :back
+		EmailManager.group_reject_project(@approval, @project, @group).deliver
+		
+		redirect_to group_admin_path(@group)
 	end
 end

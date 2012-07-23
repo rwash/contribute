@@ -41,7 +41,14 @@ class GroupsController < InheritedResources::Base
 	end
 	
 	def admin
-		# authorize! :admin, @user if params[:user][:admin]
 		@group = Group.find(params[:id])
+		@approval = Approval.find_by_id(params[:approval_id])
+	end
+	
+	def remove_project
+		@group = Group.find(params[:id])
+		@project= Project.find_by_name(params[:project_id])
+		@group.projects.delete(@project)
+		redirect_to :back
 	end
 end

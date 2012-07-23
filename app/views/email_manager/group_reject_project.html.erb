@@ -1,0 +1,6 @@
+<p>Hello, <%= @user.name %>,</p>
+
+<p>Your request to add project <%= @project.name %> to <%= @group.name %> has been denied by the groups owner.</p>
+<p>Reason: <%= @approval.reason %></p>
+
+<%= render :partial => "signature" %>

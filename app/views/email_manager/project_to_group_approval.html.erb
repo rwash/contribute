@@ -1,0 +1,12 @@
+<p>Hello, <%= @group_owner.name %>,</p>
+
+<p>User <%= @user.name %> wants to add their project <%= @project.name %> to your group <%= @group.name %>.</p>
+
+<p>You can check out the project here: <%= link_to project_url(@project), project_url(@project) %></p>
+<p><%= link_to "Click here to approve the project and add it to your group", approve_approval_url(@group, @approval) %></p>
+<p><%= link_to "Click here to REJECT the project", reject_approval_form_url(@group, @approval) %></p>
+
+<p>You can also approve and reject projects on <%= link_to 'your groups admin page.', group_admin_url(@group) %></p>
+
+
+<%= render :partial => "signature" %>

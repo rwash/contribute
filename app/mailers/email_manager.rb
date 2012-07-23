@@ -148,4 +148,22 @@ class EmailManager < ActionMailer::Base
 		
 		mail(:to => @user.email, :subject => "#{@project.name}: #{@update.title}")
 	end
+	
+	def project_to_group_approval(approval, project, group)
+		@group_owner = User.find(group.admin_user_id)
+		@project = project
+		@user = User.find(project.user_id)
+		@group = group
+		@approval = approval
+		mail(:to => @group_owner.email, :subject => "Request to add project #{@project.name} to your group #{@group.name}")
+	end
+	
+	def group_reject_project(approval, project, group)
+		@project = project
+		@user = User.find(project.user_id)
+		@group = group
+		@approval = approval
+		
+		mail(:to => @user.email, :subject => "Your request to add project #{@project.name} to group #{@group.name} has been denied")
+	end
 end
