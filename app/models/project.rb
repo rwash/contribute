@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
 	has_one :category
 	has_one :video
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
+	has_many :approvals
 	
 	validate :validate_end_date
 	validate :valid_state

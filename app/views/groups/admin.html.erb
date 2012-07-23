@@ -9,9 +9,9 @@
 	
 	<td><%= a.project_id %></td>
 	<td><%= link_to 'Approve', approve_approval_path(@group, a) %></td>
-	<td><%= link_to 'Reject', '#', :onclick => "$('#myModal').modal('show')" %></td>
+	<td><%= link_to 'Reject', '#', :onclick => "$(\"#myModal-#{a.id}\").modal('show')" %></td>
 	
-	<div id="myModal" class="modal hide fade">
+	<div id=<%= "myModal-#{a.id}" %> class="modal fade">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal">&times;</button>
 	    <h3>Please provide a reason for rejecting this project.</h3>
@@ -34,4 +34,28 @@
 
 <%= link_to 'Back to Group', @group %>
 
-<!-- Modal -->
+<!-- Email Modal -->
+<% unless @approval.nil? %>
+	<div id="email-modal" class="modal">
+	  <div class="modal-header">
+	    <h3>Please provide a reason for rejecting this project.</h3>
+	  </div>
+	  <div class="modal-body">
+	  	<%= form_tag reject_approval_path(@group, @approval) do %>
+				<%= text_area_tag :reason, '', :class => 'field span4', :rows => 6 %>         	
+	  	
+	  </div>
+	  <div class="modal-footer">
+	    <%= submit_tag "Submit", :class => 'btn btn-primary' %>
+	    <% end %>
+	  </div>
+	</div>
+	
+		<script>
+		$(<%= "#email-modal" %>).modal({
+			backdrop: true
+		  keyboard: true
+		  show: true
+		})
+	</script>
+<% end %>
