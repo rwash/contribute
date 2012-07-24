@@ -32,7 +32,10 @@ class GroupsController < InheritedResources::Base
 		
 		unless @group.projects.include?(@project)
 			@group.projects << @project
-			flash[:notice] = "Your project has been added to the group."
+			@video = Video.find_by_id(@project.video_id)
+			@project.update_project_video unless @video.nil?
+			
+    	flash[:notice] = "Your project has been added to the group."
 		else
 			flash[:error] = "Your project is already in this group."
 		end
@@ -47,8 +50,10 @@ class GroupsController < InheritedResources::Base
 	
 	def remove_project
 		@group = Group.find(params[:id])
-		@project= Project.find_by_name(params[:project_id])
+		@project = Project.find_by_name(params[:project_id].gsub(/-/, ' '))
 		@group.projects.delete(@project)
+		@project.update_project_video unless @project.video_id.nil?
+		
 		redirect_to :back
 	end
 end
