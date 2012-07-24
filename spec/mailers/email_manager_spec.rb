@@ -247,4 +247,11 @@ describe EmailManager do
 		last_email.body.encoded.should match(user.name)
 		last_email.body.encoded.should match(project.name)
 	end
+=begin
+	it "project_to_group_approval" do
+	end
+	
+	it "group_reject_project" do
+	end
+=end
 end

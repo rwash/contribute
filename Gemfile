@@ -95,7 +95,7 @@ gem "uuidtools", "~> 2.1.2"
 gem "dalli"
 
 # Web server for testing
-gem "mongrel"
+gem 'mongrel', '>= 1.2.0.pre2'
 
 # Task scheduler 
 # Configuration found at config/schedule.rb
