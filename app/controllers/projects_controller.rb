@@ -63,8 +63,8 @@ class ProjectsController < InheritedResources::Base
 			@video.project_id = @project.id
 			@project.save!
 			@video.save!
-    		     
-      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
+    	
+      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech', :keywords => YT_TAGS, :list => "denied")
       
       if @response
 	      @video.update_attributes(:yt_video_id => @response.unique_id, :is_complete => true)
@@ -94,7 +94,7 @@ class ProjectsController < InheritedResources::Base
 		
 		@project.state = PROJ_STATES[2] #active
 		#make video public
-		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "allowed") unless @video.nil?
+		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech', :keywords => YT_TAGS, :list => "allowed") unless @video.nil?
 		
 		#send out emails for any group requests
 		@project.approvals.each do |a|
@@ -180,25 +180,7 @@ class ProjectsController < InheritedResources::Base
   	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
   	@video = Video.find(@project.video_id) unless @project.video_id.nil?
   end
-=begin  
-  def upload
-  	@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
-  	
-  	if !@project.video_id.nil?
-  		@old_vid = Video.find(@project.video_id)
-  		Video.delete_video(@old_vid)
-  	end
-  	
-  	@video = Video.create(:title => @project.name, :description => @project.short_description)
-  	@project.video_id = @video.id
-  	@project.save!
 
-    if @video
-      @upload_info = Video.token_form(@video.title, @video.description, save_video_new_video_url(:video_id => @video.id))
-    end
-
-  end
-=end
 protected	
 	def successful_save
 		EmailManager.add_project(@project).deliver

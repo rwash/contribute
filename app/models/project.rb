@@ -5,6 +5,8 @@ class Project < ActiveRecord::Base
 	MIN_FUNDING_GOAL = 5
 	UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
 
+	include Rails.application.routes.url_helpers
+	
 	belongs_to :user
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
   acts_as_commentable
@@ -99,6 +101,20 @@ class Project < ActiveRecord::Base
 			self.video_id = nil
 			self.save
 		end
+	end
+	
+	def update_project_video
+		default_url_options[:host] = "orithena.cas.msu.edu"
+		@video = Video.find(self.video_id)
+		@tags = YT_TAGS
+		@description = "Contribute to this project: #{project_url(self)}\n\n#{@video.description}\n\nFind more projects from MSU:\n#{root_url}\n"
+		
+		self.groups.each do |g|
+		@tags << g.name
+		@description += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
+		end
+		
+		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => @description, :category => 'Tech', :keywords => @tags, :list => "allowed")
 	end
 	
   def public_can_view? #active, funded, or non-funded
