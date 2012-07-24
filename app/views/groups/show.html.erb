@@ -1,8 +1,22 @@
 <h1><%= @group.name %></h1>
-<%= image_tag @group.picture.url(:show), :class => "projectImage" if @group.picture? %><br>
-<% @group.projects.each do |p| %>
-	 <%= p.name %> <%= link_to "remove", remove_project_from_group_path(@group, p) %>
-	 <br>
-<% end %>
 <%= link_to "Submit One of Your Projects to this group", new_approval_path(@group), :class => 'btn' %>
-<%= link_to "Admin", group_admin_path(@group) %>
+<%= link_to "Admin", group_admin_path(@group) %><br>
+<div class="row">
+  <div class="span7">
+    <%= image_tag @group.picture.url(:show), :class => "projectImage" if @group.picture? %>
+  </div>
+  <div class="span2">
+	  <%= @group.description %>
+  </div>
+</div>
+
+<div class="row offset1-5">
+  <ul class="thumbnails">
+    <% @group.projects.each do |project| %>
+      <li class="project-span">
+        <%= render :partial => 'shared/project', :locals => { :project => project } %><br>
+        <%= link_to "Remove from Group", remove_project_from_group_path(@group, project), :confirm => "Are you sure you want to remove this project from the group?", :class => 'btn btn-danger' %>
+      </li>  
+    <% end %>
+  </ul>
+</div>
