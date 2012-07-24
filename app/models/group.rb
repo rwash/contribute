@@ -3,4 +3,5 @@ class Group < ActiveRecord::Base
 	has_many :approvals
 	
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
+	
 end
