@@ -70,7 +70,9 @@ class VideoUploadTesting
 				#project is no inactive
 				
 				visit(project_path(@project))
-				click_button('Activate')
+				page.should have_content(@project.name)
+				
+				click_button('Activate Project')
 				page.driver.browser.switch_to.alert.accept
 				page.should have_content('Successfully activated project.')
 				
