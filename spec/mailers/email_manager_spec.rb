@@ -247,11 +247,36 @@ describe EmailManager do
 		last_email.body.encoded.should match(user.name)
 		last_email.body.encoded.should match(project.name)
 	end
-=begin
-	it "project_to_group_approval" do
+
+	it "project_to_group_approval" do # approval, project, group, project owner, group owner,
+		proj_user = FactoryGirl.create(:user)
+		group_user = FactoryGirl.create(:user2)
+		project = FactoryGirl.create(:project, :user_id => proj_user.id)
+		group = FactoryGirl.create(:group, :admin_user_id => group_user.id, :open => false)
+		approval = FactoryGirl.create(:approval, :project_id => project.id, :group_id => group.id)
+		
+		EmailManager.project_to_group_approval(approval, project, group).deliver
+		
+		last_email.to.should == [group_user.email]
+		last_email.subject.should match(project.name)
+		last_email.subject.should match(group.name)
+		last_email.body.encoded.should match(group_user.name)
 	end
 	
-	it "group_reject_project" do
+	it "group_reject_project" do # approval proejct group, project owner
+		proj_user = FactoryGirl.create(:user)
+		group_user = FactoryGirl.create(:user2)
+		project = FactoryGirl.create(:project, :user_id => proj_user.id)
+		group = FactoryGirl.create(:group, :admin_user_id => group_user.id, :open => false)
+		approval = FactoryGirl.create(:approval, :project_id => project.id, :group_id => group.id, :reason => "I hate you.")
+		
+		EmailManager.group_reject_project(approval, project, group).deliver
+		
+		last_email.to.should == [proj_user.email]
+		last_email.subject.should match(project.name)
+		last_email.subject.should match(group.name)
+		last_email.body.encoded.should match(proj_user.name)
+		last_email.body.encoded.should match(approval.reason)
 	end
-=end
+
 end

@@ -72,7 +72,7 @@ class Project < ActiveRecord::Base
 	end
 	
 	def valid_state
-		errors.add(:state, "Invalid value for state var. Check config/enviroment.rb") unless self.state == PROJ_STATES[0] || self.state == PROJ_STATES[1] || self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4] || self.state == PROJ_STATES[5]
+		errors.add(:state, "Invalid value for state var. State must be unconfirmed, inactive, active, funded, nonfunded, or canceled. Check config/enviroment.rb") unless PROJ_STATES.include?(self.state)
 	end
 
 	#Overriding to_param makes it so that whenever a url is built for a project, it substitues
