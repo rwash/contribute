@@ -32,8 +32,8 @@ class Ability
 		# Groups
 		can :read, Group
 		can :create, Group
-		can :new_approval, Group
-		can :open_add, Group
+		can :new_add, Group
+		can :submit_add, Group
 		can :edit, Group, :admin_user_id => user.id
 		can :update, Group, :admin_user_id => user.id
 		can :admin, Group, :admin_user_id => user.id
