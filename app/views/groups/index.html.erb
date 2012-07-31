@@ -1,7 +1,3 @@
-<div id="header">
-	Browse Groups.<br>
-</div>
-
 <div class="groups-container"> 
  <div class="row">  
  <div class="span7">
@@ -37,7 +33,14 @@
    <h3>Groups you own:</h3>
    <% for group in @admin_groups %>
    	<%= link_to group.name, group, :class => 'sidebar-group' %><br>
-   	<span class="sidebar-needs-approval"><%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) unless group.approvals.where(:approved => nil).count == 0 %></span><br>
+   	<span class="sidebar-needs-approval">
+	   	<% if group.approvals.where(:approved => nil).count == 1 %>
+	   	  <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " project need your approval"), group_admin_path(group) %>
+	   	<% elsif group.approvals.where(:approved => nil).count > 1 %>
+	   	  <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) %>
+	   	<% else %> 
+	   	<% end %> 
+   	</span><br>
    <% end %>
  </div>
 </div>
