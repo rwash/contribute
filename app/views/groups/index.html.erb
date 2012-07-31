@@ -7,8 +7,8 @@
  <div class="span7">
   <% @groups.each do |group| %>
 	<div class="group-container">
-	  <%= link_to group.name, group %> - 
-	  <%= group.projects.size %> Projects<br>
+	  <%= link_to group.name, group, :class => "group-link" %> 
+	  <span class="num-projects"><%= group.projects.size %> <% if group.projects.size == 1 %>Project <% else %>Projects <% end %></span><br>
 	  <%= group.description %>
 	  <% group.projects.limit(6).each do |p| %>
 	    <div class="group-pic">
