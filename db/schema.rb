@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
   add_index "groups_projects", ["group_id", "project_id"], :name => "index_groups_projects_on_group_id_and_project_id", :unique => true
 
   create_table "lists", :force => true do |t|
-    t.string   "type",                        :default => "default"
+    t.string   "kind",                        :default => "default"
     t.integer  "listable_id",                                        :null => false
     t.string   "listable_type", :limit => 20,                        :null => false
     t.datetime "created_at"

@@ -34,6 +34,16 @@
 
 <%= link_to 'Back to Group', @group %>
 
+<h2> Lists </h2>
+
+<div class="row">
+	<div class="span12">
+		<% for list in @group.lists %>
+			<%= render :partial => 'list', :locals => { :projects => list.projects } %>
+		<% end %>
+	</div>
+</div>
+
 <!-- Email Modal -->
 <% unless @approval.nil? %>
 	<div id="email-modal" class="modal">
