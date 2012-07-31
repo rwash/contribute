@@ -36,7 +36,7 @@ class GroupsController < InheritedResources::Base
 	def submit_add
 		@group = Group.find(params[:id])
 		@project = Project.find(params[:project_id])
-		
+=begin		
 		if !@group.open? #if group is not open we need to make an approval
 			
 			if !Approval.where(:group_id => @group.id, :project_id => @project.id, :approved => nil).first.nil?
@@ -64,7 +64,7 @@ class GroupsController < InheritedResources::Base
 		else
 			flash[:error] = "Your project is already in this group."
 		end
-		
+=end		
 		if @project.cancelled?
 			flash[:error] = "You cannot add a canceld project to a group."
 		elsif @group.projects.include?(@project)
