@@ -4,6 +4,16 @@ class GroupsController < InheritedResources::Base
 	
 	def index
 		@groups = Group.all
+		
+		@user_groups = []
+		for project in current_user.projects
+			for group in project.groups
+				@user_groups << group
+			end
+		end
+		@user_groups.uniq!
+		
+		@admin_groups = current_user.owned_groups
 	end
 	
 	def create
