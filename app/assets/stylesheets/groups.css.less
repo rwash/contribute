@@ -17,13 +17,9 @@
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-.group-container a {
-	font-size: 1.6em;
-	color: #4a4a4a;
-}
 .group-pic {
 	float: right;
-	margin-top: -21px;
+	margin-top: -40px;
 	padding-left: 2px;
 }
 .groups-sidebar {
@@ -52,15 +48,77 @@
     z-index: 2;
     position: absolute;
     right: 529px;
-    margin-top: 2px;
+    margin-top: -21px;
 }
 .group-link {
 	display: block;
 	width: 660px;
-	height: 45px;
+	height: 50px;
 	z-index: 99;
 	position: absolute;
 	margin-top: -10px;
 	padding-top: 10px;
 }
-
+#search {
+}
+#search input[type="text"] {
+    background: url(search-white.png) no-repeat 10px 6px rgba(74,74,74,0.9);
+    border: 0 none;
+    font: 12px Arial,Helvetica,Sans-serif;
+    color: #fff;
+    width:180px;
+    padding: 6px 15px 6px 35px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    margin-bottom: -5px;
+}
+.new-group {
+	width: 200px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+.group-name {
+	display: block;
+	width: 260px;
+	height: 25px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 1.6em;
+	color: #4a4a4a;
+	margin-bottom: -15px;
+}
+.group-description {
+	display: block;
+	width: 260px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-top: -6px;
+}
+.sidebar-group {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 93%;
+	display: block;
+	margin-bottom: -15px;
+	color: #4a4a4a;
+	font-weight: bold;
+	padding-left: 15px;
+}
+.sidebar-needs-approval {
+	color: #4a4a4a;
+	padding-left: 30px;
+	margin-top: -5px;
+	margin-bottom: -15px;
+	display: block;
+}
+.sidebar-needs-approval a{
+	color: #4a4a4a;
+}
