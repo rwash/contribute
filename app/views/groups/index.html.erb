@@ -27,7 +27,14 @@
    Search Groups... []<br>
    <%= link_to "Create a New Group", new_group_path, :class => 'btn' %><br>
    Groups you have active projects in<br>
+   <% for group in @user_groups %>
+   	<%= link_to group.name, group %><br>
+   <% end %>
+   
    Groups you admin...<br>
+   <% for group in @admin_groups %>
+   	<%= link_to group.name, group %> <%= link_to group.approvals.where(:approved => nil).count, group_admin_path(group) %><br>
+   <% end %>
    Projects you need to approve
  </div>
 </div>

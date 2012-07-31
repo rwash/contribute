@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
 	has_many :projects, :dependent => :destroy
 	has_many :comments, :dependent => :destroy
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
+  has_many :owned_groups, :class_name => "Group", :foreign_key => "admin_user_id"
 
 	validates :name, :presence => true
 end
