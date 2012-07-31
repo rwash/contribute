@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120718170921) do
+ActiveRecord::Schema.define(:version => 20120730150512) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -85,6 +85,14 @@ ActiveRecord::Schema.define(:version => 20120718170921) do
     t.string   "transaction_id"
   end
 
+  create_table "group_items", :force => true do |t|
+    t.integer  "group_id"
+    t.integer  "list_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "groups", :force => true do |t|
     t.string   "name",                 :default => ""
     t.string   "description",          :default => ""
@@ -105,6 +113,16 @@ ActiveRecord::Schema.define(:version => 20120718170921) do
   end
 
   add_index "groups_projects", ["group_id", "project_id"], :name => "index_groups_projects_on_group_id_and_project_id", :unique => true
+
+  create_table "lists", :force => true do |t|
+    t.string   "type",                        :default => "default"
+    t.integer  "listable_id",                                        :null => false
+    t.string   "listable_type", :limit => 20,                        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "lists", ["listable_id", "listable_type"], :name => "index_lists_on_listable_id_and_listable_type"
 
   create_table "log_cancel_requests", :force => true do |t|
     t.string   "TokenId"
@@ -189,6 +207,14 @@ ActiveRecord::Schema.define(:version => 20120718170921) do
     t.string   "status"
     t.string   "callerReference"
     t.string   "errorMessage"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "project_items", :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "list_id"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

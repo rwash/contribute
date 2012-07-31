@@ -33,6 +33,7 @@ GEM
       activerecord (>= 3.0)
       activesupport (~> 3.0)
       awesome_nested_set (>= 2.0)
+    acts_as_list (0.1.7)
     addressable (2.3.1)
     ansi (1.4.3)
     arel (2.2.3)
@@ -275,6 +276,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_commentable_with_threading
+  acts_as_list
   bootstrap-kaminari-views
   cancan
   capistrano
