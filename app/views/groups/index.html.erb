@@ -7,9 +7,10 @@
  <div class="span7">
   <% @groups.each do |group| %>
 	<div class="group-container">
-	  <%= link_to group.name, group, :class => "group-link" %> 
+	  <%= link_to "", group, :class => "group-link" %>
+	  <span class="group-name"><%= group.name %></span> 
 	  <span class="num-projects"><%= group.projects.size %> <% if group.projects.size == 1 %>Project <% else %>Projects <% end %></span><br>
-	  <%= group.description %>
+	  <span class="group-description"><%= group.description %></span>
 	  <% group.projects.limit(6).each do |p| %>
 	    <div class="group-pic">
 	      <% if p.picture? %>
@@ -24,18 +25,20 @@
  </div>
  
  <div class="groups-sidebar">
-   Search Groups... []<br>
-   <%= link_to "Create a New Group", new_group_path, :class => 'btn' %><br>
-   Groups you have active projects in<br>
+   <form method="get" action="#" id="search">
+     <input name="q" type="text" size="40" placeholder="Search Groups..." />
+   </form>
+   <%= link_to "Create a New Group", new_group_path, :class => 'btn btn-large btn-primary new-group' %>
+   <h3>You have projects in:</h3>
    <% for group in @user_groups %>
-   	<%= link_to group.name, group %><br>
+   	<%= link_to group.name, group, :class => 'sidebar-group' %><br>
    <% end %>
-   
-   Groups you admin...<br>
+   <br>
+   <h3>Groups you own:</h3>
    <% for group in @admin_groups %>
-   	<%= link_to group.name, group %> <%= link_to group.approvals.where(:approved => nil).count, group_admin_path(group) %><br>
+   	<%= link_to group.name, group, :class => 'sidebar-group' %><br>
+   	<span class="sidebar-needs-approval"><%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) unless group.approvals.where(:approved => nil).count == 0 %></span><br>
    <% end %>
-   Projects you need to approve
  </div>
 </div>
 </div>
