@@ -8,7 +8,7 @@ class ApprovalsController < InheritedResources::Base
 			@approval.save!
 			
 			@project = Project.find(@approval.project_id)
-			@group.projects << @project
+			@group.projects << @project unless @group.projects.include?(@project)
 			@project.update_project_video unless @project.video_id.nil?
 			
 		else

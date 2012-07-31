@@ -37,34 +37,6 @@ class GroupsController < InheritedResources::Base
 		@group = Group.find(params[:id])
 		@project = Project.find(params[:project_id])
 		
-		if !@group.open? #if group is not open we need to make an approval
-			
-			if !Approval.where(:group_id => @group.id, :project_id => @project.id, :approved => nil).first.nil?
-				flash[:error] = "You have already submitted a request. Please wait for the group owner to decide."
-			elsif @group.projects.include?(@project)
-				flash[:error] = "You project has already been approved and is in this group."
-			elsif @project.cancelled?
-				flash[:error] = "You cannot submit a canceled project to a group."
-			else
-				@approval = Approval.create(:group_id => @group.id, :project_id => @project.id)
-				flash[:notice] = "Your project has been submitted to the group owner for approval."
-				if @project.active? || @project.funded? || @project.nonfunded?
-					EmailManager.project_to_group_approval(@approval, @project, @group).deliver
-				end
-			end
-			
-		elsif @project.cancelled?
-    	flash[:error] = "You cannot add a canceld project to a group."
-		elsif !@group.projects.include?(@project)
-			@group.projects << @project
-			@video = Video.find_by_id(@project.video_id)
-			@project.update_project_video unless @video.nil?
-			
-    	flash[:notice] = "Your project has been added to the group."
-		else
-			flash[:error] = "Your project is already in this group."
-		end
-		
 		if @project.cancelled?
 			flash[:error] = "You cannot add a canceld project to a group."
 		elsif @group.projects.include?(@project)
