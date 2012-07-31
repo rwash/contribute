@@ -1,7 +1,7 @@
-class CreateQueues < ActiveRecord::Migration
+class CreateLists < ActiveRecord::Migration
   def up
   	create_table :lists do |t|
-  		t.string :type, :default => "default"
+  		t.string :kind, :default => "default"
   		t.integer :listable_id, :null => false
   		t.string :listable_type, :null => false, :limit => 20 #could be even less
   
