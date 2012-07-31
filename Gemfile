@@ -122,3 +122,6 @@ gem 'youtube_it'
 
 #rich text editor
 gem "ckeditor", "3.7.1"
+
+#ordering gem for Queues
+gem 'acts_as_list'
