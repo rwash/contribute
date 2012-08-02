@@ -43,6 +43,9 @@ class GroupsController < InheritedResources::Base
 			flash[:error] = "Your project is already in this group."
 		elsif @group.open?
 			@group.projects << @project
+			
+			@pi = Item.create(:itemable_id => @project.id, :itemable_type => @project.class.name, :list_id => @group.lists.first.id)
+			
 			@video = Video.find_by_id(@project.video_id)
 			@project.update_project_video unless @video.nil?
 			
@@ -63,6 +66,7 @@ class GroupsController < InheritedResources::Base
 	def admin
 		@group = Group.find(params[:id])
 		@approval = Approval.find_by_id(params[:approval_id])
+		@items = @group.lists.first.items
 	end
 	
 	def remove_project

@@ -23,5 +23,8 @@
 
 <div class="row">
 	<div class="span12">
+		<% for item in @group.lists.first.items.order("position DESC") %>
+			<%= Project.find(item.itemable_id).name %><br>
+		<% end %>
 	</div>
 </div>

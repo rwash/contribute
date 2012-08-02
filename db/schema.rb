@@ -85,14 +85,6 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
     t.string   "transaction_id"
   end
 
-  create_table "group_items", :force => true do |t|
-    t.integer  "group_id"
-    t.integer  "list_id"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "groups", :force => true do |t|
     t.string   "name",                 :default => ""
     t.string   "description",          :default => ""
@@ -113,6 +105,17 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
   end
 
   add_index "groups_projects", ["group_id", "project_id"], :name => "index_groups_projects_on_group_id_and_project_id", :unique => true
+
+  create_table "items", :force => true do |t|
+    t.integer  "itemable_id",                                :null => false
+    t.string   "itemable_type", :limit => 20,                :null => false
+    t.integer  "list_id"
+    t.integer  "position",                    :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "items", ["itemable_id", "itemable_type"], :name => "index_items_on_itemable_id_and_itemable_type"
 
   create_table "lists", :force => true do |t|
     t.string   "kind",                        :default => "default"
@@ -207,14 +210,6 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
     t.string   "status"
     t.string   "callerReference"
     t.string   "errorMessage"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "project_items", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "list_id"
-    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
