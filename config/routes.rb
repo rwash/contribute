@@ -1,6 +1,8 @@
 Contribute::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
   
+  post "groups/:id/items/sort", :to => "items#sort"
+  
   #Comments
   resources :comments do
     delete :delete, :on => :member
