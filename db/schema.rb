@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730150512) do
+ActiveRecord::Schema.define(:version => 20120808170625) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
     t.string   "listable_type", :limit => 20,                        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title",                       :default => ""
   end
 
   add_index "lists", ["listable_id", "listable_type"], :name => "index_lists_on_listable_id_and_listable_type"
@@ -246,9 +247,9 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
-    t.string   "name",                   :default => "", :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
+    t.string   "name",                   :default => "",    :null => false
     t.string   "location"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -271,6 +272,7 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
+    t.boolean  "admin",                  :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
