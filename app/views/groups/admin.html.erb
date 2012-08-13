@@ -1,39 +1,3 @@
-<style >
-	.handle:hover{cursor: move;}
-</style>
-<%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js", "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js", "rails.js" %>
-
- <%= javascript_tag do %>
- // Sorting the list
- $(document).ready(function()
- {
- $('#items').sortable(
- {
- axis: 'y',
- dropOnEmpty: false,
- handle: '.handle',
- cursor: 'crosshair',
- items: 'li',
- opacity: 0.4,
- scroll: true,
- update: function()
- {
- $.ajax(
- {
- type: 'post',
- data: $('#items').sortable('serialize') + "&authenticity_token=" + "<%= form_authenticity_token %>",
- dataType: 'script',
- complete: function(request)
- {
- $('#items').effect('highlight');
- },
- url: '<%= "/groups/#{@group.id}/items/sort" %>'
- })
- }
- });
- });
- <% end %>
-
 <h1>Group Admin Page!</h1>
 
 <table class="table table-striped">
@@ -71,19 +35,14 @@
 <%= link_to 'Back to Group', @group %>
 
 <h2> Lists </h2>
-<div class="row">
-
-<ul id="items">
- <% @items.each do |item| %>
-	 <li id="item_<%= item.id %>" >
-	 <span class='handle'> <%= image_tag "BlockSThumb.png", :width => '60' %></span>
-	 <%= link_to project_name(item), project_path_from_item(item), :title => "Item #{item.id}" %>
-	 </li>
- <% end %>
-
-</ul>
-
-</div>
+<% for list in @group.lists %>
+	List <%= list.title %>
+	<%= link_to 'Edit', edit_list_path(list) %>
+	<%= link_to "Delete", destroy_list_path(list) %>
+	<br>
+<% end %>
+<br>
+<%= link_to "Add New List", add_list_to_group_path(@group) %>
 
 <!-- Email Modal -->
 <% unless @approval.nil? %>

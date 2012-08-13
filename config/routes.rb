@@ -1,7 +1,17 @@
 Contribute::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
   
-  post "groups/:id/items/sort", :to => "items#sort"
+  #Items
+  post "lists/:id/items/sort", :to => "lists#sort"
+  match 'items/:id/destroy', :to => "items#destroy", :as => :destroy_item
+  
+  #Lists
+  
+  match 'groups/:id/add-list', :to => "groups#add_list", :as => :add_list_to_group
+  match 'lists/:id/edit', :to => "lists#edit", :as => :edit_list
+  match 'lists/:id/destroy', :to => "lists#destroy", :as => :destroy_list
+  match 'lists/:id/add-item', :to => "lists#add_item", :as => :add_item
+  match 'lists/:id', :to => "lists#show", :as => :list
   
   #Comments
   resources :comments do
@@ -15,6 +25,7 @@ Contribute::Application.routes.draw do
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
 	devise_scope :user do
 		get 'users/show/:id', :to => 'registrations#show', :as => :user
+		match 'users/add-list', :to => "registrations#add_list", :as => :add_list_to_user
 	end
 
 	#Contribution resource routes  
