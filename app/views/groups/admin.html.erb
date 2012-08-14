@@ -35,11 +35,14 @@
 <%= link_to 'Back to Group', @group %>
 
 <h2> Lists </h2>
-
-<div class="row">
-	<div class="span12">
-	</div>
-</div>
+<% for list in @group.lists %>
+	List <%= list.title %>
+	<%= link_to 'Edit', edit_list_path(list) %>
+	<%= link_to "Delete", destroy_list_path(list) %>
+	<br>
+<% end %>
+<br>
+<%= link_to "Add New List", add_list_to_group_path(@group) %>
 
 <!-- Email Modal -->
 <% unless @approval.nil? %>

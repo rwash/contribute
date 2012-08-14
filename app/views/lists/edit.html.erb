@@ -1,0 +1,71 @@
+<%= render :partial => 'sort-stuff', :locals => { :id => @list.id } %>
+<script>
+$('.tabs').button()
+</script>
+
+<script src="showHide.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+   $('.show_hide').showHide({			 			 
+	}); 
+});
+</script>
+<div class="container-fluid">
+  <div class="row-fluid">
+  
+<ul class="nav nav-pills">
+  <li class="active">
+    <a href="#auto" data-toggle='tab'>Auto Generated</a>
+  </li>
+  <li><a href="#manual" data-toggle='tab'>Manual</a></li>
+</ul>
+
+
+    <div class="span6">
+
+			
+
+
+			<div id="manual">
+			<%= text_field_tag :title, @list.title %>
+			<div class="row">
+			
+			<ul id="items">
+			 <% @list.items.each do |item| %>
+				 <li id=<%= "item_#{item.id}" %> >
+				 <div class="row">
+				 <div class="span1">
+					 <span class='handle'>
+					 		<%= image_tag "BlockSThumb.png", :width => '60' %>
+					 </span>
+				 </div>
+				 <div class="span11">
+			
+					 		<%= link_to item.itemable.name, item.itemable, :title => "Item #{item.id}" %>&nbsp;
+					 		<%= number_to_currency(item.itemable.contributions_total, :precision => 0) %> raised out of <%= number_to_currency(item.itemable.funding_goal) %>&nbsp;
+					 		<%= item.itemable.contributions.size %> backers&nbsp;
+					 		<%= item.itemable.short_description %>&nbsp;
+					 		End Date: <%= item.itemable.end_date %>
+					 		
+				 </div>
+				 <%= link_to 'Remove', destroy_item_path(item) %>
+				 </li>
+			 <% end %>
+			
+			</ul>
+			</div>
+			<%= link_to "Done", @list.listable , :class => 'btn' %>
+		</div>
+		<div class="span4">
+			<%= form_tag add_item_path(@list) do %>
+				<div class="controls">
+				<div class="input-append">
+					<%= text_field_tag :project, nil, :style => "margin: 0 auto;", ('data-provide').to_sym => 'typeahead', ('data-source').to_sym => @source.to_s %><%= submit_tag "Add", :class => 'btn' %>
+				</div>
+				</div>
+			<% end %>			
+		</div>
+  		</div>
+  
+  </div>
+</div>

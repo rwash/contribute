@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730150512) do
+ActiveRecord::Schema.define(:version => 20120808170625) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -85,14 +85,6 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
     t.string   "transaction_id"
   end
 
-  create_table "group_items", :force => true do |t|
-    t.integer  "group_id"
-    t.integer  "list_id"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "groups", :force => true do |t|
     t.string   "name",                 :default => ""
     t.string   "description",          :default => ""
@@ -114,12 +106,24 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
 
   add_index "groups_projects", ["group_id", "project_id"], :name => "index_groups_projects_on_group_id_and_project_id", :unique => true
 
+  create_table "items", :force => true do |t|
+    t.integer  "itemable_id",                                :null => false
+    t.string   "itemable_type", :limit => 20,                :null => false
+    t.integer  "list_id"
+    t.integer  "position",                    :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "items", ["itemable_id", "itemable_type"], :name => "index_items_on_itemable_id_and_itemable_type"
+
   create_table "lists", :force => true do |t|
     t.string   "kind",                        :default => "default"
     t.integer  "listable_id",                                        :null => false
     t.string   "listable_type", :limit => 20,                        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title",                       :default => ""
   end
 
   add_index "lists", ["listable_id", "listable_type"], :name => "index_lists_on_listable_id_and_listable_type"
@@ -211,14 +215,6 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
     t.datetime "updated_at"
   end
 
-  create_table "project_items", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "list_id"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "projects", :force => true do |t|
     t.string   "name"
     t.string   "short_description"
@@ -251,9 +247,9 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
-    t.string   "name",                   :default => "", :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
+    t.string   "name",                   :default => "",    :null => false
     t.string   "location"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -276,6 +272,7 @@ ActiveRecord::Schema.define(:version => 20120730150512) do
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
+    t.boolean  "admin",                  :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

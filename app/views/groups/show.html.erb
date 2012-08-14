@@ -14,7 +14,7 @@
 
 <div class="row group-tiles">
   <ul class="thumbnails-small">
-    <% @group.projects.each do |project| %>
+    <% for project in @group.projects.order("created_at DESC").limit(5) %>
       <li class="project-span">
         <%= render :partial => 'shared/project-small', :locals => { :project => project } %><br>
       </li>  
@@ -22,7 +22,6 @@
   </ul>
 </div>
 
-<div class="row">
-	<div class="span12">
-	</div>
-</div>
+<% for list in @group.lists %>
+	<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project-small"} %>
+<% end %>

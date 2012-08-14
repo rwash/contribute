@@ -1,8 +1,11 @@
-<div class="row">
-	<div class="span8">
-		<% projects.each do |p| %>
-	    	<%= p.name %><br>
-	  <% end %>
-
-	</div>
+<h3><%= list.title %></h3>
+<div class="row group-tiles">
+  <ul class="thumbnails-small">
+    <% for item in list.items.order("position DESC").limit(5) %>
+      <li class="project-span">
+      	<%= render :partial => partial, :locals => { :project => item.itemable } %><br>
+      </li>  
+    <% end %>
+  </ul>
 </div>
+<%= link_to "More", list %>

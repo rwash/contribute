@@ -10,27 +10,21 @@ class CreateLists < ActiveRecord::Migration
     
     add_index :lists, [:listable_id, :listable_type]
     
-    create_table :project_items do |t|
-    	t.integer :project_id
+    create_table :items do |t|
+    	t.integer :itemable_id, :null => false
+  		t.string :itemable_type, :null => false, :limit => 20 #could be even less
     	t.integer :list_id
-  		t.integer :position
+  		t.integer :position, :default => 0
     	
     	t.timestamps
     end
     
-    create_table :group_items do |t|
-    	t.integer :group_id
-    	t.integer :list_id
-  		t.integer :position
-    	
-    	t.timestamps
-    end
+    add_index :items, [:itemable_id, :itemable_type]
     
   end
 
   def down
   	drop_table :lists
-  	drop_table :project_items
-  	drop_table :group_items
+  	drop_table :items
   end
 end
