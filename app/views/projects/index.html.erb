@@ -12,6 +12,11 @@
     <% end %>
   </ul>
 </div>
-
 <% end %>
 <%= paginate @projects %>
+
+<div class="row offset1-5">
+	<% for list in @lists %>
+		<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project"} %>
+	<% end %>
+</div>

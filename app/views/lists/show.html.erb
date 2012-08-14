@@ -1,0 +1,20 @@
+<h3><%= @list.title %></h3>
+<% if @list.listable_type == 'User' and @list.listable.admin? %>
+	<%= link_to "Back", root_path %>
+<% else %>
+	<%= link_to "Back to #{@list.listable.name}", @list.listable %>
+<% end %>
+<div class="autopagerize_page_element">
+
+	<div class="row group-tiles">
+	  <ul class="thumbnails-small">
+	    <% for item in @items %>
+	      <li class="project-span">
+	        <%= render :partial => 'shared/project', :locals => { :project => item.itemable } %><br>
+	      </li>  
+	    <% end %>
+	  </ul>
+	</div>
+	
+</div>
+<%= paginate @items %>

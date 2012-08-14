@@ -5,15 +5,16 @@ class GroupsController < InheritedResources::Base
 	def index
 		@groups = Group.all
 		
-		@user_groups = []
-		for project in current_user.projects
-			for group in project.groups
-				@user_groups << group
+		unless current_user.nil?
+			@user_groups = []
+			for project in current_user.projects
+				for group in project.groups
+					@user_groups << group
+				end
 			end
+			@user_groups.uniq!
+			@admin_groups = current_user.owned_groups
 		end
-		@user_groups.uniq!
-		
-		@admin_groups = current_user.owned_groups
 	end
 	
 	def create
@@ -42,7 +43,7 @@ class GroupsController < InheritedResources::Base
 		elsif @group.projects.include?(@project)
 			flash[:error] = "Your project is already in this group."
 		elsif @group.open?
-			@group.projects << @project
+			@group.projects << @project			
 			@video = Video.find_by_id(@project.video_id)
 			@project.update_project_video unless @video.nil?
 			
@@ -63,6 +64,7 @@ class GroupsController < InheritedResources::Base
 	def admin
 		@group = Group.find(params[:id])
 		@approval = Approval.find_by_id(params[:approval_id])
+		#@items = @group.lists.first.items
 	end
 	
 	def remove_project
@@ -70,6 +72,13 @@ class GroupsController < InheritedResources::Base
 		@project = Project.find_by_name(params[:project_id].gsub(/-/, ' '))
 		@group.projects.delete(@project)
 		@project.update_project_video unless @project.video_id.nil?
+		
+		redirect_to :back
+	end
+	
+	def add_list
+		@group = Group.find(params[:id])
+		@group.lists << List.create(:listable_id => @group.id, :listable_type => @group.class.name)
 		
 		redirect_to :back
 	end

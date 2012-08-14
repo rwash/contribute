@@ -38,6 +38,7 @@ class Ability
 		can :update, Group, :admin_user_id => user.id
 		can :admin, Group, :admin_user_id => user.id
 		can :remove_project, Group, :admin_user_id => user.id
+		can :add_list, Group, :admin_user_id => user.id
 		
 		#Aprovals
 		can :approve, Approval do |a|
@@ -46,6 +47,36 @@ class Ability
 		can :reject, Approval do |a|
 			Group.find(a.group_id).admin_user_id == user.id
 		end
+		
+		#Lists
+		can :destroy, List do |l|
+			if l.listable_type == "Group"
+				l.listable.admin_user_id == user.id
+			elsif l.listable_type == "User"
+				l.listable.user_id == user.id
+			else
+				false
+			end
+		end
+		can :edit, List do |l|
+			if l.listable_type == "Group"
+				l.listable.admin_user_id == user.id
+			elsif l.listable_type == "User"
+				l.listable.user_id == user.id
+			else
+				false
+			end
+		end
+		can :add_item, List do |l|
+			if l.listable_type == "Group"
+				l.listable.admin_user_id == user.id
+			elsif l.listable_type == "User"
+				l.listable.user_id == user.id
+			else
+				false
+			end
+		end
+		
 		
 	end
 end
