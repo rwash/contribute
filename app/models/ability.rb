@@ -39,6 +39,7 @@ class Ability
 		can :admin, Group, :admin_user_id => user.id
 		can :remove_project, Group, :admin_user_id => user.id
 		can :add_list, Group, :admin_user_id => user.id
+		can :destroy, Group, :admin_user_id => user.id
 		
 		#Aprovals
 		can :approve, Approval do |a|

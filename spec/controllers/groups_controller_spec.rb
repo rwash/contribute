@@ -31,7 +31,7 @@ describe GroupsController do
 			
 			it "admin can edit group" do
 				sign_in @user
-				@group = @group = FactoryGirl.create(:group, :open => true, :admin_user_id => @user.id)
+				@group = FactoryGirl.create(:group, :open => true, :admin_user_id => @user.id)
 				
 				get 'edit', :id => @group.id
 				response.should be_success
@@ -39,10 +39,33 @@ describe GroupsController do
 			
 			it "non admin can not edit group" do
 				sign_in @user
-				@group = @group = FactoryGirl.create(:group, :open => true, :admin_user_id => @user.id + 1)
+				@group = FactoryGirl.create(:group, :open => true, :admin_user_id => @user.id + 1)
 				
 				get 'edit', :id => @group.id
 				assert flash[:alert].include?("You are not authorized to access this page."), "Only admin should be able to edit group."
+			end
+		end
+		
+		context "destroy groups" do
+			it "not signed in user cannot delete group" do
+				@group = FactoryGirl.create(:group, :open => true, :admin_user_id => 19)
+				
+				get 'destroy', :id => @group.id
+				assert flash[:alert].include?("You are not authorized to access this page."), "not signed in user should not be able to delete group."
+			end
+			it "signed in user cannot delete group it doesnt own" do
+				sign_in @user
+				@group = FactoryGirl.create(:group, :open => true, :admin_user_id => @user.id + 1)
+				
+				get 'destroy', :id => @group.id
+				assert flash[:alert].include?("You are not authorized to access this page."), "signed in user should not be able to delete a group it doesnt own"
+			end
+			it "signed in user can delete groups it is admin of" do
+				sign_in @user
+				@group = FactoryGirl.create(:group, :open => true, :admin_user_id => @user.id)
+				
+				get 'destroy', :id => @group.id
+				response.should redirect_to(groups_path)
 			end
 		end
 		

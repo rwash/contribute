@@ -48,6 +48,7 @@ Contribute::Application.routes.draw do
 	#Groups
 	match 'groups/index' => 'groups#index'
 	match 'groups/:id/admin' => 'groups#admin', :as => :group_admin
+	match 'groups/:id/destroy' => 'groups#destroy', :as => :destroy_group
 	match 'groups/:id/approvals/:approval_id/reject-form' => 'groups#admin', :as => :reject_approval_form
 	
 	match 'groups/:id/new-add' => 'groups#new_add', :as => :new_add
