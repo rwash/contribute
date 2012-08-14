@@ -19,7 +19,7 @@ class Group < ActiveRecord::Base
 				@project = Project.find(approval.project_id)
 				
 				approval.approved = true
-				approval.save!
+				approval.save
 				
 				@group.projects << @project unless @group.projects.include?(@project)
 				@project.update_project_video unless @project.video_id.nil?

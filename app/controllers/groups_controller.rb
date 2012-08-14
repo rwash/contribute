@@ -82,4 +82,12 @@ class GroupsController < InheritedResources::Base
 		
 		redirect_to :back
 	end
+	
+	def destroy
+		@group = Group.find(params[:id])
+		if !@group.destroy
+			flash[:error] = "Failed to delete Group"
+		end
+		redirect_to groups_path
+	end
 end
