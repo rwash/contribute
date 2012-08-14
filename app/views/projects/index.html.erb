@@ -3,15 +3,6 @@
 <div id="header">Michigan State University's crowd funding platform. Contribute to creativity.</div>
 <div class="section-header">Newest Projects</div>
 
-<h1>Normal</h1>
-<%= render :partial => 'queue', :locals => { :projects => @projects } %>
-
-<h1>end DESC</h1>
-<%= render :partial => 'queue', :locals => { :projects => @projects2 } %>
-
-<h1>end ASC</h1>
-<%= render :partial => 'queue', :locals => { :projects => @projects3 } %>
-
 <div class="row offset1-5">
   <ul class="thumbnails">
     <% for project in @projects %>
