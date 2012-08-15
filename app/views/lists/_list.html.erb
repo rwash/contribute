@@ -1,11 +1,11 @@
-<h3><%= list.title %></h3>
-<div class="row group-tiles">
-  <ul class="thumbnails-small">
-    <% for item in list.items.order("position DESC").limit(5) %>
+<div class="section-header"><%= list.title %><%= link_to "see all >", list, :class => 'pull-right more' %></div>
+
+<div class="row offset1-5">
+  <ul class="thumbnails">
+    <% for item in list.items.order("position DESC").limit(4) %>
       <li class="project-span">
       	<%= render :partial => partial, :locals => { :project => item.itemable } %><br>
       </li>  
     <% end %>
   </ul>
 </div>
-<%= link_to "More", list %>

@@ -19,8 +19,6 @@
   </div>
 </div>
 
-<div class="row offset1-5">
-	<% for list in @lists %>
-		<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project"} %>
-	<% end %>
-</div>
+<% for list in @lists %>
+	<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project"} %>
+<% end %>
