@@ -14,7 +14,7 @@ class ProjectsController < InheritedResources::Base
 
 	def index
 		@projects = Project.where(:state => PROJ_STATES[2]).order("end_date ASC").page(params[:page]).per(8)
-		@lists = User.find_by_id(1).lists
+		@lists = User.find_by_id(1) ? User.find_by_id(1).lists : []
 		index!
 	end
 
