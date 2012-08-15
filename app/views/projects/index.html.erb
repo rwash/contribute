@@ -13,7 +13,11 @@
   </ul>
 </div>
 <% end %>
-<%= paginate @projects %>
+<div class="row">
+  <div class="pull-right">
+	<%= paginate @projects %>
+  </div>
+</div>
 
 <div class="row offset1-5">
 	<% for list in @lists %>
