@@ -36,7 +36,7 @@
 	   	<%= link_to group.name, group, :class => 'sidebar-group' %><br>
 	   	<span class="sidebar-needs-approval">
 		   	<% if group.approvals.where(:approved => nil).count == 1 %>
-		   	  <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " project need your approval"), group_admin_path(group) %>
+		   	  <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " project needs your approval"), group_admin_path(group) %>
 		   	<% elsif group.approvals.where(:approved => nil).count > 1 %>
 		   	  <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) %>
 		   	<% else %> 

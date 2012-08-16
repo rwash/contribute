@@ -1,11 +1,13 @@
-<h3><%= list.title %></h3>
-<div class="row group-tiles">
-  <ul class="thumbnails-small">
-    <% for project in list.get_projects_in_order(5) %>
+<div class="section-header"><%= list.title %><%= link_to "see all >", list, :class => 'pull-right more' %></div>
+
+<div class="row offset1-5">
+  <ul class="thumbnails">
+    <% for project in list.get_projects_in_order(4) %>
       <li class="project-span">
       	<%= render :partial => partial, :locals => { :project => project } %><br>
       </li>  
     <% end %>
   </ul>
 </div>
+
 <%= link_to "More", list %>
