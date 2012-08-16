@@ -15,6 +15,16 @@ class ListsController < InheritedResources::Base
 		render :nothing => true
 	end
 	
+	def update
+		@list = List.find_by_id(params[:id])
+		@list.kind = "#{params[:kind].gsub(/\W/, '-')}"
+		@list.kind += "-#{params[:order]}" unless @list.kind == 'manual'
+		@list.title = params[:title]
+		@list.save!
+		
+		redirect_to @list.listable
+	end
+	
 	def destroy
 		@list = List.find(params[:id])
 		unless @list.destroy
@@ -41,6 +51,12 @@ class ListsController < InheritedResources::Base
 	
 	def show
 		@list = List.find(params[:id])
-		@items = @list.items.order("position DESC").page params[:page]
+		@projects = @list.get_projects_in_order #pass in the number of projects you want
+		if @projects.class.name == 'Array'
+			@projects = Kaminari.paginate_array(@projects).page(params[:page]).per(8)
+		else
+			@projects = @projects.page(params[:page]).per(8)
+		end
+		
 	end
 end

@@ -71,6 +71,10 @@ class Project < ActiveRecord::Base
 		end
 	end
 	
+	def left_to_goal
+		self.funding_goal - self.contributions_total
+	end
+	
 	def valid_state
 		errors.add(:state, "Invalid value for state var. State must be unconfirmed, inactive, active, funded, nonfunded, or canceled. Check config/enviroment.rb") unless PROJ_STATES.include?(self.state)
 	end
