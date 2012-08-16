@@ -9,7 +9,7 @@
   	<%= label_tag :project_id, "Project: ", :class => 'pull-right bold' %>
 	</div>
 	<div class="span4">
-  	<%= select("", "project_id", current_user.projects.collect {|p| [ p.name, p.id ] }, {:prompt => 'Select Project'}) %>
+  	<%= select("", "project_id", @projects.collect {|p| [ p.name, p.id ] }, {:prompt => 'Select Project'}) %>
 	</div>
 </div>
 	

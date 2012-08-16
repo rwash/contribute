@@ -32,13 +32,19 @@ class GroupsController < InheritedResources::Base
 	
 	def new_add
 		@group = Group.find(params[:id])
+		@projects = []
+		for proj in current_user.projects
+			@projects << proj if !@group.projects.include?(proj) && proj.state != 'canceled'
+		end
 	end
 	
 	def submit_add
 		@group = Group.find(params[:id])
-		@project = Project.find(params[:project_id])
+		@project = Project.find_by_id(params[:project_id])
 		
-		if @project.cancelled?
+		if @project.nil?
+			#Do Nothing
+		elsif @project.cancelled?
 			flash[:error] = "You cannot add a canceld project to a group."
 		elsif @group.projects.include?(@project)
 			flash[:error] = "Your project is already in this group."

@@ -10,62 +10,72 @@ $(document).ready(function(){
 	}); 
 });
 </script>
+
 <div class="container-fluid">
-  <div class="row-fluid">
-  
-<ul class="nav nav-pills">
-  <li class="active">
-    <a href="#auto" data-toggle='tab'>Auto Generated</a>
-  </li>
-  <li><a href="#manual" data-toggle='tab'>Manual</a></li>
-</ul>
 
-
-    <div class="span6">
-
-			
-
-
-			<div id="manual">
-			<%= text_field_tag :title, @list.title %>
-			<div class="row">
-			
-			<ul id="items">
-			 <% @list.items.each do |item| %>
-				 <li id=<%= "item_#{item.id}" %> >
-				 <div class="row">
-				 <div class="span1">
+	  
+		<div id="tabs">
+		<ul class="nav nav-pills">
+		  <li class="active">
+		    <a href="#manual" data-toggle='tab'>Manual</a>
+		  </li>
+		  <li><a href="#auto" data-toggle='tab'>Auto Generated</a></li>
+		</ul>
+		</div>
+		
+		<div class="tab-content">
+			<div class="tab-pane active" id="manual">
+				<div class="row">
+				<div class="span8">
+				<ul id="items">
+				<% @list.items.each do |item| %>
+					<li id=<%= "item_#{item.id}" %> >
+					 <div class="row">
+					 <div class="span1">
 					 <span class='handle'>
 					 		<%= image_tag "BlockSThumb.png", :width => '60' %>
 					 </span>
 				 </div>
 				 <div class="span11">
-			
-					 		<%= link_to item.itemable.name, item.itemable, :title => "Item #{item.id}" %>&nbsp;
-					 		<%= number_to_currency(item.itemable.contributions_total, :precision => 0) %> raised out of <%= number_to_currency(item.itemable.funding_goal) %>&nbsp;
-					 		<%= item.itemable.contributions.size %> backers&nbsp;
-					 		<%= item.itemable.short_description %>&nbsp;
-					 		End Date: <%= item.itemable.end_date %>
-					 		
+					 <%= link_to item.itemable.name, item.itemable, :title => "Item #{item.id}" %>&nbsp;
+					 <%= number_to_currency(item.itemable.contributions_total, :precision => 0) %> raised out of <%= number_to_currency(item.itemable.funding_goal) %>&nbsp;
+					 <%= item.itemable.contributions.size %> backers&nbsp;
+					 <%= item.itemable.short_description %>&nbsp;
+					 End Date: <%= item.itemable.end_date %>		
 				 </div>
 				 <%= link_to 'Remove', destroy_item_path(item) %>
 				 </li>
 			 <% end %>
-			
-			</ul>
+			 </ul>
+			 </div>
+			 
+			<div class="span4">
+				<%= form_tag add_item_path(@list) do %>
+					<div class="controls">
+					<div class="input-append">
+						<%= text_field_tag :project, nil, :style => "margin: 0 auto;", ('data-provide').to_sym => 'typeahead', ('data-source').to_sym => @source.to_s %><%= submit_tag "Add", :class => 'btn' %>
+					</div>
+					</div>
+				<% end %>			
 			</div>
-			<%= link_to "Done", @list.listable , :class => 'btn' %>
-		</div>
-		<div class="span4">
-			<%= form_tag add_item_path(@list) do %>
-				<div class="controls">
-				<div class="input-append">
-					<%= text_field_tag :project, nil, :style => "margin: 0 auto;", ('data-provide').to_sym => 'typeahead', ('data-source').to_sym => @source.to_s %><%= submit_tag "Add", :class => 'btn' %>
-				</div>
-				</div>
-			<% end %>			
-		</div>
-  		</div>
-  
-  </div>
+			</div>
+			<%= form_tag update_list_path(@list) do %>
+				Title <%= text_field_tag :title, @list.title %><br>
+				<%= hidden_field_tag 'kind', 'manual' %>
+				<%= submit_tag "Submit", :class => 'btn' %>
+			<% end %>
+			</div><!-- end auto -->
+			
+			<div class="tab-pane" id="auto">
+				
+				<%= form_tag update_list_path(@list) do %>
+					<%= text_field_tag :title, @list.title %><br>
+					<%= select_tag "kind", "<option selected=\"selected\">created at</option><option >end date</option><option>funding goal</option><option>amount left to goal in dollars</option><option>amount left to goal as percent</option><option>amount donated in dollars</option><option>amount donated as percent of goal</option><option>random</option>".html_safe %>
+					<%= select_tag "order", "<option selected=\"selected\">asc</option><option >desc</option>".html_safe %>
+					<br>
+					<%= submit_tag "Submit", :class => 'btn' %>
+				<% end %>
+			</div><!-- end manual -->
+	</div>
+</div>
 </div>

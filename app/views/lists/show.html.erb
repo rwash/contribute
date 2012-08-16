@@ -8,13 +8,13 @@
 
 	<div class="row group-tiles">
 	  <ul class="thumbnails-small">
-	    <% for item in @items %>
+	    <% for project in @projects %>
 	      <li class="project-span">
-	        <%= render :partial => 'shared/project', :locals => { :project => item.itemable } %><br>
+	        <%= render :partial => 'shared/project', :locals => { :project => project } %><br>
 	      </li>  
 	    <% end %>
 	  </ul>
 	</div>
 	
 </div>
-<%= paginate @items %>
+<%= paginate @projects %>

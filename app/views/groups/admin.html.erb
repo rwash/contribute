@@ -22,7 +22,7 @@
 	  	
 	  </div>
 	  <div class="modal-footer">
-	    <a href="#" class="btn" data-dismiss="modal" >Close</a>
+	    <a href="#" class="btn" data-dismiss="modal" >Cancel</a>
 	    <%= submit_tag "Submit", :class => 'btn btn-primary' %>
 	    <% end %>
 	  </div>
@@ -47,27 +47,10 @@
 <%= link_to "Delete this group", destroy_group_path(@group), :confirm => "Are you sure? This can not be reversed.", :class => 'btn btn-large btn-danger' %>
 
 <!-- Email Modal -->
-<% unless @approval.nil? %>
-	<div id="email-modal" class="modal">
-	  <div class="modal-header">
-	    <h3>Please provide a reason for rejecting this project.</h3>
-	  </div>
-	  <div class="modal-body">
-	  	<%= form_tag reject_approval_path(@group, @approval) do %>
-				<%= text_area_tag :reason, '', :class => 'field span4', :rows => 6 %>         	
-	  	
-	  </div>
-	  <div class="modal-footer">
-	    <%= submit_tag "Submit", :class => 'btn btn-primary' %>
-	    <% end %>
-	  </div>
-	</div>
-	
-		<script>
-		$(<%= "#email-modal" %>).modal({
-			backdrop: true
-		  keyboard: true
-		  show: true
-		})
-	</script>
+<% unless @approval.nil? %>		
+<script> 
+   $(document).ready(function () {
+	   $("<%= "#myModal-#{@approval.id}" %>").modal('show');
+  	});
+</script>
 <% end %>

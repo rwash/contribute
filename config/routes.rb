@@ -12,6 +12,7 @@ Contribute::Application.routes.draw do
   match 'lists/:id/destroy', :to => "lists#destroy", :as => :destroy_list
   match 'lists/:id/add-item', :to => "lists#add_item", :as => :add_item
   match 'lists/:id', :to => "lists#show", :as => :list
+  match 'lists/:id/update', :to => "lists#update", :as => :update_list
   
   #Comments
   resources :comments do
