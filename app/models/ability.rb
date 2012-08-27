@@ -54,7 +54,7 @@ class Ability
 			if l.listable_type == "Group"
 				l.listable.admin_user_id == user.id
 			elsif l.listable_type == "User"
-				l.listable.user_id == user.id
+				l.listable.id == user.id
 			else
 				false
 			end
@@ -63,7 +63,7 @@ class Ability
 			if l.listable_type == "Group"
 				l.listable.admin_user_id == user.id
 			elsif l.listable_type == "User"
-				l.listable.user_id == user.id
+				l.listable.id == user.id
 			else
 				false
 			end
@@ -72,7 +72,7 @@ class Ability
 			if l.listable_type == "Group"
 				l.listable.admin_user_id == user.id
 			elsif l.listable_type == "User"
-				l.listable.user_id == user.id
+				l.listable.id == user.id
 			else
 				false
 			end

@@ -73,9 +73,15 @@ $(document).ready(function(){
 					<%= select_tag "kind", "<option selected=\"selected\">created at</option><option >end date</option><option>funding goal</option><option>amount left to goal in dollars</option><option>amount left to goal as percent</option><option>amount donated in dollars</option><option>amount donated as percent of goal</option><option>random</option>".html_safe %>
 					<%= select_tag "order", "<option selected=\"selected\">asc</option><option >desc</option>".html_safe %>
 					<br>
+					(These dont work yet)<br>
+					Show Active Projects <%= check_box_tag 'Show Active Projects' %><br>
+					Show Funded Projects <%= check_box_tag 'Show Funded Projects' %><br>
+					Show Non-Funded Projects <%= check_box_tag 'Show Non-Funded Projects' %><br>
+					<br>
 					<%= submit_tag "Submit", :class => 'btn' %>
 				<% end %>
 			</div><!-- end manual -->
 	</div>
 </div>
+	<%= link_to "Delete This List", destroy_list_path(@list), :class => 'btn btn-danger' %>
 </div>

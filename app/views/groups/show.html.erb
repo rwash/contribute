@@ -8,7 +8,7 @@
   </div>
   <div class="span2 well">
 	  <%= link_to "Submit a project", new_add_path(@group), :class => 'btn btn-large btn-primary add-btn' %><br><br>
-	  <%= link_to " Admin Page", group_admin_path(@group) if @group.admin_user_id == @current_user.id %>
+	  <%= link_to " Admin Page", group_admin_path(@group) if group_admin?(@group) %>
   </div>
 </div>
 </div>
