@@ -91,9 +91,9 @@
 <div class="row">
 	<div class="span12">
 		<h2>Lists</h2>
+		<%= link_to "Add List", add_list_to_user_path(@user) %>
 		<% for list in @user.lists %>
 			<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project"} %>
-			<%= link_to "Edit", edit_list_path(list) %>
 		<% end %>
 	</div>
 </div>

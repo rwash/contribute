@@ -1,4 +1,8 @@
-<div class="section-header"><%= list.title %><%= link_to "see all >", list, :class => 'pull-right more' %></div>
+<div class="section-header">
+	<%= list.title %>
+	<%= link_to "see all >", list, :class => 'pull-right more' %>
+	<%= link_to "edit >", edit_list_path(list), :class => 'pull-right more' if list_owner?(list)%>
+</div>
 
 <div class="row offset1-5">
   <ul class="thumbnails">
@@ -9,5 +13,3 @@
     <% end %>
   </ul>
 </div>
-
-<%= link_to "More", list %>

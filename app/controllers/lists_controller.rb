@@ -30,14 +30,20 @@ class ListsController < InheritedResources::Base
 		unless @list.destroy
 			flash[:error] = "Failed to delete list."
 		end
-		redirect_to :back
+		redirect_to @list.listable
 	end
 	
 	def edit
 		@list = List.find(params[:id])
 		@source = []
-		for project in @list.listable.projects
-			@source  << project.name
+		if !current_user.nil? and current_user.admin
+			for project in Project.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
+				@source  << project.name
+			end
+		else
+			for project in @list.listable.projects.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
+				@source  << project.name
+			end
 		end
 	end
 	
