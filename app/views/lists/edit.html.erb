@@ -74,9 +74,9 @@ $(document).ready(function(){
 					<%= select_tag "order", "<option selected=\"selected\">asc</option><option >desc</option>".html_safe %>
 					<br>
 					(These dont work yet)<br>
-					Show Active Projects <%= check_box_tag 'Show Active Projects' %><br>
-					Show Funded Projects <%= check_box_tag 'Show Funded Projects' %><br>
-					Show Non-Funded Projects <%= check_box_tag 'Show Non-Funded Projects' %><br>
+					Show Active Projects <%= check_box_tag 'showActive', true, @list.show_active %><br>
+					Show Funded Projects <%= check_box_tag 'showFunded', true, @list.show_funded %><br>
+					Show Non-Funded Projects <%= check_box_tag 'showNonfunded', true, @list.show_nonfunded %><br>
 					<br>
 					<%= submit_tag "Submit", :class => 'btn' %>
 				<% end %>
