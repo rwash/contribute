@@ -20,6 +20,9 @@ class ListsController < InheritedResources::Base
 		@list.kind = "#{params[:kind].gsub(/\W/, '-')}"
 		@list.kind += "-#{params[:order]}" unless @list.kind == 'manual'
 		@list.title = params[:title]
+		@list.show_active = params[:showActive]
+		@list.show_funded = params[:showFunded]
+		@list.show_nonfunded = params[:showNonfunded]
 		@list.save!
 		
 		redirect_to @list.listable
@@ -35,15 +38,16 @@ class ListsController < InheritedResources::Base
 	
 	def edit
 		@list = List.find(params[:id])
-		@source = []
+		
 		if !current_user.nil? and current_user.admin
-			for project in Project.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
-				@source  << project.name
-			end
+			@projects = Project.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
 		else
-			for project in @list.listable.projects.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
-				@source  << project.name
-			end
+			@projects = @list.listable.projects.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
+		end
+		@source = []
+		for project in @projects
+			#@source  << "#{project.name} - #{project.state}"
+			@source  << project.name
 		end
 	end
 	
