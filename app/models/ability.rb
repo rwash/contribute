@@ -49,7 +49,8 @@ class Ability
 			Group.find(a.group_id).admin_user_id == user.id
 		end
 		
-		#Lists
+		#Lists (Find a way to make it cleaner/shorter?)
+		can :read, List
 		can :destroy, List do |l|
 			if l.listable_type == "Group"
 				l.listable.admin_user_id == user.id
@@ -60,6 +61,24 @@ class Ability
 			end
 		end
 		can :edit, List do |l|
+			if l.listable_type == "Group"
+				l.listable.admin_user_id == user.id
+			elsif l.listable_type == "User"
+				l.listable.id == user.id
+			else
+				false
+			end
+		end
+		can :update, List do |l|
+			if l.listable_type == "Group"
+				l.listable.admin_user_id == user.id
+			elsif l.listable_type == "User"
+				l.listable.id == user.id
+			else
+				false
+			end
+		end
+		can :sort, List do |l|
 			if l.listable_type == "Group"
 				l.listable.admin_user_id == user.id
 			elsif l.listable_type == "User"

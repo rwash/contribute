@@ -5,6 +5,9 @@ class List < ActiveRecord::Base
 	belongs_to :listable, :polymorphic => true
 	validate :validate_kind
 	
+	validates :listable_id, :presence => true
+	validates :listable_type, :presence => true
+	
 	def validate_kind
 		errors.add(:kind, "Invalid value for kind, check list.rb") unless LIST_KINDS.include?(self.kind)
 	end
