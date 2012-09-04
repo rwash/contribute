@@ -1,6 +1,6 @@
 class ListsController < InheritedResources::Base
-	#load_and_authorize_resource
-	#before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save]
+	load_and_authorize_resource
+	before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save]
 	
 	def sort
 		@list = List.find_by_id(params[:id])

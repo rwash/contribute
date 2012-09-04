@@ -6,4 +6,9 @@ FactoryGirl.define do
 		description "This is a group."
 		admin_user_id 1
 	end
+	factory :group2 do
+		name "Test Group 2"
+		description "This is a group."
+		admin_user_id 2
+	end
 end
