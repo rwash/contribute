@@ -1,12 +1,15 @@
 <div class="section-header">
-	<%= list.title %>
-	<%= link_to "see all >", list, :class => 'pull-right more' %>
-	<%= link_to "edit >", edit_list_path(list), :class => 'pull-right more' if list_owner?(list)%>
+	<% if list.title == "" %>
+	  <h3>Untitled List</h3>
+	<% else %>  
+	  <h3><%= list.title %></h3>
+	<% end %>  
+	<%= link_to "see all >", list, :class => 'more' %>
 </div>
 
 <div class="row offset1-5">
   <ul class="thumbnails">
-    <% for project in list.get_projects_in_order(4) %>
+    <% for project in list.get_projects_in_order(5) %>
       <li class="project-span">
       	<%= render :partial => partial, :locals => { :project => project } %><br>
       </li>  
