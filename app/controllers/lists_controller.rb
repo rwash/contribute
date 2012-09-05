@@ -21,6 +21,7 @@ class ListsController < InheritedResources::Base
 		@list.kind += "-#{params[:order]}" unless @list.kind == 'manual'
 		@list.title = params[:title]
 		@list.show_active = params[:showActive]
+		@list.show_active = params[:remember_me] = true
 		@list.show_funded = params[:showFunded]
 		@list.show_nonfunded = params[:showNonfunded]
 		@list.save!
