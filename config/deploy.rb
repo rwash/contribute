@@ -1,5 +1,3 @@
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
-
 require 'bundler/capistrano'
 require "rvm/capistrano" 
 
@@ -14,6 +12,8 @@ set :repository,  "ssh://rwash@orithena.cas.msu.edu/projects/contribute.git"
 
 set :user, "rwash"
 set :use_sudo, false
+
+set :rvm_type, :system
 
 default_run_options[:pty] = true
 
