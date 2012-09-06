@@ -63,8 +63,10 @@ Contribute::Application.configure do
 	config.action_mailer.default_url_options = { :host => 'contribute.cas.msu.edu' }
 
 	#Amazon Payments Configuration
-	config.amazon_cbui_endpoint = "https://authorize.payments.amazon.com/cobranded-ui/actions/start"
-	config.amazon_fps_endpoint = "https://fps.amazonaws.com/"
+	# config.amazon_cbui_endpoint = "https://authorize.payments.amazon.com/cobranded-ui/actions/start"
+	# config.amazon_fps_endpoint = "https://fps.amazonaws.com/"
+	config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
+	config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
 
 	config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
 	config.aws_secret_key = "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"
@@ -72,7 +74,8 @@ Contribute::Application.configure do
 	#Email Configuration
 	config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
 	config.admin_address = "contribute@bitlab.cas.msu.edu"
+
+  # Procompile ckeditor js and css files
+  config.assets.precompile += Ckeditor.assets
 end
 
-# Procompile ckeditor js and css files
-config.assets.precompile += Ckeditor.assets
