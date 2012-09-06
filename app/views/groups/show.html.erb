@@ -24,5 +24,5 @@
 </div>
 
 <% for list in @group.lists %>
-	<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project-small"} %>
+	<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project-small", :limit => 5} %>
 <% end %>
