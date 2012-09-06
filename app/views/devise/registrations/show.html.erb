@@ -93,7 +93,7 @@
 		<h2>Lists</h2>
 		<%= link_to "Add List", add_list_to_user_path(@user) %>
 		<% for list in @user.lists %>
-			<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project"} %>
+			<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
 		<% end %>
 	</div>
 </div>
