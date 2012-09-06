@@ -73,3 +73,6 @@ Contribute::Application.configure do
 	config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
 	config.admin_address = "contribute@bitlab.cas.msu.edu"
 end
+
+# Procompile ckeditor js and css files
+config.assets.precompile += Ckeditor.assets
