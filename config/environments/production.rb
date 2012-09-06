@@ -63,8 +63,10 @@ Contribute::Application.configure do
 	config.action_mailer.default_url_options = { :host => 'contribute.cas.msu.edu' }
 
 	#Amazon Payments Configuration
-	config.amazon_cbui_endpoint = "https://authorize.payments.amazon.com/cobranded-ui/actions/start"
-	config.amazon_fps_endpoint = "https://fps.amazonaws.com/"
+	# config.amazon_cbui_endpoint = "https://authorize.payments.amazon.com/cobranded-ui/actions/start"
+	# config.amazon_fps_endpoint = "https://fps.amazonaws.com/"
+	config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
+	config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
 
 	config.aws_access_key = "AKIAIVLAEPTVD6GUEKKQ"
 	config.aws_secret_key = "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"
