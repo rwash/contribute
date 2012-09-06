@@ -7,8 +7,8 @@
 	<%= link_to "see all >", list, :class => 'more' %>
 </div>
 
-<div class="row offset1-5">
-  <ul class="thumbnails">
+<div class="row group-tiles">
+  <ul class="thumbnails-small">
     <% for project in list.get_projects_in_order(5) %>
       <li class="project-span">
       	<%= render :partial => partial, :locals => { :project => project } %><br>
