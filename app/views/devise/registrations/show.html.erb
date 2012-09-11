@@ -33,55 +33,6 @@
       <% @user.projects.each do |project|%>
         <li class="project-span">
           <%= render :partial => 'shared/project', :locals => { :project => project } %>
-
-<% if logged_in? and project.user_id == current_user.id and project.unconfirmed? %>
-
-  <div class="btn-row">
-    <%= button_to "Edit", edit_project_path(project), :method => 'get', :class => 'btn-info' %>
-  </div>
-  
-  <div class="btn-row">
-    <%= button_to "Delete", project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn-danger' %>
-  </div>
-	  	
-	  	
-	  	      
-<% elsif logged_in? and project.user_id == current_user.id and project.inactive? %>
-
-  <div class="btn-row">
-    <%= button_to "Edit", edit_project_path(project), :method => 'get', :class => 'btn-info' %>
-  </div>
-  
-  <div class="btn-row">
-    <%= button_to "Activate", activate_project_path(project), :confirm => "Are you sure you want to activate this project? You will not be able to edit the project once it is active.", :class => 'btn-success' %>
-  </div>
-  
-  <div class="btn-row">
-    <%= button_to "Delete", project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn-danger' %>
-  </div>
-	  	
-	  	
-	  	
-<% elsif logged_in? and project.user_id == current_user.id and project.active? %>
-
-  <div class="btn-row">
-    <%= button_to "Update", project, :method => 'get', :class => 'btn-primary' %>
-  </div>
-  
-  <div class="btn-row">
-    <%= button_to "Cancel", project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be canceld.", :class => 'btn-danger' %>
-  </div>
-  
-  
-
-<% elsif logged_in? and project.user_id == current_user.id and (project.funded? or project.nonfunded? or project.cancelled?) %>
-
-  <div class="btn-row">
-    <%= button_to "Update", project, :method => 'get', :class => 'btn-primary' %>
-  </div>
-  
-<% end %>
-
         </li>  
       <% end %>
     </ul>
