@@ -37,10 +37,11 @@ $(document).ready(function(){
   	  <div class="tab-pane active" id="projectContent">
             <% if @project.picture? %>
                 <%= image_tag @project.picture.url(:show), :class => "projectImage" %><br>
+            <% elsif @project.video? %>
+                <%= render @video %>
             <% else %>
                 <%= image_tag "BlockSShow.png", :class => "projectImage" %>
             <% end %>
-            <%= render @video if @video %>
             <br/><br/>
             <%= raw(@project.long_description) %><br/>
        </div>
