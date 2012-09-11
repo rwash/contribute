@@ -16,4 +16,10 @@ class User < ActiveRecord::Base
   has_many :lists, :as =>  :listable
 
 	validates :name, :presence => true
+	
+	after_create :add_first_list
+	
+	def add_first_list
+		self.lists << List.create(:title => "#{self.name}'s Recent Projects")
+	end
 end
