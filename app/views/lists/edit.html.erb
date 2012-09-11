@@ -30,7 +30,7 @@ $(document).ready(function(){
 				<%= form_tag update_list_path(@list) do %>
 					List Title: <%= text_field_tag :title, @list.title %><br>
 					Arrange by:<%= select_tag "kind", "<option selected=\"selected\">created at</option><option >end date</option><option>funding goal</option><option>amount left to goal in dollars</option><option>amount left to goal as percent</option><option>amount donated in dollars</option><option>amount donated as percent of goal</option><option>random</option>".html_safe %>
-					Sort:<%= select_tag "order", [['asc', 'Ascending'], ['desc', 'Descending']] %>
+					Sort:<%= select_tag "order", "<option>ascending</option><option>descending</option>".html_safe %>
 					<br>
 					Show Active Projects <%= check_box_tag 'showActive', true, @list.show_active %><br>
 					Show Funded Projects <%= check_box_tag 'showFunded', true, @list.show_funded %><br>
