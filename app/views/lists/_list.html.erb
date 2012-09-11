@@ -1,9 +1,19 @@
 <div class="section-header">
 	<% if list.title == "" %>
-	  <h3>Untitled List</h3>
-	<% else %>  
-	  <h3><%= list.title %></h3>
-	<% end %>  
+	  <h3>
+	  	Untitled List
+	  	<% if list_owner?(list) %>
+	  		 - <%= link_to 'edit list', edit_list_path(list), :class => 'edit' %>
+	 	<% end %>
+	  </h3>
+	<% else %> 
+	  <h3>
+	  	<%= list.title %>
+	  	<% if list_owner?(list) %>
+	  		 - <%= link_to 'edit list', edit_list_path(list), :class => 'edit' %>
+	 	<% end %>
+	  </h3> 
+	<% end %> 
 	<%= link_to "see all >", list, :class => 'more' %>
 </div>
 
