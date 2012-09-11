@@ -14,10 +14,11 @@
       <p>&nbsp;</p>
       <blockquote>
         <% if @user.location? %>
-          <strong>Location:</strong> <%= @user.location %><br>
+        <strong>Location:</strong> <%= @user.location %><br>
         <% end %>
-          &nbsp;<strong>Member Since:</strong> <%= @user.created_at.strftime("%B %d, %Y") %><br>
-          &nbsp; <%= link_to "Add a List", add_list_to_user_path(@user) %>
+        &nbsp;<strong>Member Since:</strong> <%= @user.created_at.strftime("%B %d, %Y") %><br>
+        &nbsp;<strong>Projects:</strong> <%= @user.projects.size %><br>
+        &nbsp;<strong>Contributions:</strong> <%= @user.contributions.size %><br>
       </blockquote>
     </div>
   </div>
@@ -28,13 +29,16 @@
 	  <h3><%= @user.name %>'s Projects</h3>
   </div>
   <div class="row offset1-5">
-    <%= link_to "No Projects yet. Click here to get going, or whatever.", new_project_url %>
+    <%= link_to "No Projects yet. Click here to get going!", new_project_url %>
   </div>
 <% else %>
 	<% for list in @user.lists %>
 		<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
 	<% end %>
 <% end %>
+<div class="row offset1-5">
+<h3><%= link_to "+ Add a List", add_list_to_user_path(@user) %></h3>
+</div>
 <p>&nbsp;</p>
 	<div id="tabs">
   	  <ul class="nav nav-tabs">
