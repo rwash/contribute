@@ -16,40 +16,26 @@
         <% if @user.location? %>
           <strong>Location:</strong> <%= @user.location %><br>
         <% end %>
-          &nbsp;<strong>Member Since:</strong> <%= @user.created_at.strftime("%B %d, %Y") %>
+          &nbsp;<strong>Member Since:</strong> <%= @user.created_at.strftime("%B %d, %Y") %><br>
+          &nbsp; <%= link_to "Add a List", add_list_to_user_path(@user) %>
       </blockquote>
     </div>
   </div>
-  <%= link_to "Add a List", add_list_to_user_path(@user) %>
 </div>
 
-
-
-<div class="section-header"><%= @user.name %>'s Projects</div>
-
-<% if @user.projects.size > 0 %>
-  <div class="row offset1-5">
-    <ul class="thumbnails">
-      <% @user.projects.each do |project|%>
-        <li class="project-span">
-          <%= render :partial => 'shared/project', :locals => { :project => project } %>
-        </li>  
-      <% end %>
-    </ul>
+<% if @user.projects.size == 0 %>
+  <div class="section-header">
+	  <h3><%= @user.name %>'s Projects</h3>
   </div>
+  <div class="row offset1-5">
+    <%= link_to "No Projects yet. Click here to get going, or whatever.", new_project_url %>
+  </div>
+<% else %>
+	<% for list in @user.lists %>
+		<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
+	<% end %>
 <% end %>
-
-<div class="row">
-	<div class="span12">
-		<h2>Lists</h2>
-		<%= link_to "Add List", add_list_to_user_path(@user) %>
-		<% for list in @user.lists %>
-			<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
-		<% end %>
-	</div>
-</div>
-
-
+<p>&nbsp;</p>
 	<div id="tabs">
   	  <ul class="nav nav-tabs">
 	    <li class="active"><a href="#userContributions" data-toggle="tab">Contributions</a></li>
