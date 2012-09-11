@@ -130,7 +130,7 @@ class ProjectsController < InheritedResources::Base
 			successful_save
 
 			flash[:alert] = "Project saved successfully. Here's to getting funded!"
-			return redirect_to current_user
+			return redirect_to @project
 		end
 	end
 

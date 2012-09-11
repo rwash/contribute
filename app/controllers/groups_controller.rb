@@ -56,6 +56,9 @@ class GroupsController < InheritedResources::Base
     	flash[:notice] = "Your project has been added to the group."
 		elsif !Approval.where(:group_id => @group.id, :project_id => @project.id, :approved => nil).first.nil?
 			flash[:error] = "You have already submitted a request. Please wait for the group owner to decide."
+		elsif @project.user_id == current_user.id
+			@group.projects << @project
+			flash[:notice] = "Your project has been added and automagically approved because you are the group admin."
 		else
 			@approval = Approval.create(:group_id => @group.id, :project_id => @project.id)
 			flash[:notice] = "Your project has been submitted to the group owner for approval."
@@ -76,8 +79,13 @@ class GroupsController < InheritedResources::Base
 	def remove_project
 		@group = Group.find(params[:id])
 		@project = Project.find_by_name(params[:project_id].gsub(/-/, ' '))
-		@group.projects.delete(@project)
-		@project.update_project_video unless @project.video_id.nil?
+		if @group.admin_user_id == current_user.id or @project.user_id == current_user.id
+			@group.projects.delete(@project)
+			@project.update_project_video unless @project.video_id.nil?
+			flash[:notice] = "#{@project.name} removed from group #{@group.name}."
+		else
+			flash[:error] = "You must be the admin of the group or the projects owner to remove it from a project."
+		end
 		
 		redirect_to :back
 	end
