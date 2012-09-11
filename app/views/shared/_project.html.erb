@@ -1,5 +1,7 @@
-    <span class="delete-x"><%= link_to "x", remove_project_from_group_path(@group, project), :confirm => "Are you sure you want to remove #{project.name} from #{@group.name}?" if (@group) and (@group.admin_user_id == current_user.id or project.user_id == current_user.id) %></span>
     <div class="thumbnail">
+    <% if (@group) and (@group.admin_user_id == current_user.id or project.user_id == current_user.id) %>
+    	<span class="delete-x"><%= link_to "x", remove_project_from_group_path(@group, project), :confirm => "Are you sure you want to remove #{project.name} from #{@group.name}?" %></span>
+    <% end %>
     <%= link_to project do %>
       <% if project.picture? %>
 	    <%= image_tag project.picture.url(:thumb), :width => '213' %>
