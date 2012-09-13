@@ -20,6 +20,6 @@ class User < ActiveRecord::Base
 	after_create :add_first_list
 	
 	def add_first_list
-		self.lists << List.create(:title => "#{self.name}'s Recent Projects")
+		self.lists << List.create(:title => "#{self.name}'s Projects", :permanent => true, :show_funded => true, :show_nonfunded => true, :show_active => true)
 	end
 end
