@@ -5,5 +5,6 @@ FactoryGirl.define do
 		listable_id 1
 		listable_type "Group"
 		title "Test List Title"
+		permanent false
 	end
 end
