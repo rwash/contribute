@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
  protect_from_forgery
 
-  helper_method :logged_in?, :comment_owner, :yt_client, :get_projects_in_order
+  helper_method :logged_in?, :comment_owner, :yt_client, :get_projects_in_order, :confirmation_approver?
 
 	rescue_from CanCan::AccessDenied do |exception|
 		if exception.action == :contribute
@@ -91,5 +91,12 @@ class ApplicationController < ActionController::Base
 		else #default
 			@projects.sort {|a,b| b.created_at <=> a.created_at }.slice!(0,limit)
 		end
+	end
+	
+	def confirmation_approver?(project)
+	 for approval in project.approvals
+	 	return true if Group.find_by_id(approval.group_id).admin_user_id == current_user.id
+	 end
+	 return false
 	end
 end

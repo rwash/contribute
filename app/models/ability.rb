@@ -6,7 +6,7 @@ class Ability
 
 		# Projects
 		can :read, Project do |p|
-			p.public_can_view? || p.user_id == user.id
+			p.public_can_view? or p.user_id == user.id or p.confirmation_approver?
 		end
 		can :create, Project
 		can :update, Project do |p|
