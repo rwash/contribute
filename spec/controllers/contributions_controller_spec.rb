@@ -114,7 +114,7 @@ describe ContributionsController do
 		context 'save action' do
 			before(:all) do
 				@project = FactoryGirl.create(:project)
-				@contribution = FactoryGirl.build(:contribution, :user_id => @user.id, :project_id => @project.id)
+				@contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => @project.id)
 			end
 		
 			after(:all) do 
@@ -129,7 +129,7 @@ describe ContributionsController do
 
 			it "should succeed for valid input" do
 				sign_in @user
-				session[:contribution] = @contribution
+				session[:contribution_id] = @contribution.id
 				
 				get :save, @params
 				response.should redirect_to(@contribution.project)
@@ -138,7 +138,7 @@ describe ContributionsController do
 			
 			it "should handle a nil contribution" do
 				sign_in @user
-				session[:contribution] = nil
+				session[:contribution_id] = nil
 
 				get :save, @params
 				assert_contribution_failure(root_path)
@@ -146,7 +146,7 @@ describe ContributionsController do
 	
 			it "should handle invalid parameters" do
 				sign_in @user
-				session[:contribution] = @contribution
+				session[:contribution_id] = @contribution.id
 				@params["tokenID"] = nil
 
 				get :save, @params
@@ -157,7 +157,7 @@ describe ContributionsController do
 				Contribution.any_instance.stub(:save){false}
 
 				sign_in @user
-				session[:contribution] = @contribution
+				session[:contribution_id] = @contribution.id
 
 				get :save, @params
 				assert_contribution_failure(@contribution.project)

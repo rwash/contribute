@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911165020) do
+ActiveRecord::Schema.define(:version => 20120913150100) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20120911165020) do
     t.integer  "status"
     t.integer  "retry_count"
     t.string   "transaction_id"
+    t.boolean  "confirmed",      :default => false
   end
 
   create_table "groups", :force => true do |t|

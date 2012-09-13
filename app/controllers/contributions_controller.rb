@@ -27,7 +27,12 @@ class ContributionsController < ApplicationController
 		if @contribution.valid? && @project.end_date >= Date.today
 			#Worth considering alternatives if the performance on this is bad
 			#E.g. memcached, writing to the DB and marking record incomplete
-			session[:contribution] = @contribution
+			
+			if !@contribution.save
+				flash[:alert] = "Failed to save contribution before sending to amazon."
+				return redirect_to @contribution.project
+			end
+			session[:contribution_id] = @contribution.id
 			request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 		
 			redirect_to request.url
@@ -39,11 +44,11 @@ class ContributionsController < ApplicationController
 
 	#Return URL from payment gateway
 	def save
-		if session[:contribution].nil?
+		if session[:contribution_id].nil?
 			flash[:alert] = ERROR_STRING
 			return redirect_to root_path
 		end
-		@contribution = session[:contribution]
+		@contribution = Contribution.find_by_id(session[:contribution_id])
 
 		Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
 		if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(save_contribution_url, session, params)
@@ -51,9 +56,9 @@ class ContributionsController < ApplicationController
 			return redirect_to @contribution.project
 		end
 			
-		session[:contribution] = nil
+		session[:contribution_id] = nil
 		@contribution.payment_key = params[:tokenID]
-
+		@contribution.confirmed = true
 		if !@contribution.save
 			flash[:alert] = ERROR_STRING
 			return redirect_to @contribution.project
