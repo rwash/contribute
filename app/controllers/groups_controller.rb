@@ -62,9 +62,7 @@ class GroupsController < InheritedResources::Base
 		else
 			@approval = Approval.create(:group_id => @group.id, :project_id => @project.id)
 			flash[:notice] = "Your project has been submitted to the group owner for approval."
-			if @project.active? || @project.funded? || @project.nonfunded?
-				EmailManager.project_to_group_approval(@approval, @project, @group).deliver
-			end
+			EmailManager.project_to_group_approval(@approval, @project, @group).deliver
 		end
 
 		redirect_to @group
