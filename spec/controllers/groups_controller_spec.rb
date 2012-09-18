@@ -158,11 +158,13 @@ describe GroupsController do
 		
 		context "adding projects to closed group" do
 			before(:all) do
-				@group = FactoryGirl.create(:group, :open => false, :admin_user_id => @user.id)
+				@admin = FactoryGirl.create(:user2)
+				@group = FactoryGirl.create(:group, :open => false, :admin_user_id => @admin.id)
 			end
 			
 			after(:all) do
 				@group.delete
+				@admin.delete
 			end
 			
 			it 'can add unconfirmed project to group' do

@@ -122,7 +122,7 @@ class Project < ActiveRecord::Base
 	end
 	
   def public_can_view? #active, funded, or non-funded
-  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
+  	self.state == 'active' or self.state == 'nonfunded' or self.state == 'funded'
   end
   
   def can_edit? #unconfirmed or inactive

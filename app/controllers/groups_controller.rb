@@ -56,15 +56,13 @@ class GroupsController < InheritedResources::Base
     	flash[:notice] = "Your project has been added to the group."
 		elsif !Approval.where(:group_id => @group.id, :project_id => @project.id, :approved => nil).first.nil?
 			flash[:error] = "You have already submitted a request. Please wait for the group owner to decide."
-		elsif @project.user_id == current_user.id
+		elsif @group.admin_user_id == current_user.id
 			@group.projects << @project
 			flash[:notice] = "Your project has been added and automagically approved because you are the group admin."
 		else
 			@approval = Approval.create(:group_id => @group.id, :project_id => @project.id)
 			flash[:notice] = "Your project has been submitted to the group owner for approval."
-			if @project.active? || @project.funded? || @project.nonfunded?
-				EmailManager.project_to_group_approval(@approval, @project, @group).deliver
-			end
+			EmailManager.project_to_group_approval(@approval, @project, @group).deliver
 		end
 
 		redirect_to @group
