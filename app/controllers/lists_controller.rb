@@ -38,6 +38,7 @@ class ListsController < InheritedResources::Base
 	
 	def edit
 		@list = List.find(params[:id])
+		return redirect_to @list.listable if @list.permanent?
 		
 		if !current_user.nil? and current_user.admin
 			@projects = Project.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
@@ -62,7 +63,7 @@ class ListsController < InheritedResources::Base
 	def show
 		@list = List.find(params[:id])
 		@group = @list.listable if @list.listable_type == 'Group'
-		@projects = @list.get_projects_in_order #pass in the number of projects you want
+		@projects = get_projects_in_order(@list)
 		if @projects.class.name == 'Array'
 			@projects = Kaminari.paginate_array(@projects).page(params[:page]).per(8)
 		else

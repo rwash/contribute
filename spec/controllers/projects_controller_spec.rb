@@ -675,7 +675,7 @@ describe ProjectsController do
 				session[:project_id] = @project.id
 				get :save, @params
 				# response.should redirect_to(project_path(@project))
-				response.should redirect_to(@user)
+				response.should redirect_to(@project)
 				assert flash[:alert].include?("saved successfully"), flash[:alert]
 			end
 
