@@ -126,3 +126,7 @@ gem "ckeditor", "3.7.1"
 
 #ordering gem for Queues
 gem 'acts_as_list'
+
+# High Voltage is a gem that allows for "static" pages that are
+# processed by rails, so we can use embedded ruby.
+gem 'high_voltage'
