@@ -1,7 +1,5 @@
 <%= form_for(@project, :html => {:multipart => true}) do |f| %>
 
-<div id="form">
-
 	<% if @project.errors.any? %>
 		<div id="error_explanation">
 		<h2><%= pluralize(@project.errors.count, "error") %> prevented this project from being saved:</h2>
@@ -13,6 +11,14 @@
 		</div>
 	<% end %>
     
+<div class="row well">
+  <div class="span1-5">
+    <%= f.label :name, "Project Name: ", :class => 'pull-right bold' %>
+  </div>
+  <div class="span4">
+    <%= f.text_field :name, :class => 'span3' %>
+  </div>
+</div>
     
 <p><%= render :partial => "picture", :locals => {:f => f} %></p>
 <p><%= render :partial => "videos/form", :locals => {:f => f} %></p>
@@ -23,15 +29,6 @@
   </div>
   <div class="span4">
     <%= f.collection_select :category_id, Category.all, :id, :short_description %>
-  </div>
-</div>
-
-<div class="row well">
-  <div class="span1-5">
-    <%= f.label :name, "Project Name: ", :class => 'pull-right bold' %>
-  </div>
-  <div class="span4">
-    <%= f.text_field :name, :class => 'span3' %>
   </div>
 </div>
 
@@ -68,7 +65,7 @@
     <%= f.label :long_description, "Long Description: ", :class => 'pull-right bold' %>
   </div>
   <div class="span8">
-    <%= f.cktext_area :long_description, :cols => 20, :rows => 20, :toolbar => 'Easy' %></p>
+    <%= f.cktext_area :long_description, :cols => 20, :rows => 40, :toolbar => 'Easy' %></p>
   </div>
 </div>
 
@@ -76,8 +73,25 @@
 <h4>Amazon Payments*</h4>
   <p><em>The last step in creating your project is associating it with an Amazon Payments account so that your donations have somewhere to go when your project is funded.</p>
   <p>Clicking "Create Project" will redirect you to Amazon Payments. Once you've completed associating your account you will be brought back here.</em></p>
-  <%= f.submit :class => 'btn btn-success btn-large pull-right' %>
+  <%= f.submit :class => 'btn btn-success btn-large pull-right submit-form' %>
+  <div class="loading">
+	<h3><%= image_tag 'loading.gif' %> Your Project is being created, please wait...</h3>
+  </div>
 <p>&nbsp;</p>
 </div>
 </div>
 <% end %>
+
+
+<script>
+  $(".submit-form").click(function () {
+    $(".loading").show(0);
+    $(".submit-form").hide(0);
+  });
+</script>
+
+<style>
+	.loading {
+		display: none;
+	}
+</style>
