@@ -26,18 +26,9 @@ class ProjectsController < InheritedResources::Base
     
 		if @project.valid?
 			unless params[:project][:video].nil?
-				@video = Video.create(:title => @project.name, :description => @project.short_description, :project_id => @project.id)
+				@video = Video.create(:title => @project.name, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@project.short_description}\n\nFind more projects from MSU:#{root_url}", :project_id => @project.id)
 				@project.video_id = @video.id
-	    		     
-	      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
-	      
-	      if @response
-		      @video.update_attributes(:yt_video_id => @response.unique_id, :is_complete => true)
-		      @video.save!
-		      Video.delete_incomplete_videos
-		    else
-		      Video.delete_video(@video)
-		    end
+				@video.upload_video(@project.id, params[:project][:video].path)
 	    end
 	    
 	    @project.save
@@ -162,6 +153,7 @@ class ProjectsController < InheritedResources::Base
   def show
     @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
     #somthing was up with this page and permissions so i moved them here
+    return redirect_to root_path if @project.nil?
     return redirect_to root_path unless @project.public_can_view? or (logged_in? and (confirmation_approver?(@project) or @project.user_id == current_user.id))
     
     @video = Video.find(@project.video_id) unless @project.video_id.nil?

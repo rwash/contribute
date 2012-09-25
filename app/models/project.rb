@@ -37,6 +37,11 @@ class Project < ActiveRecord::Base
 
 	attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture, :picture_cache
 	
+	def nothing
+		self.name = "testing nothing"
+		self.save!
+	end
+	
 	def initialize(attributes = nil, options = {})
 		super
 		# self.active = true # We dont want to use this anymore.
