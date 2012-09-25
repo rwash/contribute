@@ -126,3 +126,8 @@ gem "ckeditor", "3.7.1"
 
 #ordering gem for Queues
 gem 'acts_as_list'
+
+# delayed gem (currently used when uploading videos)
+gem 'delayed_job_active_record'
+# used for running background proccess to run jobs
+gem "daemons"
