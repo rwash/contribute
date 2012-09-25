@@ -106,6 +106,7 @@ GEM
       guard (>= 1.1)
     has_scope (0.5.1)
     headless (0.3.1)
+    high_voltage (1.2.0)
     highline (1.6.13)
     hike (1.2.1)
     httparty (0.8.3)
@@ -298,6 +299,7 @@ DEPENDENCIES
   factory_girl_rails (~> 1.2)
   guard-rspec
   headless
+  high_voltage
   httparty
   inherited_resources
   jquery-rails
