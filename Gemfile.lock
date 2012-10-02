@@ -76,6 +76,11 @@ GEM
     commonjs (0.2.6)
     daemons (1.0.10)
     dalli (2.1.0)
+    delayed_job (3.0.3)
+      activesupport (~> 3.0)
+    delayed_job_active_record (0.3.2)
+      activerecord (> 2.1.0)
+      delayed_job (~> 3.0.0)
     devise (2.1.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -287,7 +292,9 @@ DEPENDENCIES
   carrierwave
   ckeditor (= 3.7.1)
   coffee-rails (~> 3.1.1)
+  daemons
   dalli
+  delayed_job_active_record
   devise
   factory_girl_rails (~> 1.2)
   guard-rspec

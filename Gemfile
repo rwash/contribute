@@ -127,6 +127,11 @@ gem "ckeditor", "3.7.1"
 #ordering gem for Queues
 gem 'acts_as_list'
 
+# delayed gem (currently used when uploading videos)
+gem 'delayed_job_active_record'
+# used for running background proccess to run jobs
+gem "daemons"
+
 # High Voltage is a gem that allows for "static" pages that are
 # processed by rails, so we can use embedded ruby.
 gem 'high_voltage'

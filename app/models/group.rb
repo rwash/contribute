@@ -5,12 +5,8 @@ class Group < ActiveRecord::Base
 	
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 	
-	after_create :create_list
+	after_create :add_first_list
 	after_save :approve_all
-	
-	def create_list
-		self.lists << List.create(:listable_id => self.id, :listable_type => self.class.name)
-	end
 	
 	def approve_all
 		if self.open
@@ -25,5 +21,9 @@ class Group < ActiveRecord::Base
 				@project.update_project_video unless @project.video_id.nil?
 			end
 		end
+	end
+	
+	def add_first_list
+		self.lists << List.create(:title => "Recent Projects", :permanent => true, :show_funded => true, :show_nonfunded => true, :show_active => true)
 	end
 end
