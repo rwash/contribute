@@ -5,7 +5,9 @@
 	<div class="group-container">
 	  <%= link_to "", group, :class => "group-link" %>
 	  <span class="group-name"><%= group.name %></span> 
-	  <span class="num-projects"><%= group.projects.size %> <% if group.projects.size == 1 %>Project <% else %>Projects <% end %></span><br>
+	  <![if !IE]>
+	  	<span class="num-projects"><%= group.projects.size %> <% if group.projects.size == 1 %>Project <% else %>Projects <% end %></span><br>
+	  <![endif]>
 	  <span class="group-description"><%= group.description %></span>
 	  <% group.projects.limit(6).each do |p| %>
 	    <div class="group-pic">
