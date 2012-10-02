@@ -23,9 +23,6 @@
  </div>
  
  <div class="groups-sidebar">
-   <form method="get" action="#" id="search">
-     <input name="q" type="text" size="40" placeholder="Search Groups..." />
-   </form>
    <%= link_to "Create a New Group", new_group_path, :class => 'btn btn-large btn-primary new-group' %>
    <% unless current_user.nil? %>
 	   <h3>You have projects in:</h3>
