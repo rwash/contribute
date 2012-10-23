@@ -41,10 +41,23 @@
 			<% end %>
 		</div>
 		<div class="add">
-			<%= link_to add_list_to_user_path(@user) do %>
-				<i class="icon-star"></i>
-		    <% end %>
+		  <%= link_to do %>
+			<div class="star_up"></div>
+			<div class="star_on"></div>
+	      <% end %>		
 		</div>
       </div>
     </div>
 
+<script>
+  $(".add").click(function () {
+    $(".star_up").toggle(0);
+    $(".star_on").toggle(0);
+  });
+</script>
+
+<style>
+	.star_on {
+		display: none;
+	}
+</style>

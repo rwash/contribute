@@ -20,6 +20,10 @@ $(document).ready(function(){
           <h1><%= @project.name %></h1>
           <h2><%= @project.user.location %></h2>
           <h3>By: <%= link_to @project.user.name, @project.user %> </h3>
+          <div class="add_show">
+				<div class="star_up"></div>
+				<div class="star_on"></div>
+			</div>
 	</div>
 
 	<div id="tabs">
@@ -137,11 +141,6 @@ $(document).ready(function(){
       </p>
       <br>
     <% end %>
-        <div class="add">
-			<%= link_to add_list_to_user_path(@user) do %>
-				<i class="icon-star"></i>
-		    <% end %>
-		</div>
     <% if logged_in? and @project.user_id == current_user.id and @project.unconfirmed? %>
 	  <%= button_to "Edit Project", edit_project_path(@project), :method => 'get', :class => 'btn btn-info btn-large' %>
 	  <%= button_to "Delete Project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn btn-danger btn-large' %>
@@ -168,3 +167,16 @@ $(document).ready(function(){
 	</ul>
 </div>
 </div>
+
+<script>
+  $(".add_show").click(function () {
+    $(".star_up").toggle(0);
+    $(".star_on").toggle(0);
+  });
+</script>
+
+<style>
+	.star_on {
+		display: none;
+	}
+</style>
