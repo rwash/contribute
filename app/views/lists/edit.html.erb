@@ -74,7 +74,7 @@ $(document).ready(function(){
 						Add Projects: <%= text_field_tag :project, nil, :style => "margin: 0 auto;", ('data-provide').to_sym => 'typeahead', ('data-source').to_sym => @source.to_s %><%= submit_tag "Add", :class => 'btn' %>
 					</div>
 					</div>
-				<% end %>			
+				<% end %>
 			</div>
 			</div>
 			<%= form_tag update_list_path(@list) do %>
