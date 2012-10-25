@@ -24,14 +24,12 @@ class ProjectsController < InheritedResources::Base
 		@project.payment_account_id = Project::UNDEFINED_PAYMENT_ACCOUNT_ID #To pass validation at valid?
 		@project.state = PROJ_STATES[0] #unconfirmed
     
-		if @project.valid?
+		if @project.save
 			unless params[:project][:video].nil?
-				@video = Video.create(:title => @project.name, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@project.short_description}\n\nFind more projects from MSU:#{root_url}", :project_id => @project.id)
-				@project.video_id = @video.id
-				@video.upload_video(@project.id, params[:project][:video].path)
+				@project.video = Video.create(:title => @project.name, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@project.short_description}\n\nFind more projects from MSU:#{root_url}", :project_id => @project.id)
+				@project.video.delay.upload_video(params[:project][:video].path)
 	    end
 	    
-	    @project.save
 			session[:project_id] = @project.id
 			
 			request = Amazon::FPS::RecipientRequest.new(save_project_url)

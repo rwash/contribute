@@ -4,6 +4,10 @@
 <!-- youtube_it was throwing an error when a video was deleted from the YouTube end -->
 <%#= raw yt_client.my_video(@video.yt_video_id).embed_html5({:class => 'video-player', :id => 'my-video', :width => '640', :height => '350', :frameborder => '0', :url_params => {:rel => "0"}})%>
 
-<iframe class="video-player" id="my-video" type="text/html" width="640" height="350" src="http://www.youtube.com/embed/<%= @video.yt_video_id %>?rel=0" frameborder="0"></iframe>
+<% if video.is_complete %>
+<iframe class="video-player" id="my-video" type="text/html" width="640" height="350" src="http://www.youtube.com/embed/<%= video.yt_video_id %>?rel=0" frameborder="0"></iframe>
+<% else %>
+This video is still being uploaded to YouTube. Wait a few minutes a try again.
+<% end %>
 
 </div>
