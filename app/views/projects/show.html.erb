@@ -40,8 +40,8 @@ $(document).ready(function(){
 	<div class="tab-content">
   	  <div class="tab-pane active" id="projectContent">
   	  
-  	  		<% if @video %>
-  	  			 <%= render @video %>
+  	  		<% if @project.video %>
+  	  			 <%= render @project.video %>
   	  		<% elsif @project.picture? %>
   	  			 <%= image_tag @project.picture.url(:show), :class => "projectImage" %>
   	  		<% else %>
