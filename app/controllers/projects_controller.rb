@@ -143,7 +143,7 @@ class ProjectsController < InheritedResources::Base
 			@project.state = PROJ_STATES[5] #canceled
 			@project.save!
 			@response = Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'People',:keywords => YT_TAGS, :list => "denied") if @video
-			flash[:alert] = "Project successfully canceled. Project is now only visible to you."
+			flash[:alert] = "Project successfully canceled. This project is now only visible to you."
 		else
 			flash[:alert] = "You can not cancel or delete this project."
 		end

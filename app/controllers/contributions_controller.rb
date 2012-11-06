@@ -29,7 +29,7 @@ class ContributionsController < ApplicationController
 			#E.g. memcached, writing to the DB and marking record incomplete
 			
 			if !@contribution.save
-				flash[:alert] = "Failed to save contribution before sending to amazon."
+				flash[:alert] = "An error occured while submitting your contribution. Please try again."
 				return redirect_to @contribution.project
 			end
 			session[:contribution_id] = @contribution.id
@@ -37,7 +37,7 @@ class ContributionsController < ApplicationController
 		
 			redirect_to request.url
 		else
-			flash[:alert] = "Sorry, this project's contribution period has endded and you can no longer contribute to the project."
+			flash[:alert] = "Sorry, this project is no longer taking contributions."
 			render :action => :new
 		end
 	end
@@ -65,7 +65,7 @@ class ContributionsController < ApplicationController
 		else
 			successful_save
 
-			flash[:alert] = "Contribution entered successfully. Thanks for your support!"
+			flash[:alert] = "Contribution submitted. Thank you for your support!"
 			return redirect_to @contribution.project
 		end
 	end
@@ -90,7 +90,7 @@ class ContributionsController < ApplicationController
 		@contribution.project_id = @project.id
 		
 		if @project.end_date < Date.today
-			flash[:error] = "You cannot edit your contribution because the project contribution period has ended."
+			flash[:error] = "You cannot edit your contribution because this project is no longer taking contributions."
 			return redirect_to @project	
 		end
 		
@@ -141,7 +141,7 @@ class ContributionsController < ApplicationController
 		else
 			successful_update
 
-			flash[:alert] = "Contribution successfully updated. Thanks for your support!"
+			flash[:alert] = "Contribution successfully updated. Thank you for your support!"
 			return redirect_to @contribution.project
 		end
 	end

@@ -4,7 +4,7 @@ class VideosController < InheritedResources::Base
     @project = Project.where(:video_id => params[:id]).first
     
     if current_user.nil? || @project.user_id != current_user.id
-    	flash[:error] = "Can not delete video for project you do not own."
+    	flash[:error] = "You can not delete the video for project you do not own."
     	return redirect_to root_path
     end
     

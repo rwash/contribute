@@ -31,7 +31,7 @@ class ListsController < InheritedResources::Base
 	def destroy
 		@list = List.find(params[:id])
 		unless @list.destroy
-			flash[:error] = "Failed to delete list."
+			flash[:error] = "Failed to delete list. Please try again."
 		end
 		redirect_to @list.listable
 	end

@@ -10,10 +10,10 @@ class UpdatesController < InheritedResources::Base
       if @update.valid? && @update.save
         flash[:notice] = "Update saved succesfully."
       else
-        flash[:error] = "Update failed to save."
+        flash[:error] = "Update failed to save. Please try again."
       end
     else
-      flash[:error] = "You must be logged in and be the project owner to post an update."
+      flash[:error] = "You cannot update this project."
     end
     redirect_to @project
   end

@@ -12,7 +12,7 @@ class ApprovalsController < InheritedResources::Base
 			@project.update_project_video unless @project.video_id.nil?
 			
 		else
-			flash[:error] = "This project has alreaad been #{(@approval.approved)? 'approved' : 'denied'}."
+			flash[:error] = "This project has already been #{(@approval.approved)? 'approved' : 'denied'}."
 		end
 		
 		redirect_to group_admin_path(@group)
@@ -29,7 +29,7 @@ class ApprovalsController < InheritedResources::Base
 		
 			EmailManager.group_reject_project(@approval, @project, @group).deliver
 		else
-			flash[:error] = "This project has alreaad been #{(@approval.approved)? 'approved' : 'denied'}."
+			flash[:error] = "This project has already been #{(@approval.approved)? 'approved' : 'denied'}."
 		end
 		
 		redirect_to group_admin_path(@group)
