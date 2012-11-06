@@ -41,7 +41,7 @@ class CommentsController < InheritedResources::Base
       end
       
     else
-      flash[:alert] = "Can't delete other peoples comments."
+      flash[:alert] = "You cannot delete other peoples comments."
     end
     
     redirect_to :back

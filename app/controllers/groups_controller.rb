@@ -25,7 +25,7 @@ class GroupsController < InheritedResources::Base
 			flash[:notice] = "Successfully created group."
 			redirect_to @group
 		else
-			flash[:error] = "Failed to save group."
+			flash[:error] = "Failed to save group. Please try again."
 			redirect_to new_group_path
 		end
 	end
@@ -45,7 +45,7 @@ class GroupsController < InheritedResources::Base
 		if @project.nil?
 			#Do Nothing
 		elsif @project.cancelled?
-			flash[:error] = "You cannot add a canceld project to a group."
+			flash[:error] = "You cannot add a canceld project."
 		elsif @group.projects.include?(@project)
 			flash[:error] = "Your project is already in this group."
 		elsif @group.open?
@@ -55,13 +55,13 @@ class GroupsController < InheritedResources::Base
 			
     	flash[:notice] = "Your project has been added to the group."
 		elsif !Approval.where(:group_id => @group.id, :project_id => @project.id, :approved => nil).first.nil?
-			flash[:error] = "You have already submitted a request. Please wait for the group owner to decide."
+			flash[:error] = "You have already submitted this project. Please wait for the admin to approve or reject your request."
 		elsif @group.admin_user_id == current_user.id
 			@group.projects << @project
-			flash[:notice] = "Your project has been added and automagically approved because you are the group admin."
+			flash[:notice] = "Your project has been added."
 		else
 			@approval = Approval.create(:group_id => @group.id, :project_id => @project.id)
-			flash[:notice] = "Your project has been submitted to the group owner for approval."
+			flash[:notice] = "Your project has been submitted to the group admin for approval."
 			EmailManager.project_to_group_approval(@approval, @project, @group).deliver
 		end
 
@@ -82,7 +82,7 @@ class GroupsController < InheritedResources::Base
 			@project.update_project_video unless @project.video_id.nil?
 			flash[:notice] = "#{@project.name} removed from group #{@group.name}."
 		else
-			flash[:error] = "You must be the admin of the group or the projects owner to remove it from a project."
+			flash[:error] = "You do not have permission to remove this project."
 		end
 		
 		redirect_to :back
@@ -98,7 +98,7 @@ class GroupsController < InheritedResources::Base
 	def destroy
 		@group = Group.find(params[:id])
 		if !@group.destroy
-			flash[:error] = "Failed to delete Group"
+			flash[:error] = "Failed to delete group. Please try again."
 		end
 		redirect_to groups_path
 	end
