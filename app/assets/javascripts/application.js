@@ -9,4 +9,6 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require ckeditor/init
+//= require underscore
+//= require json2
 //= require_tree .
