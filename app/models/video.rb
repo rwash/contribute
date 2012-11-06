@@ -6,22 +6,17 @@ class Video < ActiveRecord::Base
   
   include Rails.application.routes.url_helpers
   
-  def upload_video(project_id,path)
-  	@project = Project.find_by_id(project_id)
-  	@tempfile = File.open path
-		@response = Video.yt_session.video_upload(@tempfile, :title => self.title, :description => self.description, :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
+  def upload_video(path)
+    puts "Uploading video at #{path}"
+		tempfile = File.open path
+		response = Video.yt_session.video_upload(tempfile, :title => self.title, :description => self.description, :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
 		
-	  if !@response.nil?
-	  	self.update_attributes(:yt_video_id => @response.unique_id, :is_complete => true)
+	  unless response.nil?
+	  	self.update_attributes(:yt_video_id => response.unique_id, :is_complete => true)
 	    self.save!
-	    Video.delete_incomplete_videos
-	  else
-	   Video.delete_video(@video)
-	   @project.video_id = nil
-	   @project.save!
 	  end
   end
-  #handle_asynchronously :upload_video
+  handle_asynchronously :upload_video
   
   def self.yt_session
     @yt_session ||= YouTubeIt::Client.new(:username => YT_USERNAME , :password => YT_PASSWORD , :dev_key => YT_DEV_KEY)    
