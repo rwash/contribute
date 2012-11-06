@@ -135,3 +135,6 @@ gem "daemons"
 # High Voltage is a gem that allows for "static" pages that are
 # processed by rails, so we can use embedded ruby.
 gem 'high_voltage'
+
+#judge is a gem used for client side validation.
+gem "judge", "~> 1.5.0"

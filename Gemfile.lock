@@ -121,6 +121,7 @@ GEM
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.7.3)
+    judge (1.5.0)
     jwt (0.1.5)
       multi_json (>= 1.0)
     kaminari (0.13.0)
@@ -304,6 +305,7 @@ DEPENDENCIES
   inherited_resources
   jquery-rails
   json
+  judge (~> 1.5.0)
   kaminari
   mini_magick
   mongrel (>= 1.2.0.pre2)
