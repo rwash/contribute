@@ -42,7 +42,7 @@ describe ContributionsController do
 				sign_in @user
 				get :new, :project => @project.name
 				response.should redirect_to(@project)
-				assert flash[:alert].include?("may not contribute"), flash[:alert]
+				flash[:alert].should include "may not contribute"
 			end		
 
 			it "can edit contribution" do
@@ -57,7 +57,7 @@ describe ContributionsController do
 				sign_in @user
 				get :edit, :id => contribution.id
 				response.should redirect_to(@project)
-				assert flash[:alert].include?("may not edit this contribution"), flash[:alert]
+				flash[:alert].should include "may not edit this contribution"
 			end
 			
 			describe 'after end_date but active' do
@@ -69,7 +69,7 @@ describe ContributionsController do
 					sign_in @user
 					get :new, :project => project.name
 					response.should be_success
-					# assert flash[:alert].include?("The contribution period has ended."), flash[:alert]
+					# flash[:alert].should include "The contribution period has ended."
 					
 					project.delete
 				end
@@ -133,7 +133,7 @@ describe ContributionsController do
 				
 				get :save, @params
 				response.should redirect_to(@contribution.project)
-				assert flash[:alert].include?("submitted"), flash[:alert]
+				flash[:alert].should include "submitted"
 			end
 			
 			it "should handle a nil contribution" do
@@ -194,7 +194,7 @@ describe ContributionsController do
 				session[:editing_contribution_id] = @editing_contribution.id #old contribution	
 				get :update_save, @params
 				response.should redirect_to(@contribution.project)
-				assert flash[:alert].include?("successfully updated"), flash[:alert]
+				flash[:alert].should include "successfully updated"
 			end
 
 			it "should fail without a contribution in session" do

@@ -20,13 +20,13 @@ describe GroupsController do
 			it "signed in user can create group" do
 				sign_in @user
 				post 'create', :group => FactoryGirl.attributes_for(:group)
-				assert flash[:notice].include?("Successfully created group."), "Failed to create group."
+				flash[:notice].should include "Successfully created group."
 			end
 			
 			it "not signed in user cannont create group" do
 				post 'create', :group => FactoryGirl.attributes_for(:group)
 				response.should redirect_to('/users/sign_in')
-				assert flash[:alert].include?("You need to sign in or sign up before continuing."), "Should not be able to create group without signed in user."
+				flash[:alert].should include "You need to sign in or sign up before continuing."
 			end
 			
 			it "admin can edit group" do
@@ -42,7 +42,7 @@ describe GroupsController do
 				@group = FactoryGirl.create(:group, :open => true, :admin_user_id => @user.id + 1)
 				
 				get 'edit', :id => @group.id
-				assert flash[:alert].include?("You are not authorized to access this page."), "Only admin should be able to edit group."
+				flash[:alert].should include "You are not authorized to access this page."
 			end
 		end
 		
@@ -51,14 +51,14 @@ describe GroupsController do
 				@group = FactoryGirl.create(:group, :open => true, :admin_user_id => 19)
 				
 				get 'destroy', :id => @group.id
-				assert flash[:alert].include?("You are not authorized to access this page."), "not signed in user should not be able to delete group."
+				flash[:alert].should include "You are not authorized to access this page."
 			end
 			it "signed in user cannot delete group it doesnt own" do
 				sign_in @user
 				@group = FactoryGirl.create(:group, :open => true, :admin_user_id => @user.id + 1)
 				
 				get 'destroy', :id => @group.id
-				assert flash[:alert].include?("You are not authorized to access this page."), "signed in user should not be able to delete a group it doesnt own"
+				flash[:alert].should include "You are not authorized to access this page."
 			end
 			it "signed in user can delete groups it is admin of" do
 				sign_in @user
@@ -89,7 +89,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been added to the group."), "Failed to add unconfirmed project to a group."
+				flash[:notice].should include "Your project has been added to the group."
 			end
 			
 			it 'can add inactive project to group' do
@@ -99,7 +99,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been added to the group."), "Failed to add inactive project to a group."
+				flash[:notice].should include "Your project has been added to the group."
 			end
 			it 'can add active project to group' do
 				sign_in @user
@@ -108,7 +108,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been added to the group."), "Failed to add active project to a group."
+				flash[:notice].should include "Your project has been added to the group."
 			end
 			
 			it 'can add funded project to group' do
@@ -118,7 +118,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been added to the group."), "Failed to add funded project to a group."
+				flash[:notice].should include "Your project has been added to the group."
 			end
 			
 			it 'can add nonfunded project to group' do
@@ -128,7 +128,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been added to the group."), "Failed to add nonfunded project to a group."
+				flash[:notice].should include "Your project has been added to the group."
 			end
 			
 			it 'can not add canceled project to group' do
@@ -138,7 +138,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:error].include?("You cannot add a canceld project."), flash[:error]
+				flash[:error].should include "You cannot add a canceld project."
 			end
 			
 			it 'can not add group to a project twice' do
@@ -148,7 +148,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:error].include?("Your project is already in this group."), flash[:error]
+				flash[:error].should include "Your project is already in this group."
 			end
 		end
 		
@@ -174,7 +174,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), flash[:notice]
+				flash[:notice].should include "Your project has been submitted to the group admin for approval."
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			
@@ -185,7 +185,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), flash[:notice]
+				flash[:notice].should include "Your project has been submitted to the group admin for approval."
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			it 'can add active project to group' do
@@ -195,7 +195,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), flash[:notice]
+				flash[:notice].should include "Your project has been submitted to the group admin for approval."
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			
@@ -206,7 +206,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), flash[:notice]
+				flash[:notice].should include "Your project has been submitted to the group admin for approval."
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			
@@ -217,7 +217,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), "Failed to add nonfunded project to a group."
+				flash[:notice].should include "Your project has been submitted to the group admin for approval."
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			
@@ -228,7 +228,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:error].include?("You cannot add a canceld project."), flash[:error]
+				flash[:error].should include "You cannot add a canceld project."
 			end
 			
 			it 'can not add group to a project twice' do
@@ -238,7 +238,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:error].include?("Your project is already in this group."), "Should not be able to add project to group twice."
+				flash[:error].should include "Your project is already in this group."
 			end
 		end
 
