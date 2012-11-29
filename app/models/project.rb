@@ -152,7 +152,7 @@ class Project < ActiveRecord::Base
   
   def active?
 		self.state == PROJ_STATES[2]
-	end
+  end
   
   def funded?
     self.state == PROJ_STATES[3]
@@ -164,5 +164,12 @@ class Project < ActiveRecord::Base
   
   def cancelled?
     self.state == PROJ_STATES[5]
+  end
+
+  def confirmation_approver?
+    approvals.each do |approval|
+      return true if Group.find_by_id(approval.group_id).admin_user_id == current_user.id
+    end
+    return false
   end
 end

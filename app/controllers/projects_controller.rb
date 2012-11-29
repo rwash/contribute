@@ -152,7 +152,7 @@ class ProjectsController < InheritedResources::Base
     @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
     #somthing was up with this page and permissions so i moved them here
     return redirect_to root_path if @project.nil?
-    return redirect_to root_path unless @project.public_can_view? or (logged_in? and (confirmation_approver?(@project) or @project.user_id == current_user.id))
+    return redirect_to root_path unless @project.public_can_view? or (logged_in? and (@project.confirmation_approver? or @project.user_id == current_user.id))
     
     @video = Video.find(@project.video_id) unless @project.video_id.nil?
     #for some reason youtube returns the most recent upload if the video token is nil

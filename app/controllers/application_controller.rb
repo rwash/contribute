@@ -92,11 +92,4 @@ class ApplicationController < ActionController::Base
 			@projects.sort {|a,b| b.created_at <=> a.created_at }.slice!(0,limit)
 		end
 	end
-	
-	def confirmation_approver?(project)
-	 for approval in project.approvals
-	 	return true if Group.find_by_id(approval.group_id).admin_user_id == current_user.id
-	 end
-	 return false
-	end
 end
