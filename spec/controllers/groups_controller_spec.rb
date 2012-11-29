@@ -175,7 +175,7 @@ describe GroupsController do
 				
 				response.should redirect_to(@group)
 				flash[:notice].should include "Your project has been submitted to the group admin for approval."
-				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
+				Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.should_not be_nil
 			end
 			
 			it 'can add inactive project to group' do
@@ -186,7 +186,7 @@ describe GroupsController do
 				
 				response.should redirect_to(@group)
 				flash[:notice].should include "Your project has been submitted to the group admin for approval."
-				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
+				Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.should_not be_nil
 			end
 			it 'can add active project to group' do
 				sign_in @user
@@ -196,7 +196,7 @@ describe GroupsController do
 				
 				response.should redirect_to(@group)
 				flash[:notice].should include "Your project has been submitted to the group admin for approval."
-				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
+				Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.should_not be_nil
 			end
 			
 			it 'can add funded project to group' do
@@ -207,7 +207,7 @@ describe GroupsController do
 				
 				response.should redirect_to(@group)
 				flash[:notice].should include "Your project has been submitted to the group admin for approval."
-				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
+				Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.should_not be_nil
 			end
 			
 			it 'can add nonfunded project to group' do
@@ -218,7 +218,7 @@ describe GroupsController do
 				
 				response.should redirect_to(@group)
 				flash[:notice].should include "Your project has been submitted to the group admin for approval."
-				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
+				Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.should_not be_nil
 			end
 			
 			it 'can not add canceled project to group' do

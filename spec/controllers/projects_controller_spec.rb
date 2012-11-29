@@ -237,7 +237,7 @@ describe ProjectsController do
 					it "can't destroy a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert !Project.find(@project.id).nil?
+						Project.find(@project.id).should_not be_nil
 						response.should redirect_to(root_path)
 					end
 					
@@ -298,7 +298,7 @@ describe ProjectsController do
 					it "can't destroy a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert !Project.find(@project.id).nil?
+						Project.find(@project.id).should_not be_nil
 						response.should redirect_to(root_path)
 					end
 					
@@ -359,7 +359,7 @@ describe ProjectsController do
 					it "can't destroy a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert !Project.find(@project.id).nil?
+						Project.find(@project.id).should_not be_nil
 						response.should redirect_to(root_path)
 					end
 					
@@ -420,7 +420,7 @@ describe ProjectsController do
 					it "can't destroy the project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert !Project.find(@project.id).nil?
+						Project.find(@project.id).should_not be_nil
 						response.should redirect_to(root_path)
 					end
 					
@@ -481,7 +481,7 @@ describe ProjectsController do
 					it "can't destroy a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert !Project.find(@project.id).nil?
+						Project.find(@project.id).should_not be_nil
 						response.should redirect_to(root_path)
 					end
 					
@@ -543,7 +543,7 @@ describe ProjectsController do
 					it "can't destroy a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert !Project.find(@project.id).nil?
+						Project.find(@project.id).should_not be_nil
 						response.should redirect_to(root_path)
 					end
 					
