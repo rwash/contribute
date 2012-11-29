@@ -24,6 +24,9 @@ group :test do
 	# Guard automatically runs tests when you save a file
 	# Run it by doing "bundle exec guard"
 	gem 'guard-rspec'
+  # rb-fsevent listens to OSX file save events. Helps Guard
+  # detect file changes on macs.
+  gem 'rb-fsevent'
 	# Capybara is used for integration testing, the stuff you
 	# find in the spec/requests folder
 	gem 'capybara'
@@ -106,6 +109,10 @@ gem 'whenever'
 # Bootstrap
 # CSS framework used to make the site all nice and purty
 gem "twitter-bootstrap-rails"
+
+# Less-Rails is a dependency for Bootstrap, which is written
+# with the LESS stylesheet language instead of Rails' default SCSS
+gem 'less-rails'
 
 #Documentation generation
 gem 'rdoc'
