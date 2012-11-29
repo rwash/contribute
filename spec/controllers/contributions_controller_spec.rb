@@ -141,7 +141,8 @@ describe ContributionsController do
 				session[:contribution_id] = nil
 
 				get :save, @params
-				assert_contribution_failure(root_path)
+				response.should redirect_to(root_path)
+        flash[:alert].should include "error"
 			end
 	
 			it "should handle invalid parameters" do
@@ -150,7 +151,8 @@ describe ContributionsController do
 				@params["tokenID"] = nil
 
 				get :save, @params
-				assert_contribution_failure(@contribution.project)
+				response.should redirect_to(@contribution.project)
+        flash[:alert].should include "error"
 			end
 
 			it "should handle contribution not saving" do
@@ -160,7 +162,8 @@ describe ContributionsController do
 				session[:contribution_id] = @contribution.id
 
 				get :save, @params
-				assert_contribution_failure(@contribution.project)
+				response.should redirect_to(@contribution.project)
+        flash[:alert].should include "error"
 			end
 		end
 
@@ -203,7 +206,8 @@ describe ContributionsController do
 				session[:editing_contribution_id] = @editing_contribution.id
 
 				get :update_save, @params
-				assert_contribution_failure(root_path)
+				response.should redirect_to(root_path)
+        flash[:alert].should include "error"
 			end
 
 			it "should fail with invalid params" do
@@ -213,7 +217,8 @@ describe ContributionsController do
 				@params["tokenID"] = nil
 
 				get :update_save, @params
-				assert_contribution_failure(@contribution.project)
+				response.should redirect_to(@contribution.project)
+        flash[:alert].should include "error"
 			end
 
 			it "should fail if the contribution can't save" do
@@ -224,7 +229,8 @@ describe ContributionsController do
 				session[:editing_contribution_id] = @editing_contribution.id
 
 				get :update_save, @params
-				assert_contribution_failure(@contribution.project)
+				response.should redirect_to(@contribution.project)
+        flash[:alert].should include "error"
 			end
 
 			it "should fail if editing contribution can't cancel" do
@@ -236,7 +242,8 @@ describe ContributionsController do
 				session[:editing_contribution_id] = @editing_contribution.id
 
 				get :update_save, @params
-				assert_contribution_failure(@contribution.project)
+				response.should redirect_to(@contribution.project)
+        flash[:alert].should include "error"
 			end
 		end
 
@@ -255,21 +262,24 @@ describe ContributionsController do
 				sign_in @user
 
 				get :new, :project => @project_1.name	
-				assert_contribution_failure(root_path)
+				response.should redirect_to(root_path)
+        flash[:alert].should include "error"
 			end
 
 			it "validate_project should handle invalid project case: 2" do
 				sign_in @user
 
 				get :new, :project => @project_2.name	
-				assert_contribution_failure(root_path)
+				response.should redirect_to(root_path)
+        flash[:alert].should include "error"
 			end
 
 			it "prepare contribution should handle invalid contribution" do
 				sign_in @user
 
 				get :edit, {:id =>1}
-				assert_contribution_failure(root_path)
+				response.should redirect_to(root_path)
+        flash[:alert].should include "error"
 			end
 		end
 	end
