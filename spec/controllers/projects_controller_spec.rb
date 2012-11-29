@@ -201,7 +201,7 @@ describe ProjectsController do
 				project = FactoryGirl.create(:project, :user_id => @user.id + 1)
 				sign_in @user
 				get :destroy, :id => project.name
-				assert flash[:alert].include?("not authorized"), flash[:alert]
+				flash[:alert].should include "not authorized"
 				response.should redirect_to(root_path)
 				project.delete
 			end
@@ -209,7 +209,7 @@ describe ProjectsController do
 				project = FactoryGirl.create(:project, :user_id => @user.id, :state => PROJ_STATES[1])
 				sign_in @user
 				get :destroy, :id => project.name
-				assert flash[:alert].include?("successfully deleted"), flash[:alert]
+				flash[:alert].should include "successfully deleted"
 				response.should redirect_to(root_path)
 			end
 			
@@ -263,7 +263,7 @@ describe ProjectsController do
 					it "CAN destroy a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert flash[:alert].include?("successfully deleted"), flash[:alert]
+						flash[:alert].should include "successfully deleted"
 						response.should redirect_to(root_path)
 					end
 					
@@ -324,7 +324,7 @@ describe ProjectsController do
 					it "CAN destroy a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert flash[:alert].include?("successfully deleted"), flash[:alert]
+						flash[:alert].should include "successfully deleted"
 						response.should redirect_to(root_path)
 					end
 					
@@ -385,7 +385,7 @@ describe ProjectsController do
 					it "CAN cancel a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert flash[:alert].include?("Project successfully canceled."), flash[:alert]
+						flash[:alert].should include "Project successfully canceled."
 						response.should redirect_to(root_path)
 					end
 					
@@ -446,7 +446,7 @@ describe ProjectsController do
 					it "can NOT cancel or delete a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						flash[:alert].should include "You can not cancel or delete this project."
 						response.should redirect_to(root_path)
 					end
 					
@@ -507,7 +507,7 @@ describe ProjectsController do
 					it "can NOT cancel or delete a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						flash[:alert].should include "You can not cancel or delete this project."
 						response.should redirect_to(root_path)
 					end
 					
@@ -569,7 +569,7 @@ describe ProjectsController do
 					it "can NOT cancel or delete a project" do
 						sign_in @user
 						get :destroy, :id => @project.name
-						assert flash[:alert].include?("You can not cancel or delete this project."), flash[:alert]
+						flash[:alert].should include "You can not cancel or delete this project."
 						response.should redirect_to(root_path)
 					end
 					
@@ -642,7 +642,7 @@ describe ProjectsController do
 				delete :destroy, :id => @project.name
 
 				response.should redirect_to(root_path)
-				assert flash[:alert].include?("successfully deleted"), flash[:alert]
+				flash[:alert].should include "successfully deleted"
 			end
 
 			it "should handle failure" do
@@ -652,7 +652,7 @@ describe ProjectsController do
 				delete :destroy, :id => @project.name
 
 				response.should redirect_to(project_path(@project))
-				assert flash[:alert].include?("could not be deleted"), flash[:alert]
+				flash[:alert].should include "could not be deleted"
 			end
 		end
 
@@ -676,7 +676,7 @@ describe ProjectsController do
 				get :save, @params
 				# response.should redirect_to(project_path(@project))
 				response.should redirect_to(@project)
-				assert flash[:alert].include?("saved successfully"), flash[:alert]
+				flash[:alert].should include "saved successfully"
 			end
 
 			it "should handle unsuccessful input" do
@@ -686,7 +686,7 @@ describe ProjectsController do
 			
 				get :save, @params
 				response.should redirect_to(root_path)
-				assert flash[:alert].include?("error"), flash[:alert]
+				flash[:alert].should include "error"
 			end
 
 			it "should handle unsuccessful input case: 2" do
@@ -696,7 +696,7 @@ describe ProjectsController do
 			
 				get :save, @params
 				response.should redirect_to(root_path)
-				assert flash[:alert].include?("error"), flash[:alert]
+				flash[:alert].should include "error"
 			end
 		end
 	end

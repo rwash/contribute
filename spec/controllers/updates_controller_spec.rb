@@ -29,33 +29,33 @@ describe UpdatesController do
 				sign_in @user
 				post 'create', :project_id => @project.id, :update => FactoryGirl.attributes_for(:update)
 				response.should redirect_to(project_path(@project))
-				assert flash[:notice].include?("Update saved succesfully."), "Should succeed (and show succesfull notice)"
+				flash[:notice].should == "Update saved succesfully."
 			end
 			
 			it 'update should start with email_sent = false' do
 				sign_in @user
 				post 'create', :project_id => @project.id, :update => FactoryGirl.attributes_for(:update)
 				response.should redirect_to(project_path(@project))
-				assert Update.last.email_sent == false, "email_sent value was not set to false."
+				Update.last.email_sent.should == false
 			end
 			
 			it 'signed in user fails for incomplete update' do
 				sign_in @user
 				post 'create', :project_id => @project.id
 				response.should redirect_to(project_path(@project))
-				assert flash[:error].include?("Update failed to save."), "Should fail for incomplete update. (and show error msg)"
+				flash[:error].should include "Update failed to save."
 			end
 			
 			it 'fails for not signed in user' do
 				post 'create', :project_id => @project.id, :update => FactoryGirl.attributes_for(:update)
 				response.should redirect_to(project_path(@project))
-				assert flash[:error].include?("You cannot update this project."), flash[:error]
+				flash[:error].should include "You cannot update this project."
 			end
 			
 			it 'fails for user who is not project owner' do
 				post 'create', :project_id => @project2.id, :update => FactoryGirl.attributes_for(:update)
 				response.should redirect_to(project_path(@project2))
-				assert flash[:error].include?("You cannot update this project."), flash[:error]
+				flash[:error].should include "You cannot update this project."
 			end
 		end	
 	end
