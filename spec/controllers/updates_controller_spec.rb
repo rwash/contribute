@@ -49,13 +49,13 @@ describe UpdatesController do
 			it 'fails for not signed in user' do
 				post 'create', :project_id => @project.id, :update => FactoryGirl.attributes_for(:update)
 				response.should redirect_to(project_path(@project))
-				assert flash[:error].include?("You must be logged in and be the project owner to post an update."), "Should fail if user is not signed in."
+				assert flash[:error].include?("You cannot update this project."), flash[:error]
 			end
 			
 			it 'fails for user who is not project owner' do
 				post 'create', :project_id => @project2.id, :update => FactoryGirl.attributes_for(:update)
 				response.should redirect_to(project_path(@project2))
-				assert flash[:error].include?("You must be logged in and be the project owner to post an update."), "Should fail if user is not proj owner."
+				assert flash[:error].include?("You cannot update this project."), flash[:error]
 			end
 		end	
 	end
