@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918145828) do
+ActiveRecord::Schema.define(:version => 20121016161159) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -294,6 +294,7 @@ ActiveRecord::Schema.define(:version => 20120918145828) do
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.boolean  "admin",                  :default => false
+    t.boolean  "starred"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
