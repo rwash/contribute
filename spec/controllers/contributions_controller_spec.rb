@@ -133,7 +133,7 @@ describe ContributionsController do
 				
 				get :save, @params
 				response.should redirect_to(@contribution.project)
-				assert flash[:alert].include?("entered successfully"), flash[:alert]
+				assert flash[:alert].include?("submitted"), flash[:alert]
 			end
 			
 			it "should handle a nil contribution" do

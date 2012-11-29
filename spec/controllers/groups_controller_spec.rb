@@ -138,7 +138,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:error].include?("You cannot add a canceld project to a group."), "Should not be able to add canceled project to a group."
+				assert flash[:error].include?("You cannot add a canceld project."), flash[:error]
 			end
 			
 			it 'can not add group to a project twice' do
@@ -148,7 +148,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:error].include?("Your project is already in this group."), "Should not be able to add project to group twice."
+				assert flash[:error].include?("Your project is already in this group."), flash[:error]
 			end
 		end
 		
@@ -174,7 +174,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group owner for approval."), "Failed to add unconfirmed project to a group."
+				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), flash[:notice]
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			
@@ -185,7 +185,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group owner for approval."), "Failed to add inactive project to a group."
+				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), flash[:notice]
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			it 'can add active project to group' do
@@ -195,7 +195,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group owner for approval."), "Failed to add active project to a group."
+				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), flash[:notice]
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			
@@ -206,7 +206,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group owner for approval."), "Failed to add funded project to a group."
+				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), flash[:notice]
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			
@@ -217,7 +217,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:notice].include?("Your project has been submitted to the group owner for approval."), "Failed to add nonfunded project to a group."
+				assert flash[:notice].include?("Your project has been submitted to the group admin for approval."), "Failed to add nonfunded project to a group."
 				assert !Approval.where(:project_id => @project.id, :group_id => @group.id, :approved => nil).first.nil?, "Missing approval."
 			end
 			
@@ -228,7 +228,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				assert flash[:error].include?("You cannot add a canceld project to a group."), "Should not be able to add canceled project to a group."
+				assert flash[:error].include?("You cannot add a canceld project."), flash[:error]
 			end
 			
 			it 'can not add group to a project twice' do
