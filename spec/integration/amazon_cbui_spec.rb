@@ -33,7 +33,6 @@ class AmazonCbuiTesting
 			session[:contribution] = @contribution
 
 			request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
-:q
 
 			visit request.url
 			page.should have_content('Sign in with your Amazon account')
