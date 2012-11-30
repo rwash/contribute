@@ -42,7 +42,7 @@ describe 'Project permissions' do
 			it "can't destroy a project" do
 				project = FactoryGirl.create(:project, :user_id => @user.id)
 				visit project_path(project)
-				expect { click_button("Delete Project") }.should raise_error
+				expect { click_button("Delete Project") }.to raise_error
 				project.destroy
 			end
 		end
