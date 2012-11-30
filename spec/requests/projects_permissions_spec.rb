@@ -24,20 +24,19 @@ describe 'Project permissions' do
 			it "can view project" do
 				project = FactoryGirl.create(:project, :user_id => @user.id, :state => "active")
 				visit project_path(project)
-				assert_equal project_path(project), current_path
+				current_path.should == project_path(project)
 				project.delete
 			end
 			it "can view inactive project if owner" do
-				# project = FactoryGirl.create(:project, :active => false, :user_id => @user.id)
 				project = FactoryGirl.create(:project, :user_id => @user.id, :state => "inactive")
 				visit project_path(project)
-				assert_equal project_path(project), current_path
+				current_path.should == project_path(project)
 				project.destroy
 			end
 			it "can't create a project" do
 				visit new_project_path
 				# new_user_session_path is the login page
-				assert_equal new_user_session_path, current_path
+				current_path.should == new_user_session_path
 			end
 			it "can't destroy a project" do
 				project = FactoryGirl.create(:project, :user_id => @user.id)
