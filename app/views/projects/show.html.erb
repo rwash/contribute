@@ -122,22 +122,7 @@ $(document).ready(function(){
   <div class="projectBtn" align="center">
     <% if logged_in? and @project.user_id == current_user.id %>
       <p>
-	      <% case @project.state %>
-			<% when 'unconfirmed' %>
-				<span class="label label-warning">Project State: Unconfirmed</span>
-			<% when 'inactive' %>
-				<span class="label label-warning">Project State: Inactive</span>
-			<% when 'active' %>
-				<span class="label label-success">Project State: Active</span>
-			<% when 'funded' %>
-				<span class="label label-success">Project State: Funded!</span>
-			<% when 'nonfunded' %>
-				<span class="label label-inverse">Project State: Non-funded</span>
-			<% when 'canceled' %>
-				<span class="label label-inverse">Project State: Canceled</span>
-			<% else %>
-				<span class="label label-important">Project State: Error</span>
-	     <% end %>
+      <%= @project.colored_state_description %>
       </p>
       <br>
     <% end %>

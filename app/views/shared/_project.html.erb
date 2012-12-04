@@ -1,3 +1,4 @@
+<% project = ProjectDecorator.decorate project %>
     <div class="thumbnail">
     <% if (@group) and (@group.admin_user_id == current_user.id or project.user_id == current_user.id) %>
     	<span class="delete-x"><%= link_to "x", remove_project_from_group_path(@group, project), :confirm => "Are you sure you want to remove #{project.name} from #{@group.name}?" %></span>
@@ -24,21 +25,7 @@
 		<div class="money-raised"><span class="bold"><%= number_to_currency(project.contributions_total, :precision => 0) %></span><br><span class="italic">raised</span></div>
 		<div class="time-left"><span class="bold"><%= distance_of_time_in_words(Time.now, project.end_date) %></span><br><span class="italic">left</span></div>
 		<div class="state">
-			<% case project.state %>
-		  	  <% when 'unconfirmed' %>
-		  		<span class="label label-warning">Unconfirmed</span>
-			  <% when 'inactive' %>
-				<span class="label label-warning">Inactive</span>
-			  <% when 'active' %>
-			  <% when 'funded' %>
-				<span class="label label-success">Funded!</span>
-			  <% when 'nonfunded' %>
-				<span class="label label-inverse">Unfunded</span>
-			  <% when 'canceled' %>
-				<span class="label label-inverse">Canceled</span>
-			  <% else %>
-				<span class="label label-important">Error</span>
-			<% end %>
+      <%= project.colored_state_description %>
 		</div>
 		<div class="add">
 		  <%= link_to do %>
