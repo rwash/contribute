@@ -263,7 +263,7 @@ describe EmailManager do
 		last_email.body.encoded.should match(group_user.name)
 	end
 	
-	it "group_reject_project" do # approval proejct group, project owner
+	it "group_reject_project" do # approval project group, project owner
 		proj_user = FactoryGirl.create(:user)
 		group_user = FactoryGirl.create(:user2)
 		project = FactoryGirl.create(:project, :user_id => proj_user.id)
