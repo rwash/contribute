@@ -12,7 +12,7 @@ describe Comment do
   describe 'project' do
     it 'id is required' do
       comment = FactoryGirl.build(:comment, :commentable_id => '')
-      assert !comment.save, 'Incorrectly save comment without proejct id'
+      assert !comment.save, 'Incorrectly save comment without project id'
     end
   end
   

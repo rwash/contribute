@@ -40,7 +40,7 @@ describe ProjectsController do
 					@project.delete
 				end
 				
-				it 'can NOT view proejct' do
+				it 'can NOT view project' do
 					get :show, :id => @project.name
 					response.should redirect_to(root_path)
 				end
@@ -50,7 +50,7 @@ describe ProjectsController do
 					response.should redirect_to(new_user_session_path)
 				end
 				
-				it "can't edit a proejct" do
+				it "can't edit a project" do
 					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
@@ -65,7 +65,7 @@ describe ProjectsController do
 					@project.delete
 				end
 				
-				it 'can NOT view proejct' do
+				it 'can NOT view project' do
 					get :show, :id => @project.name
 					response.should redirect_to(root_path)
 				end
@@ -75,7 +75,7 @@ describe ProjectsController do
 					response.should redirect_to(new_user_session_path)
 				end
 				
-				it "can't edit a proejct" do
+				it "can't edit a project" do
 					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
@@ -90,7 +90,7 @@ describe ProjectsController do
 					@project.delete
 				end
 				
-				it 'CAN view proejct' do
+				it 'CAN view project' do
 					get :show, :id => @project.name
 					response.should be_success
 				end
@@ -100,7 +100,7 @@ describe ProjectsController do
 					response.should redirect_to(new_user_session_path)
 				end
 				
-				it "can't edit a proejct" do
+				it "can't edit a project" do
 					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
@@ -115,7 +115,7 @@ describe ProjectsController do
 					@project.delete
 				end
 				
-				it 'CAN view proejct' do
+				it 'CAN view project' do
 					get :show, :id => @project.name
 					response.should be_success
 				end
@@ -125,7 +125,7 @@ describe ProjectsController do
 					response.should redirect_to(new_user_session_path)
 				end
 				
-				it "can't edit a proejct" do
+				it "can't edit a project" do
 					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
@@ -140,7 +140,7 @@ describe ProjectsController do
 					@project.delete
 				end
 				
-				it 'CAN view proejct' do
+				it 'CAN view project' do
 					get :show, :id => @project.name
 					response.should be_success
 				end
@@ -150,7 +150,7 @@ describe ProjectsController do
 					response.should redirect_to(new_user_session_path)
 				end
 				
-				it "can't edit a proejct" do
+				it "can't edit a project" do
 					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
@@ -165,7 +165,7 @@ describe ProjectsController do
 					@project.delete
 				end
 				
-				it 'can NOT view proejct' do
+				it 'can NOT view project' do
 					get :show, :id => @project.name
 					response.should redirect_to(root_path)
 				end
@@ -175,7 +175,7 @@ describe ProjectsController do
 					response.should redirect_to(new_user_session_path)
 				end
 				
-				it "can't edit a proejct" do
+				it "can't edit a project" do
 					get :edit, :id => @project.name
 					response.should redirect_to(new_user_session_path)
 				end
@@ -228,7 +228,7 @@ describe ProjectsController do
 						@project.user_id = @user.id + 1
 					end
 				
-					it 'can NOT view proejct' do
+					it 'can NOT view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should redirect_to(root_path)
@@ -241,7 +241,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit a proejct" do
+					it "can't edit a project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -254,7 +254,7 @@ describe ProjectsController do
 						@project.save!
 					end
 				
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -267,7 +267,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "CAN edit the proejct" do
+					it "CAN edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should be_success
@@ -289,7 +289,7 @@ describe ProjectsController do
 						@project.user_id = @user.id + 1
 					end
 				
-					it 'can NOT view proejct' do
+					it 'can NOT view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should redirect_to(root_path)
@@ -302,7 +302,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit a proejct" do
+					it "can't edit a project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -315,7 +315,7 @@ describe ProjectsController do
 						@project.save!
 					end
 				
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -328,7 +328,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "CAN edit the proejct" do
+					it "CAN edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should be_success
@@ -350,7 +350,7 @@ describe ProjectsController do
 						@project.user_id = @user.id + 1
 					end
 					
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -363,7 +363,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit a proejct" do
+					it "can't edit a project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -376,7 +376,7 @@ describe ProjectsController do
 						@project.save!
 					end
 				
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -389,7 +389,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit the proejct" do
+					it "can't edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -411,7 +411,7 @@ describe ProjectsController do
 						@project.user_id = @user.id + 1
 					end
 				
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -424,7 +424,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit the proejct" do
+					it "can't edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -437,7 +437,7 @@ describe ProjectsController do
 						@project.save!
 					end
 				
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -450,7 +450,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit the proejct" do
+					it "can't edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -472,7 +472,7 @@ describe ProjectsController do
 						@project.user_id = @user.id + 1
 					end
 					
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -485,7 +485,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit the proejct" do
+					it "can't edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -498,7 +498,7 @@ describe ProjectsController do
 						@project.save!
 					end
 				
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -511,7 +511,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit the proejct" do
+					it "can't edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -534,7 +534,7 @@ describe ProjectsController do
 						@project.save!
 					end
 				
-					it 'can NOT view proejct' do
+					it 'can NOT view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should redirect_to(root_path)
@@ -547,7 +547,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit the proejct" do
+					it "can't edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)
@@ -560,7 +560,7 @@ describe ProjectsController do
 						@project.save!
 					end
 				
-					it 'CAN view proejct' do
+					it 'CAN view project' do
 						sign_in @user
 						get :show, :id => @project.name
 						response.should be_success
@@ -573,7 +573,7 @@ describe ProjectsController do
 						response.should redirect_to(root_path)
 					end
 					
-					it "can't edit the proejct" do
+					it "can't edit the project" do
 						sign_in @user
 						get :edit, :id => @project.name
 						response.should redirect_to(root_path)

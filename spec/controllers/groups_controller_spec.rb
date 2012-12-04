@@ -138,7 +138,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				flash[:error].should include "You cannot add a canceld project."
+				flash[:error].should include "You cannot add a canceled project."
 			end
 			
 			it 'can not add group to a project twice' do
@@ -228,7 +228,7 @@ describe GroupsController do
 				post 'submit_add', :id => @group.id, :project_id => @project.id
 				
 				response.should redirect_to(@group)
-				flash[:error].should include "You cannot add a canceld project."
+				flash[:error].should include "You cannot add a canceled project."
 			end
 			
 			it 'can not add group to a project twice' do
