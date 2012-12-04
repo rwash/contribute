@@ -145,3 +145,11 @@ gem 'high_voltage'
 
 #judge is a gem used for client side validation.
 gem "judge", "~> 1.5.0"
+
+# draper implements the presenter (decorator) pattern
+# to help remove logic from views and view code from models.
+# Github:
+#   https://github.com/drapergem/draper
+# RailsCast:
+#   http://railscasts.com/episodes/286-draper
+gem 'draper'
