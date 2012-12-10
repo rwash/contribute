@@ -42,12 +42,6 @@ class Project < ActiveRecord::Base
 		self.save!
 	end
 	
-	def initialize(attributes = nil, options = {})
-		super
-		# self.active = true # We dont want to use this anymore.
-		# self.confirmed = false # We dont want to use this anymore.
-	end
-
 	def end_date=(val)
 		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
 	end
