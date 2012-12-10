@@ -1,0 +1,17 @@
+<% if logged_in? and @project.user_id == current_user.id and @project.unconfirmed? %>
+  <%= @project.edit_button %>
+  <%= @project.delete_button %>
+<% elsif logged_in? and @project.user_id == current_user.id and @project.inactive? %>
+  <%= @project.edit_button %>
+  <%= @project.activate_button %>
+  <%= @project.delete_button %> 
+<% elsif logged_in? and @project.user_id == current_user.id and @project.active? %>
+  <%= @project.cancel_button %>
+<% elsif logged_in? and @project.user_id == current_user.id and (@project.funded? or @project.nonfunded?) %>
+
+<% elsif can? :edit_contribution, @project %>
+  <%= button_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)),:method => :get,  :class => 'btn btn-primary btn-large' %>
+<% elsif @project.cancelled? %>
+<% else %>
+  <%= button_to "Contribute to this project", new_contribution_url(@project), :method=>:get, :class => 'btn btn-success btn-large' %>
+<% end %>
