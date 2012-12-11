@@ -122,42 +122,11 @@ $(document).ready(function(){
   <div class="projectBtn" align="center">
     <% if logged_in? and @project.user_id == current_user.id %>
       <p>
-	      <% case @project.state %>
-			<% when 'unconfirmed' %>
-				<span class="label label-warning">Project State: Unconfirmed</span>
-			<% when 'inactive' %>
-				<span class="label label-warning">Project State: Inactive</span>
-			<% when 'active' %>
-				<span class="label label-success">Project State: Active</span>
-			<% when 'funded' %>
-				<span class="label label-success">Project State: Funded!</span>
-			<% when 'nonfunded' %>
-				<span class="label label-inverse">Project State: Non-funded</span>
-			<% when 'canceled' %>
-				<span class="label label-inverse">Project State: Canceled</span>
-			<% else %>
-				<span class="label label-important">Project State: Error</span>
-	     <% end %>
+      <%= @project.colored_state_description %>
       </p>
       <br>
     <% end %>
-    <% if logged_in? and @project.user_id == current_user.id and @project.unconfirmed? %>
-	  <%= button_to "Edit Project", edit_project_path(@project), :method => 'get', :class => 'btn btn-info btn-large' %>
-	  <%= button_to "Delete Project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn btn-danger btn-large' %>
-	<% elsif logged_in? and @project.user_id == current_user.id and @project.inactive? %>
-	  <%= button_to "Edit Project", edit_project_path(@project), :method => 'get', :class => 'btn btn-info btn-large' %>
-	  <%= button_to "Activate Project", activate_project_path(@project), :method => :put, :confirm => "Are you sure you want to activate this project? You will not be able to edit the project once it is active.", :class => 'btn btn-success btn-large' %>
-	  <%= button_to "Delete Project", @project, :method => :delete, :confirm => "Are you sure you want to delete this project?", :class => 'btn btn-danger btn-large' %> 
-	<% elsif logged_in? and @project.user_id == current_user.id and @project.active? %>
-	  <%= button_to "Cancel Project", @project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be canceled.", :class => 'btn-danger btn-large' %>
-	<% elsif logged_in? and @project.user_id == current_user.id and (@project.funded? or @project.nonfunded?) %>
-	   
-    <% elsif can? :edit_contribution, @project %>
-		<%= button_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)),:method => :get,  :class => 'btn btn-primary btn-large' %>
-    <% elsif @project.cancelled? %>
-    <% else %>
-		<%= button_to "Contribute to this project", new_contribution_url(@project), :method=>:get, :class => 'btn btn-success btn-large' %>
-    <% end %>
+    <%= render 'action_links' %>
   </div>
 	<ul>
 		<li>End Date: <%= @project.end_date %></li><br>

@@ -30,7 +30,7 @@ class AmazonProcessTesting
 				current_path.should == new_project_path
 
 				#fill in form
-				fill_in 'project_name' , :with => project.name
+				fill_in 'name' , :with => project.name
 				fill_in 'project_funding_goal', :with => project.funding_goal
 				fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
 				fill_in 'project_short_description', :with => project.short_description
@@ -61,7 +61,7 @@ class AmazonProcessTesting
 				visit(project_path(project))
 				click_button('Cancel Project')
 				page.driver.browser.switch_to.alert.accept
-				page.should have_content('Project successfully canceled. Project is now only visible to you.')
+				page.should have_content('Project successfully canceled.')
 				#project is now canceled
 				
 			end
