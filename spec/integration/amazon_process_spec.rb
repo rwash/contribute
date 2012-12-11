@@ -30,7 +30,7 @@ class AmazonProcessTesting
 				current_path.should == new_project_path
 
 				#fill in form
-				fill_in 'project_name' , :with => project.name
+				fill_in 'name' , :with => project.name
 				#fill_in(:project_categroy_iid, :with => project.category_id)
 				fill_in 'project_funding_goal', :with => project.funding_goal
 				fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
