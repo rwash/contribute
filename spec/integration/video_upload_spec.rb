@@ -37,20 +37,18 @@ class VideoUploadTesting
 			
 				click_button 'Create Project'
 				
-				wait_until() do
-					page.should have_content('Sign in with your Amazon account')
-				end
+        page.should have_content('Sign in with your Amazon account')
 				
 				visit(project_path(project))
 				get_and_assert_project(project.name)
 				
 				@project = Project.find_by_name(project.name)
-				assert !@project.nil?, "Project is nil"
+				@project.should_not be_nil
 				
 				@video = Video.find_by_id(@project.video_id)
-				assert !@video.nil?, "Video is nil"
+				@video.should_not be_nil
 				
-				assert !@video.yt_video_id.nil?, "Video yt id is nil"
+				@video.yt_video_id.should_not be_nil
 				
 				@client = Video.yt_session
 				@response = @client.video_by(@video.yt_video_id)
