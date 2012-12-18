@@ -29,7 +29,7 @@ class VideoUploadTesting
 
 				#fill in form
 				attach_file 'video', "#{Rails.root}/test/test.mov"
-				fill_in 'project_name' , :with => project.name
+				fill_in 'name' , :with => project.name
 				fill_in 'project_funding_goal', :with => project.funding_goal
 				fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
 				fill_in 'project_short_description', :with => project.short_description
