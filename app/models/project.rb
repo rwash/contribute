@@ -42,14 +42,17 @@ class Project < ActiveRecord::Base
 		self.save!
 	end
 	
+  # Sets end date from a string in the format "mm/dd/yyyy"
 	def end_date=(val)
 		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
 	end
 	
-	def funding_goal=(val)  
+  # Sets the funding goal to a given amount
+	def funding_goal=(val)
 		write_attribute(:funding_goal, val.to_s.gsub(/,/, ''))
 	end
 
+  # Returns true if the end date exists and is in the future
 	def validate_end_date
 		if !end_date
 			return
@@ -58,22 +61,26 @@ class Project < ActiveRecord::Base
 		end
 	end
 
+  # Returns the total amount of funding that has been received so far
 	def contributions_total
 		Rails.cache.fetch("#{self.id}_contributions_total") do 
 			contributions.sum(:amount)
 		end
 	end
 
+  # Returns a positive integer number representing the percentage of the funding goal that has been met
 	def contributions_percentage
 		Rails.cache.fetch("#{self.id}_contributions_percentage") do 
 			((contributions_total.to_f / funding_goal.to_f) * 100).to_i
 		end
 	end
 	
+  # Returns the amount of funding remaining until the project meets its funding goal
 	def left_to_goal
 		self.funding_goal - self.contributions_total
 	end
 	
+  # Validates that the project state is one of those in the PROJ_STATES array
 	def valid_state
 		errors.add(:state, "Invalid value for state var. State must be unconfirmed, inactive, active, funded, nonfunded, or canceled. Check config/enviroment.rb") unless PROJ_STATES.include?(self.state)
 	end
@@ -86,6 +93,8 @@ class Project < ActiveRecord::Base
 		self.name.gsub(/\W/, '-')
 	end
 
+  # Sends email to project owner and all contributors, and destroys all contributions.
+  # This method is executed before destroying each project.
 	def destroy_prep
 		EmailManager.project_deleted_to_owner(self).deliver	
 
@@ -97,6 +106,8 @@ class Project < ActiveRecord::Base
     self.save
 	end
 	
+  # Destroys video connected to the project.
+  # This method is executed before destroying each project.
 	def destroy_video
 		unless self.video_id.nil?
 			@video = Video.find(self.video_id)
@@ -113,49 +124,64 @@ class Project < ActiveRecord::Base
 		@description = "Contribute to this project: #{project_url(self)}\n\n#{@video.description}\n\nFind more projects from MSU:\n#{root_url}\n"
 		
 		self.groups.each do |g|
-		@tags << g.name
-		@description += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
+      @tags << g.name
+      @description += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
 		end
 		
 		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => @description, :category => 'Tech', :keywords => @tags, :list => "allowed")
 	end
 	
+  # Returns true if the public can view the project.
+  # The public can view projects that are active, nonfunded, or funded.
   def public_can_view? #active, funded, or non-funded
-  	self.state == 'active' or self.state == 'nonfunded' or self.state == 'funded'
+  	active? or nonfunded? or funded?
   end
-  
-  def can_edit? #unconfirmed or inactive
-  	self.state == PROJ_STATES[0] || self.state == PROJ_STATES[1]
+
+  # Returns true if the project is editable.
+  # To edit a project, it must be unconfirmed or inactive.
+  def can_edit?
+  	unconfirmed? or inactive?
   end
-  
-  def can_update? #active, funded or non-funded AND current user is project owner
-  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
+
+  # Returns true if the current user can update the project.
+  # For a user to update a project, they must own the project,
+  # and the project must be active, funded, or nonfunded.
+  def can_update?
+  	active? or funded? or nonfunded?
   end
-  
-  def can_comment? #active, funded, or non-funded
-  	self.state == PROJ_STATES[2] || self.state == PROJ_STATES[3] || self.state == PROJ_STATES[4]
+
+  # Returns true if users can comment on the project.
+  # The project must be active, funded, or non-funded.
+  def can_comment?
+  	active? or funded? or nonfunded?
   end
-  
+
+  # Returns true if the project state is unconfirmed, false otherwise
   def unconfirmed?
   	self.state == PROJ_STATES[0]
   end
-  
+
+  # Returns true if the project state is inactive, false otherwise
   def inactive?
     self.state == PROJ_STATES[1]
   end
-  
+
+  # Returns true if the project state is active, false otherwise
   def active?
 		self.state == PROJ_STATES[2]
   end
-  
+
+  # Returns true if the project state is funded, false otherwise
   def funded?
     self.state == PROJ_STATES[3]
   end
-  
+
+  # Returns true if the project state is nonfunded, false otherwise
   def nonfunded?
     self.state == PROJ_STATES[4]
   end
-  
+
+  # Returns true if the project state is cancelled, false otherwise
   def cancelled?
     self.state == PROJ_STATES[5]
   end
