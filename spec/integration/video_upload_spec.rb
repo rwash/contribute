@@ -29,7 +29,7 @@ class VideoUploadTesting
 
 				#fill in form
 				attach_file 'video', "#{Rails.root}/test/test.mov"
-				fill_in 'project_name' , :with => project.name
+				fill_in 'name' , :with => project.name
 				fill_in 'project_funding_goal', :with => project.funding_goal
 				fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
 				fill_in 'project_short_description', :with => project.short_description
@@ -37,20 +37,18 @@ class VideoUploadTesting
 			
 				click_button 'Create Project'
 				
-				wait_until() do
-					page.should have_content('Sign in with your Amazon account')
-				end
+        page.should have_content('Sign in with your Amazon account')
 				
 				visit(project_path(project))
 				get_and_assert_project(project.name)
 				
 				@project = Project.find_by_name(project.name)
-				assert !@project.nil?, "Project is nil"
+				@project.should_not be_nil
 				
 				@video = Video.find_by_id(@project.video_id)
-				assert !@video.nil?, "Video is nil"
+				@video.should_not be_nil
 				
-				assert !@video.yt_video_id.nil?, "Video yt id is nil"
+				@video.yt_video_id.should_not be_nil
 				
 				@client = Video.yt_session
 				@response = @client.video_by(@video.yt_video_id)
