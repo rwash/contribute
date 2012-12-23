@@ -1,3 +1,13 @@
+# === Attributes
+#
+# * *description* (+string+)
+# * *message* (+text+)
+# * *retriable* (+boolean+)
+# * *email_user* (+boolean+)
+# * *email_admin* (+boolean+)
+# * *created_at* (+datetime+)
+# * *updated_at* (+datetime+)
+# * *error* (+string+)
 class AmazonError < ActiveRecord::Base
 	UNKNOWN = 'Unknown Error'
 	def self.unknown_error(error)

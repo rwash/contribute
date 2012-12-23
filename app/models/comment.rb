@@ -1,3 +1,18 @@
+# Enables users to comment on a Project or other 'commentable' models.
+#
+# === Attributes
+#
+# * *commentable_id* (+integer+)
+# * *commentable_type* (+string+)
+# * *title* (+string+)
+# * *body* (+text+)
+# * *subject* (+string+)
+# * *user_id* (+integer+)
+# * *parent_id* (+integer+)
+# * *lft* (+integer+)
+# * *rgt* (+integer+)
+# * *created_at* (+datetime+)
+# * *updated_at* (+datetime+)
 class Comment < ActiveRecord::Base
   acts_as_nested_set :scope => [:commentable_id, :commentable_type]
 

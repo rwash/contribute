@@ -1,3 +1,23 @@
+# === Attributes
+#
+# * *name* (+string+)
+# * *short_description* (+string+)
+# * *long_description* (+text+)
+# * *funding_goal* (+integer+)
+# * *end_date* (+date+)
+# * *category_id* (+integer+)
+# * *active* (+boolean+)
+# * *created_at* (+datetime+)
+# * *updated_at* (+datetime+)
+# * *picture_file_name* (+string+)
+# * *picture_content_type* (+string+)
+# * *picture_file_size* (+integer+)
+# * *picture_updated_at* (+datetime+)
+# * *user_id* (+integer+)
+# * *payment_account_id* (+string+)
+# * *confirmed* (+boolean+)
+# * *state* (+string+)
+# * *video_id* (+integer+)
 class Project < ActiveRecord::Base
 	MAX_NAME_LENGTH = 75
 	MAX_SHORT_DESC_LENGTH = 200

@@ -1,3 +1,12 @@
+# === Attributes
+#
+# * *title* (+string+)
+# * *description* (+string+)
+# * *yt_video_id* (+string+)
+# * *is_complete* (+boolean+)
+# * *created_at* (+datetime+)
+# * *updated_at* (+datetime+)
+# * *project_id* (+integer+)
 class Video < ActiveRecord::Base
   has_one :project
   
