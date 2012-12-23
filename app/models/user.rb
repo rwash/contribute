@@ -1,3 +1,32 @@
+# === Attributes
+#
+# * *email* (+string+)
+# * *encrypted_password* (+string+)
+# * *name* (+string+)
+# * *location* (+string+)
+# * *reset_password_token* (+string+)
+# * *reset_password_sent_at* (+datetime+)
+# * *remember_created_at* (+datetime+)
+# * *sign_in_count* (+integer+)
+# * *current_sign_in_at* (+datetime+)
+# * *last_sign_in_at* (+datetime+)
+# * *current_sign_in_ip* (+string+)
+# * *last_sign_in_ip* (+string+)
+# * *confirmation_token* (+string+)
+# * *confirmed_at* (+datetime+)
+# * *confirmation_sent_at* (+datetime+)
+# * *unconfirmed_email* (+string+)
+# * *failed_attempts* (+integer+)
+# * *unlock_token* (+string+)
+# * *locked_at* (+datetime+)
+# * *created_at* (+datetime+)
+# * *updated_at* (+datetime+)
+# * *picture_file_name* (+string+)
+# * *picture_content_type* (+string+)
+# * *picture_file_size* (+integer+)
+# * *picture_updated_at* (+datetime+)
+# * *admin* (+boolean+)
+# * *starred* (+boolean+)
 class User < ActiveRecord::Base
 	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 

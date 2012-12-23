@@ -3,6 +3,20 @@ require 'amazon/fps/cancel_token_request'
 require 'amazon/fps/amazon_validator'
 require 'amazon/fps/pay_request'
 
+# Keeps track of users' contributions to projects.
+#
+# === Attributes
+#
+# * *payment_key* (+string+)
+# * *amount* (+integer+)
+# * *project_id* (+integer+)
+# * *user_id* (+integer+)
+# * *created_at* (+datetime+)
+# * *updated_at* (+datetime+)
+# * *status* (+integer+)
+# * *retry_count* (+integer+)
+# * *transaction_id* (+string+)
+# * *confirmed* (+boolean+, default: +false+)
 class Contribution < ActiveRecord::Base
 	MIN_CONTRIBUTION_AMT = 1
 	UNDEFINED_PAYMENT_KEY = 'TEMP'
@@ -18,17 +32,24 @@ class Contribution < ActiveRecord::Base
 
 	attr_accessible :project_id, :user_id, :amount, :payment_key
 
+  # Overrides the default initializer,
+  # sets the status to none and retry count to zero.
+  #---
+  # TODO: Move the default value into the database schema file.
 	def initialize(attributes = nil, options = {})
 		super
 		self.status = ContributionStatus::NONE
 		self.retry_count = 0
 	end
 
+  # Overwrides default setter
+  # Accepts input as a string of numbers with commas.
   def amount=(val)
     write_attribute(:amount, val.to_s.gsub(/,/, ''))
   end
 
-
+  # Cancels a contribution by sending a request to Amazon services.
+  # Updates status to one of CANCELLED, RETRY_CANCEL, or FAILURE
   def cancel
     request = Amazon::FPS::CancelTokenRequest.new(self.payment_key)
     response = request.send
@@ -56,13 +77,15 @@ class Contribution < ActiveRecord::Base
     self.save
   end
 
+  # Executes a contribution payment by sending a request to Amazon services.
+  # Updates status to one of SUCCESS, PENDING, CANCELLED, RETRY_PAY, or FAILURE, and sends emails appropriately.
   def execute_payment
     request = Amazon::FPS::PayRequest.new(self.payment_key, self.project.payment_account_id, self.amount)
 
 		response = request.send 
 		transaction_status = Amazon::FPS::AmazonValidator.get_pay_status(response)
 
-		if transaction_status == ContributionStatus::SUCCESS
+    if transaction_status == ContributionStatus::SUCCESS
       self.status = ContributionStatus::SUCCESS
 			self.retry_count = 0
 			EmailManager.contribution_successful(self).deliver
@@ -123,6 +146,8 @@ class Contribution < ActiveRecord::Base
 		self.save	
 	end
 
+  # Overrides the default destroy action.
+  # Cancels the contribution instead of destroying record.
 	def destroy
 		self.cancel	
 	end

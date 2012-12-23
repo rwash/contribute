@@ -1,3 +1,16 @@
+# === Attributes
+#
+# * *name* (+string+)
+# * *description* (+string+)
+# * *open* (+boolean+)
+# * *admin_user_id* (+integer+)
+# * *picture_file_name* (+string+)
+# * *picture_content_type* (+string+)
+# * *picture_file_size* (+integer+)
+# * *picture_updated_at* (+datetime+)
+# * *created_at* (+datetime+)
+# * *updated_at* (+datetime+)
+# * *long_description* (+string+)
 class Group < ActiveRecord::Base
 	has_and_belongs_to_many :projects
 	has_many :approvals

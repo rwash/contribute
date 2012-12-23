@@ -1,3 +1,12 @@
+# === Attributes
+#
+# * *content* (+text+)
+# * *created_at* (+datetime+)
+# * *updated_at* (+datetime+)
+# * *user_id* (+integer+)
+# * *project_id* (+integer+)
+# * *email_sent* (+boolean+)
+# * *title* (+string+)
 class Update < ActiveRecord::Base
 
 	validates_presence_of :title

@@ -1,6 +1,11 @@
+# The Ability class defines what a user can or cannot do throughout the site.
+#
+# The class includes the CanCan::Ability module, defined in Ryan Bates' CanCan gem.
+# The CanCan gem can be found at http://github.com/ryanb/cancan
 class Ability
   include CanCan::Ability
 
+  # Sets up user permissions (abilities)
   def initialize(user)
 		user ||= User.new
 
