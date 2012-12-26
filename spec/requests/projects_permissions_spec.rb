@@ -12,7 +12,7 @@ describe 'Project permissions' do
 	end
 
 	describe 'permissions' do
-		context 'user is not signed in' do
+    context 'when user is not signed in' do
 			before(:all) do
 				@user = FactoryGirl.create(:user)
 			end
@@ -21,16 +21,16 @@ describe 'Project permissions' do
 				@user.delete
 			end
 
-			it "can view project" do
+			it "can view active project" do
 				project = FactoryGirl.create(:project, :user_id => @user.id, :state => "active")
 				visit project_path(project)
-				current_path.should == project_path(project)
+				current_path.should eq project_path(project)
 				project.delete
 			end
-			it "can view inactive project if owner" do
+			it "can not view inactive project" do
 				project = FactoryGirl.create(:project, :user_id => @user.id, :state => "inactive")
 				visit project_path(project)
-				current_path.should == project_path(project)
+				current_path.should_not eq project_path(project)
 				project.destroy
 			end
 			it "can't create a project" do
