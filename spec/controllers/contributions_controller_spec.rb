@@ -24,7 +24,6 @@ describe ContributionsController do
 		context 'user is signed in' do
       before(:all) do
 				@user = FactoryGirl.create(:user)
-				@user.confirm!
 			end
 		
 			after(:all) do 

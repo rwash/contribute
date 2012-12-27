@@ -9,9 +9,7 @@ describe ListsController do
 	
 		before(:all) do
 			@user = FactoryGirl.create(:user)
-			@user2 = FactoryGirl.create(:user2)
-			@user.confirm!
-			@user2.confirm!
+			@user2 = FactoryGirl.create(:user)
 			@group = FactoryGirl.create(:group, :admin_user_id => @user.id)
 			@group2 = FactoryGirl.create(:group, :admin_user_id => @user2.id)
 		end

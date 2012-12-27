@@ -250,7 +250,7 @@ describe EmailManager do
 
 	it "project_to_group_approval" do # approval, project, group, project owner, group owner,
 		proj_user = FactoryGirl.create(:user)
-		group_user = FactoryGirl.create(:user2)
+		group_user = FactoryGirl.create(:user)
 		project = FactoryGirl.create(:project, :user_id => proj_user.id)
 		group = FactoryGirl.create(:group, :admin_user_id => group_user.id, :open => false)
 		approval = FactoryGirl.create(:approval, :project_id => project.id, :group_id => group.id)
@@ -265,7 +265,7 @@ describe EmailManager do
 	
 	it "group_reject_project" do # approval project group, project owner
 		proj_user = FactoryGirl.create(:user)
-		group_user = FactoryGirl.create(:user2)
+		group_user = FactoryGirl.create(:user)
 		project = FactoryGirl.create(:project, :user_id => proj_user.id)
 		group = FactoryGirl.create(:group, :admin_user_id => group_user.id, :open => false)
 		approval = FactoryGirl.create(:approval, :project_id => project.id, :group_id => group.id, :reason => "I hate you.")

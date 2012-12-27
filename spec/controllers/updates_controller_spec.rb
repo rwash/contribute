@@ -9,9 +9,7 @@ describe UpdatesController do
 
 		before(:all) do
 			@user = FactoryGirl.create(:user)
-			@user.confirm!
-			@user2 = FactoryGirl.create(:user2)
-			@user2.confirm!
+			@user2 = FactoryGirl.create(:user)
 			
 			@project = FactoryGirl.create(:project, :state => 'active', :user_id => @user.id)
 			@project2 = FactoryGirl.create(:project2, :state => 'active', :user_id => @user2.id)

@@ -158,7 +158,7 @@ describe GroupsController do
 		
 		context "adding projects to closed group" do
 			before(:all) do
-				@admin = FactoryGirl.create(:user2)
+				@admin = FactoryGirl.create(:user)
 				@group = FactoryGirl.create(:group, :open => false, :admin_user_id => @admin.id)
 			end
 			
