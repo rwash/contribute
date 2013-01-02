@@ -150,7 +150,7 @@ protected
 	def validate_project
 		if !@project.active?
 			flash[:alert] = ERROR_STRING
-			return redirect_to root_path	
+			redirect_to root_path	
 		end
 	end
 
