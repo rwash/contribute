@@ -37,6 +37,8 @@ group :test do
 	gem 'headless'
 	# Code coverage!
 	gem 'simplecov', :require => false
+  # Clean the database easily before running the test suite
+  gem 'database_cleaner'
 end
 
 # Deploy with Capistrano
