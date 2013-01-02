@@ -13,22 +13,20 @@ describe 'Project permissions' do
 
 	describe 'permissions' do
     context 'when user is not signed in' do
-			before(:all) do
-				@user = FactoryGirl.create(:user)
-			end
+      let(:user) { Factory :user }
 
 			after(:all) do
-				@user.delete
+				user.delete
 			end
 
 			it "can view active project" do
-				project = FactoryGirl.create(:project, :user_id => @user.id, :state => "active")
+				project = FactoryGirl.create(:project, :user_id => user.id, :state => "active")
 				visit project_path(project)
 				current_path.should eq project_path(project)
 				project.delete
 			end
 			it "can not view inactive project" do
-				project = FactoryGirl.create(:project, :user_id => @user.id, :state => "inactive")
+				project = FactoryGirl.create(:project, :user_id => user.id, :state => "inactive")
 				visit project_path(project)
 				current_path.should_not eq project_path(project)
 				project.destroy
@@ -36,10 +34,10 @@ describe 'Project permissions' do
 			it "can't create a project" do
 				visit new_project_path
 				# new_user_session_path is the login page
-				current_path.should == new_user_session_path
+				current_path.should eq new_user_session_path
 			end
 			it "can't destroy a project" do
-				project = FactoryGirl.create(:project, :user_id => @user.id)
+				project = FactoryGirl.create(:project, :user_id => user.id)
 				visit project_path(project)
 				expect { click_button("Delete Project") }.to raise_error
 				project.destroy
