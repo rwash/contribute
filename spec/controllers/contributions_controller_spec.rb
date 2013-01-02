@@ -5,115 +5,73 @@ describe ContributionsController do
 	include Devise::TestHelpers
 
 	describe 'permissions' do
-		before(:all) do
-			@project = FactoryGirl.create(:project, :state => 'active')
-		end
+    let(:project) { Factory :project, state: 'active' }
 
 		after(:all) do
 			Project.delete_all
 			Contribution.delete_all
 		end
 
-		context 'user is not signed in' do
+    context 'when user is not signed in' do
 			it "can't contribute to project" do
-				get :new, :project => @project.id
+				get :new, :project => project.id
 				response.should redirect_to(new_user_session_path)
 			end	
 		end
 
-		context 'user is signed in' do
-      before(:all) do
-				@user = FactoryGirl.create(:user)
-			end
+    context 'when user is signed in' do
+      let(:user) { Factory :user }
 		
 			after(:all) do 
-				@user.delete
+				user.delete
 			end
 
 			it "can contribute to project" do
-				sign_in @user
-				get :new, :project => @project.name
+				sign_in user
+				get :new, :project => project.name
 				response.should be_success
 			end
 
 			it "can't contribute twice" do
-				contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => @project.id)
-				sign_in @user
-				get :new, :project => @project.name
-				response.should redirect_to(@project)
+				contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
+				sign_in user
+				get :new, :project => project.name
+				response.should redirect_to(project)
 				flash[:alert].should include "may not contribute"
 			end		
 
 			it "can edit contribution" do
-				contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => @project.id)
-				sign_in @user
+				contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
+				sign_in user
 				get :edit, :id => contribution.id
 				response.should be_success
 			end
 
 			it "can't edit someone else's contribution" do
-				contribution = FactoryGirl.create(:contribution, :user_id => @user.id + 1, :project_id => @project.id)
-				sign_in @user
+				contribution = FactoryGirl.create(:contribution, :user_id => user.id + 1, :project_id => project.id)
+				sign_in user
 				get :edit, :id => contribution.id
-				response.should redirect_to(@project)
+				response.should redirect_to(project)
 				flash[:alert].should include "may not edit this contribution"
 			end
-			
-			describe 'after end_date but active' do
-				it 'cant contribute to project after end_date' do
-					project = FactoryGirl.build(:project, :state => 'active', :end_date => Date.yesterday)
-					project.save(:validate => false)
-					contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => project.id)
-					
-					sign_in @user
-					get :new, :project => project.name
-					response.should be_success
-					# flash[:alert].should include "The contribution period has ended."
-					
-					project.delete
-				end
-				
-				it 'can contribute to project on end_date' do
-					project = FactoryGirl.build(:project, :state => 'active', :end_date => Date.today)
-					project.save(:validate => false)
-					contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => project.id)
-					
-					sign_in @user
-					get :new, :project => project.name
-					response.should be_success
-										
-					project.delete
-				end
-				
-				it 'can contribute to project before end_date' do
-					project = FactoryGirl.build(:project, :state => 'active', :end_date => Date.tomorrow)
-					project.save(:validate => false)
-					contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => project.id)
-					
-					sign_in @user
-					get :new, :project => project.name
-					response.should be_success
-					
-					project.delete
-				end
-			end
+
+			it "can't contribute to project after end_date"
+			it "can contribute to project on end_date"
+			it "can contribute to project before end_date"
 		end
 	end
 	
 	describe 'functional tests: ' do
-		before(:all) do
-			@user = FactoryGirl.create(:user)
-			@user.confirm!
-		end
+    let(:user) { Factory :user }
 	
 		after(:all) do 
-			@user.delete
+			user.delete
 		end
 		
 		context 'save action' do
 			before(:all) do
-				@project = FactoryGirl.create(:project)
-				@contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => @project.id)
+				project = FactoryGirl.create(:project)
+				@contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
 			end
 		
 			after(:all) do 
@@ -127,7 +85,7 @@ describe ContributionsController do
 			end
 
 			it "should succeed for valid input" do
-				sign_in @user
+				sign_in user
 				session[:contribution_id] = @contribution.id
 				
 				get :save, @params
@@ -136,7 +94,7 @@ describe ContributionsController do
 			end
 			
 			it "should handle a nil contribution" do
-				sign_in @user
+				sign_in user
 				session[:contribution_id] = nil
 
 				get :save, @params
@@ -145,7 +103,7 @@ describe ContributionsController do
 			end
 	
 			it "should handle invalid parameters" do
-				sign_in @user
+				sign_in user
 				session[:contribution_id] = @contribution.id
 				@params["tokenID"] = nil
 
@@ -157,7 +115,7 @@ describe ContributionsController do
 			it "should handle contribution not saving" do
 				Contribution.any_instance.stub(:save){false}
 
-				sign_in @user
+				sign_in user
 				session[:contribution_id] = @contribution.id
 
 				get :save, @params
@@ -174,9 +132,9 @@ describe ContributionsController do
 
 		context 'update_save action' do
 			before(:all) do
-				@project = FactoryGirl.create(:project)
-				@editing_contribution = FactoryGirl.create(:contribution, :user_id => @user.id, :project_id => @project.id)
-				@contribution = FactoryGirl.build(:contribution2, :user_id => @user.id, :project_id => @project.id)
+				project = FactoryGirl.create(:project)
+				@editing_contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
+				@contribution = FactoryGirl.build(:contribution2, :user_id => user.id, :project_id => project.id)
 			end
 		
 			after(:all) do 
@@ -191,7 +149,7 @@ describe ContributionsController do
 			end
 
 			it "should succeed with valid input" do
-				sign_in @user
+				sign_in user
 				session[:contribution] = @contribution #new contribution
 				session[:editing_contribution_id] = @editing_contribution.id #old contribution	
 				get :update_save, @params
@@ -200,7 +158,7 @@ describe ContributionsController do
 			end
 
 			it "should fail without a contribution in session" do
-				sign_in @user
+				sign_in user
 				session[:contribution] = nil
 				session[:editing_contribution_id] = @editing_contribution.id
 
@@ -210,7 +168,7 @@ describe ContributionsController do
 			end
 
 			it "should fail with invalid params" do
-				sign_in @user
+				sign_in user
 				session[:contribution] = @contribution
 				session[:editing_contribution_id] = @editing_contribution.id
 				@params["tokenID"] = nil
@@ -223,7 +181,7 @@ describe ContributionsController do
 			it "should fail if the contribution can't save" do
 				Contribution.any_instance.stub(:save){false}
 			
-				sign_in @user
+				sign_in user
 				session[:contribution] = @contribution
 				session[:editing_contribution_id] = @editing_contribution.id
 
@@ -236,7 +194,7 @@ describe ContributionsController do
 				Contribution.any_instance.stub(:cancel){false}
 				Contribution.any_instance.stub(:save){true} #if you remove this, you will get a stack overflow error at @contribution.save.  The previous test and this one will run in isolation, but not one after another *shrugs*
 
-				sign_in @user
+				sign_in user
 				session[:contribution] = @contribution
 				session[:editing_contribution_id] = @editing_contribution.id
 
@@ -258,7 +216,7 @@ describe ContributionsController do
 			end
 
 			it "validate_project should handle invalid project" do
-				sign_in @user
+				sign_in user
 
 				get :new, :project => @project_1.name	
 				response.should redirect_to(root_path)
@@ -266,7 +224,7 @@ describe ContributionsController do
 			end
 
 			it "validate_project should handle invalid project case: 2" do
-				sign_in @user
+				sign_in user
 
 				get :new, :project => @project_2.name	
 				response.should redirect_to(root_path)
@@ -274,7 +232,7 @@ describe ContributionsController do
 			end
 
 			it "prepare contribution should handle invalid contribution" do
-				sign_in @user
+				sign_in user
 
 				get :edit, {:id =>1}
 				response.should redirect_to(root_path)
