@@ -2,10 +2,10 @@
 
 FactoryGirl.define do
   factory :project do
-		name 'Test Project'
-		short_description 'This is a test project'
-		long_description 'This is a project, of which the purpose is testing'
-		end_date { Date.today + 1 }
+		sequence(:name) { |n| "Test Project #{n}" }
+		sequence(:short_description) { |n| "This is test project #{n}" }
+		sequence(:long_description) { |n| "This is project #{n}, of which the purpose is testing" }
+		sequence(:end_date) { |n| Date.today + n }
 		category_id 1
 		funding_goal 1000
 		payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
@@ -14,17 +14,9 @@ FactoryGirl.define do
     state 'unconfirmed'
   end
 
-  factory :project2, class: Project do
-		name 'Test Project 2'
-		short_description 'This is another test project'
-		long_description 'This is another project, of which the purpose is testing'
-		end_date { Date.today + 2 }
+  factory :project2, parent: :project, class: Project do
 		category_id 2 
 		funding_goal 3000
-		payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
-		user_id 1
-    confirmed true
-    state 'unconfirmed'
   end
 
   factory :project3, class: Project do
