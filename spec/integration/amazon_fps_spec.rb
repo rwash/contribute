@@ -3,16 +3,14 @@ require 'integration_helper'
 
 class AmazonFpsTesting
 	describe "fps requests should" do
-		fixtures :users
+
+    let(:project) { Factory.create(:project, :state => 'active') }
 
 		before :all do
 			Project.delete_all
 			Contribution.delete_all
 
 			Capybara.default_driver = :selenium
-
-			@test1_project = FactoryGirl.create(:project, :state => 'active')
-			@test2_project = FactoryGirl.create(:project, :state => 'active')
 
 			@headless = Headless.new
 			@headless.start
@@ -26,15 +24,15 @@ class AmazonFpsTesting
 		end
 
 		it "succeed on pay request and check transaction status" do
-			@contribution = generate_contribution(
+			contribution = generate_contribution(
 				'thelen56@msu.edu', #contribution login
 				'aaaaaa',
 				'contribute_testing@hotmail.com', #amazon login
 				'testing',
-				@test1_project, #the project to contribute to
+				project, #the project to contribute to
 				100) #the amount
 
-			request = Amazon::FPS::PayRequest.new(@contribution.payment_key, @contribution.project.payment_account_id, @contribution.amount)
+			request = Amazon::FPS::PayRequest.new(contribution.payment_key, contribution.project.payment_account_id, contribution.amount)
 			response = request.send()
 
 			response['Errors'].should be_nil
@@ -53,20 +51,20 @@ class AmazonFpsTesting
 		end
 
 		it "succeed on cancel token request" do
-			@contribution = generate_contribution(
+			contribution = generate_contribution(
 				'thelen56@msu.edu', #contribution login
 				'aaaaaa',
 				'contribute_testing@hotmail.com', #amazon login
 				'testing',
-				@test2_project, #the project to contribute to
+				project, #the project to contribute to
 				100) #the amount
 
-			request = Amazon::FPS::CancelTokenRequest.new(@contribution.payment_key)
+			request = Amazon::FPS::CancelTokenRequest.new(contribution.payment_key)
 			response = request.send()
 
 			response['Errors'].should be_nil
 
-			log_cancel_request = Logging::LogCancelRequest.find_by_TokenId(@contribution.payment_key)
+			log_cancel_request = Logging::LogCancelRequest.find_by_TokenId(contribution.payment_key)
 			log_cancel_request.should_not be_nil
 			Logging::LogCancelResponse.find_by_log_cancel_request_id(log_cancel_request.id).should_not be_nil
 		end

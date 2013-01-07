@@ -16,10 +16,10 @@ class UserPageTesting
 			#login with our project creator
 			login('mthelen2@gmail.com', 'aaaaaa')
 
-			@user = User.find_by_email('mthelen2@gmail.com')
-			visit user_path(@user)
+			user = User.find_by_email('mthelen2@gmail.com')
+			visit user_path(user)
 
-			current_path.should == user_path(@user)
+			current_path.should == user_path(user)
 
 			#find('div#userProfile').has_content?('Batman')
 			page.should have_content('Batman')
