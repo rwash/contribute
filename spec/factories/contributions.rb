@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :contribution do
     # Generates a number between 10 and 260 for the amount.
-    amount { 10 + rand(250) }
+    amount { Random.rand(250) + 10 }
 
     # Randomly chosen payment key - no significance to this number.
     payment_key 'asdf8qtnq209213ja8asd'
