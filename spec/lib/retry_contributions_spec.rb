@@ -24,9 +24,9 @@ describe RetryContributions do
 			Contribution.any_instance.stub(:cancel) {}
 
 			success = FactoryGirl.create(:contribution, :status => ContributionStatus::SUCCESS, :retry_count => 0)
-			pending = FactoryGirl.create(:contribution2, :status => ContributionStatus::PENDING, :retry_count => 0)
-			retry_cancel = FactoryGirl.create(:contribution3, :status => ContributionStatus::RETRY_CANCEL, :retry_count => 0)
-			retry_pay = FactoryGirl.create(:contribution4, :status => ContributionStatus::RETRY_PAY, :retry_count => 0)
+			pending = FactoryGirl.create(:contribution, :status => ContributionStatus::PENDING, :retry_count => 0)
+			retry_cancel = FactoryGirl.create(:contribution, :status => ContributionStatus::RETRY_CANCEL, :retry_count => 0)
+			retry_pay = FactoryGirl.create(:contribution, :status => ContributionStatus::RETRY_PAY, :retry_count => 0)
 
 # TODO: Can't get should_receives to work on objects, as opposed to static classes
 # Tried stubbing on the object itself and should receiving on Contribution. No luck.
@@ -46,9 +46,9 @@ describe RetryContributions do
 			Contribution.any_instance.stub(:cancel) {}
 
 			success = FactoryGirl.create(:contribution, :status => ContributionStatus::SUCCESS, :retry_count => 4)
-			pending = FactoryGirl.create(:contribution2, :status => ContributionStatus::PENDING, :retry_count => 4)
-			retry_cancel = FactoryGirl.create(:contribution3, :status => ContributionStatus::RETRY_CANCEL, :retry_count => 4)
-			retry_pay = FactoryGirl.create(:contribution4, :status => ContributionStatus::RETRY_PAY, :retry_count => 4)
+			pending = FactoryGirl.create(:contribution, :status => ContributionStatus::PENDING, :retry_count => 4)
+			retry_cancel = FactoryGirl.create(:contribution, :status => ContributionStatus::RETRY_CANCEL, :retry_count => 4)
+			retry_pay = FactoryGirl.create(:contribution, :status => ContributionStatus::RETRY_PAY, :retry_count => 4)
 			
 			EmailManager.stub_chain(:failed_retries, :deliver => true)
 			expectedArray = [ pending, retry_pay, retry_cancel ]

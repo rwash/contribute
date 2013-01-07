@@ -158,28 +158,28 @@ describe Project do
 			@project = FactoryGirl.create(:project, :state => "active")
 
 			Contribution.any_instance.stub(:destroy) { true }
-			@contribution = FactoryGirl.create(:contribution, :project_id => @project.id)
-			@contribution2 = FactoryGirl.create(:contribution2, :project_id => @project.id)
-			@contribution3 = FactoryGirl.create(:contribution3, :project_id => @project.id)
+      @contributions = 3.times.map do
+        Factory.create :contribution, project_id: @project.id
+      end
 			#Since this one is cancelled it shouldn't count towards the total
-			@contribution4 = FactoryGirl.create(:contribution4, :project_id => @project.id, :status => ContributionStatus::CANCELLED)
+			@cancelled = FactoryGirl.create(:contribution, :project_id => @project.id, :status => ContributionStatus::CANCELLED)
 		end
 
-   after(:all) do
-			@project.delete
-    	@contribution.delete
-    	@contribution2.delete
-    	@contribution3.delete
-    	@contribution4.delete
-    	Project.delete_all
-   end
+    after(:all) do
+      @project.delete
+      @contributions.each { |c| c.delete }
+      @cancelled.delete
+      Project.delete_all
+    end
 
 		it 'contributions_total is correct' do
-			assert_equal @project.contributions_total, 650, "Contribution total was #{@project.contributions_total} but should have been 650"	
+      sum = @contributions.map{|c| c.amount}.inject(:+)
+			@project.contributions_total.should eq sum
 		end
 
 		it 'contributions_percentage is correct' do
-			assert_equal @project.contributions_percentage, 65, "Contribution total was #{@project.contributions_percentage} but should have been 65"	
+      sum = @contributions.map{|c| c.amount}.inject(:+)
+			@project.contributions_percentage.should eq (sum.to_f/@project.funding_goal * 100).to_i
 		end
 
 		it 'destroy cancels contributions and sets to inactive' do
@@ -193,14 +193,13 @@ describe Project do
 #			@contribution3.should_receive(:destroy).once
 			
 			@project.destroy
-			
 		end
 	end
 
 	describe 'to_param' do
 		it 'returns name' do
 			@project = FactoryGirl.create(:project2)
-			assert_equal @project.name.gsub(/\W/, '-') , @project.to_param		
+			assert_equal @project.name.gsub(/\W/, '-') , @project.to_param
 			@project.delete
 		end
 	end
