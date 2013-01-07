@@ -17,7 +17,7 @@ class VideoUploadTesting
 				Project.delete_all
 		end
 		
-		it "can upload video" do
+		it "can upload video", focus: true do
 				project = FactoryGirl.build(:project)
 
 				#login with our project creator
@@ -40,16 +40,17 @@ class VideoUploadTesting
         page.should have_content('Sign in with your Amazon account')
 				
 				visit(project_path(project))
-				get_and_assert_project(project.name)
+				project = get_and_assert_project(project.name)
 				
-				project = Project.find_by_name(project.name)
-				project.should_not be_nil
-				
-				video = Video.find_by_id(project.video_id)
+				video = project.video
 				video.should_not be_nil
 				
-				video.yt_video_id.should_not be_nil
+        # Because we're delaying video uploading, the yt_video_id should be nil (for now)
+        # We'll need a way to test the rest of this process after a delay...
+				video.yt_video_id.should be_nil
 				
+        # When the video is uploaded, it should not be listed on youtube until the project has
+        # amazon payments set up
 				client = Video.yt_session
 				response = client.video_by(video.yt_video_id)
 				
