@@ -1,24 +1,5 @@
 <% cache({:action => 'index', :action_suffix => 'body'}, :expires_in => 1.minute) do %>
-
-<div id="header">Michigan State University's crowd funding platform. Contribute to creativity.</div>
-<!--
-<div class="section-header">Newest Projects</div>
-<div class="row offset1-5">
-  <ul class="thumbnails">
-    <%# for project in @projects %>
-      <li class="project-span">
-        <%#= render :partial => 'shared/project', :locals => { :project => project } %>
-      </li>  
-    <% end %>
-  </ul>
-</div>
-<%# end %>
-<div class="row">
-  <div class="pull-right">
-	<%#= paginate @projects %>
-  </div>
-</div>
--->
+<% end %>
 
 <% for list in @lists %>
 	<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
