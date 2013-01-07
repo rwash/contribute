@@ -589,7 +589,6 @@ describe ProjectsController do
 
 		before(:all) do
 			@user = FactoryGirl.create(:user)
-			@user.confirm!
 		end
 
 		after(:all) do
@@ -610,7 +609,7 @@ describe ProjectsController do
 
 			it "should succeed for signed in user" do
 				sign_in @user
-				post 'create', :project => FactoryGirl.attributes_for(:project)
+				post 'create', project: Factory.attributes_for(:project)
 
 				request = Amazon::FPS::RecipientRequest.new(save_project_url)
 				response.should redirect_to(request.url)
@@ -618,13 +617,12 @@ describe ProjectsController do
 
 			it "should fail for invalid project" do
 				sign_in @user
-				attributes = FactoryGirl.attributes_for(:project)
-				attributes[:funding_goal] = -5
-				post 'create', :project => attributes			
+				invalid_attributes = Factory.attributes_for(:project, funding_goal: -5)
+				post 'create', project: invalid_attributes
 	
 				response.should be_success
-				response.body.inspect.include?("error").should be_true
-				Project.find_by_name(attributes[:name]).should be_nil
+				response.body.inspect.should include("error")
+				Project.find_by_name(invalid_attributes[:name]).should be_nil
 			end
 		end
 		
