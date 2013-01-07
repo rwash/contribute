@@ -20,7 +20,7 @@ class ProjectsController < InheritedResources::Base
 
 	def create
 		@project = Project.new(params[:project])
-		@project.user_id = current_user.id
+		@project.user = current_user
 		@project.payment_account_id = Project::UNDEFINED_PAYMENT_ACCOUNT_ID #To pass validation at valid?
 		@project.state = PROJ_STATES[0] #unconfirmed
     
@@ -28,6 +28,7 @@ class ProjectsController < InheritedResources::Base
 			unless params[:project][:video].nil?
 				@project.video = Video.create(:title => @project.name, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@project.short_description}\n\nFind more projects from MSU:#{root_url}", :project_id => @project.id)
 				@project.video.delay.upload_video(params[:project][:video].path)
+        @project.save # Save the ID of the video
 	    end
 	    
 			session[:project_id] = @project.id

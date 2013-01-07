@@ -203,10 +203,7 @@ describe ProjectsController do
 				end
 				
 				context 'user IS project owner' do
-					before(:all) do
-						project.user = user
-						project.save!
-					end
+          let(:project) { Factory.create(:project, state: project_state, user: user) }
 				
 					it 'CAN view project' do
 						sign_in user
