@@ -2,13 +2,8 @@
 
 FactoryGirl.define do
 	factory :group do
-		name "Test Group"
+		sequence(:name) { |n| "Test Group #{n}" }
 		description "This is a group."
-		admin_user_id 1
-	end
-	factory :group2 do
-		name "Test Group 2"
-		description "This is a group."
-		admin_user_id 2
+		admin_user
 	end
 end
