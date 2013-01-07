@@ -134,7 +134,7 @@ describe ContributionsController do
 			before(:all) do
 				project = FactoryGirl.create(:project)
 				@editing_contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
-				@contribution = FactoryGirl.build(:contribution2, :user_id => user.id, :project_id => project.id)
+				@contribution = FactoryGirl.build(:contribution, :user_id => user.id, :project_id => project.id)
 			end
 		
 			after(:all) do 
