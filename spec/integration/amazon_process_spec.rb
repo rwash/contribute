@@ -62,7 +62,7 @@ class AmazonProcessTesting
 
 		describe 'contribution' do
 			before :all do
-				@project = FactoryGirl.create(:project2, :state => 'active')
+				@project = FactoryGirl.create(:project, :state => 'active')
 			end
 
 			it "with invalid amount should fail" do

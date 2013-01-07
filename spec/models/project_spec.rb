@@ -26,14 +26,14 @@ describe Project do
 
 		it 'validates uniqueness' do
 			project = FactoryGirl.create(:project)
-			project2 = FactoryGirl.build(:project2, :name => project.name)	
+			project2 = FactoryGirl.build(:project, :name => project.name)	
 			assert !project2.save, 'Incorrectly saved project with duplicate name'	
 		end
 		
 		it 'can only contain letters and numbers' do
 			project = FactoryGirl.build(:project, :name => "Jake is cool 1234")
 			assert project.save, 'Project could not be saved with a title of only letters and numbers.'
-			project2 = FactoryGirl.build(:project2, :name => 'Sup D@wg.jpeg')
+			project2 = FactoryGirl.build(:project, :name => 'Sup D@wg.jpeg')
 			assert !project2.save, 'Project incorretly saved with a tile containing sysmbols other than A-Z,a-z, 0-9'
 		end
 
@@ -198,7 +198,7 @@ describe Project do
 
 	describe 'to_param' do
 		it 'returns name' do
-			@project = FactoryGirl.create(:project2)
+			@project = FactoryGirl.create(:project)
 			assert_equal @project.name.gsub(/\W/, '-') , @project.to_param
 			@project.delete
 		end

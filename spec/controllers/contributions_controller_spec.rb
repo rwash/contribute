@@ -208,7 +208,7 @@ describe ContributionsController do
 
 			before(:all) do
 				@project_1 = FactoryGirl.create(:project, :active => 0)
-				@project_2 = FactoryGirl.create(:project2, :confirmed => 0)
+				@project_2 = FactoryGirl.create(:project, :confirmed => 0)
 			end
 
 			after(:all) do

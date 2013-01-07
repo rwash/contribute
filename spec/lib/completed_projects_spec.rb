@@ -19,11 +19,11 @@ describe CompletedProjects do
 			funded = FactoryGirl.build(:project, :state => 'active', :funding_goal => 10, :end_date => (Date.today - 1))
 			#Validation prevents projects with an end_date before or on today. So skip validation.
 			funded.save(:validate => false)
-			not_funded = FactoryGirl.build(:project2, :state => 'active', :funding_goal => 100000, :end_date => (Date.today - 1))
+			not_funded = FactoryGirl.build(:project, :state => 'active', :funding_goal => 100000, :end_date => (Date.today - 1))
 			not_funded.save(:validate => false)
-			ignore = FactoryGirl.build(:project3, :funding_goal => 100000, :end_date => (Date.today - 3))
+			ignore = FactoryGirl.build(:project, :funding_goal => 100000, :end_date => (Date.today - 3))
 			ignore.save(:validate => false)
-			ignore2 = FactoryGirl.build(:project4, :funding_goal => 100000, :end_date => Date.today)
+			ignore2 = FactoryGirl.build(:project, :funding_goal => 100000, :end_date => Date.today)
 			ignore2.save(:validate => false)
 
 			Contribution.any_instance.stub(:execute_payment) {}
@@ -61,11 +61,11 @@ describe CompletedProjects do
 			funded = FactoryGirl.build(:project, :state => 'active', :funding_goal => 15, :end_date => (Date.today - 1))
 			#Validation prevents projects with an end_date before or on today. So skip validation.
 			funded.save(:validate => false)
-			not_funded = FactoryGirl.build(:project2, :state => 'active', :funding_goal => 100000, :end_date => (Date.today - 1))
+			not_funded = FactoryGirl.build(:project, :state => 'active', :funding_goal => 100000, :end_date => (Date.today - 1))
 			not_funded.save(:validate => false)
-			funded_not_ignored = FactoryGirl.build(:project3, :state => 'active', :funding_goal => 95, :end_date => (Date.today - 3))
+			funded_not_ignored = FactoryGirl.build(:project, :state => 'active', :funding_goal => 95, :end_date => (Date.today - 3))
 			funded_not_ignored.save(:validate => false)
-			ignore2 = FactoryGirl.build(:project4, :funding_goal => 100000, :end_date => Date.today)
+			ignore2 = FactoryGirl.build(:project, :funding_goal => 100000, :end_date => Date.today)
 			ignore2.save(:validate => false)
 
 			Contribution.any_instance.stub(:execute_payment) {}

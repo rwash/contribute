@@ -12,7 +12,7 @@ describe UpdatesController do
 			@user2 = FactoryGirl.create(:user)
 			
 			@project = FactoryGirl.create(:project, :state => 'active', :user_id => @user.id)
-			@project2 = FactoryGirl.create(:project2, :state => 'active', :user_id => @user2.id)
+			@project2 = FactoryGirl.create(:project, :state => 'active', :user_id => @user2.id)
 		end
 
 		after(:all) do
