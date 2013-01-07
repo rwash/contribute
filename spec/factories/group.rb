@@ -5,5 +5,7 @@ FactoryGirl.define do
 		sequence(:name) { |n| "Test Group #{n}" }
 		description "This is a group."
 		admin_user
+
+    open true
 	end
 end

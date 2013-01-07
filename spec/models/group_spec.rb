@@ -2,11 +2,12 @@ require 'spec_helper'
 
 describe Group do
 	describe 'approvals' do
+    let(:group) { Factory :group }
+    let(:project) { Factory :project, state: 'active' }
+    let(:approval) { Factory :approval, project_id: project.id }
+
 		before(:all) do
-			@group = FactoryGirl.create(:group, :open => true, :admin_user_id => 1)
-			@project = FactoryGirl.create(:project, :state => 'active')
-			@approval = FactoryGirl.create(:approval, :project_id => @project.id)
-			@group.approvals << @approval
+			group.approvals << approval
 		end
 		
 		after(:all) do
@@ -16,8 +17,8 @@ describe Group do
 		end
 		
 		it 'Approves all approvals when changes to open group' do
-			@group.approve_all
-			assert @group.projects.include?(Project.find(@approval.project_id)), "Project was not added."
+			group.approve_all
+			assert group.projects.include?(Project.find(approval.project_id)), "Project was not added."
 		end	
 	end
 end
