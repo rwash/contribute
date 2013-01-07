@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :category do
-    shortDescription "MyString"
-    longDescription "MyText"
+    sequence(:short_description) { |n| "Category #{n}" }
+    long_description "This is a test category"
   end
 end
