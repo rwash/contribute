@@ -42,20 +42,20 @@ class VideoUploadTesting
 				visit(project_path(project))
 				get_and_assert_project(project.name)
 				
-				@project = Project.find_by_name(project.name)
-				@project.should_not be_nil
+				project = Project.find_by_name(project.name)
+				project.should_not be_nil
 				
-				@video = Video.find_by_id(@project.video_id)
-				@video.should_not be_nil
+				video = Video.find_by_id(project.video_id)
+				video.should_not be_nil
 				
-				@video.yt_video_id.should_not be_nil
+				video.yt_video_id.should_not be_nil
 				
-				@client = Video.yt_session
-				@response = @client.video_by(@video.yt_video_id)
+				client = Video.yt_session
+				response = client.video_by(video.yt_video_id)
 				
-				assert !@response.listed?, "Video should be unlisted on YouTube"
+				assert !response.listed?, "Video should be unlisted on YouTube"
 				
-				visit(project_path(@project))
+				visit(project_path(project))
 				click_button('Edit Project')
 				page.should have_content('Amazon Payments')
 				
@@ -67,15 +67,15 @@ class VideoUploadTesting
 				page.should have_content('Project saved successfully')
 				#project is no inactive
 				
-				visit(project_path(@project))
-				page.should have_content(@project.name)
+				visit(project_path(project))
+				page.should have_content(project.name)
 				
 				click_button('Activate Project')
 				page.driver.browser.switch_to.alert.accept
 				page.should have_content('Successfully activated project.')
 				
-				@response = @client.video_by(@video.yt_video_id)
-				assert @response.listed?, "Video should be listed/public on YouTube"
+				response = client.video_by(video.yt_video_id)
+				assert response.listed?, "Video should be listed/public on YouTube"
 		end
 	end
 end
