@@ -39,7 +39,6 @@ class Project < ActiveRecord::Base
 	has_many :approvals
 	
 	validate :validate_end_date
-	validate :valid_state
 	
 	before_destroy :destroy_prep
 	before_destroy :destroy_video
@@ -53,9 +52,20 @@ class Project < ActiveRecord::Base
 	validates :payment_account_id, :presence => true
 	validates :category_id, :presence => true
 	validates :user_id, :presence => true
-	validates :state, :presence => true
 
   attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture, :picture_cache
+  classy_enum_attr :state, enum: 'ProjectState'
+
+  # Delegate these methods, so that we can call
+  #     @project.active?
+  # instead of
+  #     @project.state.active?
+  delegate :unconfirmed?, to: :state
+  delegate :inactive?, to: :state
+  delegate :active?, to: :state
+  delegate :nonfunded?, to: :state
+  delegate :funded?, to: :state
+  delegate :cancelled?, to: :state
 
   # Sets end date from a string in the format "mm/dd/yyyy"
 	def end_date=(val)
@@ -95,11 +105,6 @@ class Project < ActiveRecord::Base
 		self.funding_goal - self.contributions_total
 	end
 	
-  # Validates that the project state is one of those in the PROJ_STATES array
-	def valid_state
-		errors.add(:state, "Invalid value for state var. State must be unconfirmed, inactive, active, funded, nonfunded, or cancelled. Check config/enviroment.rb") unless PROJ_STATES.include?(self.state)
-	end
-
 	#Overriding to_param makes it so that whenever a url is built for a project, it substitues
 	#the name of the project instead of the id of the project. This way, we can still refer
 	#to params[:id] but it's actually the name. We didn't change the param to :name because
@@ -169,36 +174,6 @@ class Project < ActiveRecord::Base
   # The project must be active, funded, or non-funded.
   def can_comment?
     active? or funded? or nonfunded?
-  end
-
-  # Returns true if the project state is unconfirmed, false otherwise
-  def unconfirmed?
-    self.state == PROJ_STATES[0]
-  end
-
-  # Returns true if the project state is inactive, false otherwise
-  def inactive?
-    self.state == PROJ_STATES[1]
-  end
-
-  # Returns true if the project state is active, false otherwise
-  def active?
-    self.state == PROJ_STATES[2]
-  end
-
-  # Returns true if the project state is nonfunded, false otherwise
-  def nonfunded?
-    self.state == PROJ_STATES[3]
-  end
-
-  # Returns true if the project state is funded, false otherwise
-  def funded?
-    self.state == PROJ_STATES[4]
-  end
-
-  # Returns true if the project state is cancelled, false otherwise
-  def cancelled?
-    self.state == PROJ_STATES[5]
   end
 
   def confirmation_approver?
