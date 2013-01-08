@@ -40,7 +40,6 @@ class ApplicationController < ActionController::Base
 			if list.listable_type == "User" and list.permanent? and !current_user.nil? and current_user.id == list.listable.id
 				@projects << list.listable.projects.where(:state => "unconfirmed")
 				@projects << list.listable.projects.where(:state => "inactive")
-				@projects << list.listable.projects.where(:state => "canceled")
 				@projects << list.listable.projects.where(:state => "cancelled")
 			end
 		else

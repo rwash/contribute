@@ -130,14 +130,14 @@ AmazonError.create(error: 'InvalidTokenId',
 	email_admin: true)
 
 AmazonError.create(error: 'InvalidTokenId_Recipient',
-	description: 'The recipient token specified is either invalid or canceled.',
+	description: 'The recipient token specified is either invalid or cancelled.',
 	message: 'You must install a new token if you are the recipient. If you are not the recipient, get a new payment authorization from the recipient.',
 	retriable: false,
 	email_user: false,
 	email_admin: true)
 
 AmazonError.create(error: 'InvalidTokenId_Sender',
-	description: 'The send token specified is either invalid or canceled or the token is not active.',
+	description: 'The send token specified is either invalid or cancelled or the token is not active.',
 	message: 'You must ask your customer to set up a new payment authorization.',
 	retriable: false,
 	email_user: false,
@@ -186,14 +186,14 @@ AmazonError.create(error: 'TokenAccessDenied',
 	email_admin: true)
 
 AmazonError.create(error: 'TokenNotActive_Recipient',
-	description: 'The recipient token is canceled.',
+	description: 'The recipient token is cancelled.',
 	message: 'If you are the recipient, set up a new recipient token using the InstallPaymentInstruction operation or direct your customers to the Recipient Token Installation Pipeline to set up recipient token.',
 	retriable: false,
 	email_user: false,
 	email_admin: true)
 
 AmazonError.create(error: 'TokenNotActive_Sender',
-	description: 'The sender token is canceled.',
+	description: 'The sender token is cancelled.',
 	message: 'You must ask your customer to set up a new payment authorization because the current authorization is not active.',
 	retriable: false,
 	email_user: false,

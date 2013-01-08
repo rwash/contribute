@@ -34,7 +34,7 @@ class GroupsController < InheritedResources::Base
 		@group = Group.find(params[:id])
 		@projects = []
 		for proj in current_user.projects
-			@projects << proj if !@group.projects.include?(proj) && proj.state != 'cancelled' && proj.state != 'canceled'
+			@projects << proj if !@group.projects.include?(proj) && proj.state != 'cancelled'
 		end
 	end
 	
