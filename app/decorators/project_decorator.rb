@@ -47,7 +47,7 @@ class ProjectDecorator < Draper::Base
 
   # Returns a pretty-printed version of the project state name.
   def state_name
-    result = model.state.titlecase
+    result = model.state.to_s.titlecase
     if model.state == 'funded'
       result = 'Funded!'
     elsif model.state == 'nonfunded'
