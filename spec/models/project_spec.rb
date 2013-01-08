@@ -1,15 +1,76 @@
 require 'spec_helper'
 
-describe Project, :focus do
+describe Project do
 
-	describe 'valid case' do
-		it 'active is true' do
-			project = FactoryGirl.create(:project)#1
-			project.state = PROJ_STATES[2]
-			assert project.active?, "Project should be active"
-    	project.delete
-		end
-	end
+  describe 'state' do
+    let(:project) { Factory :project }
+
+    it "can be 'unconfirmed'" do
+      project.state = PROJ_STATES[0]
+      project.state.should eq 'unconfirmed'
+      project.unconfirmed?.should be_true
+      project.inactive?.should be_false
+      project.active?.should be_false
+      project.nonfunded?.should be_false
+      project.funded?.should be_false
+      project.cancelled?.should be_false
+    end
+
+    it "can be 'inactive'" do
+      project.state = PROJ_STATES[1]
+      project.state.should eq 'inactive'
+      project.unconfirmed?.should be_false
+      project.inactive?.should be_true
+      project.active?.should be_false
+      project.nonfunded?.should be_false
+      project.funded?.should be_false
+      project.cancelled?.should be_false
+    end
+
+    it "can be 'active'" do
+      project.state = PROJ_STATES[2]
+      project.state.should eq 'active'
+      project.unconfirmed?.should be_false
+      project.inactive?.should be_false
+      project.active?.should be_true
+      project.nonfunded?.should be_false
+      project.funded?.should be_false
+      project.cancelled?.should be_false
+    end
+
+    it "can be 'nonfunded'" do
+      project.state = PROJ_STATES[3]
+      project.state.should eq 'nonfunded'
+      project.unconfirmed?.should be_false
+      project.inactive?.should be_false
+      project.active?.should be_false
+      project.nonfunded?.should be_true
+      project.funded?.should be_false
+      project.cancelled?.should be_false
+    end
+
+    it "can be 'funded'" do
+      project.state = PROJ_STATES[4]
+      project.state.should eq 'funded'
+      project.unconfirmed?.should be_false
+      project.inactive?.should be_false
+      project.active?.should be_false
+      project.nonfunded?.should be_false
+      project.funded?.should be_true
+      project.cancelled?.should be_false
+    end
+
+    it "can be 'cancelled'" do
+      project.state = PROJ_STATES[5]
+      project.state.should eq 'cancelled'
+      project.unconfirmed?.should be_false
+      project.inactive?.should be_false
+      project.active?.should be_false
+      project.nonfunded?.should be_false
+      project.funded?.should be_false
+      project.cancelled?.should be_true
+    end
+  end
 
 
 	describe 'name' do
