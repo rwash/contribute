@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121016161159) do
+ActiveRecord::Schema.define(:version => 20130108211821) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
