@@ -10,11 +10,11 @@ end
 class ProjectState::Active < ProjectState
 end
 
-class ProjectState::Nonfunded < ProjectState
-end
-
 class ProjectState::Funded < ProjectState
 end
 
-class ProjectState::Canceled < ProjectState
+class ProjectState::Nonfunded < ProjectState
+end
+
+class ProjectState::Cancelled < ProjectState
 end

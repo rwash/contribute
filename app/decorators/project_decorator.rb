@@ -13,7 +13,7 @@ class ProjectDecorator < Draper::Base
 
   @@color_classes = {'unconfirmed' => 'warning', 'inactive' => 'warning',
     'active' => 'success', 'funded' => 'success',
-    'nonfunded' => 'inverse', 'canceled' => 'inverse'}
+    'nonfunded' => 'inverse', 'cancelled' => 'inverse'}
 
   # Allows the use of helpers without a proxy (see Draper documentation)
   include Draper::LazyHelpers
@@ -40,7 +40,7 @@ class ProjectDecorator < Draper::Base
 
   # Generates a button linking to the cancel action for the project
   def cancel_button
-    button_to "Cancel Project", @project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be canceled.", :class => 'btn-danger btn-large'
+    button_to "Cancel Project", @project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be cancelled.", :class => 'btn-danger btn-large'
   end
 
   private

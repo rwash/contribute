@@ -41,6 +41,7 @@ class ApplicationController < ActionController::Base
 				@projects << list.listable.projects.where(:state => "unconfirmed")
 				@projects << list.listable.projects.where(:state => "inactive")
 				@projects << list.listable.projects.where(:state => "canceled")
+				@projects << list.listable.projects.where(:state => "cancelled")
 			end
 		else
 			@projects << Project.where("state = ?", "active") if list.show_active

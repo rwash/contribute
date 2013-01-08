@@ -129,7 +129,7 @@ describe ProjectsController do
 				end
 			end
 			
-			context 'project is canceled,' do
+			context 'project is cancelled,' do
         let(:project_state) { PROJ_STATES[5] }
 				
 				it 'can NOT view project' do
@@ -321,7 +321,7 @@ describe ProjectsController do
 					it "CAN cancel a project" do
 						sign_in user
 						get :destroy, :id => project.name
-						flash[:alert].should include "Project successfully canceled."
+						flash[:alert].should include "Project successfully cancelled."
 						response.should redirect_to(root_path)
 					end
 					
@@ -443,7 +443,7 @@ describe ProjectsController do
 				end
 			end
 			
-			context 'project is canceled,' do
+			context 'project is cancelled,' do
         let(:project_state) { PROJ_STATES[5] }
 				
 				context 'user is NOT project owner' do

@@ -114,14 +114,14 @@ describe GroupsController do
 				flash[:notice].should include "Your project has been added to the group."
 			end
 			
-			it 'can not add canceled project to group' do
+			it 'can not add cancelled project to group' do
 				sign_in user
-				project = FactoryGirl.create(:project, :state => 'canceled', :user_id => user.id)
+				project = FactoryGirl.create(:project, :state => 'cancelled', :user_id => user.id)
 				
 				post 'submit_add', :id => owned_group.id, :project_id => project.id
 				
 				response.should redirect_to(owned_group)
-				flash[:error].should include "You cannot add a canceled project."
+				flash[:error].should include "You cannot add a cancelled project."
 			end
 			
 			it 'can not add project to a group twice' do
@@ -197,14 +197,14 @@ describe GroupsController do
 				Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first.should_not be_nil
 			end
 			
-			it 'can not add canceled project to group' do
+			it 'can not add cancelled project to group' do
 				sign_in user
-				project = FactoryGirl.create(:project, :state => 'canceled', :user_id => user.id)
+				project = FactoryGirl.create(:project, :state => 'cancelled', :user_id => user.id)
 				
 				post 'submit_add', :id => group.id, :project_id => project.id
 				
 				response.should redirect_to(group)
-				flash[:error].should include "You cannot add a canceled project."
+				flash[:error].should include "You cannot add a cancelled project."
 			end
 			
 			it 'can not add group to a project twice' do

@@ -34,7 +34,7 @@ class GroupsController < InheritedResources::Base
 		@group = Group.find(params[:id])
 		@projects = []
 		for proj in current_user.projects
-			@projects << proj if !@group.projects.include?(proj) && proj.state != 'canceled'
+			@projects << proj if !@group.projects.include?(proj) && proj.state != 'cancelled' && proj.state != 'canceled'
 		end
 	end
 	
@@ -45,7 +45,7 @@ class GroupsController < InheritedResources::Base
 		if @project.nil?
 			#Do Nothing
 		elsif @project.cancelled?
-			flash[:error] = "You cannot add a canceled project."
+			flash[:error] = "You cannot add a cancelled project."
 		elsif @group.projects.include?(@project)
 			flash[:error] = "Your project is already in this group."
 		elsif @group.open?
