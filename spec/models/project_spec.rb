@@ -2,73 +2,204 @@ require 'spec_helper'
 
 describe Project do
 
-  describe 'state' do
-    let(:project) { Factory :project }
+  describe 'state', :focus do
+    let(:project) { Factory :project, state: project_state }
 
-    it "can be 'unconfirmed'" do
-      project.state = PROJ_STATES[0]
-      project.state.should eq 'unconfirmed'
-      project.unconfirmed?.should be_true
-      project.inactive?.should be_false
-      project.active?.should be_false
-      project.nonfunded?.should be_false
-      project.funded?.should be_false
-      project.cancelled?.should be_false
+    context "is unconfirmed" do
+      let(:project_state) { 'unconfirmed' }
+
+      it 'responds appropriately' do
+        project.state.should eq 'unconfirmed'
+        project.unconfirmed?.should be_true
+        project.inactive?.should be_false
+        project.active?.should be_false
+        project.nonfunded?.should be_false
+        project.funded?.should be_false
+        project.cancelled?.should be_false
+      end
+
+      it 'can be edited' do
+        project.can_edit?.should be_true
+      end
+
+      it "can't be viewed by the public" do
+        project.public_can_view?.should be_false
+      end
+
+      it "can't be updated" do
+        project.can_update?.should be_false
+      end
+
+      it "can't be commented on" do
+        project.can_comment?.should be_false
+      end
     end
 
-    it "can be 'inactive'" do
-      project.state = PROJ_STATES[1]
-      project.state.should eq 'inactive'
-      project.unconfirmed?.should be_false
-      project.inactive?.should be_true
-      project.active?.should be_false
-      project.nonfunded?.should be_false
-      project.funded?.should be_false
-      project.cancelled?.should be_false
+    context "is inactive" do
+      let(:project_state) { 'inactive' }
+
+      it 'responds appropriately' do
+        project.state = PROJ_STATES[1]
+        project.state.should eq 'inactive'
+        project.unconfirmed?.should be_false
+        project.inactive?.should be_true
+        project.active?.should be_false
+        project.nonfunded?.should be_false
+        project.funded?.should be_false
+        project.cancelled?.should be_false
+      end
+
+      it "can be edited" do
+        project.can_edit?.should be_true
+      end
+
+      it "can't be viewed by the public" do
+        project.public_can_view?.should be_false
+      end
+
+      it "can't be updated" do
+        project.can_update?.should be_false
+      end
+
+      it "can't be commented on" do
+        project.can_comment?.should be_false
+      end
     end
 
-    it "can be 'active'" do
-      project.state = PROJ_STATES[2]
-      project.state.should eq 'active'
-      project.unconfirmed?.should be_false
-      project.inactive?.should be_false
-      project.active?.should be_true
-      project.nonfunded?.should be_false
-      project.funded?.should be_false
-      project.cancelled?.should be_false
+    context "is active" do
+      let(:project_state) { 'active' }
+
+      it 'responds appropriately' do
+        project.state = PROJ_STATES[2]
+        project.state.should eq 'active'
+        project.unconfirmed?.should be_false
+        project.inactive?.should be_false
+        project.active?.should be_true
+        project.nonfunded?.should be_false
+        project.funded?.should be_false
+        project.cancelled?.should be_false
+      end
+
+      it "can't be edited" do
+        project.can_edit?.should be_false
+      end
+
+      it "can be viewed by the public" do
+        project.public_can_view?.should be_true
+      end
+
+      it "can be updated" do
+        project.can_update?.should be_true
+      end
+
+      it "can be commented on" do
+        project.can_comment?.should be_true
+      end
     end
 
-    it "can be 'nonfunded'" do
-      project.state = PROJ_STATES[3]
-      project.state.should eq 'nonfunded'
-      project.unconfirmed?.should be_false
-      project.inactive?.should be_false
-      project.active?.should be_false
-      project.nonfunded?.should be_true
-      project.funded?.should be_false
-      project.cancelled?.should be_false
+    context "is nonfunded" do
+      let(:project_state) { 'nonfunded' }
+
+      it 'responds appropriately' do
+        project.state = PROJ_STATES[3]
+        project.state.should eq 'nonfunded'
+        project.unconfirmed?.should be_false
+        project.inactive?.should be_false
+        project.active?.should be_false
+        project.nonfunded?.should be_true
+        project.funded?.should be_false
+        project.cancelled?.should be_false
+      end
+
+      it "can't be edited" do
+        project.can_edit?.should be_false
+      end
+
+      it "can be viewed by the public" do
+        project.public_can_view?.should be_true
+      end
+
+      it "can be updated" do
+        project.can_update?.should be_true
+      end
+
+      it "can be commented on" do
+        project.can_comment?.should be_true
+      end
     end
 
-    it "can be 'funded'" do
-      project.state = PROJ_STATES[4]
-      project.state.should eq 'funded'
-      project.unconfirmed?.should be_false
-      project.inactive?.should be_false
-      project.active?.should be_false
-      project.nonfunded?.should be_false
-      project.funded?.should be_true
-      project.cancelled?.should be_false
+    context "is funded" do
+      let(:project_state) { 'funded' }
+
+      it 'responds appropriately' do
+        project.state = PROJ_STATES[4]
+        project.state.should eq 'funded'
+        project.unconfirmed?.should be_false
+        project.inactive?.should be_false
+        project.active?.should be_false
+        project.nonfunded?.should be_false
+        project.funded?.should be_true
+        project.cancelled?.should be_false
+      end
+
+      it "can't be edited" do
+        project.can_edit?.should be_false
+      end
+
+      it "can be viewed by the public" do
+        project.public_can_view?.should be_true
+      end
+
+      it "can be updated" do
+        project.can_update?.should be_true
+      end
+
+      it "can be commented on" do
+        project.can_comment?.should be_true
+      end
     end
 
-    it "can be 'cancelled'" do
-      project.state = PROJ_STATES[5]
-      project.state.should eq 'cancelled'
-      project.unconfirmed?.should be_false
-      project.inactive?.should be_false
-      project.active?.should be_false
-      project.nonfunded?.should be_false
-      project.funded?.should be_false
-      project.cancelled?.should be_true
+    context "is cancelled" do
+      let(:project_state) { 'cancelled' }
+
+      it 'responds appropriately' do
+        project.state = PROJ_STATES[5]
+        project.state.should eq 'cancelled'
+        project.unconfirmed?.should be_false
+        project.inactive?.should be_false
+        project.active?.should be_false
+        project.nonfunded?.should be_false
+        project.funded?.should be_false
+        project.cancelled?.should be_true
+      end
+
+      it "can't be edited" do
+        project.can_edit?.should be_false
+      end
+
+      it "can't be viewed by the public" do
+        project.public_can_view?.should be_false
+      end
+
+      it "can't be updated" do
+        project.can_update?.should be_false
+      end
+
+      it "can't be commented on" do
+        project.can_comment?.should be_false
+      end
+    end
+
+    it 'guards against invalid values' do
+      project = Factory.build :project, state: 'invalid_state'
+      project.valid?.should be_false
+      project.save.should be_false
+    end
+
+    it 'guards against nil value' do
+      project = Factory.build :project, state: nil
+      project.valid?.should be_false
+      project.save.should be_false
     end
   end
 
