@@ -14,6 +14,8 @@ gem 'jquery-rails'
 
 # RSpec is our testing framework, at the heart of our tests
 gem 'rspec-rails', :group => [:test, :development]
+
+# Testing gems!
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
@@ -24,6 +26,11 @@ group :test do
 	# Guard automatically runs tests when you save a file
 	# Run it by doing "bundle exec guard"
 	gem 'guard-rspec'
+  # Spork helps speed up guard and rspec by caching the Rails
+  # application between runs, instead of loading the application before
+  # each run of the test suite.
+  gem 'spork-rails'
+
   # rb-fsevent listens to OSX file save events. Helps Guard
   # detect file changes on macs.
   gem 'rb-fsevent'
