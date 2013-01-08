@@ -1,7 +1,7 @@
 # Application Guardfile
 # More info at https://github.com/guard/guard#readme
 
-guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAILS_ENV' => 'test' } do
+guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' }, test_unit: false do
   watch('config/application.rb')
   watch('config/environment.rb')
   watch('config/environments/test.rb')
@@ -10,12 +10,12 @@ guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAIL
   watch('Gemfile.lock')
   watch('spec/spec_helper.rb') { :rspec }
   watch('test/test_helper.rb') { :test_unit }
-  watch(%r{features/support/}) { :cucumber }
+  watch(%r{spec/support/.+\.rb$})
 end
 
 # The `--drb` option is a command-line argument passed to rspec
 # that tells it to interact with the spork server
-guard 'rspec', cli: '--drb' do
+guard 'rspec', cli: '--drb', all_on_start: false, all_after_pass: false do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }

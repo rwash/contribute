@@ -93,7 +93,7 @@ end
 # With Rails, your application modules are loaded automatically, so sometimes
 # this block can remain empty.
 Spork.each_run do
-
+  FactoryGirl.reload
 end
 
 # Any code that is left outside the two blocks will be run during preforking
