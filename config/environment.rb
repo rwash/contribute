@@ -8,9 +8,6 @@ Date::DATE_FORMATS[:default] = "%m/%d/%Y"
 
 THREAD_DEPTH = 16
 
-# if you want to add a new state be sure to add it to the end of the array. Also add it as a valid state in the project model valid_state method
-PROJ_STATES = ['unconfirmed', 'inactive', 'active', 'nonfunded', 'funded', 'cancelled']
-
 #you-tube
 YT_DEV_KEY = 'AI39si66_SkYIHlMQg0fKZ3yAz64tPDEAbzNm1af9FqmXeMgH5tHFPtGgSsVcUMzpKCOhKliREq0l467cgS-WIgrgxPzlQlerw'
 YT_USERNAME = 'contributeMSU'

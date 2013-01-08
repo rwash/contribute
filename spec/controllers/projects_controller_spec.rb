@@ -35,7 +35,7 @@ describe ProjectsController do
 			
 			# Start State Tests (These tests are added after those above. Some of the ones below may cover the same thing as one above.)
 			context 'project is unconfirmed,' do
-        let(:project_state) { PROJ_STATES[0] }
+        let(:project_state) { :unconfirmed }
 
 				it 'can NOT view project' do
 					get :show, :id => project.name
@@ -54,7 +54,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is inactive,' do
-        let(:project_state) { PROJ_STATES[1] }
+        let(:project_state) { :inactive }
 				
 				it 'can NOT view project' do
 					get :show, :id => project.name
@@ -73,7 +73,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is active,' do
-        let(:project_state) { PROJ_STATES[2] }
+        let(:project_state) { :active }
 				
 				it 'CAN view project' do
 					get :show, :id => project.name
@@ -92,7 +92,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is funded,' do
-        let(:project_state) { PROJ_STATES[4] }
+        let(:project_state) { :funded }
 				
 				it 'CAN view project' do
 					get :show, :id => project.name
@@ -111,7 +111,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is nonfunded,' do
-        let(:project_state) { PROJ_STATES[3] }
+        let(:project_state) { :nonfunded }
 				
 				it 'CAN view project' do
 					get :show, :id => project.name
@@ -130,7 +130,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is cancelled,' do
-        let(:project_state) { PROJ_STATES[5] }
+        let(:project_state) { :cancelled }
 				
 				it 'can NOT view project' do
 					get :show, :id => project.name
@@ -166,7 +166,7 @@ describe ProjectsController do
 				project.delete
 			end
 			it "can destroy a project they do own" do
-				project = FactoryGirl.create(:project, :user => user, :state => PROJ_STATES[1])
+				project = FactoryGirl.create(:project, :user => user, :state => :inactive)
 				sign_in user
 				get :destroy, :id => project.name
 				flash[:alert].should include "successfully deleted"
@@ -175,7 +175,7 @@ describe ProjectsController do
 			
 			#Again the tests below were added after those above and may test some of the same thing.
 			context 'project is unconfirmed,' do
-        let(:project_state) { PROJ_STATES[0] }
+        let(:project_state) { :unconfirmed }
 				
 				context 'user is NOT project owner' do
 					before(:all) do
@@ -227,7 +227,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is inactive,' do
-        let(:project_state) { PROJ_STATES[1] }
+        let(:project_state) { :inactive }
 				
 				context 'user is NOT project owner' do
 					before(:all) do
@@ -279,7 +279,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is active,' do
-        let(:project_state) { PROJ_STATES[2] }
+        let(:project_state) { :active }
 				
 				context 'user is NOT project owner' do
 					before(:all) do
@@ -334,7 +334,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is funded,' do
-        let(:project_state) { PROJ_STATES[4] }
+        let(:project_state) { :funded }
 				
 				context 'user is NOT project owner' do
 					before(:all) do
@@ -389,7 +389,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is nonfunded,' do
-        let(:project_state) { PROJ_STATES[3] }
+        let(:project_state) { :nonfunded }
 				
 				context 'user is NOT project owner' do
 					before(:all) do
@@ -444,7 +444,7 @@ describe ProjectsController do
 			end
 			
 			context 'project is cancelled,' do
-        let(:project_state) { PROJ_STATES[5] }
+        let(:project_state) { :cancelled }
 				
 				context 'user is NOT project owner' do
 					before(:all) do
@@ -539,7 +539,7 @@ describe ProjectsController do
 		end
 		
 		context "destroy action" do
-      let(:project_state) { PROJ_STATES[1] }
+      let(:project_state) { :inactive }
       let(:project) { Factory.create(:project, state: project_state, user: user) }
 
 			it "should succeed destroy" do
