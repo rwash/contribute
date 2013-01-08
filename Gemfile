@@ -79,6 +79,11 @@ gem 'timeliness'
 # in controllers by authorize_resource call
 gem 'cancan'
 
+# Enumeration
+# Allows easy enumeration of an attribute based on the a string column in
+# the database. Also allows customizable behavior for different values of the attribute
+gem 'classy_enum'
+
 # Pictures
 # Projects and Users both have pictures, which are managed by this
 # Gem. We moved from PaperClip to this since PaperClip wouldn't let
