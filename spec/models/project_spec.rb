@@ -1,19 +1,13 @@
 require 'spec_helper'
 
-describe Project do
+describe Project, :focus do
 
 	describe 'valid case' do
-		before(:all) do
-			@project = FactoryGirl.create(:project)#1
-			@project.state = PROJ_STATES[2]
-		end
-
-    after(:all) do
-    	@project.delete
-    end
-
 		it 'active is true' do
-			assert @project.active?, "Project should be active"
+			project = FactoryGirl.create(:project)#1
+			project.state = PROJ_STATES[2]
+			assert project.active?, "Project should be active"
+    	project.delete
 		end
 	end
 
@@ -154,53 +148,52 @@ describe Project do
 	describe 'contributions' do
 		#These are instance variables so they can be accessed outside of the before. If they're not
 		# in a before, they appear to like a before(:each) by default and cause duplicate errors 
-		before(:all) do
-			@project = FactoryGirl.create(:project, :state => "active")
+    let(:project) { Factory :project, state: 'active' }
+    let(:contributions) do
+      3.times.map { Factory :contribution, project: project }
+    end
+    #Since this one is cancelled it shouldn't count towards the total
+    let(:cancelled) { Factory :contribution, project: project, status: ContributionStatus::CANCELLED }
 
-			Contribution.any_instance.stub(:destroy) { true }
-      @contributions = 3.times.map do
-        Factory.create :contribution, project_id: @project.id
-      end
-			#Since this one is cancelled it shouldn't count towards the total
-			@cancelled = FactoryGirl.create(:contribution, :project_id => @project.id, :status => ContributionStatus::CANCELLED)
-		end
+    before(:all) do
+      Contribution.any_instance.stub(:destroy) { true }
+    end
 
     after(:all) do
-      @project.delete
-      @contributions.each { |c| c.delete }
-      @cancelled.delete
+      project.delete
+      contributions.each { |c| c.delete }
+      cancelled.delete
       Project.delete_all
     end
 
-		it 'contributions_total is correct' do
-      sum = @contributions.map{|c| c.amount}.inject(:+)
-			@project.contributions_total.should eq sum
-		end
+    it 'contributions_total is correct' do
+      sum = contributions.map{|c| c.amount}.inject(:+)
+      project.contributions_total.should eq sum
+    end
 
-		it 'contributions_percentage is correct' do
-      sum = @contributions.map{|c| c.amount}.inject(:+)
-			@project.contributions_percentage.should eq (sum.to_f/@project.funding_goal * 100).to_i
-		end
+    it 'contributions_percentage is correct' do
+      sum = contributions.map{|c| c.amount}.inject(:+)
+      project.contributions_percentage.should eq (sum.to_f/project.funding_goal * 100).to_i
+    end
 
 		it 'destroy cancels contributions and sets to inactive' do
 			EmailManager.stub_chain(:project_deleted_to_owner, :deliver => true)
-			EmailManager.should_receive(:project_deleted_to_owner).with(@project).once
+			EmailManager.should_receive(:project_deleted_to_owner).with(project).once
 			EmailManager.stub_chain(:project_deleted_to_contributor, :deliver => true)
 			EmailManager.should_receive(:project_deleted_to_contributor).with(instance_of(Contribution)).exactly(3).times
-#TODO: WHY?!
-#			@contribution.should_receive(:destroy).once
-#			@contribution2.should_receive(:destroy).once
-#			@contribution3.should_receive(:destroy).once
-			
-			@project.destroy
-		end
-	end
+
+      # Ensure that when we destroy a project, the contributions get destroyed as well.
+      contributions.each { |c| c.should_receive(:destroy).once }
+
+      project.destroy
+    end
+  end
 
 	describe 'to_param' do
 		it 'returns name' do
-			@project = FactoryGirl.create(:project)
-			assert_equal @project.name.gsub(/\W/, '-') , @project.to_param
-			@project.delete
+			project = FactoryGirl.create(:project)
+			assert_equal project.name.gsub(/\W/, '-') , project.to_param
+			project.delete
 		end
 	end
 #End Methods
