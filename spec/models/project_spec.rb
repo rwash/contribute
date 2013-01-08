@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Project do
 
-  describe 'state', :focus do
+  describe 'state' do
     let(:project) { Factory :project, state: project_state }
 
     context "is unconfirmed" do
