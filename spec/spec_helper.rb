@@ -53,7 +53,6 @@ Spork.prefork do
     # Let's use DatabaseCleaner instead -- it seems to be more consistent.
     config.before :suite do
       DatabaseCleaner.strategy = :transaction
-      DatabaseCleaner.clean
     end
 
     # If true, the base class of anonymous controllers will be inferred
@@ -93,6 +92,8 @@ end
 # With Rails, your application modules are loaded automatically, so sometimes
 # this block can remain empty.
 Spork.each_run do
+  puts 'Cleaning Database'
+  DatabaseCleaner.clean
   FactoryGirl.reload
 end
 
