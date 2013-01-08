@@ -67,6 +67,11 @@ class Project < ActiveRecord::Base
   delegate :funded?, to: :state
   delegate :cancelled?, to: :state
 
+  delegate :can_edit?, to: :state
+  delegate :public_can_view?, to: :state
+  delegate :can_update?, to: :state
+  delegate :can_comment?, to: :state
+
   # Sets end date from a string in the format "mm/dd/yyyy"
 	def end_date=(val)
 		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
@@ -150,31 +155,6 @@ class Project < ActiveRecord::Base
 		
 		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => @description, :category => 'Tech', :keywords => @tags, :list => "allowed")
 	end
-	
-  # Returns true if the public can view the project.
-  # The public can view projects that are active, nonfunded, or funded.
-  def public_can_view? #active, funded, or non-funded
-  	active? or nonfunded? or funded?
-  end
-
-  # Returns true if the project is editable.
-  # To edit a project, it must be unconfirmed or inactive.
-  def can_edit?
-    unconfirmed? or inactive?
-  end
-
-  # Returns true if the current user can update the project.
-  # For a user to update a project, they must own the project,
-  # and the project must be active, funded, or nonfunded.
-  def can_update?
-    active? or funded? or nonfunded?
-  end
-
-  # Returns true if users can comment on the project.
-  # The project must be active, funded, or non-funded.
-  def can_comment?
-    active? or funded? or nonfunded?
-  end
 
   def confirmation_approver?
     approvals.each do |approval|
