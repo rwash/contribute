@@ -30,7 +30,7 @@ group :test do
   # application between runs, instead of loading the application before
   # each run of the test suite.
   gem 'spork-rails'
-
+  gem 'guard-spork'
   # rb-fsevent listens to OSX file save events. Helps Guard
   # detect file changes on macs.
   gem 'rb-fsevent'

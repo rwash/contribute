@@ -117,6 +117,10 @@ GEM
     guard-rspec (2.3.3)
       guard (>= 1.1)
       rspec (~> 2.11)
+    guard-spork (1.4.1)
+      childprocess (>= 0.2.3)
+      guard (>= 1.1)
+      spork (>= 0.8.4)
     has_scope (0.5.1)
     headless (0.3.1)
     high_voltage (1.2.1)
@@ -324,6 +328,7 @@ DEPENDENCIES
   draper
   factory_girl_rails (~> 1.2)
   guard-rspec
+  guard-spork
   headless
   high_voltage
   httparty
