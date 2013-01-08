@@ -32,7 +32,7 @@ class CompletedProjects
 			if (project.contributions_total < project.funding_goal)
 				@@logger.info "Project with id #{project.id} was not funded"
 				EmailManager.project_not_funded_to_owner(project).deliver
-				project.state = PROJ_STATES[3] #nonfunded
+				project.state = :nonfunded
 
 				project.contributions.each do |contribution|
 					@@logger.info "Contribution with id #{contribution.id} is being cancelled"
@@ -42,7 +42,7 @@ class CompletedProjects
 			else
 				@@logger.info "Project with id #{project.id} was funded"
 				EmailManager.project_funded_to_owner(project).deliver
-				project.state = PROJ_STATES[4] #funded
+				project.state = :funded
 
 				project.contributions.each do |contribution|
 					@@logger.info "Contribution with id #{contribution.id} is being executed"

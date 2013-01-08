@@ -39,7 +39,7 @@ describe Project do
       let(:project_state) { 'inactive' }
 
       it 'responds appropriately' do
-        project.state = PROJ_STATES[1]
+        project.state = :inactive
         project.state.should eq 'inactive'
         project.unconfirmed?.should be_false
         project.inactive?.should be_true
@@ -70,7 +70,7 @@ describe Project do
       let(:project_state) { 'active' }
 
       it 'responds appropriately' do
-        project.state = PROJ_STATES[2]
+        project.state = :active
         project.state.should eq 'active'
         project.unconfirmed?.should be_false
         project.inactive?.should be_false
@@ -101,7 +101,7 @@ describe Project do
       let(:project_state) { 'nonfunded' }
 
       it 'responds appropriately' do
-        project.state = PROJ_STATES[3]
+        project.state = :nonfunded
         project.state.should eq 'nonfunded'
         project.unconfirmed?.should be_false
         project.inactive?.should be_false
@@ -132,7 +132,7 @@ describe Project do
       let(:project_state) { 'funded' }
 
       it 'responds appropriately' do
-        project.state = PROJ_STATES[4]
+        project.state = :funded
         project.state.should eq 'funded'
         project.unconfirmed?.should be_false
         project.inactive?.should be_false
@@ -163,7 +163,7 @@ describe Project do
       let(:project_state) { 'cancelled' }
 
       it 'responds appropriately' do
-        project.state = PROJ_STATES[5]
+        project.state = :cancelled
         project.state.should eq 'cancelled'
         project.unconfirmed?.should be_false
         project.inactive?.should be_false

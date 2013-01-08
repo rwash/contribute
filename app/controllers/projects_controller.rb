@@ -13,7 +13,7 @@ class ProjectsController < InheritedResources::Base
 
 
 	def index
-		@projects = Project.where(:state => PROJ_STATES[2]).order("end_date ASC").page(params[:page]).per(8)
+		@projects = Project.where(:state => :active).order("end_date ASC").page(params[:page]).per(8)
 		@lists = User.find_by_id(1) ? User.find_by_id(1).lists : []
 		index!
 	end
@@ -22,8 +22,8 @@ class ProjectsController < InheritedResources::Base
 		@project = Project.new(params[:project])
 		@project.user = current_user
 		@project.payment_account_id = Project::UNDEFINED_PAYMENT_ACCOUNT_ID #To pass validation at valid?
-		@project.state = PROJ_STATES[0] #unconfirmed
-    
+		@project.state = :unconfirmed
+
 		if @project.save
 			unless params[:project][:video].nil?
 				@project.video = Video.create(:title => @project.name, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@project.short_description}\n\nFind more projects from MSU:#{root_url}", :project_id => @project.id)
@@ -82,7 +82,7 @@ class ProjectsController < InheritedResources::Base
 		@project = Project.find_by_name(params[:id].gsub(/-/, ' '))
 		@video = Video.find_by_id(@project.video_id)
 		
-		@project.state = PROJ_STATES[2] #active
+		@project.state = :active
 		#make video public
 		Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech', :keywords => YT_TAGS, :list => "allowed") unless @video.nil?
 		
@@ -106,7 +106,7 @@ class ProjectsController < InheritedResources::Base
 		end
 
 		@project = Project.find_by_id(session[:project_id])
-		@project.state = PROJ_STATES[1] #inactive
+		@project.state = :inactive
 		@project.payment_account_id = params[:tokenID]
 
 		session[:project_id] = nil
@@ -128,7 +128,7 @@ class ProjectsController < InheritedResources::Base
 		@project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
 		@video = Video.find(@project.video_id) unless @project.video_id.nil?
 		
-		if @project.state == PROJ_STATES[0] || @project.state == PROJ_STATES[1]
+		if @project.state.unconfirmed? || @project.state.inactive?
 			@project.destroy
 			if !@project.destroyed?
 				flash[:alert] = "Project could not be deleted. Please try again."
@@ -137,9 +137,9 @@ class ProjectsController < InheritedResources::Base
 				flash[:alert] = "Project successfully deleted. Sorry to see you go!"
 				return redirect_to root_path
 			end
-		elsif @project.state == PROJ_STATES[2]
+		elsif @project.state.active?
 			#project will not be deleted but will be CANCELLED and only visible to user
-			@project.state = PROJ_STATES[5] #cancelled
+			@project.state = :cancelled
 			@project.save!
 			@response = Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'People',:keywords => YT_TAGS, :list => "denied") if @video
 			flash[:alert] = "Project successfully cancelled. This project is now only visible to you."
