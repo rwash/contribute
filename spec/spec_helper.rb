@@ -42,10 +42,27 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
-	Capybara.server_port = 3999
+  Capybara.server_port = 3999
 
   config.include(MailerMacros)
   config.before(:each) { reset_email }
 
+  # Capybara uses a DSL to allow test cases to interact with web pages
   config.include Capybara::DSL
+
+  # The following options allow a developer to focus on specific tests,
+  # excluding the rest of the test suite. To do so,
+  # on any `describe`, `context`, or `it` block, add a :focus argument
+  #
+  # Example:
+  #
+  #   describe ProjectsController, :focus do
+  #     ....
+  #   end
+  #
+  # Rspec will then only run the tests that are being focused on.
+  # To run all tests again, remove the focus from all tests.
+  config.treat_symbols_as_metadata_keys_with_true_values = true
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
 end
