@@ -138,11 +138,11 @@ class ProjectsController < InheritedResources::Base
 				return redirect_to root_path
 			end
 		elsif @project.state == PROJ_STATES[2]
-			#project will not be deleted but will be CANCELED and only visible to user
-			@project.state = PROJ_STATES[5] #canceled
+			#project will not be deleted but will be CANCELLED and only visible to user
+			@project.state = PROJ_STATES[5] #cancelled
 			@project.save!
 			@response = Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'People',:keywords => YT_TAGS, :list => "denied") if @video
-			flash[:alert] = "Project successfully canceled. This project is now only visible to you."
+			flash[:alert] = "Project successfully cancelled. This project is now only visible to you."
 		else
 			flash[:alert] = "You can not cancel or delete this project."
 		end

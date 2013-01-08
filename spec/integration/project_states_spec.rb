@@ -61,8 +61,8 @@ class AmazonProcessTesting
 				visit(project_path(project))
 				click_button('Cancel Project')
 				page.driver.browser.switch_to.alert.accept
-				page.should have_content('Project successfully canceled.')
-				#project is now canceled
+				page.should have_content('Project successfully cancelled.')
+				#project is now cancelled
 				
 			end
 

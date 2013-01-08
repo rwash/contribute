@@ -55,13 +55,8 @@ class Project < ActiveRecord::Base
 	validates :user_id, :presence => true
 	validates :state, :presence => true
 
-	attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture, :picture_cache
-	
-	def nothing
-		self.name = "testing nothing"
-		self.save!
-	end
-	
+  attr_accessible :name, :short_description, :long_description, :funding_goal, :end_date, :category_id, :picture, :picture_cache
+
   # Sets end date from a string in the format "mm/dd/yyyy"
 	def end_date=(val)
 		write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
@@ -102,7 +97,7 @@ class Project < ActiveRecord::Base
 	
   # Validates that the project state is one of those in the PROJ_STATES array
 	def valid_state
-		errors.add(:state, "Invalid value for state var. State must be unconfirmed, inactive, active, funded, nonfunded, or canceled. Check config/enviroment.rb") unless PROJ_STATES.include?(self.state)
+		errors.add(:state, "Invalid value for state var. State must be unconfirmed, inactive, active, funded, nonfunded, or cancelled. Check config/enviroment.rb") unless PROJ_STATES.include?(self.state)
 	end
 
 	#Overriding to_param makes it so that whenever a url is built for a project, it substitues
@@ -160,25 +155,25 @@ class Project < ActiveRecord::Base
   # Returns true if the project is editable.
   # To edit a project, it must be unconfirmed or inactive.
   def can_edit?
-  	unconfirmed? or inactive?
+    unconfirmed? or inactive?
   end
 
   # Returns true if the current user can update the project.
   # For a user to update a project, they must own the project,
   # and the project must be active, funded, or nonfunded.
   def can_update?
-  	active? or funded? or nonfunded?
+    active? or funded? or nonfunded?
   end
 
   # Returns true if users can comment on the project.
   # The project must be active, funded, or non-funded.
   def can_comment?
-  	active? or funded? or nonfunded?
+    active? or funded? or nonfunded?
   end
 
   # Returns true if the project state is unconfirmed, false otherwise
   def unconfirmed?
-  	self.state == PROJ_STATES[0]
+    self.state == PROJ_STATES[0]
   end
 
   # Returns true if the project state is inactive, false otherwise
@@ -188,16 +183,16 @@ class Project < ActiveRecord::Base
 
   # Returns true if the project state is active, false otherwise
   def active?
-		self.state == PROJ_STATES[2]
-  end
-
-  # Returns true if the project state is funded, false otherwise
-  def funded?
-    self.state == PROJ_STATES[3]
+    self.state == PROJ_STATES[2]
   end
 
   # Returns true if the project state is nonfunded, false otherwise
   def nonfunded?
+    self.state == PROJ_STATES[3]
+  end
+
+  # Returns true if the project state is funded, false otherwise
+  def funded?
     self.state == PROJ_STATES[4]
   end
 
