@@ -17,7 +17,7 @@ class VideoUploadTesting
 				Project.delete_all
 		end
 		
-		it "can upload video", focus: true do
+		it "can upload video", :focus do
 				project = FactoryGirl.build(:project)
 
 				#login with our project creator
