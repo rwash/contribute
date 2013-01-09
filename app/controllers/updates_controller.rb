@@ -4,7 +4,7 @@ class UpdatesController < InheritedResources::Base
     @project = Project.find(params[:project_id])
     @update.project_id = @project.id
     @update.email_sent = false
-    
+
     if user_signed_in? && (@project.user_id == current_user.id)
       @update.user_id = current_user.id
       if @update.valid? && @update.save
@@ -17,5 +17,5 @@ class UpdatesController < InheritedResources::Base
     end
     redirect_to @project
   end
-  
+
 end
