@@ -16,7 +16,7 @@ class ProjectDecorator < Draper::Base
 
   # Generates a colored span describing the state of the project
   def colored_state_description
-    content_tag :span, "Project State: #{state_name}", class: "label label-#{model.state.color_class}"
+    content_tag :span, "Project State: #{model.state.display_string}", class: "label label-#{model.state.color_class}"
   end
 
   # Generates a button linking to the edit page for the project
@@ -37,18 +37,5 @@ class ProjectDecorator < Draper::Base
   # Generates a button linking to the cancel action for the project
   def cancel_button
     button_to "Cancel Project", @project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be cancelled.", :class => 'btn-danger btn-large'
-  end
-
-  private
-
-  # Returns a pretty-printed version of the project state name.
-  def state_name
-    result = model.state.to_s.titlecase
-    if model.state == 'funded'
-      result = 'Funded!'
-    elsif model.state == 'nonfunded'
-      result = 'Non-funded'
-    end
-    result
   end
 end
