@@ -10,12 +10,12 @@ describe Project do
 
       it 'responds appropriately' do
         project.state.should eq 'unconfirmed'
-        project.unconfirmed?.should be_true
-        project.inactive?.should be_false
-        project.active?.should be_false
-        project.nonfunded?.should be_false
-        project.funded?.should be_false
-        project.cancelled?.should be_false
+        project.state.unconfirmed?.should be_true
+        project.state.inactive?.should be_false
+        project.state.active?.should be_false
+        project.state.nonfunded?.should be_false
+        project.state.funded?.should be_false
+        project.state.cancelled?.should be_false
       end
 
       it 'can be edited' do
@@ -41,12 +41,12 @@ describe Project do
       it 'responds appropriately' do
         project.state = :inactive
         project.state.should eq 'inactive'
-        project.unconfirmed?.should be_false
-        project.inactive?.should be_true
-        project.active?.should be_false
-        project.nonfunded?.should be_false
-        project.funded?.should be_false
-        project.cancelled?.should be_false
+        project.state.unconfirmed?.should be_false
+        project.state.inactive?.should be_true
+        project.state.active?.should be_false
+        project.state.nonfunded?.should be_false
+        project.state.funded?.should be_false
+        project.state.cancelled?.should be_false
       end
 
       it "can be edited" do
@@ -72,12 +72,12 @@ describe Project do
       it 'responds appropriately' do
         project.state = :active
         project.state.should eq 'active'
-        project.unconfirmed?.should be_false
-        project.inactive?.should be_false
-        project.active?.should be_true
-        project.nonfunded?.should be_false
-        project.funded?.should be_false
-        project.cancelled?.should be_false
+        project.state.unconfirmed?.should be_false
+        project.state.inactive?.should be_false
+        project.state.active?.should be_true
+        project.state.nonfunded?.should be_false
+        project.state.funded?.should be_false
+        project.state.cancelled?.should be_false
       end
 
       it "can't be edited" do
@@ -103,12 +103,12 @@ describe Project do
       it 'responds appropriately' do
         project.state = :nonfunded
         project.state.should eq 'nonfunded'
-        project.unconfirmed?.should be_false
-        project.inactive?.should be_false
-        project.active?.should be_false
-        project.nonfunded?.should be_true
-        project.funded?.should be_false
-        project.cancelled?.should be_false
+        project.state.unconfirmed?.should be_false
+        project.state.inactive?.should be_false
+        project.state.active?.should be_false
+        project.state.nonfunded?.should be_true
+        project.state.funded?.should be_false
+        project.state.cancelled?.should be_false
       end
 
       it "can't be edited" do
@@ -134,12 +134,12 @@ describe Project do
       it 'responds appropriately' do
         project.state = :funded
         project.state.should eq 'funded'
-        project.unconfirmed?.should be_false
-        project.inactive?.should be_false
-        project.active?.should be_false
-        project.nonfunded?.should be_false
-        project.funded?.should be_true
-        project.cancelled?.should be_false
+        project.state.unconfirmed?.should be_false
+        project.state.inactive?.should be_false
+        project.state.active?.should be_false
+        project.state.nonfunded?.should be_false
+        project.state.funded?.should be_true
+        project.state.cancelled?.should be_false
       end
 
       it "can't be edited" do
@@ -165,12 +165,12 @@ describe Project do
       it 'responds appropriately' do
         project.state = :cancelled
         project.state.should eq 'cancelled'
-        project.unconfirmed?.should be_false
-        project.inactive?.should be_false
-        project.active?.should be_false
-        project.nonfunded?.should be_false
-        project.funded?.should be_false
-        project.cancelled?.should be_true
+        project.state.unconfirmed?.should be_false
+        project.state.inactive?.should be_false
+        project.state.active?.should be_false
+        project.state.nonfunded?.should be_false
+        project.state.funded?.should be_false
+        project.state.cancelled?.should be_true
       end
 
       it "can't be edited" do

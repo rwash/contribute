@@ -44,7 +44,7 @@ class GroupsController < InheritedResources::Base
 		
 		if @project.nil?
 			#Do Nothing
-		elsif @project.cancelled?
+		elsif @project.state.cancelled?
 			flash[:error] = "You cannot add a cancelled project."
 		elsif @group.projects.include?(@project)
 			flash[:error] = "Your project is already in this group."
