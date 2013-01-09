@@ -38,4 +38,14 @@ class ProjectDecorator < Draper::Base
   def cancel_button
     button_to "Cancel Project", @project, :method => :delete, :confirm => "Are you sure you want to cancel this project? All contributions to it will also be cancelled.", :class => 'btn-danger btn-large'
   end
+
+  def remaining_time
+    if project.end_date > Date.today
+      distance_of_time_in_words(Time.now, project.end_date) + ' left'
+    elsif project.end_date == Date.today
+      'Project ends today!'
+    else
+      'Project has ended'
+    end
+  end
 end
