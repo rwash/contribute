@@ -23,6 +23,12 @@ class ProjectState < ClassyEnum::Base
   #
   # TODO: Perhaps there's a better place for this... Decorator, maybe?
   def color_class() 'important' end
+
+  # Converts the project state to a string, but gives it a bit of
+  # personality (e.g. adding an exclamation point)
+  def display_string
+    to_s.titlecase
+  end
 end
 
 class ProjectState::Unconfirmed < ProjectState
@@ -46,14 +52,20 @@ class ProjectState::Funded < ProjectState
   def public_can_view?() true end
   def can_update?() true end
   def can_comment?() true end
+
   def color_class() 'success' end
+
+  def display_string() 'Funded!' end
 end
 
 class ProjectState::Nonfunded < ProjectState
   def public_can_view?() true end
   def can_update?() true end
   def can_comment?() true end
+
   def color_class() 'inverse' end
+
+  def display_string() 'Non-funded' end
 end
 
 class ProjectState::Cancelled < ProjectState
