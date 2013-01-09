@@ -19,13 +19,13 @@ gem 'rspec-rails', :group => [:test, :development]
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
-	# Factory Girl is used in place of fixtures
-	# to make test objects for our tests to use
-	gem 'factory_girl_rails', '~> 1.2'
-	gem 'shoulda-matchers'
-	# Guard automatically runs tests when you save a file
-	# Run it by doing "bundle exec guard"
-	gem 'guard-rspec'
+  # Factory Girl is used in place of fixtures
+  # to make test objects for our tests to use
+  gem 'factory_girl_rails', '~> 1.2'
+  gem 'shoulda-matchers'
+  # Guard automatically runs tests when you save a file
+  # Run it by doing "bundle exec guard"
+  gem 'guard-rspec'
   # Spork helps speed up guard and rspec by caching the Rails
   # application between runs, instead of loading the application before
   # each run of the test suite.
@@ -34,16 +34,16 @@ group :test do
   # rb-fsevent listens to OSX file save events. Helps Guard
   # detect file changes on macs.
   gem 'rb-fsevent'
-	# Capybara is used for integration testing, the stuff you
-	# find in the spec/requests folder
-	gem 'capybara'
-	# Driver for Capybara
-	gem 'selenium-webdriver', '>= 2.5.0'
-	# Allows integration tests to be run on machiness
-	# without a monitor
-	gem 'headless'
-	# Code coverage!
-	gem 'simplecov', :require => false
+  # Capybara is used for integration testing, the stuff you
+  # find in the spec/requests folder
+  gem 'capybara'
+  # Driver for Capybara
+  gem 'selenium-webdriver', '>= 2.5.0'
+  # Allows integration tests to be run on machiness
+  # without a monitor
+  gem 'headless'
+  # Code coverage!
+  gem 'simplecov', :require => false
   # Clean the database easily before running the test suite
   gem 'database_cleaner'
 end
@@ -115,7 +115,7 @@ gem "dalli"
 # Web server for testing
 gem 'mongrel', '>= 1.2.0.pre2'
 
-# Task scheduler 
+# Task scheduler
 # Configuration found at config/schedule.rb
 # Used to run our custom rake tasks when needed
 gem 'whenever'
