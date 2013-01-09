@@ -45,12 +45,12 @@ module Contribute
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-		# Setting cache to be Dalli, the Ruby client for MemCache
-		config.cache_store = :dalli_store
-		config.action_controller.cache_store = :dalli_store
-	
-	#Autoload ckeditor models folder	
-	config.autoload_paths += %W(#{config.root}/app/models/ckeditor)
-		
+    # Setting cache to be Dalli, the Ruby client for MemCache
+    config.cache_store = :dalli_store
+    config.action_controller.cache_store = :dalli_store
+
+    #Autoload ckeditor models folder
+    config.autoload_paths += %W(#{config.root}/app/models/ckeditor)
+
   end
 end

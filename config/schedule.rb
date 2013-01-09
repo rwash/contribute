@@ -22,24 +22,24 @@
 set :output, "log/cron_log.log"
 
 every 1.day, :at => '12 am' do
-	rake "contribution:completed_projects"
+  rake "contribution:completed_projects"
 end
 
 every :hour do
-	rake "contribution:update_contributors"
+  rake "contribution:update_contributors"
 end
 
 every :reboot do
-	rake "all_contribution:completed_projects"
+  rake "all_contribution:completed_projects"
 end
 
 =begin
 every 1.hour do
-	rake "contribute:cleanup_unconfirmed"
+  rake "contribute:cleanup_unconfirmed"
 end
 =end
 
 # How often should we check to see if things are still pending or failing?
 every 3.hours do
-	rake "contribution:retry_contributions"
+  rake "contribution:retry_contributions"
 end
