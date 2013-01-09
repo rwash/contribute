@@ -57,16 +57,9 @@ class Project < ActiveRecord::Base
   classy_enum_attr :state, enum: 'ProjectState'
 
   # Delegate these methods, so that we can call
-  #     @project.active?
+  #     @project.can_edit?
   # instead of
-  #     @project.state.active?
-  delegate :unconfirmed?, to: :state
-  delegate :inactive?, to: :state
-  delegate :active?, to: :state
-  delegate :nonfunded?, to: :state
-  delegate :funded?, to: :state
-  delegate :cancelled?, to: :state
-
+  #     @project.state.can_edit?
   delegate :can_edit?, to: :state
   delegate :public_can_view?, to: :state
   delegate :can_update?, to: :state

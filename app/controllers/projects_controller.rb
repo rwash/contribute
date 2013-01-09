@@ -69,7 +69,7 @@ class ProjectsController < InheritedResources::Base
       flash[:notice] = "Successfully updated project."
     end
     
-    if @project.unconfirmed?
+    if @project.state.unconfirmed?
     	session[:project_id] = @project.id
 			request = Amazon::FPS::RecipientRequest.new(save_project_url)
 			return redirect_to request.url

@@ -70,7 +70,7 @@
   </div>
 </div>
 
-    <% if @project.unconfirmed? %>
+    <% if @project.state.unconfirmed? %>
         <h4>Amazon Payments*</h4>
         <p><em>The last step in creating your project is associating it with an Amazon Payments account so that your donations have somewhere to go when your project is funded.</p>
         <p>Clicking "Create Project" will redirect you to Amazon Payments. Once you've completed associating your account you will be brought back here.</em></p>
