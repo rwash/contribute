@@ -2,17 +2,17 @@
 
 <div id="form">
 
-	<% if @group.errors.any? %>
-		<div id="error_explanation">
-		<h2><%= pluralize(@group.errors.count, "error") %> prevented this project from being saved:</h2>
-		<ul>
-		<% @group.errors.full_messages.each do |msg| %>
-			<li><%= msg %></li>
-		<% end %>
-		</ul>
-		</div>
-	<% end %>
-    
+  <% if @group.errors.any? %>
+    <div id="error_explanation">
+    <h2><%= pluralize(@group.errors.count, "error") %> prevented this project from being saved:</h2>
+    <ul>
+    <% @group.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+    </div>
+  <% end %>
+
 </div>
 
 <p><%= render :partial => "picture", :locals => {:f => f} %></p>
@@ -49,15 +49,15 @@
     <%= f.label :open, "Open: ", :class => 'pull-right bold' %>
   </div>
   <div class="span3">
-  	<%= f.select :open, options_for_select([ ["Open", true], ["Closed", false] ], @group.open)  %>
+    <%= f.select :open, options_for_select([ ["Open", true], ["Closed", false] ], @group.open)  %>
   </div>
      <span class="help-block">An open group allows anyone to submit a project to the group without approval by the groups admin. </span>
 </div>
 
 <div class="row well">
-	<div class="span3">
-  	<%= f.submit :class => 'btn btn-success btn-large pull-right' %>
-	</div>
+  <div class="span3">
+    <%= f.submit :class => 'btn btn-success btn-large pull-right' %>
+  </div>
 <p>&nbsp;</p>
 </div>
 <% end %>

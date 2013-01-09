@@ -6,84 +6,84 @@ $('.tabs').button()
 <script src="showHide.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-   $('.show_hide').showHide({			 			 
-	}); 
+   $('.show_hide').showHide({
+  });
 });
 </script>
 
 <div class="admin-header">
 
-	  
-		<div id="tabs">
-		<ul class="nav nav-pills">
-		  <li class="active">
-		    <a href="#auto" data-toggle='tab'>Auto Generated</a>
-		  </li>
-		  <li><a href="#manual" data-toggle='tab'>Manual</a></li>
-		</ul>
-		</div>
-		
-		<div class="tab-content">
-		
-		<div class="tab-pane active" id="auto">
-				
-				<%= form_tag update_list_path(@list) do %>
-					List Title: <%= text_field_tag :title, @list.title %><br>
-					Arrange by:<%= select_tag "kind", "<option selected=\"selected\">created at</option><option >end date</option><option>funding goal</option><option>amount left to goal in dollars</option><option>amount left to goal as percent</option><option>amount donated in dollars</option><option>amount donated as percent of goal</option><option>random</option>".html_safe %>
-					Sort:<%= select_tag "order", "<option>ascending</option><option>descending</option>".html_safe %>
-					<br>
-					Show Active Projects <%= check_box_tag 'showActive', true, @list.show_active %><br>
-					Show Funded Projects <%= check_box_tag 'showFunded', true, @list.show_funded %><br>
-					Show Non-Funded Projects <%= check_box_tag 'showNonfunded', true, @list.show_nonfunded %><br>
-					<br>
-					<%= submit_tag "Save List", :class => 'btn' %>
-					<%= link_to "Delete This List", destroy_list_path(@list), :class => 'btn btn-danger float-left' %>
-				<% end %>
-			</div><!-- end auto -->
-		
-			<div class="tab-pane" id="manual">
-				<div class="row">
-				<div class="span8">
-				<ul id="items">
-				<% @list.items.each do |item| %>
-					<li id=<%= "item_#{item.id}" %> >
-					 <div class="row">
-					 <div class="span1">
-					 <span class='handle'>
-					 		<%= image_tag "BlockSThumb.png", :width => '60' %>
-					 </span>
-				 </div>
-				 <div class="span11">
-					 <%= link_to item.itemable.name, item.itemable, :title => "Item #{item.id}" %>&nbsp;
-					 <%= number_to_currency(item.itemable.contributions_total, :precision => 0) %> raised out of <%= number_to_currency(item.itemable.funding_goal) %>&nbsp;
-					 <%= item.itemable.contributions.size %> backers&nbsp;
-					 <%= item.itemable.short_description %>&nbsp;
-					 End Date: <%= item.itemable.end_date %>		
-				 </div>
-				 <%= link_to 'Remove', destroy_item_path(item) %>
-				 </li>
-			 <% end %>
-			 </ul>
-			 </div>
-			 
-			<div class="span4">
-				<%= form_tag add_item_path(@list) do %>
-					<div class="controls">
-					List Title: <%= text_field_tag :title, @list.title %>
-					<div class="input-append">
-						Add Projects: <%= text_field_tag :project, nil, :style => "margin: 0 auto;", ('data-provide').to_sym => 'typeahead', ('data-source').to_sym => @source.to_s %><%= submit_tag "Add", :class => 'btn' %>
-					</div>
-					</div>
-				<% end %>
-			</div>
-			</div>
-			<%= form_tag update_list_path(@list) do %>
-				<%= hidden_field_tag 'kind', 'manual' %>
-				<%= submit_tag "Save List", :class => 'btn' %>
-				<%= link_to "Delete This List", destroy_list_path(@list), :class => 'btn btn-danger float-left' %>
-			<% end %>
-			</div><!-- end manual -->
-			
-	</div>
+
+    <div id="tabs">
+    <ul class="nav nav-pills">
+      <li class="active">
+        <a href="#auto" data-toggle='tab'>Auto Generated</a>
+      </li>
+      <li><a href="#manual" data-toggle='tab'>Manual</a></li>
+    </ul>
+    </div>
+
+    <div class="tab-content">
+
+    <div class="tab-pane active" id="auto">
+
+        <%= form_tag update_list_path(@list) do %>
+          List Title: <%= text_field_tag :title, @list.title %><br>
+          Arrange by:<%= select_tag "kind", "<option selected=\"selected\">created at</option><option >end date</option><option>funding goal</option><option>amount left to goal in dollars</option><option>amount left to goal as percent</option><option>amount donated in dollars</option><option>amount donated as percent of goal</option><option>random</option>".html_safe %>
+          Sort:<%= select_tag "order", "<option>ascending</option><option>descending</option>".html_safe %>
+          <br>
+          Show Active Projects <%= check_box_tag 'showActive', true, @list.show_active %><br>
+          Show Funded Projects <%= check_box_tag 'showFunded', true, @list.show_funded %><br>
+          Show Non-Funded Projects <%= check_box_tag 'showNonfunded', true, @list.show_nonfunded %><br>
+          <br>
+          <%= submit_tag "Save List", :class => 'btn' %>
+          <%= link_to "Delete This List", destroy_list_path(@list), :class => 'btn btn-danger float-left' %>
+        <% end %>
+      </div><!-- end auto -->
+
+      <div class="tab-pane" id="manual">
+        <div class="row">
+        <div class="span8">
+        <ul id="items">
+        <% @list.items.each do |item| %>
+          <li id=<%= "item_#{item.id}" %> >
+           <div class="row">
+           <div class="span1">
+           <span class='handle'>
+               <%= image_tag "BlockSThumb.png", :width => '60' %>
+           </span>
+         </div>
+         <div class="span11">
+           <%= link_to item.itemable.name, item.itemable, :title => "Item #{item.id}" %>&nbsp;
+           <%= number_to_currency(item.itemable.contributions_total, :precision => 0) %> raised out of <%= number_to_currency(item.itemable.funding_goal) %>&nbsp;
+           <%= item.itemable.contributions.size %> backers&nbsp;
+           <%= item.itemable.short_description %>&nbsp;
+           End Date: <%= item.itemable.end_date %>
+         </div>
+         <%= link_to 'Remove', destroy_item_path(item) %>
+         </li>
+       <% end %>
+       </ul>
+       </div>
+
+      <div class="span4">
+        <%= form_tag add_item_path(@list) do %>
+          <div class="controls">
+          List Title: <%= text_field_tag :title, @list.title %>
+          <div class="input-append">
+            Add Projects: <%= text_field_tag :project, nil, :style => "margin: 0 auto;", ('data-provide').to_sym => 'typeahead', ('data-source').to_sym => @source.to_s %><%= submit_tag "Add", :class => 'btn' %>
+          </div>
+          </div>
+        <% end %>
+      </div>
+      </div>
+      <%= form_tag update_list_path(@list) do %>
+        <%= hidden_field_tag 'kind', 'manual' %>
+        <%= submit_tag "Save List", :class => 'btn' %>
+        <%= link_to "Delete This List", destroy_list_path(@list), :class => 'btn btn-danger float-left' %>
+      <% end %>
+      </div><!-- end manual -->
+
+  </div>
 </div>
 </div>

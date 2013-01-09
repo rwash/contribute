@@ -7,12 +7,12 @@
     &nbsp;
   </div>
   <div class="span2 well">
-	  <%= link_to "Submit a project", new_add_path(@group), :class => 'btn btn-large btn-primary add-btn' %><br><br>
-	  <%= link_to " Admin Page", group_admin_path(@group) if group_admin?(@group) %>
+    <%= link_to "Submit a project", new_add_path(@group), :class => 'btn btn-large btn-primary add-btn' %><br><br>
+    <%= link_to " Admin Page", group_admin_path(@group) if group_admin?(@group) %>
   </div>
 </div>
 </div>
 
 <% for list in @group.lists %>
-	<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project-small", :limit => 5} %>
+  <%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project-small", :limit => 5} %>
 <% end %>

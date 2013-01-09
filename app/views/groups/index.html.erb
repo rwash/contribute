@@ -1,49 +1,48 @@
 <div class="groups-container"> 
- <div class="row">  
- <div class="span7">
-  <% @groups.each do |group| %>
-	<div class="group-container">
-	  <%= link_to "", group, :class => "group-link" %>
-	  <span class="group-name"><%= group.name %></span> 
-	  <![if !IE]>
-	  	<span class="num-projects"><%= group.projects.size %> <% if group.projects.size == 1 %>Project <% else %>Projects <% end %></span><br>
-	  <![endif]>
-	  <span class="group-description"><%= group.description %></span>
-	  <% group.projects.limit(6).each do |p| %>
-	    <div class="group-pic">
-	      <% if p.picture? %>
-            <%= image_tag p.picture.url(:thumb), :width => '60' %><br>
-          <% else %>
-            <%= image_tag "BlockSThumb.png", :width => '60' %>
+  <div class="row">  
+    <div class="span7">
+      <% @groups.each do |group| %>
+        <div class="group-container">
+          <%= link_to "", group, :class => "group-link" %>
+          <span class="group-name"><%= group.name %></span> 
+          <![if !IE]>
+            <span class="num-projects"><%= group.projects.size %> <% if group.projects.size == 1 %>Project <% else %>Projects <% end %></span><br>
+          <![endif]>
+          <span class="group-description"><%= group.description %></span>
+          <% group.projects.limit(6).each do |p| %>
+            <div class="group-pic">
+              <% if p.picture? %>
+                <%= image_tag p.picture.url(:thumb), :width => '60' %><br>
+              <% else %>
+                <%= image_tag "BlockSThumb.png", :width => '60' %>
+              <% end %>
+            </div>
           <% end %>
-	    </div>
-	  <% end %>
-	</div>
-  <% end %>
- </div>
- 
- <div class="groups-sidebar">
-   <%= link_to "Create a New Group", new_group_path, :class => 'btn btn-large btn-primary new-group' %>
-   <% unless current_user.nil? %>
-	   <h3>You have projects in:</h3>
-	   <% for group in @user_groups %>
-	   	<%= link_to group.name, group, :class => 'sidebar-group' %><br>
-	   <% end %>
-	   <br>
-	   <h3>Groups you own:</h3>
-	   <% for group in @admin_groups %>
-	   	<%= link_to group.name, group, :class => 'sidebar-group' %><br>
-	   	<span class="sidebar-needs-approval">
-		   	<% if group.approvals.where(:approved => nil).count == 1 %>
-		   	  <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " project needs your approval"), group_admin_path(group) %>
-		   	<% elsif group.approvals.where(:approved => nil).count > 1 %>
-		   	  <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) %>
-		   	<% else %> 
-		   	<% end %> 
-	   	</span><br>
-	   <% end %>
-	 <% end %>
- </div>
-</div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="groups-sidebar">
+      <%= link_to "Create a New Group", new_group_path, :class => 'btn btn-large btn-primary new-group' %>
+      <% unless current_user.nil? %>
+        <h3>You have projects in:</h3>
+        <% for group in @user_groups %>
+          <%= link_to group.name, group, :class => 'sidebar-group' %><br>
+        <% end %>
+        <br>
+        <h3>Groups you own:</h3>
+        <% for group in @admin_groups %>
+          <%= link_to group.name, group, :class => 'sidebar-group' %><br>
+          <span class="sidebar-needs-approval">
+            <% if group.approvals.where(:approved => nil).count == 1 %>
+              <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " project needs your approval"), group_admin_path(group) %>
+            <% elsif group.approvals.where(:approved => nil).count > 1 %>
+              <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) %>
+            <% end %> 
+          </span><br>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 </div>
 <p>&nbsp;</p>

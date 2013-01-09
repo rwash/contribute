@@ -1,14 +1,14 @@
 <div class="thumbnail-small">
-	<% if logged_in? and (@group.admin_user_id == current_user.id or project.user_id == current_user.id) %>
-		<span class="delete-x"><%= link_to "x", remove_project_from_group_path(@group, project), :confirm => "Are you sure you want to remove #{project.name} from #{@group.name}?" %></span>
-	<% end %>
+  <% if logged_in? and (@group.admin_user_id == current_user.id or project.user_id == current_user.id) %>
+    <span class="delete-x"><%= link_to "x", remove_project_from_group_path(@group, project), :confirm => "Are you sure you want to remove #{project.name} from #{@group.name}?" %></span>
+  <% end %>
     <%= link_to project do %>
       <% if project.picture? %>
-	    <%= image_tag project.picture.url(:thumb), :width => '171' %>
-	  <% else %>
-	    <%= image_tag "BlockSThumb.png", :width => '171' %>
-	  <% end %>
-	<% end %>
+      <%= image_tag project.picture.url(:thumb), :width => '171' %>
+    <% else %>
+      <%= image_tag "BlockSThumb.png", :width => '171' %>
+    <% end %>
+  <% end %>
       <h4 class="ellipsisName"><%= link_to project.name, project %></h4>
       <p class="byline">by <%= link_to project.user.name, project.user %></p>
 </div>

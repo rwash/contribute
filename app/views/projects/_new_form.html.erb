@@ -13,16 +13,16 @@
 
 <%= form_for(@project, :builder => Judge::FormBuilder, :html => {:multipart => true}) do |f| %>
 
-	<% if @project.errors.any? %>
-		<div id="error_explanation">
-		<h2><%= pluralize(@project.errors.count, "error") %> prevented this project from being saved:</h2>
-		<ul>
-		<% @project.errors.full_messages.each do |msg| %>
-			<li><%= msg %></li>
-		<% end %>
-		</ul>
-		</div>
-	<% end %>
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+    <h2><%= pluralize(@project.errors.count, "error") %> prevented this project from being saved:</h2>
+    <ul>
+    <% @project.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+    </div>
+  <% end %>
     
 <div class="row well">
   <div class="span1-5">
@@ -70,7 +70,7 @@
   <div class="span4">
     <%= f.text_area :short_description, :rows => 4, :class => 'span3' %>
   </div>
-  	<span class="help-block">This is used to describe your project when featured on the homepage or when the project is embedded on another website.</span>
+    <span class="help-block">This is used to describe your project when featured on the homepage or when the project is embedded on another website.</span>
 </div>
 
 <div class="row well">
@@ -88,7 +88,7 @@
   <p>Clicking "Create Project" will redirect you to Amazon Payments. Once you've completed associating your account you will be brought back here.</em></p>
   <%= f.submit :class => 'btn btn-success btn-large pull-right submit-form' %>
   <div class="loading">
-	<h3><%= image_tag 'loading.gif' %> Your Project is being created, please wait...</h3>
+  <h3><%= image_tag 'loading.gif' %> Your Project is being created, please wait...</h3>
   </div>
 <p>&nbsp;</p>
 </div>
@@ -104,7 +104,7 @@
 </script>
 
 <style>
-	.loading {
-		display: none;
-	}
+  .loading {
+    display: none;
+  }
 </style>
