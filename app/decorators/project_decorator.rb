@@ -11,16 +11,12 @@
 class ProjectDecorator < Draper::Base
   decorates :project
 
-  @@color_classes = {'unconfirmed' => 'warning', 'inactive' => 'warning',
-    'active' => 'success', 'funded' => 'success',
-    'nonfunded' => 'inverse', 'cancelled' => 'inverse'}
-
   # Allows the use of helpers without a proxy (see Draper documentation)
   include Draper::LazyHelpers
 
   # Generates a colored span describing the state of the project
   def colored_state_description
-    content_tag :span, "Project State: #{state_name}", class: "label label-#{color_class}"
+    content_tag :span, "Project State: #{state_name}", class: "label label-#{model.state.color_class}"
   end
 
   # Generates a button linking to the edit page for the project
@@ -54,11 +50,5 @@ class ProjectDecorator < Draper::Base
       result = 'Non-funded'
     end
     result
-  end
-
-  # Returns a class label for a project state
-  # that will be used by the CSS to apply color to the project state span
-  def color_class
-    @@color_classes[model.state] || 'important'
   end
 end
