@@ -1,169 +1,169 @@
 class EmailManager < ActionMailer::Base
   default :from => Rails.application.config.from_address
 
-	@@admin_address = Rails.application.config.admin_address
+  @@admin_address = Rails.application.config.admin_address
 
-	def add_project(project)
-		@project = project
-		@user = @project.user
+  def add_project(project)
+    @project = project
+    @user = @project.user
 
-		mail(:to => @user.email, :subject => "#{@project.name} has been created")
-	end
+    mail(:to => @user.email, :subject => "#{@project.name} has been created")
+  end
 
-	def contribute_to_project(contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@user = @contribution.user
+  def contribute_to_project(contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @user = @contribution.user
 
-		mail(:to => @user.email, :subject => "Your contribution to #{@project.name}")
-	end
+    mail(:to => @user.email, :subject => "Your contribution to #{@project.name}")
+  end
 
-	def edit_contribution(old_contribution, new_contribution)
-		@old_contribution = old_contribution
-		@new_contribution = new_contribution
-		@project = @old_contribution.project
-		@user = @old_contribution.user
+  def edit_contribution(old_contribution, new_contribution)
+    @old_contribution = old_contribution
+    @new_contribution = new_contribution
+    @project = @old_contribution.project
+    @user = @old_contribution.user
 
-		mail(:to => @user.email, :subject => "Your edited contribution to #{@project.name}")
-	end
+    mail(:to => @user.email, :subject => "Your edited contribution to #{@project.name}")
+  end
 
-	def contribution_cancelled(contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@user = @contribution.user
+  def contribution_cancelled(contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @user = @contribution.user
 
-		mail(:to => @user.email, :subject => "Your contribution to #{@project.name} was successfully cancelled")
-	end
+    mail(:to => @user.email, :subject => "Your contribution to #{@project.name} was successfully cancelled")
+  end
 
-	def contribution_successful(contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@user = @contribution.user
+  def contribution_successful(contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @user = @contribution.user
 
-		mail(:to => @user.email, :subject => "Your contribution to #{@project.name} was successfully completed")
-	end
+    mail(:to => @user.email, :subject => "Your contribution to #{@project.name} was successfully completed")
+  end
 
-	def failed_retries(contributions_still_failing)
-		@contributions = contributions_still_failing
+  def failed_retries(contributions_still_failing)
+    @contributions = contributions_still_failing
 
-		mail(:to => @@admin_address, :subject => "#{Date.today}: Contributions failed more than 3 times")
-	end
+    mail(:to => @@admin_address, :subject => "#{Date.today}: Contributions failed more than 3 times")
+  end
 
-	def project_funded_to_owner(project)
-		@project = project
-		@user = @project.user
-	
-		mail(:to => @user.email, :subject => "Your project #{@project.name} was successfully funded!")
-	end
+  def project_funded_to_owner(project)
+    @project = project
+    @user = @project.user
 
-	def project_not_funded_to_owner(project)
-		@project = project
-		@user = @project.user
+    mail(:to => @user.email, :subject => "Your project #{@project.name} was successfully funded!")
+  end
 
-		mail(:to => @user.email, :subject => "Your project #{@project.name} was did not reach its funding goal")
-	end
+  def project_not_funded_to_owner(project)
+    @project = project
+    @user = @project.user
 
-	def project_funded_to_contributor(contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@user = @contribution.user
+    mail(:to => @user.email, :subject => "Your project #{@project.name} was did not reach its funding goal")
+  end
 
-		mail(:to => @user.email, :subject => "The project #{@project.name} was successfully funded!")
-	end
+  def project_funded_to_contributor(contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @user = @contribution.user
 
-	def project_not_funded_to_contributor(contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@user = @contribution.user
+    mail(:to => @user.email, :subject => "The project #{@project.name} was successfully funded!")
+  end
 
-		mail(:to => @user.email, :subject => "The project #{@project.name} was did not reach its funding goal")
-	end
+  def project_not_funded_to_contributor(contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @user = @contribution.user
 
-	def project_deleted_to_owner(project)
-		@project = project
-		@user = @project.user
+    mail(:to => @user.email, :subject => "The project #{@project.name} was did not reach its funding goal")
+  end
 
-		mail(:to => @user.email, :subject => "Your project #{@project.name} was successfully deleted")
-	end
+  def project_deleted_to_owner(project)
+    @project = project
+    @user = @project.user
 
-	def project_deleted_to_contributor(contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@user = @contribution.user
+    mail(:to => @user.email, :subject => "Your project #{@project.name} was successfully deleted")
+  end
 
-		mail(:to => @user.email, :subject => "The project #{@project.name} has been deleted")
-	end
+  def project_deleted_to_contributor(contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @user = @contribution.user
 
-	def unretriable_cancel_to_admin(error, contribution)
-		@contribution = contribution
-		@error = error
+    mail(:to => @user.email, :subject => "The project #{@project.name} has been deleted")
+  end
 
-		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed cancellation")
-	end
+  def unretriable_cancel_to_admin(error, contribution)
+    @contribution = contribution
+    @error = error
 
-	def unretriable_payment_to_user(error, contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@user = @contribution.user
-		@error = error
+    mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed cancellation")
+  end
 
-		mail(:to => @user.email, :subject => "Attention! We need your help to fix your contribution to #{@project.name}!") 
-	end
+  def unretriable_payment_to_user(error, contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @user = @contribution.user
+    @error = error
 
-	def unretriable_payment_to_admin(error, contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@error = error
+    mail(:to => @user.email, :subject => "Attention! We need your help to fix your contribution to #{@project.name}!")
+  end
 
-		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed executing payment")
-	end
+  def unretriable_payment_to_admin(error, contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @error = error
 
-	def cancelled_payment_to_admin(contribution)
-		@contribution = contribution
-		@project = @contribution.project
+    mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed executing payment")
+  end
 
-		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} was cancelled before payment could complete successfully")
-	end
+  def cancelled_payment_to_admin(contribution)
+    @contribution = contribution
+    @project = @contribution.project
 
-	def failed_payment_to_user(contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@user = @contribution.user
+    mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} was cancelled before payment could complete successfully")
+  end
 
-		mail(:to => @user.email, :subject => "Attention! We need your help to fix your contribution to #{@project.name}!") 
-	end
+  def failed_payment_to_user(contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @user = @contribution.user
 
-	def failed_status_to_admin(error, contribution)
-		@contribution = contribution
-		@project = @contribution.project
-		@error = error
+    mail(:to => @user.email, :subject => "Attention! We need your help to fix your contribution to #{@project.name}!")
+  end
 
-		mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed checking its transaction status")
-	end
-	
-	def project_update_to_contributor(update, contribution)
-		@update = update
-		@user = contribution.user
-		@project = contribution.project
-		
-		mail(:to => @user.email, :subject => "#{@project.name}: #{@update.title}")
-	end
-	
-	def project_to_group_approval(approval, project, group)
-		@group_owner = User.find(group.admin_user_id)
-		@project = project
-		@user = User.find(project.user_id)
-		@group = group
-		@approval = approval
-		mail(:to => @group_owner.email, :subject => "Request to add project #{@project.name} to your group #{@group.name}")
-	end
-	
-	def group_reject_project(approval, project, group)
-		@project = project
-		@user = User.find(project.user_id)
-		@group = group
-		@approval = approval
-		
-		mail(:to => @user.email, :subject => "Your request to add project #{@project.name} to group #{@group.name} has been denied")
-	end
+  def failed_status_to_admin(error, contribution)
+    @contribution = contribution
+    @project = @contribution.project
+    @error = error
+
+    mail(:to => @@admin_address, :subject => "Contribution id: #{@contribution.id} has failed checking its transaction status")
+  end
+
+  def project_update_to_contributor(update, contribution)
+    @update = update
+    @user = contribution.user
+    @project = contribution.project
+
+    mail(:to => @user.email, :subject => "#{@project.name}: #{@update.title}")
+  end
+
+  def project_to_group_approval(approval, project, group)
+    @group_owner = User.find(group.admin_user_id)
+    @project = project
+    @user = User.find(project.user_id)
+    @group = group
+    @approval = approval
+    mail(:to => @group_owner.email, :subject => "Request to add project #{@project.name} to your group #{@group.name}")
+  end
+
+  def group_reject_project(approval, project, group)
+    @project = project
+    @user = User.find(project.user_id)
+    @group = group
+    @approval = approval
+
+    mail(:to => @user.email, :subject => "Your request to add project #{@project.name} to group #{@group.name} has been denied")
+  end
 end
