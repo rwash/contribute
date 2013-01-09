@@ -23,7 +23,7 @@
       <% end %>
     </div>
     <div class="money-raised"><span class="bold"><%= number_to_currency(project.contributions_total, :precision => 0) %></span><br><span class="italic">raised</span></div>
-    <div class="time-left"><span class="bold"><%= distance_of_time_in_words(Time.now, project.end_date) %></span><br><span class="italic">left</span></div>
+    <div class="time-left"><span class="bold"><%= project.remaining_time %></span></div>
     <div class="state">
       <%= project.colored_state_description if project.state != 'active' %>
     </div>
