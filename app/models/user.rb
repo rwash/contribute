@@ -28,27 +28,27 @@
 # * *admin* (+boolean+)
 # * *starred* (+boolean+)
 class User < ActiveRecord::Base
-	mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
+  mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable
+    :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :location, :picture, :picture_cache
 
-	has_many :projects, :dependent => :destroy
-	has_many :comments, :dependent => :destroy
+  has_many :projects, :dependent => :destroy
+  has_many :comments, :dependent => :destroy
   has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
   has_many :owned_groups, :class_name => "Group", :foreign_key => "admin_user_id"
   has_many :lists, :as =>  :listable
 
-	validates :name, :presence => true
-	
-	after_create :add_first_list
-	
-	def add_first_list
-		self.lists << List.create(:title => "#{self.name}'s Projects", :permanent => true, :show_funded => true, :show_nonfunded => true, :show_active => true)
-	end
+  validates :name, :presence => true
+
+  after_create :add_first_list
+
+  def add_first_list
+    self.lists << List.create(:title => "#{self.name}'s Projects", :permanent => true, :show_funded => true, :show_nonfunded => true, :show_active => true)
+  end
 end
