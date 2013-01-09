@@ -2,17 +2,17 @@
 
 <div id="form">
 
-	<% if @project.errors.any? %>
-		<div id="error_explanation">
-		<h2><%= pluralize(@project.errors.count, "error") %> prevented this project from being saved:</h2>
-		<ul>
-		<% @project.errors.full_messages.each do |msg| %>
-			<li><%= msg %></li>
-		<% end %>
-		</ul>
-		</div>
-	<% end %>
-    
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+    <h2><%= pluralize(@project.errors.count, "error") %> prevented this project from being saved:</h2>
+    <ul>
+    <% @project.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+    </div>
+  <% end %>
+
 <div class="row well">
   <div class="span1-5">
     <%= f.label :name, "Project Name: ", :class => 'pull-right bold' %>
@@ -21,8 +21,8 @@
     <%= f.text_field :name, :class => 'span3' %>
   </div>
 </div>
-    
-<p><%= render :partial => "picture", :locals => { :f => f } %></p>	
+
+<p><%= render :partial => "picture", :locals => { :f => f } %></p>
 <p><%= render :partial => "videos/form", :locals => { :f => f, :@video => @video} %></p>
 
 <div class="row well">
@@ -78,8 +78,8 @@
     <% end %>
     <%= f.submit :class => 'btn btn-success btn-large pull-right submit-form' %>
     <div class="loading">
-		<h3><%= image_tag 'loading.gif' %> Your Project is being created, please wait...</h3>
-	</div>
+    <h3><%= image_tag 'loading.gif' %> Your Project is being created, please wait...</h3>
+  </div>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
@@ -95,7 +95,7 @@
 </script>
 
 <style>
-	.loading {
-		display: none;
-	}
+  .loading {
+    display: none;
+  }
 </style>

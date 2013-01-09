@@ -1,33 +1,33 @@
 <style >
-	.handle:hover{cursor: move;}
+  .handle:hover{cursor: move;}
 </style>
- <%= javascript_tag do %>
- // Sorting the list
- $(document).ready(function()
- {
- $('#items').sortable(
- {
- axis: 'x',
- dropOnEmpty: false,
- handle: '.handle',
- cursor: 'crosshair',
- items: 'li',
- opacity: 0.4,
- scroll: true,
- update: function()
- {
- $.ajax(
- {
- type: 'post',
- data: $('#items').sortable('serialize') + "&title=" + $('#title').val() + "&authenticity_token=" + "<%= form_authenticity_token %>",
- dataType: 'script',
- complete: function(request)
- {
- $('#items').effect('highlight');
- },
- url: '<%= "/lists/#{id}/items/sort" %>'
- })
- }
- });
- });
- <% end %>
+<%= javascript_tag do %>
+  // Sorting the list
+  $(document).ready(function()
+  {
+    $('#items').sortable(
+    {
+      axis: 'x',
+      dropOnEmpty: false,
+      handle: '.handle',
+      cursor: 'crosshair',
+      items: 'li',
+      opacity: 0.4,
+      scroll: true,
+      update: function()
+      {
+        $.ajax(
+        {
+          type: 'post',
+          data: $('#items').sortable('serialize') + "&title=" + $('#title').val() + "&authenticity_token=" + "<%= form_authenticity_token %>",
+          dataType: 'script',
+          complete: function(request)
+          {
+            $('#items').effect('highlight');
+          },
+          url: '<%= "/lists/#{id}/items/sort" %>'
+        })
+      }
+    });
+  });
+<% end %>

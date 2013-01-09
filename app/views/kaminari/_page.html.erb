@@ -8,9 +8,9 @@
     remote:        data-remote
 -%>
 <span class="page<%= ' current' if page.current? %>">
-	<% if page.current? %>
-		<li class="active"><%= link_to page, '#' %></li>
-	<% else %>
-		<li><%= link_to_unless page.current?, page, url, opts = {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil} %></li>
-	<% end %>
+  <% if page.current? %>
+    <li class="active"><%= link_to page, '#' %></li>
+  <% else %>
+    <li><%= link_to_unless page.current?, page, url, opts = {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil} %></li>
+  <% end %>
 </span>

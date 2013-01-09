@@ -2,5 +2,5 @@
 <% end %>
 
 <% for list in @lists %>
-	<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
+  <%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
 <% end %>

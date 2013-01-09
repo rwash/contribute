@@ -26,62 +26,62 @@
 
 <% if @user.projects.size == 0 %>
   <div class="section-header">
-	  <h3><%= @user.name %>'s Projects</h3>
+    <h3><%= @user.name %>'s Projects</h3>
   </div>
   <div class="row offset1-5">
     <%= link_to "No Projects yet. Click here to get going!", new_project_url %>
   </div>
 <% else %>
-	<% for list in @user.lists %>
-		<%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
-	<% end %>
+  <% for list in @user.lists %>
+    <%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
+  <% end %>
 <% end %>
 <div class="row offset1-5">
 <h3><%= link_to "+ Add a List", add_list_to_user_path(@user) %></h3>
 </div>
 <p>&nbsp;</p>
-	<div id="tabs">
-  	  <ul class="nav nav-tabs">
-	    <li class="active"><a href="#userContributions" data-toggle="tab">Contributions</a></li>
-	    <li><a href="#userComments" data-toggle="tab">Comments</a></li>
-  	  </ul>
-	</div>
+  <div id="tabs">
+      <ul class="nav nav-tabs">
+      <li class="active"><a href="#userContributions" data-toggle="tab">Contributions</a></li>
+      <li><a href="#userComments" data-toggle="tab">Comments</a></li>
+      </ul>
+  </div>
 
 <div class="tab-content">
   <div class="tab-pane active" id ="userContributions">
-	<h3> Contributions </h3>
-	<% if @user.contributions.size > 0 %>
-	<ul>
-		<% @user.contributions.each do |contribution|%>
-			<%= link_to contribution.project.name, contribution.project %><br/>
-			<% if @user == current_user %>
-				- <%=   %> 
-				<%= link_to "#{number_to_currency(contribution.amount, :precision => 0)}", edit_contribution_url(contribution) %>
-			<% end %>
-			</li>
-		<% end %>
-	<% else %>
-		<p>None yet!</p>
-	</ul>
-	<% end %>
+  <h3> Contributions </h3>
+  <% if @user.contributions.size > 0 %>
+  <ul>
+    <% @user.contributions.each do |contribution|%>
+      <%= link_to contribution.project.name, contribution.project %><br/>
+      <% if @user == current_user %>
+        - <%=   %> 
+        <%= link_to "#{number_to_currency(contribution.amount, :precision => 0)}", edit_contribution_url(contribution) %>
+      <% end %>
+      </li>
+    <% end %>
+  <% else %>
+    <p>None yet!</p>
+  </ul>
+  <% end %>
   </div>
-  
+
   <div class="tab-pane" id="userComments">
-	<h3> Comments </h3><br>
-		
+  <h3> Comments </h3><br>
+
   <ul class="projectComments">
-  	<h4><%= "This user has no comments." if @user.comments.size == 0 %></h4>
+    <h4><%= "This user has no comments." if @user.comments.size == 0 %></h4>
     <% @user.comments.each do |comment|%>
       <% @ComPro = Project.where(:id => comment.commentable_id).first %>
       <%= link_to @ComPro.name, Project.where(:id => comment.commentable_id).first %><br>
       <div id="comment_body">
         <li>
-	      <%= comment.body %><br>
-	      <% if comment_owner(comment) %>
-	        <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
-	      <% end %>
-	    </li>
-	  </div>
+        <%= comment.body %><br>
+        <% if comment_owner(comment) %>
+          <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
+        <% end %>
+      </li>
+    </div>
       <hr>
     <% end %>
   </ul> 

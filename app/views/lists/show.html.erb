@@ -1,36 +1,36 @@
 <div class="section-header">
-	<% if @list.title == "" %>
-	  <h3>
-	  	Untitled List
-	  </h3>
-	<% else %> 
-	  <h3>
-	  	<%= @list.title %>
-	  </h3> 
-	<% end %> 
+  <% if @list.title == "" %>
+    <h3>
+      Untitled List
+    </h3>
+  <% else %>
+    <h3>
+      <%= @list.title %>
+    </h3>
+  <% end %>
 </div>
 
 <div class="autopagerize_page_element">
 
-	<div class="row group-tiles">
-	  <ul class="thumbnails-small">
-	    <% for project in @projects %>
-	      <li class="project-span">
-	        <%= render :partial => 'shared/project', :locals => { :project => project } %><br>
-	      </li>  
-	    <% end %>
-	  </ul>
-	</div>
-	
+  <div class="row group-tiles">
+    <ul class="thumbnails-small">
+      <% for project in @projects %>
+        <li class="project-span">
+          <%= render :partial => 'shared/project', :locals => { :project => project } %><br>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  
 </div>
 <div class="row offset1-5">
   <h3>
-	<% if @list.listable_type == 'User' and @list.listable.admin? %>
-	  <%= link_to "< Back", root_path %>
-	<% else %>
-	  <%= link_to "< Back to #{@list.listable.name}", @list.listable %>
-	<% end %>
+  <% if @list.listable_type == 'User' and @list.listable.admin? %>
+    <%= link_to "< Back", root_path %>
+  <% else %>
+    <%= link_to "< Back to #{@list.listable.name}", @list.listable %>
+  <% end %>
   </h3>
-	<p>&nbsp;</p>
+  <p>&nbsp;</p>
     <%= paginate @projects %>
 </div>

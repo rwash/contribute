@@ -6,14 +6,14 @@
 	  		 - <%= link_to 'edit list', edit_list_path(list), :class => 'edit' %>
 	 	<% end %>
 	  </h3>
-	<% else %> 
+	<% else %>
 	  <h3>
 	  	<%= list.title %>
 	  	<% if list_owner?(list) && !list.permanent? %>
 	  		 - <%= link_to 'edit list', edit_list_path(list), :class => 'edit' %>
 	 	<% end %>
-	  </h3> 
-	<% end %> 
+	  </h3>
+	<% end %>
 	<%= link_to "see all >", list, :class => 'more' %>
 </div>
 
@@ -22,7 +22,7 @@
     <% for project in get_projects_in_order(list,limit) %>
       <li class="project-span">
       	<%= render :partial => partial, :locals => { :project => project } %><br>
-      </li>  
+      </li>
     <% end %>
   </ul>
 </div>

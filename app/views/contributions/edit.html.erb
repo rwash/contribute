@@ -7,23 +7,23 @@
 <% end %>
 
 <div id="contribution">
-	<h3>Edit contribution to <%= @project.name %></h3>
-	<%= form_for @contribution, :url => { :action => :update}, :html => { :method => :put } do |f| %>
+  <h3>Edit contribution to <%= @project.name %></h3>
+  <%= form_for @contribution, :url => { :action => :update}, :html => { :method => :put } do |f| %>
 
-		<% if @contribution.errors.any? %>
-			<div id="error_explanation">
-			<h2><%= pluralize(@contribution.errors.count, "error") %> prevented this contribution from being saved:</h2>
-			<ul>
-			<% @contribution.errors.full_messages.each do |msg| %>
-				<li><%= msg %></li>
-			<% end %>
-			</ul>
-			</div>
-		<% end %>
+    <% if @contribution.errors.any? %>
+      <div id="error_explanation">
+      <h2><%= pluralize(@contribution.errors.count, "error") %> prevented this contribution from being saved:</h2>
+      <ul>
+      <% @contribution.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+      </div>
+    <% end %>
 
-		<p>Original Amount: <%= number_to_currency(@editing_contribution.amount, :precision => 0) %>
-		<p>New Amount: <%= f.text_field :amount %></p>
-		<p>The new amount cannot be less than the original amount.</p>
-		<%= f.submit "Update Contribution" %>
-	<% end %>
+    <p>Original Amount: <%= number_to_currency(@editing_contribution.amount, :precision => 0) %>
+    <p>New Amount: <%= f.text_field :amount %></p>
+    <p>The new amount cannot be less than the original amount.</p>
+    <%= f.submit "Update Contribution" %>
+  <% end %>
 </div>
