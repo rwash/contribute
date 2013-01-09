@@ -8,14 +8,14 @@ describe Comment do
       assert !comment.save, 'Incorrectly saved comment with blank body'
     end
   end
-  
+
   describe 'project' do
     it 'id is required' do
       comment = FactoryGirl.build(:comment, :commentable_id => '')
       assert !comment.save, 'Incorrectly save comment without project id'
     end
   end
-  
+
   describe 'user' do
     it 'id is required' do
       comment = FactoryGirl.build(:comment, :user_id => '')
@@ -38,5 +38,5 @@ describe Comment do
   end
 =end
   # Methods
-  # its a gem so unless we add anything i think were ok  
+  # its a gem so unless we add anything i think were ok
 end

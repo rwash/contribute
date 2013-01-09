@@ -1,111 +1,111 @@
 require "spec_helper"
 
 describe ContributionStatus do
-	describe 'string_to_status' do
-		it 'string is success, returns success' do
-			param = "Success"
+  describe 'string_to_status' do
+    it 'string is success, returns success' do
+      param = "Success"
 
-			status = ContributionStatus.string_to_status(param)
+      status = ContributionStatus.string_to_status(param)
 
-			assert_equal ContributionStatus::SUCCESS, status
-		end
+      assert_equal ContributionStatus::SUCCESS, status
+    end
 
-		it 'string is pending, returns pending' do
-			param = "Pending"
+    it 'string is pending, returns pending' do
+      param = "Pending"
 
-			status = ContributionStatus.string_to_status(param)
+      status = ContributionStatus.string_to_status(param)
 
-			assert_equal ContributionStatus::PENDING, status
-		end
+      assert_equal ContributionStatus::PENDING, status
+    end
 
-		it 'string is cancelled, returns cancelled' do
-			param = "Cancelled"
+    it 'string is cancelled, returns cancelled' do
+      param = "Cancelled"
 
-			status = ContributionStatus.string_to_status(param)
+      status = ContributionStatus.string_to_status(param)
 
-			assert_equal ContributionStatus::CANCELLED, status
-		end
+      assert_equal ContributionStatus::CANCELLED, status
+    end
 
-		it 'string is failure, returns failure' do
-			param = "Failure"
+    it 'string is failure, returns failure' do
+      param = "Failure"
 
-			status = ContributionStatus.string_to_status(param)
+      status = ContributionStatus.string_to_status(param)
 
-			assert_equal ContributionStatus::FAILURE, status
-		end
+      assert_equal ContributionStatus::FAILURE, status
+    end
 
-		it 'string is nomatch, returns nil' do
-			param = "NoMatch"
+    it 'string is nomatch, returns nil' do
+      param = "NoMatch"
 
-			status = ContributionStatus.string_to_status(param)
-			
-			assert_nil status
-		end
-	end
+      status = ContributionStatus.string_to_status(param)
 
-	describe 'status_to_string' do
-		it 'status is none, returns none' do
-			param = ContributionStatus::NONE
+      assert_nil status
+    end
+  end
 
-			string = ContributionStatus.status_to_string(param)
+  describe 'status_to_string' do
+    it 'status is none, returns none' do
+      param = ContributionStatus::NONE
 
-			assert_equal "None", string
-		end
+      string = ContributionStatus.status_to_string(param)
 
-		it 'status is success, returns success' do
-			param = ContributionStatus::SUCCESS
+      assert_equal "None", string
+    end
 
-			string = ContributionStatus.status_to_string(param)
+    it 'status is success, returns success' do
+      param = ContributionStatus::SUCCESS
 
-			assert_equal "Success", string
-		end
+      string = ContributionStatus.status_to_string(param)
 
-		it 'status is pending, returns pending' do
-			param = ContributionStatus::PENDING
+      assert_equal "Success", string
+    end
 
-			string = ContributionStatus.status_to_string(param)
+    it 'status is pending, returns pending' do
+      param = ContributionStatus::PENDING
 
-			assert_equal "Pending", string
-		end
-		
-		it 'status is failure, returns failure' do
-			param = ContributionStatus::FAILURE
+      string = ContributionStatus.status_to_string(param)
 
-			string = ContributionStatus.status_to_string(param)
+      assert_equal "Pending", string
+    end
 
-			assert_equal "Failure", string
-		end
+    it 'status is failure, returns failure' do
+      param = ContributionStatus::FAILURE
 
-		it 'status is cancelled, returns cancelled' do
-			param = ContributionStatus::CANCELLED
+      string = ContributionStatus.status_to_string(param)
 
-			string = ContributionStatus.status_to_string(param)
+      assert_equal "Failure", string
+    end
 
-			assert_equal "Cancelled", string
-		end
+    it 'status is cancelled, returns cancelled' do
+      param = ContributionStatus::CANCELLED
 
-		it 'status is retry pay, returns retry - payment' do
-			param = ContributionStatus::RETRY_PAY
+      string = ContributionStatus.status_to_string(param)
 
-			string = ContributionStatus.status_to_string(param)
+      assert_equal "Cancelled", string
+    end
 
-			assert_equal "Retry - Payment", string
-		end
+    it 'status is retry pay, returns retry - payment' do
+      param = ContributionStatus::RETRY_PAY
 
-		it 'status is retry cancel, returns retry - cancellation' do
-			param = ContributionStatus::RETRY_CANCEL
+      string = ContributionStatus.status_to_string(param)
 
-			string = ContributionStatus.status_to_string(param)
+      assert_equal "Retry - Payment", string
+    end
 
-			assert_equal "Retry - Cancellation", string
-		end
+    it 'status is retry cancel, returns retry - cancellation' do
+      param = ContributionStatus::RETRY_CANCEL
 
-		it 'status is invalid status, returns nil' do
-			param = 8
+      string = ContributionStatus.status_to_string(param)
 
-			string = ContributionStatus.status_to_string(param)
+      assert_equal "Retry - Cancellation", string
+    end
 
-			assert_nil string
-		end
-	end
+    it 'status is invalid status, returns nil' do
+      param = 8
+
+      string = ContributionStatus.status_to_string(param)
+
+      assert_nil string
+    end
+  end
 end
