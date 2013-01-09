@@ -10,5 +10,5 @@
 # * *log_get_transaction_request_id* (+integer+)
 # * *RequestId* (+string+)
 class Logging::LogGetTransactionResponse < ActiveRecord::Base
-	has_one :log_get_transaction_request
+  has_one :log_get_transaction_request
 end

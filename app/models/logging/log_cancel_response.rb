@@ -5,5 +5,5 @@
 # * *created_at* (+datetime+)
 # * *updated_at* (+datetime+)
 class Logging::LogCancelResponse < ActiveRecord::Base
-	has_one :log_cancel_request
+  has_one :log_cancel_request
 end
