@@ -50,10 +50,6 @@ Spork.prefork do
     # Ran into trouble with the default transactions. Since we're not using fixtures
     # anyway, we can just turn them off.
     config.use_transactional_fixtures = false
-    # Let's use DatabaseCleaner instead -- it seems to be more consistent.
-    config.before :suite do
-      DatabaseCleaner.strategy = :transaction
-    end
 
     # If true, the base class of anonymous controllers will be inferred
     # automatically. This will be the default behavior in future versions of
@@ -92,9 +88,23 @@ end
 # With Rails, your application modules are loaded automatically, so sometimes
 # this block can remain empty.
 Spork.each_run do
-  puts 'Cleaning Database'
-  DatabaseCleaner.clean
   FactoryGirl.reload
+
+  puts 'Cleaning Database'
+  # TODO: Change this to run the Rake task 'db:test:prepare',
+  # which isn't dependent on the models we have defined in the
+  # database.
+  User.destroy_all
+  Project.destroy_all
+  Group.destroy_all
+  List.destroy_all
+  Approval.destroy_all
+  Category.destroy_all
+  Comment.destroy_all
+  Contribution.destroy_all
+  Item.destroy_all
+  Update.destroy_all
+  Video.destroy_all
 end
 
 # Any code that is left outside the two blocks will be run during preforking
