@@ -24,31 +24,29 @@
 
     <div class="groups-sidebar">
       <%= link_to "Create a New Group", new_group_path, :class => 'btn btn-large btn-primary new-group' %>
-      <% unless current_user.nil? %>
 
-        <% if @user_groups.any? %>
-          <h3>You have projects in:</h3>
-          <% for group in @user_groups %>
-            <%= link_to group.name, group, :class => 'sidebar-group' %><br>
-          <% end %>
-          <br>
+      <% if @user_groups.any? %>
+        <h3>You have projects in:</h3>
+        <% for group in @user_groups %>
+          <%= link_to group.name, group, :class => 'sidebar-group' %><br>
         <% end %>
-
-        <% if @admin_groups.any? %>
-          <h3>Groups you own:</h3>
-          <% for group in @admin_groups %>
-            <%= link_to group.name, group, :class => 'sidebar-group' %><br>
-            <span class="sidebar-needs-approval">
-              <% if group.approvals.where(:approved => nil).count == 1 %>
-                <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " project needs your approval"), group_admin_path(group) %>
-              <% elsif group.approvals.where(:approved => nil).count > 1 %>
-                <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) %>
-              <% end %>
-            </span><br>
-          <% end %>
-        <% end %>
-
+        <br>
       <% end %>
+
+      <% if @admin_groups.any? %>
+        <h3>Groups you own:</h3>
+        <% for group in @admin_groups %>
+          <%= link_to group.name, group, :class => 'sidebar-group' %><br>
+          <span class="sidebar-needs-approval">
+            <% if group.approvals.where(:approved => nil).count == 1 %>
+              <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " project needs your approval"), group_admin_path(group) %>
+            <% elsif group.approvals.where(:approved => nil).count > 1 %>
+              <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) %>
+            <% end %>
+          </span><br>
+        <% end %>
+      <% end %>
+
     </div>
   </div>
 </div>
