@@ -5,10 +5,8 @@ class GroupsController < InheritedResources::Base
   def index
     @groups = Group.all
 
-    unless current_user.nil?
-      @user_groups = current_user.projects.map { |p| p.groups }.flatten.uniq
-      @admin_groups = current_user.owned_groups
-    end
+    @user_groups = current_user.nil? ? [] : current_user.projects.map { |p| p.groups }.flatten.uniq
+    @admin_groups = current_user.nil? ? [] : current_user.owned_groups
   end
 
   def create

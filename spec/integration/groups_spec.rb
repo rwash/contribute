@@ -22,7 +22,6 @@ describe 'Groups' do
         group = Factory :group
         project = Factory :project, user: user
         project.groups << group
-        project.save
 
         login(user.email, user.password)
 
@@ -35,7 +34,6 @@ describe 'Groups' do
         group = Factory :group
         project = Factory :project, user: user
         project.groups << group
-        project.save
 
         login(user.email, user.password)
 
@@ -49,7 +47,6 @@ describe 'Groups' do
         # Other user's project
         project = Factory :project
         project.groups << group
-        project.save
 
         login(user.email, user.password)
 
@@ -63,7 +60,6 @@ describe 'Groups' do
         projects = 2.times.map do
           project = Factory :project, user: user
           project.groups.push group
-          project.save
           project
         end
 
