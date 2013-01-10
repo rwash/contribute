@@ -99,7 +99,6 @@ Spork.each_run do
   Group.destroy_all
   List.destroy_all
   Approval.destroy_all
-  Category.destroy_all
   Comment.destroy_all
   Contribution.destroy_all
   Item.destroy_all
