@@ -6,13 +6,7 @@ class GroupsController < InheritedResources::Base
     @groups = Group.all
 
     unless current_user.nil?
-      @user_groups = []
-      for project in current_user.projects
-        for group in project.groups
-          @user_groups << group
-        end
-      end
-      @user_groups.uniq!
+      @user_groups = current_user.projects.map { |p| p.groups }.flatten.uniq
       @admin_groups = current_user.owned_groups
     end
   end
