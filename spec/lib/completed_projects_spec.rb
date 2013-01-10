@@ -45,16 +45,16 @@ describe CompletedProjects do
       EmailManager.should_receive(:project_funded_to_contributor).with(to_funded).once
       EmailManager.should_receive(:project_funded_to_contributor).with(to_funded2).once
 
-# TODO: Can't get should_receives to work on objects, as opposed to static classes
-# Tried stubbing on the object itself and should receiving on Contribution. No luck.
-#      to_not_funded.should_receive(:cancel).once
-#      to_funded.should_receive(:execute_payment).once
-#      to_funded2.should_receive(:execute_payment).once
+      # TODO: Can't get should_receives to work on objects, as opposed to static classes
+      # Tried stubbing on the object itself and should receiving on Contribution. No luck.
+      #      to_not_funded.should_receive(:cancel).once
+      #      to_funded.should_receive(:execute_payment).once
+      #      to_funded2.should_receive(:execute_payment).once
 
       CompletedProjects.run
 
-      assert Project.find(funded.id).state == 'funded'
-      assert Project.find(not_funded.id).state == 'nonfunded'
+      Project.find(funded.id).state.should eq 'funded'
+      Project.find(not_funded.id).state.should eq 'nonfunded'
     end
 
     it "run all works" do
@@ -88,11 +88,11 @@ describe CompletedProjects do
       EmailManager.should_receive(:project_funded_to_contributor).with(to_funded).once
       EmailManager.should_receive(:project_funded_to_contributor).with(to_funded_not_ignored).once
 
-# TODO: Can't get should_receives to work on objects, as opposed to static classes
-# Tried stubbing on the object itself and should receiving on Contribution. No luck.
-#      to_not_funded.should_receive(:cancel).once
-#      to_funded.should_receive(:execute_payment).once
-#      to_funded_not_ignored.should_receive(:execute_payment).once
+      # TODO: Can't get should_receives to work on objects, as opposed to static classes
+      # Tried stubbing on the object itself and should receiving on Contribution. No luck.
+      #      to_not_funded.should_receive(:cancel).once
+      #      to_funded.should_receive(:execute_payment).once
+      #      to_funded_not_ignored.should_receive(:execute_payment).once
 
       CompletedProjects.run_all
     end
