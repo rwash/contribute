@@ -10,7 +10,7 @@ FactoryGirl.define do
     # Random amount between 100 and 3000, in steps of 100
     sequence(:funding_goal) { (Random.rand(30)+1) * 100 }
     payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
-    user_id 1
+    user
     confirmed true
     state 'unconfirmed'
   end
