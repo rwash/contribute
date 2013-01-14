@@ -28,6 +28,7 @@ namespace :nightly do
       sh "bundle exec rspec > #{spec_output}"
     rescue
     ensure
+      # Just in case we didn't generate the file...
       touch spec_output
     end
   end
@@ -47,7 +48,7 @@ namespace :nightly do
       <a href='http://orithena.cas.msu.edu/contribute/doc'>Documentation</a>
 
       <h2>RSpec Results</h2>
-      #{File.read spec_output.gsub("\n", "<br/>")}
+      #{File.read(spec_output).gsub("\n", "<br/>")}
 
       <h2>Documentation Results</h2>
       #{File.read(doc_output).gsub("\n", "<br/>")}
