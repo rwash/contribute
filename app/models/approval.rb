@@ -7,6 +7,6 @@
 # * *updated_at* (+datetime+)
 # * *reason* (+string+)
 class Approval < ActiveRecord::Base
-  has_one :group
-  has_one :project
+  belongs_to :group
+  belongs_to :project
 end
