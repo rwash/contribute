@@ -4,61 +4,36 @@ require 'controller_helper'
 describe ApprovalsController do
   include Devise::TestHelpers
 
-  describe "functional tests:" do
-    render_views
+  let(:user) { Factory :user }
+  before(:each) { sign_in user }
 
-    before(:all) do
-      @user = FactoryGirl.create(:user)
-      @user2 = FactoryGirl.create(:user)
+  context "when signed in as an admin" do
+    let(:group) { Factory :group, admin_user: user, open: false }
+    let(:approval) { Factory :approval, group: group }
 
-      @group = FactoryGirl.create(:group, :admin_user_id => @user.id, :open => false)
-      @project = FactoryGirl.create(:project, :user_id => @user2.id)
-      @approval = FactoryGirl.create(:approval, :group_id => @group.id, :project_id => @project.id)
+    it "allows approvals", :broken do
+      post 'approve', :group_id => group.id, :id => approval.id
+      response.should redirect_to(group_admin_path(group))
     end
 
-    after(:all) do
-      @user.delete
-      @user2.delete
-      @group.delete
-      @project.delete
-      @approval.delete
+    it "allows rejections", :broken do
+      post 'reject', :group_id => group.id, :id => approval.id, :reason => "I dont know"
+      response.should redirect_to(group_admin_path(group))
+    end
+  end
+
+  context "when not signed in as an admin" do
+    let(:group) { Factory :group, open: false }
+    let(:approval) { Factory :approval, group: group }
+
+    it "does not allow approvals", :broken do
+      post 'approve', :group_id => group.id, :id => approval.id
+      response.should redirect_to(group_admin_path(group))
     end
 
-    context "admin can" do
-      it "admin can approve approval" do
-        sign_in @user
-
-        get 'approve', :group_id => @group.id, :id => @approval.id
-        response.should redirect_to(group_admin_path(@group))
-      end
-
-      it "admin can reject approval" do
-        sign_in @user
-
-        get 'reject', :group_id => @group.id, :id => @approval.id, :reason => "I dont know"
-        response.should redirect_to(group_admin_path(@group))
-      end
-    end
-
-    context "admin cannot" do
-      before(:all) do
-        @group.admin_user_id += 1
-        @group.save!
-      end
-
-      it "non admin cannot approve" do
-        sign_in @user
-
-        get 'approve', :group_id => @group.id, :id => @approval.id
-        response.should redirect_to(group_admin_path(@group))
-      end
-
-      it "non admin cannot reject" do
-        sign_in @user
-
-        get 'reject', :group_id => @group.id, :id => @approval.id, :reason => "I dont know"
-        response.should redirect_to(group_admin_path(@group))
-      end
+    it "does not allow rejections", :broken do
+      post 'reject', :group_id => group.id, :id => approval.id, :reason => "I dont know"
+      response.should redirect_to(group_admin_path(group))
     end
   end
 end

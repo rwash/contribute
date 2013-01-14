@@ -5,8 +5,5 @@ FactoryGirl.define do
     # Associate a group and a project
     group
     project
-
-    approved nil
-    reason nil
   end
 end
