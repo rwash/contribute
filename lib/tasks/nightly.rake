@@ -27,7 +27,7 @@ namespace :nightly do
 
   file spec_output => [:bundle, 'db:test:prepare'] do
     begin
-      sh "bundle exec rspec --format html> #{spec_output}"
+      sh "bundle exec rspec > #{spec_output}"
     rescue
     ensure
       touch spec_output
@@ -44,7 +44,8 @@ namespace :nightly do
       <h1>Contribute Nightly Output</h1>
 
       See more: <br/>
-      <a href='http://orithena.cas.msu.edu/contribute/coverage'>Test Coverage</a> and
+      <a href='http://orithena.cas.msu.edu/contribute/coverage'>Test Coverage</a>,
+      <a href='http://orithena.cas.msu.edu/contribute/specifications.html'>Project Specifications</a>, and
       <a href='http://orithena.cas.msu.edu/contribute/doc'>Documentation</a>
 
       <h2>RSpec Results</h2>
