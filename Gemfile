@@ -46,6 +46,9 @@ group :test do
   gem 'simplecov', :require => false
   # Clean the database easily before running the test suite
   gem 'database_cleaner'
+
+  # Test time-sensitive behavior without having to wait days
+  gem 'timecop'
 end
 
 # Deploy with Capistrano

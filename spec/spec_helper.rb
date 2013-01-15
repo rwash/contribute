@@ -59,7 +59,10 @@ Spork.prefork do
     Capybara.server_port = 3999
 
     config.include(MailerMacros)
-    config.before(:each) { reset_email }
+    config.before(:each) do
+      reset_email
+      Timecop.return
+    end
 
     # Capybara uses a DSL to allow test cases to interact with web pages
     config.include Capybara::DSL
