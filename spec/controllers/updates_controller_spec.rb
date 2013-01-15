@@ -4,57 +4,40 @@ require 'controller_helper'
 describe UpdatesController do
   include Devise::TestHelpers
 
-  describe "functional tests:" do
-    render_views
+  context "create action" do
+    let(:project) { Factory :project, state: :active }
+    let(:user) { project.user }
 
-    before(:all) do
-      @user = FactoryGirl.create(:user)
-      @user2 = FactoryGirl.create(:user)
+    context "user is signed in" do
+      before(:each) { sign_in user }
 
-      @project = FactoryGirl.create(:project, :state => 'active', :user_id => @user.id)
-      @project2 = FactoryGirl.create(:project, :state => 'active', :user_id => @user2.id)
-    end
-
-    after(:all) do
-      @user.delete
-      @user2.delete
-      @project.delete
-      @project2.delete
-    end
-
-    context "create action" do
-      it 'signed in user can create an update' do
-        sign_in @user
-        post 'create', :project_id => @project.id, :update => FactoryGirl.attributes_for(:update)
-        response.should redirect_to(project_path(@project))
+      it 'can create an update' do
+        expect {post 'create', :project_id => project.id, :update => FactoryGirl.attributes_for(:update)}.to change{ Update.count }.by 1
+        response.should redirect_to(project_path(project))
         flash[:notice].should == "Update saved succesfully."
       end
 
       it 'update should start with email_sent = false' do
-        sign_in @user
-        post 'create', :project_id => @project.id, :update => FactoryGirl.attributes_for(:update)
-        response.should redirect_to(project_path(@project))
+        expect {post 'create', :project_id => project.id, :update => FactoryGirl.attributes_for(:update)}.to change {Update.count}.by 1
+        response.should redirect_to(project_path(project))
         Update.last.email_sent.should == false
       end
 
-      it 'signed in user fails for incomplete update' do
-        sign_in @user
-        post 'create', :project_id => @project.id
-        response.should redirect_to(project_path(@project))
+      it 'fails for incomplete update' do
+        expect{ post 'create', :project_id => project.id }.to_not change {Update.count}
+        response.should redirect_to(project_path(project))
         flash[:error].should include "Update failed to save."
       end
+    end
 
-      it 'fails for not signed in user' do
-        post 'create', :project_id => @project.id, :update => FactoryGirl.attributes_for(:update)
-        response.should redirect_to(project_path(@project))
+    context "user is not signed in" do
+      it 'does not allow creation' do
+        expect {post 'create', :project_id => project.id, :update => FactoryGirl.attributes_for(:update)}.to_not change {Update.count}
+        response.should redirect_to(project_path(project))
         flash[:error].should include "You cannot update this project."
       end
 
-      it 'fails for user who is not project owner' do
-        post 'create', :project_id => @project2.id, :update => FactoryGirl.attributes_for(:update)
-        response.should redirect_to(project_path(@project2))
-        flash[:error].should include "You cannot update this project."
-      end
-    end	
+      it 'fails for user who is not project owner'
+    end
   end
 end

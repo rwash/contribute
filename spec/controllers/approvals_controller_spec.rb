@@ -13,11 +13,13 @@ describe ApprovalsController do
 
     it "allows approvals", :broken do
       post 'approve', :group_id => group.id, :id => approval.id
+      approval.reload.approved.should be_true
       response.should redirect_to(group_admin_path(group))
     end
 
     it "allows rejections", :broken do
       post 'reject', :group_id => group.id, :id => approval.id, :reason => "I dont know"
+      approval.reload.approved.should be_false
       response.should redirect_to(group_admin_path(group))
     end
   end
@@ -27,12 +29,12 @@ describe ApprovalsController do
     let(:approval) { Factory :approval, group: group }
 
     it "does not allow approvals", :broken do
-      post 'approve', :group_id => group.id, :id => approval.id
+      expect {post 'approve', :group_id => group.id, :id => approval.id}.to_not change {approval.approved}
       response.should redirect_to(group_admin_path(group))
     end
 
     it "does not allow rejections", :broken do
-      post 'reject', :group_id => group.id, :id => approval.id, :reason => "I dont know"
+      expect {post 'reject', :group_id => group.id, :id => approval.id, :reason => "I dont know"}.to_not change {approval.approved}
       response.should redirect_to(group_admin_path(group))
     end
   end
