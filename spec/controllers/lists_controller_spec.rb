@@ -4,75 +4,69 @@ require 'controller_helper'
 describe ListsController do
   include Devise::TestHelpers
 
-  describe "functional tests:" do
-    render_views
+  context "when user is not signed in" do
+    it "displays users list" do
+      list = FactoryGirl.create(:list, :listable_id => Factory(:user).id, :listable_type => "User")
+      get :show, :id => list.id
+      response.should be_success
+      list.delete
+    end
 
-    let(:user) { Factory :user }
-    let(:user2) { Factory :user }
-    let(:group) { Factory :group, :admin_user => user }
-    let(:group2) { Factory :group, :admin_user => user2 }
+    it "displays groups list" do
+      list = FactoryGirl.create(:list, :listable_id => Factory(:group).id, :listable_type => "Group")
+      get :show, :id => list.id
+      response.should be_success
+      list.delete
+    end
+  end
 
-    context "creating lists" do
-      it "anyone can view users list" do
-        list = FactoryGirl.create(:list, :listable_id => user.id, :listable_type => "User")
-        get :show, :id => list.id
-        response.should be_success
-        list.delete
-      end
+  context "when user is signed in" do
+    let(:current_user) { Factory :user }
+    before(:each) { sign_in current_user }
 
-      it "anyone can view groups list" do
+    context "when user does not own the list" do
+      let(:group) { Factory :group }
+      let(:user) { group.admin_user }
+
+      it "does not allow group list deletion" do
         list = FactoryGirl.create(:list, :listable_id => group.id, :listable_type => "Group")
-        get :show, :id => list.id
-        response.should be_success
-        list.delete
-      end
-
-      it "user cannot destroy list it doesnt own" do
-        sign_in user
-
-        list = FactoryGirl.create(:list, :listable_id => group2.id, :listable_type => "Group")
-        get :destroy, :id => list.id
+        expect { get :destroy, :id => list.id }.to_not change {List.count}
         response.should redirect_to(root_path)
       end
 
-      it "user cannot destroy list it doesnt own (user)" do
-        sign_in user
-
-        list = FactoryGirl.create(:list, :listable_id => user2.id, :listable_type => "User")
-        get :destroy, :id => list.id
+      it "does not allow user list deletion" do
+        list = FactoryGirl.create(:list, :listable_id => user.id, :listable_type => "User")
+        expect { get :destroy, :id => list.id }.to_not change {List.count}
         response.should redirect_to(root_path)
       end
 
-      it "user can destroy list it does own" do
-        sign_in user
-
+      it "does not allow group list editing" do
         list = FactoryGirl.create(:list, :listable_id => group.id, :listable_type => "Group")
-        get :destroy, :id => list.id
-        response.should redirect_to(list.listable)
-      end
-
-      it "user can destroy list it does own (user)" do
-        sign_in user
-
-        list = FactoryGirl.create(:list, :listable_id => user.id, :listable_type => "User")
-        get :destroy, :id => list.id
-        response.should redirect_to(list.listable)
-      end
-
-      it "user cannot edit list it doesnt own" do
-        sign_in user
-
-        list = FactoryGirl.create(:list, :listable_id => group2.id, :listable_type => "Group")
         get :edit, :id => list.id
         response.should redirect_to(root_path)
       end
 
-      it "user cannot edit list it doesnt own (user)" do
-        sign_in user
-
-        list = FactoryGirl.create(:list, :listable_id => user2.id, :listable_type => "User")
+      it "does not allow user list editing" do
+        list = FactoryGirl.create(:list, :listable_id => user.id, :listable_type => "User")
         get :edit, :id => list.id
         response.should redirect_to(root_path)
+      end
+    end
+
+    context "when user owns the list" do
+      let(:user) { current_user }
+      let(:group) { Factory :group, :admin_user => user }
+
+      it "allows group list destruction" do
+        list = FactoryGirl.create(:list, :listable_id => group.id, :listable_type => "Group")
+        expect { get :destroy, :id => list.id }.to change {List.count}.by(-1)
+        response.should redirect_to(list.listable)
+      end
+
+      it "allows user list destruction" do
+        list = FactoryGirl.create(:list, :listable_id => user.id, :listable_type => "User")
+        expect { get :destroy, :id => list.id }.to change {List.count}.by(-1)
+        response.should redirect_to(list.listable)
       end
     end
   end
