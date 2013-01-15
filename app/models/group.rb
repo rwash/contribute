@@ -26,14 +26,14 @@ class Group < ActiveRecord::Base
   def approve_all
     if self.open
       for approval in self.approvals.where(:approved => nil)
-        @group = Group.find(approval.group_id)
-        @project = Project.find(approval.project_id)
+        group = approval.group
+        project = approval.project
 
         approval.approved = true
         approval.save
 
-        @group.projects << @project unless @group.projects.include?(@project)
-        @project.update_project_video unless @project.video_id.nil?
+        group.projects << project unless group.projects.include?(project)
+        project.update_project_video unless project.video_id.nil?
       end
     end
   end
