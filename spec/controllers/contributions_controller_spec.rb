@@ -5,7 +5,7 @@ describe ContributionsController do
   include Devise::TestHelpers
 
   describe 'permissions' do
-    let(:project) { Factory :project, state: 'active' }
+    let!(:project) { Factory :project, state: :active }
 
     context 'when user is not signed in' do
       it "does not allow contributions" do
@@ -24,7 +24,7 @@ describe ContributionsController do
       end
 
       it "does not allow contributions to projects the user owns" do
-        contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
+        project = Factory :project, state: :active, user: user
         expect {get :new, :project => project.name}.to_not change { Contribution.count }
         response.should redirect_to(project)
         flash[:alert].should include "may not contribute"
@@ -43,9 +43,35 @@ describe ContributionsController do
         flash[:alert].should include "may not edit this contribution"
       end
 
-      it "does not allow contributions after project end_date"
-      it "allows contributions on project end_date"
-      it "allows contributions before project end_date"
+      it "does not allow contributions after project end date" do
+        Timecop.freeze(project.end_date + 2) do
+          expect {get :new, :project => project.name}.to_not change { Contribution.count }
+          response.should redirect_to(project)
+          flash[:alert].should include "may not contribute"
+        end
+      end
+
+      it "does not allow contributions one day after project end date" do
+        Timecop.freeze(project.end_date + 1) do
+          expect {get :new, :project => project.name}.to_not change { Contribution.count }
+          response.should redirect_to(project)
+          flash[:alert].should include "may not contribute"
+        end
+      end
+
+      it "allows contributions on project end date" do
+        Timecop.freeze(project.end_date) do
+          expect {get :new, :project => project.name}.to_not change { Contribution.count }
+          response.should be_success
+        end
+      end
+
+      it "allows contributions before project end date" do
+        Timecop.freeze(project.end_date - 1) do
+          expect {get :new, :project => project.name}.to_not change { Contribution.count }
+          response.should be_success
+        end
+      end
     end
   end
 
