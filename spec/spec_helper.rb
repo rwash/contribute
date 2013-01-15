@@ -94,16 +94,16 @@ Spork.each_run do
   # TODO: Change this to run the Rake task 'db:test:prepare',
   # which isn't dependent on the models we have defined in the
   # database.
-  User.destroy_all
-  Project.destroy_all
-  Group.destroy_all
-  List.destroy_all
-  Approval.destroy_all
-  Comment.destroy_all
-  Contribution.destroy_all
-  Item.destroy_all
-  Update.destroy_all
-  Video.destroy_all
+  Group.delete_all
+  List.delete_all
+  Approval.delete_all
+  Comment.delete_all
+  Contribution.delete_all
+  Item.delete_all
+  Update.delete_all
+  Video.delete_all
+  Project.delete_all
+  User.delete_all
 end
 
 # Any code that is left outside the two blocks will be run during preforking
