@@ -278,6 +278,7 @@ GEM
       ref
     thor (0.14.6)
     tilt (1.3.3)
+    timecop (0.5.4)
     timeliness (0.3.7)
     treetop (1.4.12)
       polyglot
@@ -356,6 +357,7 @@ DEPENDENCIES
   simplecov
   spork-rails
   therubyracer
+  timecop
   timeliness
   turn (~> 0.8.3)
   twitter-bootstrap-rails
