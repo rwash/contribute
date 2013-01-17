@@ -36,6 +36,9 @@
 /coverage
 /public/coverage
 
+# Ignore Rspec output
+/public/specification.html
+
 #doc files
 /doc
 
