@@ -70,7 +70,7 @@ class ContributionsController < ApplicationController
     end
   end
 
-  # Routing for edit and update doesn't work unless route for show exists	
+  # Routing for edit and update doesn't work unless route for show exists
   def show
     raise ActionController::RoutingError.new('Not Found')
   end
@@ -91,16 +91,21 @@ class ContributionsController < ApplicationController
 
     if @project.end_date < Date.today
       flash[:error] = "You cannot edit your contribution because this project is no longer taking contributions."
-      return redirect_to @project	
+      return redirect_to @project
     end
 
     if !@contribution.valid?
-      return render :action => :edit	
+      return render :action => :edit
     end
 
     if @contribution.amount < @editing_contribution.amount
       @contribution.errors.add(:amount, "can't be less than the original amount")
-      return render :action => :edit	
+      return render :action => :edit
+    end
+
+    if @contribution.amount == @editing_contribution.amount
+      @contribution.errors.add(:amount, "No changes were made to your contribution")
+      return render :action => :edit
     end
 
     session[:contribution] = @contribution
@@ -150,7 +155,7 @@ class ContributionsController < ApplicationController
   def validate_project
     if !@project.state.active?
       flash[:alert] = ERROR_STRING
-      redirect_to root_path	
+      redirect_to root_path
     end
   end
 
