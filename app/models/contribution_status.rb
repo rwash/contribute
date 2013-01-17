@@ -22,6 +22,25 @@ class ContributionStatus < ActiveRecord::Base
     end
   end
 
+  def self.parameterize(status)
+    case status
+    when NONE
+      "none"
+    when SUCCESS
+      "success"
+    when PENDING
+      "pending"
+    when FAILURE
+      "failure"
+    when CANCELLED
+      "cancelled"
+    when RETRY_PAY
+      "retry_pay"
+    when RETRY_CANCEL
+      "retry_cancel"
+    end
+  end
+
   def self.status_to_string(status)
     case status
     when NONE
