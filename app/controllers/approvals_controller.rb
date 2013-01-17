@@ -3,6 +3,8 @@ class ApprovalsController < InheritedResources::Base
     approval = Approval.find(params[:id])
     group = Group.find(params[:group_id])
 
+    authorize! :approve, approval
+
     if approval.approved.nil?
       approval.approved = true
       approval.save!
@@ -21,6 +23,9 @@ class ApprovalsController < InheritedResources::Base
     approval = Approval.find(params[:id])
     group = Group.find(params[:group_id])
     project = Project.find(approval.project_id)
+
+    authorize! :reject, approval
+
     if approval.approved.nil?
       approval.reason = params[:reason]
       approval.approved = false
