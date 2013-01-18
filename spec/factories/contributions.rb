@@ -12,8 +12,5 @@ FactoryGirl.define do
     project
     # Create an associated user
     user
-
-    confirmed false
-    status 'none'
   end
 end
