@@ -141,8 +141,8 @@ class AmazonProcessTesting
 
         page.should have_content('Contribution successfully updated.')
 
-        cancelled_contribution = Contribution.where(:status => ContributionStatus::CANCELLED, :project_id => project.id)
-        new_contribution = Contribution.where(:status => ContributionStatus::NONE, :project_id => project.id)
+        cancelled_contribution = Contribution.where(:status => :cancelled, :project_id => project.id)
+        new_contribution = Contribution.where(:status => :none, :project_id => project.id)
 
         cancelled_contribution.should_not be_nil
         new_contribution.should_not be_nil

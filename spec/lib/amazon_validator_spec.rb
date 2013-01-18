@@ -92,7 +92,7 @@ describe Amazon::FPS::AmazonValidator do
     end
 
     it "should succeed with valid parameters (for get_transaction_status)" do
-      Amazon::FPS::AmazonValidator.get_transaction_status(@response).should equal(ContributionStatus::SUCCESS)
+      Amazon::FPS::AmazonValidator.get_transaction_status(@response).should eq :success
     end
   end
 
@@ -102,12 +102,12 @@ describe Amazon::FPS::AmazonValidator do
     end
 
     it "should succeed with valid parameters" do
-      run_valid_cancel_status_test(ContributionStatus::SUCCESS)
+      run_valid_cancel_status_test(:success)
     end
 
     it "should fail with an error" do
       @response["Errors"] = "omg an error"
-      run_valid_cancel_status_test(ContributionStatus::FAILURE)
+      run_valid_cancel_status_test(:failure)
     end
   end
 
@@ -118,11 +118,11 @@ describe Amazon::FPS::AmazonValidator do
     end
 
     it "should succeed on valid input" do
-      run_get_pay_status_test(@successful_response, ContributionStatus::PENDING)
+      run_get_pay_status_test(@successful_response, :pending)
     end
 
     it "should fail on invalid input" do
-      run_get_pay_status_test(@failed_response, ContributionStatus::FAILURE)
+      run_get_pay_status_test(@failed_response, :failure)
     end
   end
 

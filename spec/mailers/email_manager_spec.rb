@@ -40,7 +40,7 @@ describe EmailManager do
   it "edit contribution" do
     user = FactoryGirl.create(:user)
     project = FactoryGirl.create(:project)
-    old_contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id, :status => ContributionStatus::CANCELLED)
+    old_contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id, :status => :cancelled)
     contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
 
     EmailManager.edit_contribution(old_contribution, contribution).deliver
@@ -75,8 +75,8 @@ describe EmailManager do
   end
 
   it "failed retries" do
-    contribution = FactoryGirl.create(:contribution, :status => ContributionStatus::RETRY_CANCEL)
-    contribution2 = FactoryGirl.create(:contribution, :status => ContributionStatus::PENDING)
+    contribution = FactoryGirl.create(:contribution, :status => :retry_cancel)
+    contribution2 = FactoryGirl.create(:contribution, :status => :pending)
     argArray = [ contribution, contribution2 ]
 
     EmailManager.failed_retries(argArray).deliver

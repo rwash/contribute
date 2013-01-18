@@ -20,31 +20,27 @@ class AmazonValidator
 	end
 
 	def self.get_transaction_status(response)
-		return ContributionStatus.string_to_status(response['GetTransactionStatusResult']['TransactionStatus'])
+		response['GetTransactionStatusResult']['TransactionStatus'].downcase.to_sym
 	end
 
 	#if the response contains errors or the transaction status was not a success
 	def self.get_cancel_status(response)
-		if !response["Errors"].nil?
-			return ContributionStatus::FAILURE
-		else
-			return ContributionStatus::SUCCESS
-		end
+    response["Errors"].nil? ? :success : :failure
 	end
 
 	#if the response contains errors or no transaction status
 	def self.get_pay_status(response)
 		if !response['Errors'].nil? or response['PayResult'].nil? or response['PayResult']['TransactionStatus'].nil?
-			return ContributionStatus::FAILURE
+			return :failure
 		else
-			return ContributionStatus.string_to_status(response['PayResult']['TransactionStatus'])
+			response['PayResult']['TransactionStatus'].downcase.to_sym
 		end
 	end
 
 	#Written under the assumption that if a transaction returns failure, it WILL contain an error
 	def self.get_error(response)
 		if response['Errors'].nil? or response['Errors']['Error'].nil? or response['Errors']['Error']['Code'].nil?
-			raise "Could not parse amazon error"
+      raise "Could not parse amazon error"
 		end
 
 		error_code = response['Errors']['Error']['Code']

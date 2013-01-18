@@ -345,7 +345,7 @@ describe Project do
       3.times.map { Factory :contribution, project: project }
     end
     #Since this one is cancelled it shouldn't count towards the total
-    let(:cancelled) { Factory :contribution, project: project, status: ContributionStatus::CANCELLED }
+    let(:cancelled) { Factory :contribution, project: project, status: :cancelled }
 
     before(:all) do
       Contribution.any_instance.stub(:destroy) { true }
@@ -358,7 +358,7 @@ describe Project do
 
     it 'contributions_percentage is correct' do
       sum = contributions.map{|c| c.amount}.inject(:+)
-      project.contributions_percentage.should eq (sum.to_f/project.funding_goal * 100).to_i
+      project.contributions_percentage.should eq((sum.to_f/project.funding_goal * 100).to_i)
     end
 
     it 'destroy cancels contributions and sets to inactive'

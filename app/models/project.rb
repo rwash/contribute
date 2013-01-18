@@ -28,7 +28,7 @@ class Project < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   belongs_to :user
-  has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RETRY_CANCEL, :fail => ContributionStatus::FAILURE, :cancelled => ContributionStatus::CANCELLED}]
+  has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RetryCancel, :fail => ContributionStatus::Failure, :cancelled => ContributionStatus::Cancelled}]
   acts_as_commentable
   has_and_belongs_to_many :groups
   has_many :comments

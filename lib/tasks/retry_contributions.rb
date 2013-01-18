@@ -6,14 +6,14 @@ class RetryContributions
 	@@logger = Logger.new('log/cron_log.log')
   @@still_failing = Array.new
 
-	def self.run
+  def self.run
     @@logger.info "#{Date.today}: Starting contributions_retry"
 
     check_pending
     retry_pay
     retry_cancel
 
-    if @@still_failing.size > 0
+    if @@still_failing.any?
       EmailManager.failed_retries(@@still_failing).deliver
     end
 
@@ -21,7 +21,7 @@ class RetryContributions
   end
 
   def self.check_pending
-    to_check_pending = Contribution.where("status = ?", ContributionStatus::PENDING)
+    to_check_pending = Contribution.find_all_by_status(:pending)
     @@logger.info "Found #{to_check_pending.size} contributions to check pending"
 
     to_check_pending.each do |contribution|
@@ -35,7 +35,7 @@ class RetryContributions
   end
 
   def self.retry_pay
-    to_retry_pay = Contribution.where("status = ?", ContributionStatus::RETRY_PAY)
+    to_retry_pay = Contribution.find_all_by_status(:retry_pay)
     @@logger.info "Found #{to_retry_pay.size} contributions to retry pay"
 
     to_retry_pay.each do |contribution|
@@ -49,7 +49,7 @@ class RetryContributions
   end
 
   def self.retry_cancel
-    to_retry_cancel = Contribution.where("status = ?", ContributionStatus::RETRY_CANCEL)
+    to_retry_cancel = Contribution.find_all_by_status(:retry_cancel)
     @@logger.info "Found #{to_retry_cancel.size} contributions to retry cancel"
 
     to_retry_cancel.each do |contribution|
