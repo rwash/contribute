@@ -57,21 +57,21 @@ class Contribution < ActiveRecord::Base
 
     cancel_status = Amazon::FPS::AmazonValidator.get_cancel_status(response)
 
-    if cancel_status == ContributionStatus::SUCCESS
-      self.status = ContributionStatus::CANCELLED
+    if cancel_status == :success
+      self.status = :cancelled
       self.retry_count = 0
       EmailManager.contribution_cancelled(self).deliver
     else
       error = Amazon::FPS::AmazonValidator.get_error(response)
 
       if error.retriable
-        self.status = ContributionStatus::RETRY_CANCEL
+        self.status = :retry_cancel
         self.retry_count = self.retry_count + 1
       else
         #If the cancel failed, it won't matter to the user. Their contribution is 
         #cancelled on our end, so it won't get executed
         EmailManager.unretriable_cancel_to_admin(error, self).deliver
-        self.status = ContributionStatus::FAILURE
+        self.status = :failure
       end
     end
 
@@ -86,23 +86,23 @@ class Contribution < ActiveRecord::Base
     response = request.send 
     transaction_status = Amazon::FPS::AmazonValidator.get_pay_status(response)
 
-    if transaction_status == ContributionStatus::SUCCESS
-      self.status = ContributionStatus::SUCCESS
+    if transaction_status == :success
+      self.status = :success
       self.retry_count = 0
       EmailManager.contribution_successful(self).deliver
       self.transaction_id = response['PayResult']['TransactionId']
-    elsif transaction_status == ContributionStatus::PENDING
-      self.status = ContributionStatus::PENDING
+    elsif transaction_status == :pending
+      self.status = :pending
       self.retry_count = 0
       self.transaction_id = response['PayResult']['TransactionId']
-    elsif transaction_status == ContributionStatus::CANCELLED
+    elsif transaction_status == :cancelled
       EmailManager.cancelled_payment_to_admin(self).deliver
-      self.status = ContributionStatus::CANCELLED
+      self.status = :cancelled
     else
       error = Amazon::FPS::AmazonValidator.get_error(response)
 
       if error.retriable
-        self.status = ContributionStatus::RETRY_PAY
+        self.status = :retry_pay
         self.retry_count = self.retry_count + 1
       else
         if error.email_user
@@ -111,7 +111,7 @@ class Contribution < ActiveRecord::Base
         if error.email_admin
           EmailManager.unretriable_payment_to_admin(error, self).deliver
         end
-        self.status = ContributionStatus::FAILURE
+        self.status = :failure
       end
     end
 
@@ -130,17 +130,17 @@ class Contribution < ActiveRecord::Base
     end
 
     transaction_status = Amazon::FPS::AmazonValidator.get_transaction_status(response)
-    if transaction_status == ContributionStatus::SUCCESS
+    if transaction_status == :success
       EmailManager.contribution_successful(self).deliver
       self.retry_count = 0
-      self.status = ContributionStatus::SUCCESS
-    elsif transaction_status == ContributionStatus::FAILURE
+      self.status = :success
+    elsif transaction_status == :failure
       EmailManager.failed_payment_to_user(self).deliver
-      self.status = ContributionStatus::FAILURE
-    elsif transaction_status == ContributionStatus::CANCELLED
+      self.status = :failure
+    elsif transaction_status == :cancelled
       EmailManager.cancelled_payment_to_admin(self).deliver
-      self.status = ContributionStatus::CANCELLED
-    elsif transaction_status == ContributionStatus::PENDING
+      self.status = :cancelled
+    elsif transaction_status == :pending
       self.retry_count = self.retry_count + 1
     end
 

@@ -12,7 +12,8 @@
     <th><%= contribution.id %></th>
     <th><%= contribution.payment_key %></th>
     <th><%= contribution.retry_count %></th>  
-    <th><%= ContributionStatus.status_to_string(contribution.status) %></th>
+    <!-- TODO: Stylize this a bit -->
+    <th><%= contribution.status %></th>
   </tr>
   <% end %>
 </table>

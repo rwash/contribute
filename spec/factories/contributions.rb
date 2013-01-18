@@ -14,5 +14,6 @@ FactoryGirl.define do
     user
 
     confirmed false
+    status 'none'
   end
 end
