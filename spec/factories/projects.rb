@@ -12,6 +12,6 @@ FactoryGirl.define do
     payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
     user
     confirmed true
-    state 'unconfirmed'
+    state :unconfirmed
   end
 end
