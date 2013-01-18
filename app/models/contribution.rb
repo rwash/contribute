@@ -32,13 +32,14 @@ class Contribution < ActiveRecord::Base
 
   attr_accessible :project_id, :user_id, :amount, :payment_key
 
+  classy_enum_attr :status, enum: 'ContributionStatus'
+
   # Overrides the default initializer,
   # sets the status to none and retry count to zero.
   #---
   # TODO: Move the default value into the database schema file.
   def initialize(attributes = nil, options = {})
     super
-    self.status = ContributionStatus::NONE
     self.retry_count = 0
   end
 
