@@ -43,14 +43,14 @@ class ProjectsController < InheritedResources::Base
   def update
     @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first 
 
-    if params[:project] && !params[:project][:video].nil?
-      unless @project.video_id.nil?
-        Video.delete_video(Video.find(@project.video_id))
+    if params[:project] && params[:project][:video]
+      if @project.video
+        Video.delete_video(@project.video)
       end
 
-      @video = Video.create(:title => @project.name, :description => @project.short_description)
-      @project.video_id = @video.id
-      @video.project_id = @project.id
+      @video = Video.create(title: @project.name, description: @project.short_description)
+      @project.video = @video
+      @video.project = @project
       @project.save!
       @video.save!
 
@@ -80,7 +80,7 @@ class ProjectsController < InheritedResources::Base
 
   def activate
     @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
-    @video = Video.find_by_id(@project.video_id)
+    @video = @project.video
 
     @project.state = :active
     #make video public
@@ -126,7 +126,7 @@ class ProjectsController < InheritedResources::Base
 
   def destroy
     @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
-    @video = Video.find(@project.video_id) unless @project.video_id.nil?
+    @video = @project.video
 
     if @project.state.unconfirmed? || @project.state.inactive?
       @project.destroy
@@ -156,9 +156,9 @@ class ProjectsController < InheritedResources::Base
     return redirect_to root_path if @project.nil?
     return redirect_to root_path unless @project.public_can_view? or (logged_in? and (@project.confirmation_approver? or @project.user_id == current_user.id))
 
-    @video = Video.find(@project.video_id) unless @project.video_id.nil?
+    @video = @project.video
     #for some reason youtube returns the most recent upload if the video token is nil
-    if !@video.nil? && @video.yt_video_id.nil?
+    if @video && @video.yt_video_id.nil?
       @video = nil
     end
 
@@ -173,7 +173,7 @@ class ProjectsController < InheritedResources::Base
 
   def edit
     @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
-    @video = Video.find(@project.video_id) unless @project.video_id.nil?
+    @video = @project.video
   end
 
   protected	
