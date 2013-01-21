@@ -11,7 +11,7 @@ class ApprovalsController < InheritedResources::Base
 
       project = approval.project
       group.projects << project unless group.projects.include?(project)
-      project.update_project_video unless project.video_id.nil?
+      project.update_project_video
     else
       flash[:error] = "This project has already been #{(approval.approved)? 'approved' : 'denied'}."
     end

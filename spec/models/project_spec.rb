@@ -392,6 +392,13 @@ describe Project do
     end
   end
 
+  describe 'update_project_video' do
+    it "should not raise an exception" do
+      project = Factory :project
+      project.update_project_video
+    end
+  end
+
   describe 'to_param' do
     it 'returns name' do
       project = FactoryGirl.create(:project)

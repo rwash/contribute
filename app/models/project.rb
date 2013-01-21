@@ -169,17 +169,18 @@ class Project < ActiveRecord::Base
   end
 
   def update_project_video
+    return if video.nil?
+
     default_url_options[:host] = "orithena.cas.msu.edu"
-    @video = Video.find(self.video_id)
-    @tags = YT_TAGS
-    @description = "Contribute to this project: #{project_url(self)}\n\n#{@video.description}\n\nFind more projects from MSU:\n#{root_url}\n"
+    tags = YT_TAGS
+    description = "Contribute to this project: #{project_url(self)}\n\n#{video.description}\n\nFind more projects from MSU:\n#{root_url}\n"
 
     self.groups.each do |g|
-      @tags << g.name
-      @description += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
+      tags << g.name
+      description += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
     end
 
-    Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => @description, :category => 'Tech', :keywords => @tags, :list => "allowed")
+    Video.yt_session.video_update(video.yt_video_id, title: video.title, description: description, category: 'Tech', keywords: tags, list: "allowed")
   end
 
   def confirmation_approver?
