@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(:version => 20130117193845) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",         :default => 'none'
+    t.string   "status",         :default => "none"
     t.integer  "retry_count"
     t.string   "transaction_id"
     t.boolean  "confirmed",      :default => false
