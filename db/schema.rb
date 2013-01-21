@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130117193845) do
+ActiveRecord::Schema.define(:version => 20130121173452) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -254,7 +254,6 @@ ActiveRecord::Schema.define(:version => 20130117193845) do
     t.string   "payment_account_id"
     t.boolean  "confirmed"
     t.string   "state"
-    t.integer  "video_id"
   end
 
   create_table "updates", :force => true do |t|
