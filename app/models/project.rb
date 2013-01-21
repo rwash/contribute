@@ -17,7 +17,6 @@
 # * *payment_account_id* (+string+)
 # * *confirmed* (+boolean+)
 # * *state* (+string+)
-# * *video_id* (+integer+)
 class Project < ActiveRecord::Base
   MAX_NAME_LENGTH = 75
   MAX_SHORT_DESC_LENGTH = 200
@@ -34,7 +33,7 @@ class Project < ActiveRecord::Base
   has_many :comments
   has_many :updates
   has_one :category
-  belongs_to :video
+  has_one :video
   mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
   has_many :approvals
 

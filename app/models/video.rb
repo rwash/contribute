@@ -8,7 +8,7 @@
 # * *updated_at* (+datetime+)
 # * *project_id* (+integer+)
 class Video < ActiveRecord::Base
-  has_one :project
+  belongs_to :project
 
   scope :completes,   where(:is_complete => true)
   scope :incompletes, where(:is_complete => false)
