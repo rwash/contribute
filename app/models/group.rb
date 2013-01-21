@@ -33,7 +33,7 @@ class Group < ActiveRecord::Base
         approval.save
 
         group.projects << project unless group.projects.include?(project)
-        project.update_project_video unless project.video_id.nil?
+        project.update_project_video
       end
     end
   end
