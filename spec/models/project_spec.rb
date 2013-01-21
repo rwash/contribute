@@ -379,6 +379,19 @@ describe Project do
 =end
   end
 
+  describe 'destroy_video' do
+    it 'should delete video' do
+      project = Factory(:video).project
+      expect{ project.destroy_video }.to change{Video.count}.by(-1)
+    end
+
+    it 'should leave project.video as nil' do
+      p = Factory(:video).project
+      p.destroy_video
+      expect(p.reload.video).to be_nil
+    end
+  end
+
   describe 'to_param' do
     it 'returns name' do
       project = FactoryGirl.create(:project)

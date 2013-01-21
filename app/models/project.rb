@@ -162,10 +162,8 @@ class Project < ActiveRecord::Base
   # Destroys video connected to the project.
   # This method is executed before destroying each project.
   def destroy_video
-    unless self.video_id.nil?
-      @video = Video.find(self.video_id)
-      Video.delete_video(@video)
-      self.video_id = nil
+    unless video.nil?
+      video.destroy
       self.save
     end
   end
