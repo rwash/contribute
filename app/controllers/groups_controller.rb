@@ -42,7 +42,7 @@ class GroupsController < InheritedResources::Base
       flash[:error] = "Your project is already in this group."
     elsif @group.open?
       @group.projects << @project			
-      @video = Video.find_by_id(@project.video_id)
+      @video = @project.video
       @project.update_project_video unless @video.nil?
 
       flash[:notice] = "Your project has been added to the group."
@@ -71,7 +71,7 @@ class GroupsController < InheritedResources::Base
     @project = Project.find_by_name(params[:project_id].gsub(/-/, ' '))
     if @group.admin_user_id == current_user.id or @project.user_id == current_user.id
       @group.projects.delete(@project)
-      @project.update_project_video unless @project.video_id.nil?
+      @project.update_project_video
       flash[:notice] = "#{@project.name} removed from group #{@group.name}."
     else
       flash[:error] = "You do not have permission to remove this project."
