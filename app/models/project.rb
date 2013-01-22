@@ -32,7 +32,7 @@ class Project < ActiveRecord::Base
   has_and_belongs_to_many :groups
   has_many :comments
   has_many :updates
-  has_one :category
+  belongs_to :category
   has_one :video
   mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
   has_many :approvals
@@ -85,7 +85,7 @@ class Project < ActiveRecord::Base
 
   validates :payment_account_id, :presence => true
   validates :category_id, :presence => true
-  validates :user_id, :presence => true
+  validates :user, :presence => true
 
   # Delegations --------------------------------------------------------------
 
@@ -185,7 +185,7 @@ class Project < ActiveRecord::Base
 
   def confirmation_approver?
     approvals.each do |approval|
-      return true if Group.find_by_id(approval.group_id).admin_user_id == current_user.id
+      return true if approval.group.admin_user == current_user
     end
     return false
   end

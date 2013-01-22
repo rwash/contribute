@@ -12,8 +12,8 @@
 
 <div class="row group-tiles">
 <ul class="thumbnails-small">
-  <% @group.approvals.where(:approved => nil).each do |project| %>
-  <% @project = Project.find(project.project_id) %>
+  <% @group.approvals.where(:approved => nil).each do |approval| %>
+  <% @project = approval.project %>
     <li class="project-span">
     <div class="thumbnail-small">
         <%= link_to @project do %>
@@ -25,18 +25,18 @@
       <% end %>
         <h4 class="ellipsisName"><%= link_to @project.name, @project %></h4>
         <p class="byline">by <%= link_to @project.user.name, @project.user %></p>
-        <%= link_to 'Approve', approve_approval_path(@group, project), :class => "btn btn-primary btn-mini" %>
-        <%= link_to 'Reject', '#', :class => "btn btn-danger btn-mini", :onclick => "$(\"#myModal-#{project.id}\").modal('show')" %>
+        <%= link_to 'Approve', approve_approval_path(@group, approval), :class => "btn btn-primary btn-mini" %>
+        <%= link_to 'Reject', '#', :class => "btn btn-danger btn-mini", :onclick => "$(\"#myModal-#{approval.id}\").modal('show')" %>
       </div>
     </li>
 
-  <div id=<%= "myModal-#{project.id}" %> class="modal fade">
+  <div id=<%= "myModal-#{approval.id}" %> class="modal fade">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal">&times;</button>
       <h3>Please provide a reason for rejecting this project.</h3>
     </div>
     <div class="modal-body">
-      <%= form_tag reject_approval_path(@group, project) do %>
+      <%= form_tag reject_approval_path(@group, approval) do %>
         <%= text_area_tag :reason, '', :class => 'field span4', :rows => 6 %>
 
     </div>

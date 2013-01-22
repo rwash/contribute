@@ -110,7 +110,7 @@ $(document).ready(function(){
     </ul>
     <p>&nbsp;</p>
     <p class="update">
-      <%= render :partial => "updates/update_form", :object => @update if @project.can_update? and logged_in? and @project.user_id == current_user.id %>
+      <%= render :partial => "updates/update_form", :object => @update if @project.can_update? and logged_in? and @project.user == current_user %>
     </p>
   </div>
 
@@ -120,7 +120,7 @@ $(document).ready(function(){
 
 <div class="span3 well pull-right">
   <div class="projectBtn" align="center">
-    <% if logged_in? and @project.user_id == current_user.id %>
+    <% if logged_in? and @project.user == current_user %>
       <p>
       <%= @project.colored_state_description %>
       </p>
@@ -130,7 +130,7 @@ $(document).ready(function(){
   </div>
   <ul>
     <li>End Date: <%= @project.end_date %></li><br>
-    <li>Category: <%= Category.find(@project.category_id).short_description %></li><br>
+    <li>Category: <%= @project.category.short_description %></li><br>
     <li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li><br>
     <li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
   </ul>

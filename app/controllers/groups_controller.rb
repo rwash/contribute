@@ -11,7 +11,7 @@ class GroupsController < InheritedResources::Base
 
   def create
     @group = Group.new(params[:group])
-    @group.admin_user_id = current_user.id
+    @group.admin_user = current_user
 
     if @group.save!
       flash[:notice] = "Successfully created group."
@@ -32,7 +32,7 @@ class GroupsController < InheritedResources::Base
 
   def submit_add
     @group = Group.find(params[:id])
-    @project = Project.find_by_id(params[:project_id])
+    @project = Project.find(params[:project_id])
 
     if @project.nil?
       #Do Nothing
@@ -48,11 +48,11 @@ class GroupsController < InheritedResources::Base
       flash[:notice] = "Your project has been added to the group."
     elsif !Approval.where(:group_id => @group.id, :project_id => @project.id, :approved => nil).first.nil?
       flash[:error] = "You have already submitted this project. Please wait for the admin to approve or reject your request."
-    elsif @group.admin_user_id == current_user.id
+    elsif @group.admin_user == current_user
       @group.projects << @project
       flash[:notice] = "Your project has been added."
     else
-      @approval = Approval.create(:group_id => @group.id, :project_id => @project.id)
+      @approval = Approval.create(:group => @group, :project => @project)
       flash[:notice] = "Your project has been submitted to the group admin for approval."
       EmailManager.project_to_group_approval(@approval, @project, @group).deliver
     end
@@ -62,14 +62,14 @@ class GroupsController < InheritedResources::Base
 
   def admin
     @group = Group.find(params[:id])
-    @approval = Approval.find_by_id(params[:approval_id])
+    @approval = Approval.find(params[:approval_id])
     #@items = @group.lists.first.items
   end
 
   def remove_project
     @group = Group.find(params[:id])
-    @project = Project.find_by_name(params[:project_id].gsub(/-/, ' '))
-    if @group.admin_user_id == current_user.id or @project.user_id == current_user.id
+    @project = Project.find(params[:project_id].gsub(/-/, ' '))
+    if @group.admin_user == current_user or @project.user == current_user
       @group.projects.delete(@project)
       @project.update_project_video
       flash[:notice] = "#{@project.name} removed from group #{@group.name}."

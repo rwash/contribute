@@ -8,7 +8,7 @@
       <% end %>
     <span class="username"><%= comment.user.name %></span>
   <% end %>
-  <% if comment.user_id == @project.user_id %>
+  <% if comment.user == @project.user %>
     &nbsp;&nbsp;<span class="userBadge"><%= link_to "project owner", comment.user %></span>
   <% end %>
   &nbsp;&nbsp;<span class="time"><%= time_ago_in_words(comment.created_at) %> ago</span><br>

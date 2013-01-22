@@ -3,7 +3,7 @@ class ListsController < InheritedResources::Base
   before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save]
 
   def sort
-    @list = List.find_by_id(params[:id])
+    @list = List.find(params[:id])
     @list.title = params[:title].to_s
     @list.save!
 
@@ -16,7 +16,7 @@ class ListsController < InheritedResources::Base
   end
 
   def update
-    @list = List.find_by_id(params[:id])
+    @list = List.find(params[:id])
     @list.kind = "#{params[:kind].gsub(/\W/, '-')}"
     @list.kind += "-#{params[:order]}" unless @list.kind == 'manual'
     @list.title = params[:title]

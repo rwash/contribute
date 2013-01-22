@@ -150,9 +150,9 @@ class EmailManager < ActionMailer::Base
   end
 
   def project_to_group_approval(approval, project, group)
-    @group_owner = User.find(group.admin_user_id)
+    @group_owner = group.admin_user
     @project = project
-    @user = User.find(project.user_id)
+    @user = project.user
     @group = group
     @approval = approval
     mail(:to => @group_owner.email, :subject => "Request to add project #{@project.name} to your group #{@group.name}")
@@ -160,7 +160,7 @@ class EmailManager < ActionMailer::Base
 
   def group_reject_project(approval, project, group)
     @project = project
-    @user = User.find(project.user_id)
+    @user = project.user
     @group = group
     @approval = approval
 

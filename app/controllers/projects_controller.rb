@@ -14,7 +14,7 @@ class ProjectsController < InheritedResources::Base
 
   def index
     @projects = Project.where(:state => :active).order("end_date ASC").page(params[:page]).per(8)
-    @lists = User.find_by_id(1) ? User.find_by_id(1).lists : []
+    @lists = User.find_by_id(1) ? User.find(1).lists : []
     index!
   end
 
@@ -87,9 +87,9 @@ class ProjectsController < InheritedResources::Base
     Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech', :keywords => YT_TAGS, :list => "allowed") unless @video.nil?
 
     #send out emails for any group requests
-    @project.approvals.each do |a|
-      @group = Group.find(a.group_id)
-      EmailManager.project_to_group_approval(a, @project, @group).deliver
+    @project.approvals.each do |approval|
+      @group = approval.group
+      EmailManager.project_to_group_approval(approval, @project, @group).deliver
     end
 
     @project.save!
@@ -105,7 +105,7 @@ class ProjectsController < InheritedResources::Base
       return redirect_to root_path
     end
 
-    @project = Project.find_by_id(session[:project_id])
+    @project = Project.find(session[:project_id])
     @project.state = :inactive
     @project.payment_account_id = params[:tokenID]
 
@@ -154,7 +154,7 @@ class ProjectsController < InheritedResources::Base
     @project = ProjectDecorator.decorate @project if @project
     #somthing was up with this page and permissions so i moved them here
     return redirect_to root_path if @project.nil?
-    return redirect_to root_path unless @project.public_can_view? or (logged_in? and (@project.confirmation_approver? or @project.user_id == current_user.id))
+    return redirect_to root_path unless @project.public_can_view? or (logged_in? and (@project.confirmation_approver? or @project.user == current_user))
 
     @video = @project.video
     #for some reason youtube returns the most recent upload if the video token is nil
@@ -168,7 +168,7 @@ class ProjectsController < InheritedResources::Base
     @comment_depth = 0
 
     @update = Update.new(params[:update])
-    @updates = Update.where(:project_id => @project.id)
+    @updates = @project.updates
   end
 
   def edit

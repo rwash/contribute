@@ -11,8 +11,8 @@ class Update < ActiveRecord::Base
 
   validates_presence_of :title
   validates_presence_of :content
-  validates_presence_of :user_id
-  validates_presence_of :project_id
+  validates_presence_of :user
+  validates_presence_of :project
 
   belongs_to :project
   belongs_to :user

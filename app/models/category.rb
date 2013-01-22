@@ -5,7 +5,7 @@
 # * *created_at* (+datetime+)
 # * *updated_at* (+datetime+)
 class Category < ActiveRecord::Base
-  belongs_to :project
+  has_many :projects
 
   validates :short_description, :uniqueness => { :case_sensitive => false }
 

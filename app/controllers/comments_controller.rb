@@ -4,7 +4,7 @@ class CommentsController < InheritedResources::Base
     @comment = Comment.build_from( @project, current_user.id, params[:comment][:body] )
 
     if user_signed_in? #from devise, check their github page for more info
-      @comment.user_id = current_user.id
+      @comment.user = current_user
 
       if @comment.valid?
         @comment.save
