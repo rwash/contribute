@@ -3,27 +3,16 @@ require "tasks/update_contributors"
 
 describe UpdateContributors do
   describe "integration tests" do
-    before(:all) do
-
-    end
-
-    after(:each) do
-
-    end
-
     it "run works" do
 
-      project = FactoryGirl.build(:project, :state => 'active', :end_date => 1.week.from_now )
-      project.save(:validate => false)
-
-      update = FactoryGirl.build(:update, :email_sent => false, :project_id => project.id, :user_id => 1)
-      update.save(:validate => false)
+      project = Factory :project, state: :active, end_date: 1.week.from_now
+      update = Factory :update, email_sent: false, project: project
 
       Contribution.any_instance.stub(:execute_payment) {}
       Contribution.any_instance.stub(:cancel) {}
 
-      to_funded = FactoryGirl.create(:contribution, :amount => 15, :project_id => project.id)
-      to_funded2 = FactoryGirl.create(:contribution2, :amount => 100, :project_id => project.id)
+      to_funded = FactoryGirl.create(:contribution, amount: 15, project: project)
+      to_funded2 = FactoryGirl.create(:contribution, amount: 100, project: project)
 
       EmailManager.stub_chain(:project_update_to_contributor, :deliver => true)
       update.email_sent = true
