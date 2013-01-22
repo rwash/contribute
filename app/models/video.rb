@@ -13,6 +13,8 @@ class Video < ActiveRecord::Base
   scope :completes,   where(:is_complete => true)
   scope :incompletes, where(:is_complete => false)
 
+  validates_presence_of :project
+
   include Rails.application.routes.url_helpers
 
   def upload_video(path)
