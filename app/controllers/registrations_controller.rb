@@ -1,6 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   def show
-    @user = User.find_by_id(params[:id])
+    @user = User.find(params[:id])
   end
 
   def add_list

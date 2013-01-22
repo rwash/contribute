@@ -16,7 +16,7 @@ class Group < ActiveRecord::Base
   has_many :approvals
   has_many :lists, :as =>  :listable
 
-  belongs_to :admin_user, class_name: "User", foreign_key: "admin_user_id"
+  belongs_to :admin_user, class_name: "User"
 
   mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
 

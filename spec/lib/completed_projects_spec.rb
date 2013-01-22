@@ -29,10 +29,10 @@ describe CompletedProjects do
       Contribution.any_instance.stub(:execute_payment) {}
       Contribution.any_instance.stub(:cancel) {}
 
-      to_funded = FactoryGirl.create(:contribution, :amount => 15, :project_id => funded.id)
-      to_funded2 = FactoryGirl.create(:contribution, :amount => 100, :project_id => funded.id)
-      to_not_funded = FactoryGirl.create(:contribution, :amount => 5, :project_id => not_funded.id)
-      ignore = FactoryGirl.create(:contribution, :status => :cancelled, :project_id => not_funded.id)
+      to_funded = FactoryGirl.create(:contribution, :amount => 15, :project => funded)
+      to_funded2 = FactoryGirl.create(:contribution, :amount => 100, :project => funded)
+      to_not_funded = FactoryGirl.create(:contribution, :amount => 5, :project => not_funded)
+      ignore = FactoryGirl.create(:contribution, :status => :cancelled, :project => not_funded)
 
       EmailManager.stub_chain(:project_not_funded_to_owner, :deliver => true)
       EmailManager.stub_chain(:project_funded_to_owner, :deliver => true)
@@ -71,10 +71,10 @@ describe CompletedProjects do
       Contribution.any_instance.stub(:execute_payment) {}
       Contribution.any_instance.stub(:cancel) {}
 
-      to_funded = FactoryGirl.create(:contribution, :amount => 15, :project_id => funded.id)
-      to_funded_not_ignored = FactoryGirl.create(:contribution, :amount => 100, :project_id => funded_not_ignored.id)
-      to_not_funded = FactoryGirl.create(:contribution, :amount => 5, :project_id => not_funded.id)
-      ignore = FactoryGirl.create(:contribution, :status => :cancelled, :project_id => not_funded.id)
+      to_funded = FactoryGirl.create(:contribution, :amount => 15, :project => funded)
+      to_funded_not_ignored = FactoryGirl.create(:contribution, :amount => 100, :project => funded_not_ignored)
+      to_not_funded = FactoryGirl.create(:contribution, :amount => 5, :project => not_funded)
+      ignore = FactoryGirl.create(:contribution, :status => :cancelled, :project => not_funded)
 
       EmailManager.stub_chain(:project_not_funded_to_owner, :deliver => true)
       EmailManager.stub_chain(:project_funded_to_owner, :deliver => true)

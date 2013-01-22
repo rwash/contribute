@@ -59,7 +59,7 @@ describe GroupsController do
       let(:group) { Factory :group, open: true }
 
       it 'allows adding of unconfirmed project to group' do
-        project = Factory(:project, :state => 'unconfirmed', :user_id => user.id)
+        project = Factory(:project, :state => 'unconfirmed', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -68,7 +68,7 @@ describe GroupsController do
       end
 
       it 'allows adding of inactive project to group' do
-        project = Factory(:project, :state => 'inactive', :user_id => user.id)
+        project = Factory(:project, :state => 'inactive', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -77,7 +77,7 @@ describe GroupsController do
       end
 
       it 'allows adding of active project to group' do
-        project = Factory(:project, :state => 'active', :user_id => user.id)
+        project = Factory(:project, :state => 'active', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -86,7 +86,7 @@ describe GroupsController do
       end
 
       it 'allows adding of funded project to group' do
-        project = Factory(:project, :state => 'funded', :user_id => user.id)
+        project = Factory(:project, :state => 'funded', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -95,7 +95,7 @@ describe GroupsController do
       end
 
       it 'allows adding of nonfunded project to group' do
-        project = Factory(:project, :state => 'nonfunded', :user_id => user.id)
+        project = Factory(:project, :state => 'nonfunded', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -104,7 +104,7 @@ describe GroupsController do
       end
 
       it 'does not allow adding of cancelled project to group' do
-        project = Factory(:project, :state => 'cancelled', :user_id => user.id)
+        project = Factory(:project, :state => 'cancelled', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -113,7 +113,7 @@ describe GroupsController do
       end
 
       it 'does not allow multiple additions of the same project to a group' do
-        project = Factory(:project, :state => 'active', :user_id => user.id)
+        project = Factory(:project, :state => 'active', :user => user)
         group.projects << project
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to_not change {group.projects.count}
 
@@ -128,7 +128,7 @@ describe GroupsController do
       let(:group) { Factory :group, open: false, admin_user: admin }
 
       it 'allows adding of unconfirmed project to group' do
-        project = Factory(:project, :state => 'unconfirmed', :user_id => user.id)
+        project = Factory(:project, :state => 'unconfirmed', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -138,7 +138,7 @@ describe GroupsController do
       end
 
       it 'allows adding of inactive project to group' do
-        project = Factory(:project, :state => 'inactive', :user_id => user.id)
+        project = Factory(:project, :state => 'inactive', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -148,7 +148,7 @@ describe GroupsController do
       end
 
       it 'allows adding of active project to group' do
-        project = Factory(:project, :state => 'active', :user_id => user.id)
+        project = Factory(:project, :state => 'active', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -158,7 +158,7 @@ describe GroupsController do
       end
 
       it 'allows adding of funded project to group' do
-        project = Factory(:project, :state => 'funded', :user_id => user.id)
+        project = Factory(:project, :state => 'funded', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -168,7 +168,7 @@ describe GroupsController do
       end
 
       it 'allows adding of nonfunded project to group' do
-        project = Factory(:project, :state => 'nonfunded', :user_id => user.id)
+        project = Factory(:project, :state => 'nonfunded', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -178,7 +178,7 @@ describe GroupsController do
       end
 
       it 'does not allow adding of cancelled project to group' do
-        project = Factory(:project, :state => 'cancelled', :user_id => user.id)
+        project = Factory(:project, :state => 'cancelled', :user => user)
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
@@ -187,7 +187,7 @@ describe GroupsController do
       end
 
       it 'does not allow multiple additions of the same project to a group' do
-        project = Factory(:project, :state => 'active', :user_id => user.id)
+        project = Factory(:project, :state => 'active', :user => user)
         group.projects << project
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to_not change {group.projects.count}
 

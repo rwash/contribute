@@ -1,6 +1,6 @@
 <% project = ProjectDecorator.decorate project %>
     <div class="thumbnail">
-    <% if (@group) and (@group.admin_user_id == current_user.id or project.user_id == current_user.id) %>
+    <% if (@group) and (@group.admin_user == current_user or project.user == current_user) %>
       <span class="delete-x"><%= link_to "x", remove_project_from_group_path(@group, project), :confirm => "Are you sure you want to remove #{project.name} from #{@group.name}?" %></span>
     <% end %>
     <%= link_to project do %>

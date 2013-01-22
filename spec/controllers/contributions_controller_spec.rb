@@ -31,13 +31,13 @@ describe ContributionsController do
       end		
 
       it "lets user edit their contributions" do
-        contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
+        contribution = FactoryGirl.create(:contribution, :user => user, :project => project)
         get :edit, :id => contribution.id
         response.should be_success
       end
 
       it "does not let user edit someone else's contribution" do
-        contribution = FactoryGirl.create(:contribution, :user_id => user.id + 1, :project_id => project.id)
+        contribution = FactoryGirl.create(:contribution, :project => project)
         get :edit, :id => contribution.id
         response.should redirect_to(project)
         flash[:alert].should include "may not edit this contribution"
@@ -81,7 +81,7 @@ describe ContributionsController do
     context 'save action' do
       before(:all) do
         project = FactoryGirl.create(:project)
-        @contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
+        @contribution = FactoryGirl.create(:contribution, :user => user, :project => project)
       end
 
       before(:each) do
@@ -135,8 +135,8 @@ describe ContributionsController do
     context 'update_save action' do
       before(:all) do
         project = FactoryGirl.create(:project)
-        @editing_contribution = FactoryGirl.create(:contribution, :user_id => user.id, :project_id => project.id)
-        @contribution = FactoryGirl.build(:contribution, :user_id => user.id, :project_id => project.id)
+        @editing_contribution = FactoryGirl.create(:contribution, :user => user, :project => project)
+        @contribution = FactoryGirl.build(:contribution, :user => user, :project => project)
       end
 
       before(:each) do

@@ -20,13 +20,13 @@ describe 'Project permissions' do
       end
 
       it "can view active project" do
-        project = FactoryGirl.create(:project, :user_id => user.id, :state => "active")
+        project = FactoryGirl.create(:project, :user => user, :state => "active")
         visit project_path(project)
         current_path.should eq project_path(project)
         project.delete
       end
       it "can not view inactive project" do
-        project = FactoryGirl.create(:project, :user_id => user.id, :state => "inactive")
+        project = FactoryGirl.create(:project, :user => user, :state => "inactive")
         visit project_path(project)
         current_path.should_not eq project_path(project)
         project.destroy
@@ -37,7 +37,7 @@ describe 'Project permissions' do
         current_path.should eq new_user_session_path
       end
       it "can't destroy a project" do
-        project = FactoryGirl.create(:project, :user_id => user.id)
+        project = FactoryGirl.create(:project, :user => user)
         visit project_path(project)
         expect { click_button("Delete Project") }.to raise_error
         project.destroy
@@ -61,14 +61,14 @@ describe 'Project permissions' do
 #        assert_equal new_project_path, current_path
 #      end
 #      it "can't destroy a project they don't own" do
-#        project = FactoryGirl.create(:project, user_id: @user.id + 1)
+#        project = FactoryGirl.create(:project)
 #        sign_in @user
 #        visit project_path(project)
 #        # No button to delete
 #        project.destroy
 #      end
 #      it "can destroy a project they do own" do
-#        project = FactoryGirl.create(:project, user_id: @user.id)
+#        project = FactoryGirl.create(:project, user: @user)
 #        sign_in @user
 #        visit project_path(project)
 #        click_button "Delete Project"

@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def comment_owner(comment)
-    logged_in? && current_user.id == comment.user_id
+    logged_in? && current_user == comment.user
   end
 
   def yt_client

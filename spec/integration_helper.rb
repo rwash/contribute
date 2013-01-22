@@ -68,7 +68,7 @@ def generate_contribution(user, password, amazon_user, amazon_password, project,
 
   contribution = Contribution.last
   contribution.should_not be_nil
-  contribution.project_id.should equal(project.id)
+  contribution.project.should eq(project)
 
   return contribution
 end

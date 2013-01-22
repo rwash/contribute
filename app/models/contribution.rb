@@ -30,7 +30,7 @@ class Contribution < ActiveRecord::Base
   validates :project_id, :presence => :true
   validates :user_id, :presence => :true
 
-  attr_accessible :project_id, :user_id, :amount, :payment_key
+  attr_accessible :project_id, :user, :amount, :payment_key
 
   classy_enum_attr :status, enum: 'ContributionStatus'
 

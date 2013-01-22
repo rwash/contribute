@@ -25,7 +25,6 @@ class AmazonProcessTesting
 
         #fill in form
         fill_in 'name' , :with => project.name
-        #fill_in(:project_categroy_iid, :with => project.category_id)
         fill_in 'project_funding_goal', :with => project.funding_goal
         fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
         fill_in 'project_short_description', :with => project.short_description
@@ -141,8 +140,8 @@ class AmazonProcessTesting
 
         page.should have_content('Contribution successfully updated.')
 
-        cancelled_contribution = Contribution.where(:status => :cancelled, :project_id => project.id)
-        new_contribution = Contribution.where(:status => :none, :project_id => project.id)
+        cancelled_contribution = Contribution.where(:status => :cancelled, :project => project)
+        new_contribution = Contribution.where(:status => :none, :project => project)
 
         cancelled_contribution.should_not be_nil
         new_contribution.should_not be_nil

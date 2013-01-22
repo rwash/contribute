@@ -18,12 +18,13 @@ class ContributionsController < ApplicationController
   end
 
   def create
-    @project = Project.find_by_id params[:contribution][:project_id]
+    @project = Project.find(params[:contribution][:project_id])
 
     authorize! :contribute, @project
     validate_project
 
     @contribution = prepare_contribution()
+    @contribution.project_id = @project.id
     if @contribution.valid? && @project.end_date >= Date.today
       #Worth considering alternatives if the performance on this is bad
       #E.g. memcached, writing to the DB and marking record incomplete
@@ -48,7 +49,7 @@ class ContributionsController < ApplicationController
       flash[:alert] = ERROR_STRING
       return redirect_to root_path
     end
-    @contribution = Contribution.find_by_id(session[:contribution_id])
+    @contribution = Contribution.find(session[:contribution_id])
 
     Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
     if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(save_contribution_url, session, params)
@@ -129,7 +130,7 @@ class ContributionsController < ApplicationController
     end
 
     session[:contribution] = nil
-    @editing_contribution = Contribution.find_by_id(session[:editing_contribution_id])
+    @editing_contribution = Contribution.find(session[:editing_contribution_id])
     session[:editing_contribution_id] = nil
 
     @contribution.payment_key = params[:tokenID]
@@ -160,16 +161,15 @@ class ContributionsController < ApplicationController
   end
 
   def initialize_editing_contribution
-    @editing_contribution = Contribution.find_by_id(params[:id])
-
-    if @editing_contribution.nil?
-      flash[:alert] = ERROR_STRING
-      return redirect_to root_url
-    end
+    @editing_contribution = Contribution.find(params[:id])
 
     @project = @editing_contribution.project
     authorize! :edit_contribution, @project
     validate_project
+
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = ERROR_STRING
+    redirect_to root_url
   end
 
   def prepare_contribution
