@@ -6,7 +6,7 @@
           <%= link_to "", group, :class => "group-link" %>
           <span class="group-name"><%= group.name %></span> 
           <![if !IE]>
-            <span class="num-projects"><%= group.projects.size %> <% if group.projects.size == 1 %>Project <% else %>Projects <% end %></span><br>
+            <span class="num-projects"><%= pluralize(group.projects.count, 'Project') %></span><br>
           <![endif]>
           <span class="group-description"><%= group.description %></span>
           <% group.projects.limit(6).each do |p| %>
@@ -38,11 +38,7 @@
         <% for group in @admin_groups %>
           <%= link_to group.name, group, :class => 'sidebar-group' %><br>
           <span class="sidebar-needs-approval">
-            <% if group.approvals.where(:approved => nil).count == 1 %>
-              <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " project needs your approval"), group_admin_path(group) %>
-            <% elsif group.approvals.where(:approved => nil).count > 1 %>
-              <%= link_to "- " + (group.approvals.where(:approved => nil).count.to_s + " projects need your approval"), group_admin_path(group) %>
-            <% end %>
+            <%= link_to "- #{pluralize(group.approvals.where(approved: nil).count, "project")} needs your approval", group_admin_path(group) %>
           </span><br>
         <% end %>
       <% end %>
