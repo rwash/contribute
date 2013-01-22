@@ -29,7 +29,7 @@ class CommentsController < InheritedResources::Base
     @comment = Comment.find(params[:id])
 
     if comment_owner(@comment) # def in application_controller.rb
-      if(@comment.has_children?)
+      if(@comment.children.any?)
         @comment.body = "[comment deleted]"
         @comment.save
       else

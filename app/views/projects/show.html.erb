@@ -55,7 +55,7 @@ $(document).ready(function(){
     <div class="tab-pane" id="projectContributors">
       <h3> Contributors </h3>
       <ul class="projectContributors">
-      <% if @project.contributions.size > 0 %>
+      <% if @project.contributions.any? %>
               <% @project.contributions.each do |contribution|%>
                 <li>
     <%= link_to contribution.user do %>
@@ -83,7 +83,7 @@ $(document).ready(function(){
     <p>
       <h3> Comments </h3><br>
       <ul class="projectComments">
-        <h4><%= "There are no comments for this project." if @rootComments.size == 0 %></h4>
+        <h4><%= "There are no comments for this project." if @rootComments.empty? %></h4>
 
       <% @rootComments.each do |comment|%>
         <%= render :partial => 'comments/comment', :object => comment, :locals =>{:comment_depth => 0} %>
@@ -103,7 +103,7 @@ $(document).ready(function(){
 
   <div class="tab-pane" id="projectUpdates">
       <ul class="projectUpdates">
-        <h4><%= "There are no updates for this project." if @updates.size == 0 %></h4>
+        <h4><%= "There are no updates for this project." if @updates.empty? %></h4>
 
         <%= render :partial => 'updates/update', :object => @update, :collection => @updates %>
 

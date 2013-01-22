@@ -24,7 +24,7 @@
   </div>
 </div>
 
-<% if @user.projects.size == 0 %>
+<% if @user.projects.empty? %>
   <div class="section-header">
     <h3><%= @user.name %>'s Projects</h3>
   </div>
@@ -50,7 +50,7 @@
 <div class="tab-content">
   <div class="tab-pane active" id ="userContributions">
   <h3> Contributions </h3>
-  <% if @user.contributions.size > 0 %>
+  <% if @user.contributions.any? %>
   <ul>
     <% @user.contributions.each do |contribution|%>
       <%= link_to contribution.project.name, contribution.project %><br/>
@@ -70,7 +70,7 @@
   <h3> Comments </h3><br>
 
   <ul class="projectComments">
-    <h4><%= "This user has no comments." if @user.comments.size == 0 %></h4>
+    <h4><%= "This user has no comments." if @user.comments.empty? %></h4>
     <% @user.comments.each do |comment|%>
       <% @ComPro = Project.where(:id => comment.commentable_id).first %>
       <%= link_to @ComPro.name, Project.where(:id => comment.commentable_id).first %><br>

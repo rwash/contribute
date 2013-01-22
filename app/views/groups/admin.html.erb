@@ -52,9 +52,9 @@
 
 <div class="admin-lists">
 <h2> Lists </h2>
-  <% if @group.lists.count > 0 %>
+  <% if @group.lists.any? %>
     <%= link_to "Click here to create a new list.", add_list_to_group_path(@group), :class => "btn btn-success btn-mini" %>
-  <% elsif @group.lists.count == 0 %>
+  <% elsif @group.lists.empty? %>
     <span class="italic">You do not have any lists.</span> <%= link_to "Click here ", add_list_to_group_path(@group), :class => "btn btn-success btn-mini" %> to create one.
   <% end %></div>
 

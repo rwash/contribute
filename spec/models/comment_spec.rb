@@ -30,7 +30,7 @@ describe Comment do
       comment2 = FactoryGirl.build(:comment)
       comment2.save
       comment2.move_to_child_of(comment)
-      assert comment.has_children?, 'comment2 did not become a child of comment.'
+      assert comment.children.any?, 'comment2 did not become a child of comment.'
       comment2.delete
       assert comment2 != nil, 'Incorrectly deleted comment even though it had children.'
       assert comment2.body == "DELETED", 'comment body was not replaced with DELETED.'

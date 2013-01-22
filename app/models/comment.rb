@@ -41,11 +41,6 @@ class Comment < ActiveRecord::Base
     c
   end
 
-  #helper method to check if a comment has children
-  def has_children?
-    self.children.size > 0
-  end
-
   # Helper class method to lookup all comments assigned
   # to all commentable types for a given user.
   scope :find_comments_by_user, lambda { |user|
