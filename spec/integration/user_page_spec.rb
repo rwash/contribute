@@ -14,7 +14,7 @@ class UserPageTesting
 
     it "should show successfully" do
       #login with our project creator
-      login('mthelen2@gmail.com', 'aaaaaa')
+      login_as User.find_by_email 'mthelen2@gmail.com'
 
       user = User.find_by_email('mthelen2@gmail.com')
       visit user_path(user)
@@ -26,7 +26,7 @@ class UserPageTesting
     end
 
     it "should edit successfully" do
-      login('mthelen2@gmail.com', 'aaaaaa')
+      login_as User.find_by_email 'mthelen2@gmail.com'
 
       user = User.find_by_email('mthelen2@gmail.com')
       visit edit_user_registration_path(user)

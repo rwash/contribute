@@ -16,8 +16,7 @@ class AmazonProcessTesting
       it "create successfully" do
         project = FactoryGirl.build(:project)
 
-        #login with our project creator
-        login('mthelen2@gmail.com', 'aaaaaa')
+        login_as User.find_by_email 'mthelen2@gmail.com'
 
         #create a project
         visit(new_project_path)
@@ -57,7 +56,7 @@ class AmazonProcessTesting
       let(:project) { Factory.create(:project, state: :active) }
 
       it "fails with invalid amount" do
-        login('thelen56@msu.edu', 'aaaaaa')
+        login_as User.find_by_email 'thelen56@msu.edu'
 
         #go to project page
         visit project_path(project)
