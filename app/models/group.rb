@@ -18,6 +18,12 @@ class Group < ActiveRecord::Base
 
   belongs_to :admin_user, class_name: "User"
 
+  validates :name,
+            presence: true,
+            uniqueness: { case_sensitive: false }
+
+  validates :admin_user, presence: true
+
   mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
 
   after_create :add_first_list
