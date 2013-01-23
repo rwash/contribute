@@ -11,7 +11,7 @@ describe 'Groups' do
         # project is not in the group we created
         project = Factory :project, user: user
 
-        login(user.email, user.password)
+        login_as user
 
         visit groups_index_path
         expect(page).to_not have_content 'You have projects in'
@@ -23,7 +23,7 @@ describe 'Groups' do
         project = Factory :project, user: user
         project.groups << group
 
-        login(user.email, user.password)
+        login_as user
 
         visit groups_index_path
         expect(page).to_not have_content 'Groups you own'
@@ -35,7 +35,7 @@ describe 'Groups' do
         project = Factory :project, user: user
         project.groups << group
 
-        login(user.email, user.password)
+        login_as user
 
         visit groups_index_path
         expect(page).to have_content 'You have projects in'
@@ -48,7 +48,7 @@ describe 'Groups' do
         project = Factory :project
         project.groups << group
 
-        login(user.email, user.password)
+        login_as user
 
         visit groups_index_path
         expect(page).to have_content 'Groups you own'
@@ -63,7 +63,7 @@ describe 'Groups' do
           project
         end
 
-        login(user.email, user.password)
+        login_as user
 
         visit groups_index_path
         # Group name should appear exactly once on the page

@@ -23,7 +23,7 @@ class AmazonProcessTesting
         project = FactoryGirl.build(:project)
 
         #login with our project creator
-        login('mthelen2@gmail.com', 'aaaaaa')
+        login_as User.find_by_email 'mthelen2@gmail.com'
 
         #create a project
         visit(new_project_path)

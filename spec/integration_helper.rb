@@ -1,12 +1,5 @@
-def login(email, password)
-  visit user_session_path
-
-  fill_in 'Email', with: email
-  fill_in 'Password', with: password
-  click_button 'Sign in'
-
-  expect(page).to have_content('Signed in successfully')
-end
+include Warden::Test::Helpers
+Warden.test_mode!
 
 def login_amazon(email, password)
   expect(page).to have_content('Sign in with your Amazon account')
@@ -46,9 +39,9 @@ def make_amazon_payment(user, password)
   click_amazon_continue
 end
 
-def generate_contribution(user, password, amazon_user, amazon_password, project,amount)
+def generate_contribution(email, password, amazon_user, amazon_password, project,amount)
   #login
-  login(user, password)
+  login_as User.find_by_email email
 
   #go to project page
   visit project_path(project)

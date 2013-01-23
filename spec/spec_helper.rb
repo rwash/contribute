@@ -62,6 +62,7 @@ Spork.prefork do
     config.before(:each) do
       reset_email
       Timecop.return
+      Warden.test_reset!
     end
 
     # Capybara uses a DSL to allow test cases to interact with web pages
