@@ -47,14 +47,14 @@ describe CompletedProjects do
 
       # TODO: Can't get should_receives to work on objects, as opposed to static classes
       # Tried stubbing on the object itself and should receiving on Contribution. No luck.
-      #      to_not_funded.should_receive(:cancel).once
-      #      to_funded.should_receive(:execute_payment).once
-      #      to_funded2.should_receive(:execute_payment).once
+      #      expect(to_not_funded).to_receive(:cancel).once
+      #      expect(to_funded).to_receive(:execute_payment).once
+      #      expect(to_funded2).to_receive(:execute_payment).once
 
       CompletedProjects.run
 
-      Project.find(funded.id).state.should eq 'funded'
-      Project.find(not_funded.id).state.should eq 'nonfunded'
+      expect(funded.reload.state).to eq :funded
+      expect(not_funded.reload.state).to eq :nonfunded
     end
 
     it "run all works" do

@@ -9,7 +9,7 @@ describe Group do
     it 'Approves all approvals when changes to open group' do
       group = approval.group
       group.approve_all
-      group.projects.include?(approval.project).should be_true
+      expect(group.projects).to include approval.project
     end
   end
 end

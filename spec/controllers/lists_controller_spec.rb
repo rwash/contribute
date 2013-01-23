@@ -8,14 +8,14 @@ describe ListsController do
     it "displays users list" do
       list = FactoryGirl.create(:list, :listable_id => Factory(:user).id, :listable_type => "User")
       get :show, :id => list.id
-      response.should be_success
+      expect(response).to be_success
       list.delete
     end
 
     it "displays groups list" do
       list = FactoryGirl.create(:list, :listable_id => Factory(:group).id, :listable_type => "Group")
       get :show, :id => list.id
-      response.should be_success
+      expect(response).to be_success
       list.delete
     end
   end
@@ -31,25 +31,25 @@ describe ListsController do
       it "does not allow group list deletion" do
         list = FactoryGirl.create(:list, :listable_id => group.id, :listable_type => "Group")
         expect { get :destroy, :id => list.id }.to_not change {List.count}
-        response.should redirect_to(root_path)
+        expect(response).to redirect_to(root_path)
       end
 
       it "does not allow user list deletion" do
         list = FactoryGirl.create(:list, :listable_id => user.id, :listable_type => "User")
         expect { get :destroy, :id => list.id }.to_not change {List.count}
-        response.should redirect_to(root_path)
+        expect(response).to redirect_to(root_path)
       end
 
       it "does not allow group list editing" do
         list = FactoryGirl.create(:list, :listable_id => group.id, :listable_type => "Group")
         get :edit, :id => list.id
-        response.should redirect_to(root_path)
+        expect(response).to redirect_to(root_path)
       end
 
       it "does not allow user list editing" do
         list = FactoryGirl.create(:list, :listable_id => user.id, :listable_type => "User")
         get :edit, :id => list.id
-        response.should redirect_to(root_path)
+        expect(response).to redirect_to(root_path)
       end
     end
 
@@ -60,13 +60,13 @@ describe ListsController do
       it "allows group list destruction" do
         list = FactoryGirl.create(:list, :listable_id => group.id, :listable_type => "Group")
         expect { get :destroy, :id => list.id }.to change {List.count}.by(-1)
-        response.should redirect_to(list.listable)
+        expect(response).to redirect_to(list.listable)
       end
 
       it "allows user list destruction" do
         list = FactoryGirl.create(:list, :listable_id => user.id, :listable_type => "User")
         expect { get :destroy, :id => list.id }.to change {List.count}.by(-1)
-        response.should redirect_to(list.listable)
+        expect(response).to redirect_to(list.listable)
       end
     end
   end

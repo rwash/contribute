@@ -5,11 +5,11 @@ def login(email, password)
   fill_in 'Password', :with => password
   click_button 'Sign in'
 
-  page.should have_content('Signed in successfully')
+  expect(page).to have_content('Signed in successfully')
 end
 
 def login_amazon(email, password)
-  page.should have_content('Sign in with your Amazon account')
+  expect(page).to have_content('Sign in with your Amazon account')
 
   #Now we're in amazon's sign in
   fill_in 'ap_email', :with => email
@@ -23,14 +23,14 @@ end
 
 def get_and_assert_project(project_name)
   project = Project.find_by_name(project_name)
-  project.should_not be_nil
+  expect(project).to_not be_nil
 
   return project
 end
 
 def get_and_assert_contribution(project_id)
   contribution = Contribution.find_by_project_id(project_id)
-  contribution.should_not be_nil
+  expect(contribution).to_not be_nil
 
   return contribution
 end
@@ -55,7 +55,7 @@ def generate_contribution(user, password, amazon_user, amazon_password, project,
 
   #contribute!
   click_button 'Contribute to this project'
-  current_path.should == new_contribution_path(project)
+  expect(current_path).to eq new_contribution_path(project)
 
   fill_in 'contribution_amount', :with => amount
   click_button 'Make Contribution'
@@ -63,12 +63,12 @@ def generate_contribution(user, password, amazon_user, amazon_password, project,
   make_amazon_payment(amazon_user, amazon_password)
 
   #Calling find first, so capybara will wait until it appears
-  page.should have_content('Contribution submitted')
-  current_path.should == project_path(project)
+  expect(page).to have_content('Contribution submitted')
+  expect(current_path).to eq project_path(project)
 
   contribution = Contribution.last
-  contribution.should_not be_nil
-  contribution.project.should eq(project)
+  expect(contribution).to_not be_nil
+  expect(contribution.project).to eq(project)
 
   return contribution
 end
@@ -81,10 +81,10 @@ end
 def assert_amazon_error(id)
   log_error = Logging::LogError.find_by_log_request_id(id)
 
-  log_error.should_not be_nil
-  log_error.Code.should_not be_nil
-  log_error.Message.should_not be_nil
-  log_error.RequestId.should_not be_nil
+  expect(log_error).to_not be_nil
+  expect(log_error.Code).to_not be_nil
+  expect(log_error.Message).to_not be_nil
+  expect(log_error.RequestId).to_not be_nil
 end
 
 def delete_logs()

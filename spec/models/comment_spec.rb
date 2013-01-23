@@ -5,21 +5,21 @@ describe Comment do
   describe 'body' do
     it 'is required' do
       comment = FactoryGirl.build(:comment, :body => '')
-      assert !comment.save, 'Incorrectly saved comment with blank body'
+      expect(comment.save).to be_false
     end
   end
 
   describe 'project' do
     it 'id is required' do
       comment = FactoryGirl.build(:comment, :commentable_id => '')
-      assert !comment.save, 'Incorrectly save comment without project id'
+      expect(comment.save).to be_false
     end
   end
 
   describe 'user' do
     it 'id is required' do
       comment = FactoryGirl.build(:comment, :user_id => '')
-      assert !comment.save, 'Incorrectly saved comment without user id'
+      expect(comment.save).to be_false
     end
   end
 =begin
@@ -30,10 +30,10 @@ describe Comment do
       comment2 = FactoryGirl.build(:comment)
       comment2.save
       comment2.move_to_child_of(comment)
-      assert comment.children.any?, 'comment2 did not become a child of comment.'
+      expect(comment.children.any?).to be_true
       comment2.delete
-      assert comment2 != nil, 'Incorrectly deleted comment even though it had children.'
-      assert comment2.body == "DELETED", 'comment body was not replaced with DELETED.'
+      expect(comment2).to_not be_nil
+      expect(comment2.body) to eq "DELETED"
     end
   end
 =end

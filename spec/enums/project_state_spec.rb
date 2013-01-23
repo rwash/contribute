@@ -7,29 +7,29 @@ describe ProjectState do
     let(:project_state) { 'unconfirmed' }
 
     it 'responds appropriately' do
-      project.state.should eq 'unconfirmed'
-      project.state.unconfirmed?.should be_true
-      project.state.inactive?.should be_false
-      project.state.active?.should be_false
-      project.state.nonfunded?.should be_false
-      project.state.funded?.should be_false
-      project.state.cancelled?.should be_false
+      expect(project.state).to eq 'unconfirmed'
+      expect(project.state.unconfirmed?).to be_true
+      expect(project.state.inactive?).to be_false
+      expect(project.state.active?).to be_false
+      expect(project.state.nonfunded?).to be_false
+      expect(project.state.funded?).to be_false
+      expect(project.state.cancelled?).to be_false
     end
 
     it 'can be edited' do
-      project.can_edit?.should be_true
+      expect(project.can_edit?).to be_true
     end
 
     it "can't be viewed by the public" do
-      project.public_can_view?.should be_false
+      expect(project.public_can_view?).to be_false
     end
 
     it "can't be updated" do
-      project.can_update?.should be_false
+      expect(project.can_update?).to be_false
     end
 
     it "can't be commented on" do
-      project.can_comment?.should be_false
+      expect(project.can_comment?).to be_false
     end
   end
 
@@ -38,29 +38,29 @@ describe ProjectState do
 
     it 'responds appropriately' do
       project.state = :inactive
-      project.state.should eq 'inactive'
-      project.state.unconfirmed?.should be_false
-      project.state.inactive?.should be_true
-      project.state.active?.should be_false
-      project.state.nonfunded?.should be_false
-      project.state.funded?.should be_false
-      project.state.cancelled?.should be_false
+      expect(project.state).to eq 'inactive'
+      expect(project.state.unconfirmed?).to be_false
+      expect(project.state.inactive?).to be_true
+      expect(project.state.active?).to be_false
+      expect(project.state.nonfunded?).to be_false
+      expect(project.state.funded?).to be_false
+      expect(project.state.cancelled?).to be_false
     end
 
     it "can be edited" do
-      project.can_edit?.should be_true
+      expect(project.can_edit?).to be_true
     end
 
     it "can't be viewed by the public" do
-      project.public_can_view?.should be_false
+      expect(project.public_can_view?).to be_false
     end
 
     it "can't be updated" do
-      project.can_update?.should be_false
+      expect(project.can_update?).to be_false
     end
 
     it "can't be commented on" do
-      project.can_comment?.should be_false
+      expect(project.can_comment?).to be_false
     end
   end
 
@@ -69,29 +69,29 @@ describe ProjectState do
 
     it 'responds appropriately' do
       project.state = :active
-      project.state.should eq 'active'
-      project.state.unconfirmed?.should be_false
-      project.state.inactive?.should be_false
-      project.state.active?.should be_true
-      project.state.nonfunded?.should be_false
-      project.state.funded?.should be_false
-      project.state.cancelled?.should be_false
+      expect(project.state).to eq 'active'
+      expect(project.state.unconfirmed?).to be_false
+      expect(project.state.inactive?).to be_false
+      expect(project.state.active?).to be_true
+      expect(project.state.nonfunded?).to be_false
+      expect(project.state.funded?).to be_false
+      expect(project.state.cancelled?).to be_false
     end
 
     it "can't be edited" do
-      project.can_edit?.should be_false
+      expect(project.can_edit?).to be_false
     end
 
     it "can be viewed by the public" do
-      project.public_can_view?.should be_true
+      expect(project.public_can_view?).to be_true
     end
 
     it "can be updated" do
-      project.can_update?.should be_true
+      expect(project.can_update?).to be_true
     end
 
     it "can be commented on" do
-      project.can_comment?.should be_true
+      expect(project.can_comment?).to be_true
     end
   end
 
@@ -100,29 +100,29 @@ describe ProjectState do
 
     it 'responds appropriately' do
       project.state = :nonfunded
-      project.state.should eq 'nonfunded'
-      project.state.unconfirmed?.should be_false
-      project.state.inactive?.should be_false
-      project.state.active?.should be_false
-      project.state.nonfunded?.should be_true
-      project.state.funded?.should be_false
-      project.state.cancelled?.should be_false
+      expect(project.state).to eq 'nonfunded'
+      expect(project.state.unconfirmed?).to be_false
+      expect(project.state.inactive?).to be_false
+      expect(project.state.active?).to be_false
+      expect(project.state.nonfunded?).to be_true
+      expect(project.state.funded?).to be_false
+      expect(project.state.cancelled?).to be_false
     end
 
     it "can't be edited" do
-      project.can_edit?.should be_false
+      expect(project.can_edit?).to be_false
     end
 
     it "can be viewed by the public" do
-      project.public_can_view?.should be_true
+      expect(project.public_can_view?).to be_true
     end
 
     it "can be updated" do
-      project.can_update?.should be_true
+      expect(project.can_update?).to be_true
     end
 
     it "can be commented on" do
-      project.can_comment?.should be_true
+      expect(project.can_comment?).to be_true
     end
   end
 
@@ -131,29 +131,29 @@ describe ProjectState do
 
     it 'responds appropriately' do
       project.state = :funded
-      project.state.should eq 'funded'
-      project.state.unconfirmed?.should be_false
-      project.state.inactive?.should be_false
-      project.state.active?.should be_false
-      project.state.nonfunded?.should be_false
-      project.state.funded?.should be_true
-      project.state.cancelled?.should be_false
+      expect(project.state).to eq 'funded'
+      expect(project.state.unconfirmed?).to be_false
+      expect(project.state.inactive?).to be_false
+      expect(project.state.active?).to be_false
+      expect(project.state.nonfunded?).to be_false
+      expect(project.state.funded?).to be_true
+      expect(project.state.cancelled?).to be_false
     end
 
     it "can't be edited" do
-      project.can_edit?.should be_false
+      expect(project.can_edit?).to be_false
     end
 
     it "can be viewed by the public" do
-      project.public_can_view?.should be_true
+      expect(project.public_can_view?).to be_true
     end
 
     it "can be updated" do
-      project.can_update?.should be_true
+      expect(project.can_update?).to be_true
     end
 
     it "can be commented on" do
-      project.can_comment?.should be_true
+      expect(project.can_comment?).to be_true
     end
   end
 
@@ -162,42 +162,42 @@ describe ProjectState do
 
     it 'responds appropriately' do
       project.state = :cancelled
-      project.state.should eq 'cancelled'
-      project.state.unconfirmed?.should be_false
-      project.state.inactive?.should be_false
-      project.state.active?.should be_false
-      project.state.nonfunded?.should be_false
-      project.state.funded?.should be_false
-      project.state.cancelled?.should be_true
+      expect(project.state).to eq 'cancelled'
+      expect(project.state.unconfirmed?).to be_false
+      expect(project.state.inactive?).to be_false
+      expect(project.state.active?).to be_false
+      expect(project.state.nonfunded?).to be_false
+      expect(project.state.funded?).to be_false
+      expect(project.state.cancelled?).to be_true
     end
 
     it "can't be edited" do
-      project.can_edit?.should be_false
+      expect(project.can_edit?).to be_false
     end
 
     it "can't be viewed by the public" do
-      project.public_can_view?.should be_false
+      expect(project.public_can_view?).to be_false
     end
 
     it "can't be updated" do
-      project.can_update?.should be_false
+      expect(project.can_update?).to be_false
     end
 
     it "can't be commented on" do
-      project.can_comment?.should be_false
+      expect(project.can_comment?).to be_false
     end
   end
 
   it 'guards against invalid values' do
     project = Factory.build :project, state: 'invalid_state'
-    project.valid?.should be_false
-    project.save.should be_false
+    expect(project.valid?).to be_false
+    expect(project.save).to be_false
   end
 
   it 'guards against nil value' do
     project = Factory.build :project, state: nil
-    project.valid?.should be_false
-    project.save.should be_false
+    expect(project.valid?).to be_false
+    expect(project.save).to be_false
   end
 end
 

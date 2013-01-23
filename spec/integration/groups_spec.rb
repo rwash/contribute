@@ -14,7 +14,7 @@ describe 'Groups' do
         login(user.email, user.password)
 
         visit groups_index_path
-        page.should_not have_content 'You have projects in'
+        expect(page).to_not have_content 'You have projects in'
       end
 
       it 'does not display admin groups when user has none' do
@@ -26,7 +26,7 @@ describe 'Groups' do
         login(user.email, user.password)
 
         visit groups_index_path
-        page.should_not have_content 'Groups you own'
+        expect(page).to_not have_content 'Groups you own'
       end
 
       it 'displays project groups when user has some' do
@@ -38,7 +38,7 @@ describe 'Groups' do
         login(user.email, user.password)
 
         visit groups_index_path
-        page.should have_content 'You have projects in'
+        expect(page).to have_content 'You have projects in'
       end
 
       it 'displays admin groups when user has some' do
@@ -51,7 +51,7 @@ describe 'Groups' do
         login(user.email, user.password)
 
         visit groups_index_path
-        page.should have_content 'Groups you own'
+        expect(page).to have_content 'Groups you own'
       end
 
       it 'does not display group twice when user has two projects in a group' do
@@ -67,7 +67,7 @@ describe 'Groups' do
 
         visit groups_index_path
         # Group name should appear exactly once on the page
-        page.all('div.groups-sidebar a', text: group.name).count.should eq 1
+        expect(page.all('div.groups-sidebar a', text: group.name).count).to eq 1
       end
     end
   end

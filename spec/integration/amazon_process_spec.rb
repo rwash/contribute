@@ -21,7 +21,7 @@ class AmazonProcessTesting
 
         #create a project
         visit(new_project_path)
-        current_path.should == new_project_path
+        expect(current_path).to eq new_project_path
 
         #fill in form
         fill_in 'name' , :with => project.name
@@ -42,14 +42,14 @@ class AmazonProcessTesting
         find('a').click
 
         #Now we should be back at contribute
-        # current_path.should == project_path(project)
-        page.should have_content('Project saved successfully')
+        # expect(current_path).to eq project_path(project)
+        expect(page).to have_content('Project saved successfully')
 
         get_and_assert_project(project.name)
 
-        last_email.to.should eq(['mthelen2@gmail.com'])
-        last_email.subject.should match(project.name)
-        last_email.subject.should match('has been created')
+        expect(last_email.to).to eq(['mthelen2@gmail.com'])
+        expect(last_email.subject).to match(project.name)
+        expect(last_email.subject).to match('has been created')
       end
     end
 
@@ -64,13 +64,13 @@ class AmazonProcessTesting
 
         #contribute!
         click_button 'Contribute to this project'
-        current_path.should == new_contribution_path(project)
+        expect(current_path).to eq new_contribution_path(project)
 
         fill_in 'contribution_amount', :with => 'you_fail_me'
         click_button 'Make Contribution'
 
-        page.should have_content('Contribute to')
-        page.should have_content('prevented this contribution from being saved')
+        expect(page).to have_content('Contribute to')
+        expect(page).to have_content('prevented this contribution from being saved')
       end
 
       it "succeeds with valid amount" do
@@ -82,9 +82,9 @@ class AmazonProcessTesting
           project, #the project to contribute to
           100) #the amount
 
-          last_email.to.should eq(['thelen56@msu.edu'])
-          last_email.subject.should match(project.name)
-          last_email.subject.should match('Your contribution to')
+          expect(last_email.to).to eq(['thelen56@msu.edu'])
+          expect(last_email.subject).to match(project.name)
+          expect(last_email.subject).to match('Your contribution to')
       end
     end
 
@@ -106,8 +106,8 @@ class AmazonProcessTesting
         fill_in 'contribution_amount', :with => contribution.amount - 5
         click_button 'Update Contribution'
 
-        page.should have_content('Edit contribution to')
-        page.should have_content('prevented this contribution from being saved')
+        expect(page).to have_content('Edit contribution to')
+        expect(page).to have_content('prevented this contribution from being saved')
       end
 
       it "fails with invalid contribution amount" do
@@ -116,8 +116,8 @@ class AmazonProcessTesting
         fill_in 'contribution_amount', :with => "invalid amount"
         click_button 'Update Contribution'
 
-        page.should have_content('Edit contribution to')
-        page.should have_content('prevented this contribution from being saved')
+        expect(page).to have_content('Edit contribution to')
+        expect(page).to have_content('prevented this contribution from being saved')
       end
 
       it "fails with same amount" do
@@ -126,8 +126,8 @@ class AmazonProcessTesting
         fill_in 'contribution_amount', :with => contribution.amount
         click_button 'Update Contribution'
 
-        page.should have_content('Edit contribution to')
-        page.should have_content('prevented this contribution from being saved')
+        expect(page).to have_content('Edit contribution to')
+        expect(page).to have_content('prevented this contribution from being saved')
       end
 
       it "succeeds with valid amount" do
@@ -138,17 +138,17 @@ class AmazonProcessTesting
 
         make_amazon_payment('contribute_testing@hotmail.com', 'testing')
 
-        page.should have_content('Contribution successfully updated.')
+        expect(page).to have_content('Contribution successfully updated.')
 
-        cancelled_contribution = Contribution.where(:status => :cancelled, :project => project)
-        new_contribution = Contribution.where(:status => :none, :project => project)
+        cancelled_contribution = project.contributions.where(:status => :cancelled)
+        new_contribution = project.contributions.where(:status => :none)
 
-        cancelled_contribution.should_not be_nil
-        new_contribution.should_not be_nil
+        expect(cancelled_contribution).to_not be_nil
+        expect(new_contribution).to_not be_nil
 
-        last_email.to.should eq(['thelen56@msu.edu'])
-        last_email.subject.should match(project.name)
-        last_email.subject.should match('Your edited contribution to')
+        expect(last_email.to).to eq(['thelen56@msu.edu'])
+        expect(last_email.subject).to match(project.name)
+        expect(last_email.subject).to match('Your edited contribution to')
       end
     end
   end

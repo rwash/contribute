@@ -7,14 +7,14 @@ describe GroupsController do
   context "when not signed in" do
     it "does not allow group creation" do
       expect {post 'create', :group => FactoryGirl.attributes_for(:group)}.to_not change{Group.count}
-      response.should redirect_to('/users/sign_in')
-      flash[:alert].should include "You need to sign in or sign up before continuing."
+      expect(response).to redirect_to('/users/sign_in')
+      expect(flash[:alert]).to include "You need to sign in or sign up before continuing."
     end
 
     it "does not allow group deletion" do
       group = Factory :group
       expect {get 'destroy', :id => group.id}.to_not change{Group.count}
-      flash[:alert].should include "You are not authorized to access this page."
+      expect(flash[:alert]).to include "You are not authorized to access this page."
     end
   end
 
@@ -24,7 +24,7 @@ describe GroupsController do
 
     it "allows group creation" do
       expect {post 'create', :group => FactoryGirl.attributes_for(:group)}.to change {Group.count}.by 1
-      flash[:notice].should include "Successfully created group."
+      expect(flash[:notice]).to include "Successfully created group."
     end
 
     context "when the user owns the group" do
@@ -32,12 +32,12 @@ describe GroupsController do
 
       it "allows group editing" do
         get 'edit', :id => owned_group.id
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "allows group deletion" do
         expect {get 'destroy', :id => owned_group.id}.to change {Group.count}.by(-1)
-        response.should redirect_to(groups_path)
+        expect(response).to redirect_to(groups_path)
       end
     end
 
@@ -46,12 +46,12 @@ describe GroupsController do
 
       it "does not allow group editing" do
         get 'edit', :id => other_group.id
-        flash[:alert].should include "You are not authorized to access this page."
+        expect(flash[:alert]).to include "You are not authorized to access this page."
       end
 
       it "does not allow group deletion" do
         expect {get 'destroy', id: other_group.id}.to_not change {Group.count}
-        flash[:alert].should include "You are not authorized to access this page."
+        expect(flash[:alert]).to include "You are not authorized to access this page."
       end
     end
 
@@ -63,8 +63,8 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been added to the group."
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been added to the group."
       end
 
       it 'allows adding of inactive project to group' do
@@ -72,8 +72,8 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been added to the group."
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been added to the group."
       end
 
       it 'allows adding of active project to group' do
@@ -81,8 +81,8 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been added to the group."
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been added to the group."
       end
 
       it 'allows adding of funded project to group' do
@@ -90,8 +90,8 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been added to the group."
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been added to the group."
       end
 
       it 'allows adding of nonfunded project to group' do
@@ -99,8 +99,8 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been added to the group."
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been added to the group."
       end
 
       it 'does not allow adding of cancelled project to group' do
@@ -108,8 +108,8 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:error].should include "You cannot add a cancelled project."
+        expect(response).to redirect_to(group)
+        expect(flash[:error]).to include "You cannot add a cancelled project."
       end
 
       it 'does not allow multiple additions of the same project to a group' do
@@ -117,8 +117,8 @@ describe GroupsController do
         group.projects << project
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to_not change {group.projects.count}
 
-        response.should redirect_to(group)
-        flash[:error].should include "Your project is already in this group."
+        expect(response).to redirect_to(group)
+        expect(flash[:error]).to include "Your project is already in this group."
       end
 
     end
@@ -132,9 +132,9 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been submitted to the group admin for approval."
-        Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first.should_not be_nil
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+        expect(Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first).to_not be_nil
       end
 
       it 'allows adding of inactive project to group' do
@@ -142,9 +142,9 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been submitted to the group admin for approval."
-        Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first.should_not be_nil
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+        expect(Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first).to_not be_nil
       end
 
       it 'allows adding of active project to group' do
@@ -152,9 +152,9 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been submitted to the group admin for approval."
-        Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first.should_not be_nil
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+        expect(Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first).to_not be_nil
       end
 
       it 'allows adding of funded project to group' do
@@ -162,9 +162,9 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been submitted to the group admin for approval."
-        Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first.should_not be_nil
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+        expect(Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first).to_not be_nil
       end
 
       it 'allows adding of nonfunded project to group' do
@@ -172,9 +172,9 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:notice].should include "Your project has been submitted to the group admin for approval."
-        Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first.should_not be_nil
+        expect(response).to redirect_to(group)
+        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+        expect(Approval.where(:project_id => project.id, :group_id => group.id, :approved => nil).first).to_not be_nil
       end
 
       it 'does not allow adding of cancelled project to group' do
@@ -182,8 +182,8 @@ describe GroupsController do
 
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to change {Group.count}.by 1
 
-        response.should redirect_to(group)
-        flash[:error].should include "You cannot add a cancelled project."
+        expect(response).to redirect_to(group)
+        expect(flash[:error]).to include "You cannot add a cancelled project."
       end
 
       it 'does not allow multiple additions of the same project to a group' do
@@ -191,8 +191,8 @@ describe GroupsController do
         group.projects << project
         expect {post 'submit_add', :id => group.id, :project_id => project.id}.to_not change {group.projects.count}
 
-        response.should redirect_to(group)
-        flash[:error].should include "Your project is already in this group."
+        expect(response).to redirect_to(group)
+        expect(flash[:error]).to include "Your project is already in this group."
       end
     end
 

@@ -20,9 +20,9 @@ describe EmailManager do
     EmailManager.add_project(project).deliver
 
     #The [] is a known quirk with deliveries emails
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "contribute to project" do
@@ -32,9 +32,9 @@ describe EmailManager do
 
     EmailManager.contribute_to_project(contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "edit contribution" do
@@ -45,9 +45,9 @@ describe EmailManager do
 
     EmailManager.edit_contribution(old_contribution, contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "contribution cancelled" do
@@ -57,9 +57,9 @@ describe EmailManager do
 
     EmailManager.contribution_cancelled(contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "contribution successful" do
@@ -69,9 +69,9 @@ describe EmailManager do
 
     EmailManager.contribution_successful(contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "failed retries" do
@@ -82,7 +82,7 @@ describe EmailManager do
     EmailManager.failed_retries(argArray).deliver
 
     #TODO: Admin address
-    last_email.subject.should match(Date.today.to_s)
+    expect(last_email.subject).to match(Date.today.to_s)
   end
 
   it "project funded to owner" do
@@ -91,9 +91,9 @@ describe EmailManager do
 
     EmailManager.project_funded_to_owner(project).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "project not funded to owner" do
@@ -102,9 +102,9 @@ describe EmailManager do
 
     EmailManager.project_not_funded_to_owner(project).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "project funded to contributor" do
@@ -114,9 +114,9 @@ describe EmailManager do
 
     EmailManager.project_funded_to_contributor(contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "project not funded to contributor" do
@@ -126,9 +126,9 @@ describe EmailManager do
 
     EmailManager.project_not_funded_to_contributor(contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "project deleted to owner" do
@@ -137,9 +137,9 @@ describe EmailManager do
 
     EmailManager.project_deleted_to_owner(project).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "project deleted to contributor" do
@@ -149,9 +149,9 @@ describe EmailManager do
 
     EmailManager.project_deleted_to_contributor(contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
   end
 
   it "unretriable cancel to admin" do
@@ -161,9 +161,9 @@ describe EmailManager do
     EmailManager.unretriable_cancel_to_admin(error, contribution).deliver
 
     #TODO: To admin address
-    last_email.subject.should match(contribution.id.to_s)
-    last_email.body.encoded.should match(contribution.id.to_s)
-    last_email.body.encoded.should match(error.description)
+    expect(last_email.subject).to match(contribution.id.to_s)
+    expect(last_email.body.encoded).to match(contribution.id.to_s)
+    expect(last_email.body.encoded).to match(error.description)
   end
 
   it "unretriable payment to user" do
@@ -174,10 +174,10 @@ describe EmailManager do
 
     EmailManager.unretriable_payment_to_user(error, contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
-    last_email.body.encoded.should match(error.description)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
+    expect(last_email.body.encoded).to match(error.description)
   end
 
   it "unretriable payment to admin" do
@@ -188,9 +188,9 @@ describe EmailManager do
     EmailManager.unretriable_payment_to_admin(error, contribution).deliver
 
     #TODO: Admin
-    last_email.subject.should match(contribution.id.to_s)
-    last_email.body.encoded.should match(contribution.id.to_s)
-    last_email.body.encoded.should match(error.description)
+    expect(last_email.subject).to match(contribution.id.to_s)
+    expect(last_email.body.encoded).to match(contribution.id.to_s)
+    expect(last_email.body.encoded).to match(error.description)
   end
 
   it "cancelled payment to admin" do
@@ -201,9 +201,9 @@ describe EmailManager do
     EmailManager.cancelled_payment_to_admin(contribution).deliver
 
     #TODO: Admin
-    last_email.subject.should match(contribution.id.to_s)
-    last_email.body.encoded.should match(contribution.id.to_s)
-    last_email.body.encoded.should match(project.name)
+    expect(last_email.subject).to match(contribution.id.to_s)
+    expect(last_email.body.encoded).to match(contribution.id.to_s)
+    expect(last_email.body.encoded).to match(project.name)
   end
 
   it "failed payment to user" do
@@ -214,10 +214,10 @@ describe EmailManager do
 
     EmailManager.failed_payment_to_user(contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.body.encoded.should match(user.name)
-    last_email.body.encoded.should match(project.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.body.encoded).to match(user.name)
+    expect(last_email.body.encoded).to match(project.name)
   end
 
   it "failed status to admin" do
@@ -228,9 +228,9 @@ describe EmailManager do
     EmailManager.failed_status_to_admin(error, contribution).deliver
 
     #TODO: Admin
-    last_email.subject.should match(contribution.id.to_s)
-    last_email.body.encoded.should match(contribution.id.to_s)
-    last_email.body.encoded.should match(error.description)
+    expect(last_email.subject).to match(contribution.id.to_s)
+    expect(last_email.body.encoded).to match(contribution.id.to_s)
+    expect(last_email.body.encoded).to match(error.description)
   end
 
   it "project update to contributor" do
@@ -241,11 +241,11 @@ describe EmailManager do
 
     EmailManager.project_update_to_contributor(update, contribution).deliver
 
-    last_email.to.should == [user.email]
-    last_email.subject.should match(project.name)
-    last_email.subject.should match(update.title)
-    last_email.body.encoded.should match(user.name)
-    last_email.body.encoded.should match(project.name)
+    expect(last_email.to).to eq [user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.subject).to match(update.title)
+    expect(last_email.body.encoded).to match(user.name)
+    expect(last_email.body.encoded).to match(project.name)
   end
 
   it "project_to_group_approval" do # approval, project, group, project owner, group owner,
@@ -257,10 +257,10 @@ describe EmailManager do
 
     EmailManager.project_to_group_approval(approval, project, group).deliver
 
-    last_email.to.should == [group_user.email]
-    last_email.subject.should match(project.name)
-    last_email.subject.should match(group.name)
-    last_email.body.encoded.should match(group_user.name)
+    expect(last_email.to).to eq [group_user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.subject).to match(group.name)
+    expect(last_email.body.encoded).to match(group_user.name)
   end
 
   it "group_reject_project" do # approval project group, project owner
@@ -272,11 +272,11 @@ describe EmailManager do
 
     EmailManager.group_reject_project(approval, project, group).deliver
 
-    last_email.to.should == [proj_user.email]
-    last_email.subject.should match(project.name)
-    last_email.subject.should match(group.name)
-    last_email.body.encoded.should match(proj_user.name)
-    last_email.body.encoded.should match(approval.reason)
+    expect(last_email.to).to eq [proj_user.email]
+    expect(last_email.subject).to match(project.name)
+    expect(last_email.subject).to match(group.name)
+    expect(last_email.body.encoded).to match(proj_user.name)
+    expect(last_email.body.encoded).to match(approval.reason)
   end
 
 end

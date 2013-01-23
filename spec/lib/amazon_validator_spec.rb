@@ -92,7 +92,7 @@ describe Amazon::FPS::AmazonValidator do
     end
 
     it "should succeed with valid parameters (for get_transaction_status)" do
-      Amazon::FPS::AmazonValidator.get_transaction_status(@response).should eq :success
+      expect(Amazon::FPS::AmazonValidator.get_transaction_status(@response)).to eq :success
     end
   end
 
@@ -131,7 +131,7 @@ describe Amazon::FPS::AmazonValidator do
       @response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
 
       expected = AmazonError.find_by_error("TokenNotActive_Sender")
-      expected.should_not be_nil
+      expect(expected).to_not be_nil
 
       run_get_error_test(expected)
     end
@@ -140,7 +140,7 @@ describe Amazon::FPS::AmazonValidator do
       @response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
 
       expected = AmazonError.unknown_error("New_Error")
-      expected.should_not be_nil
+      expect(expected).to_not be_nil
 
       @response["Errors"]["Error"]["Code"] = "New_Error"
       run_get_error_test(expected)
@@ -149,7 +149,7 @@ describe Amazon::FPS::AmazonValidator do
     it "should raise exception if errors is nill" do
       response = { "unexpected" => "I don't do what you expect" }
 
-      lambda { Amazon::FPS::AmazonValidator.get_error(response) }.should raise_error
+      expect(lambda { Amazon::FPS::AmazonValidator.get_error(response) }).to raise_error
     end
   end
 

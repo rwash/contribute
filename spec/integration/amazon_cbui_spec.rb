@@ -21,7 +21,7 @@ class AmazonCbuiTesting
       request = Amazon::FPS::RecipientRequest.new(save_project_url)
       visit(request.url)
 
-      page.should have_content('Sign in with your Amazon account')
+      expect(page).to have_content('Sign in with your Amazon account')
     end
 
     #if you receive a not well formed :[recipientTokenList] update the project factor
@@ -35,7 +35,7 @@ class AmazonCbuiTesting
       request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 
       visit request.url
-      page.should have_content('Sign in with your Amazon account')
+      expect(page).to have_content('Sign in with your Amazon account')
     end
   end
 end
