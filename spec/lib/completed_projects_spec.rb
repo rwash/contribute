@@ -16,28 +16,28 @@ describe CompletedProjects do
     end
 
     it "run works" do
-      funded = FactoryGirl.build(:project, :state => 'active', :funding_goal => 10, :end_date => (Date.today - 1))
+      funded = FactoryGirl.build(:project, state: 'active', funding_goal: 10, end_date: (Date.today - 1))
       #Validation prevents projects with an end_date before or on today. So skip validation.
-      funded.save(:validate => false)
-      not_funded = FactoryGirl.build(:project, :state => 'active', :funding_goal => 100000, :end_date => (Date.today - 1))
-      not_funded.save(:validate => false)
-      ignore = FactoryGirl.build(:project, :funding_goal => 100000, :end_date => (Date.today - 3))
-      ignore.save(:validate => false)
-      ignore2 = FactoryGirl.build(:project, :funding_goal => 100000, :end_date => Date.today)
-      ignore2.save(:validate => false)
+      funded.save(validate: false)
+      not_funded = FactoryGirl.build(:project, state: 'active', funding_goal: 100000, end_date: (Date.today - 1))
+      not_funded.save(validate: false)
+      ignore = FactoryGirl.build(:project, funding_goal: 100000, end_date: (Date.today - 3))
+      ignore.save(validate: false)
+      ignore2 = FactoryGirl.build(:project, funding_goal: 100000, end_date: Date.today)
+      ignore2.save(validate: false)
 
       Contribution.any_instance.stub(:execute_payment) {}
       Contribution.any_instance.stub(:cancel) {}
 
-      to_funded = FactoryGirl.create(:contribution, :amount => 15, :project => funded)
-      to_funded2 = FactoryGirl.create(:contribution, :amount => 100, :project => funded)
-      to_not_funded = FactoryGirl.create(:contribution, :amount => 5, :project => not_funded)
-      ignore = FactoryGirl.create(:contribution, :status => :cancelled, :project => not_funded)
+      to_funded = FactoryGirl.create(:contribution, amount: 15, project: funded)
+      to_funded2 = FactoryGirl.create(:contribution, amount: 100, project: funded)
+      to_not_funded = FactoryGirl.create(:contribution, amount: 5, project: not_funded)
+      ignore = FactoryGirl.create(:contribution, status: :cancelled, project: not_funded)
 
-      EmailManager.stub_chain(:project_not_funded_to_owner, :deliver => true)
-      EmailManager.stub_chain(:project_funded_to_owner, :deliver => true)
-      EmailManager.stub_chain(:project_not_funded_to_contributor, :deliver => true)
-      EmailManager.stub_chain(:project_funded_to_contributor, :deliver => true)
+      EmailManager.stub_chain(:project_not_funded_to_owner, deliver: true)
+      EmailManager.stub_chain(:project_funded_to_owner, deliver: true)
+      EmailManager.stub_chain(:project_not_funded_to_contributor, deliver: true)
+      EmailManager.stub_chain(:project_funded_to_contributor, deliver: true)
 
       EmailManager.should_receive(:project_not_funded_to_owner).with(not_funded).once
       EmailManager.should_receive(:project_funded_to_owner).with(funded).once
@@ -58,28 +58,28 @@ describe CompletedProjects do
     end
 
     it "run all works" do
-      funded = FactoryGirl.build(:project, :state => 'active', :funding_goal => 15, :end_date => (Date.today - 1))
+      funded = FactoryGirl.build(:project, state: 'active', funding_goal: 15, end_date: (Date.today - 1))
       #Validation prevents projects with an end_date before or on today. So skip validation.
-      funded.save(:validate => false)
-      not_funded = FactoryGirl.build(:project, :state => 'active', :funding_goal => 100000, :end_date => (Date.today - 1))
-      not_funded.save(:validate => false)
-      funded_not_ignored = FactoryGirl.build(:project, :state => 'active', :funding_goal => 95, :end_date => (Date.today - 3))
-      funded_not_ignored.save(:validate => false)
-      ignore2 = FactoryGirl.build(:project, :funding_goal => 100000, :end_date => Date.today)
-      ignore2.save(:validate => false)
+      funded.save(validate: false)
+      not_funded = FactoryGirl.build(:project, state: 'active', funding_goal: 100000, end_date: (Date.today - 1))
+      not_funded.save(validate: false)
+      funded_not_ignored = FactoryGirl.build(:project, state: 'active', funding_goal: 95, end_date: (Date.today - 3))
+      funded_not_ignored.save(validate: false)
+      ignore2 = FactoryGirl.build(:project, funding_goal: 100000, end_date: Date.today)
+      ignore2.save(validate: false)
 
       Contribution.any_instance.stub(:execute_payment) {}
       Contribution.any_instance.stub(:cancel) {}
 
-      to_funded = FactoryGirl.create(:contribution, :amount => 15, :project => funded)
-      to_funded_not_ignored = FactoryGirl.create(:contribution, :amount => 100, :project => funded_not_ignored)
-      to_not_funded = FactoryGirl.create(:contribution, :amount => 5, :project => not_funded)
-      ignore = FactoryGirl.create(:contribution, :status => :cancelled, :project => not_funded)
+      to_funded = FactoryGirl.create(:contribution, amount: 15, project: funded)
+      to_funded_not_ignored = FactoryGirl.create(:contribution, amount: 100, project: funded_not_ignored)
+      to_not_funded = FactoryGirl.create(:contribution, amount: 5, project: not_funded)
+      ignore = FactoryGirl.create(:contribution, status: :cancelled, project: not_funded)
 
-      EmailManager.stub_chain(:project_not_funded_to_owner, :deliver => true)
-      EmailManager.stub_chain(:project_funded_to_owner, :deliver => true)
-      EmailManager.stub_chain(:project_not_funded_to_contributor, :deliver => true)
-      EmailManager.stub_chain(:project_funded_to_contributor, :deliver => true)
+      EmailManager.stub_chain(:project_not_funded_to_owner, deliver: true)
+      EmailManager.stub_chain(:project_funded_to_owner, deliver: true)
+      EmailManager.stub_chain(:project_not_funded_to_contributor, deliver: true)
+      EmailManager.stub_chain(:project_funded_to_contributor, deliver: true)
 
       EmailManager.should_receive(:project_not_funded_to_owner).with(not_funded).once
       EmailManager.should_receive(:project_funded_to_owner).with(funded).once

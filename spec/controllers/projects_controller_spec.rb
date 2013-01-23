@@ -17,17 +17,17 @@ describe ProjectsController do
         let!(:project) { Factory :project, state: :unconfirmed }
 
         it 'can NOT view project' do
-          get :show, :id => project.name
+          get :show, id: project.name
           expect(response).to redirect_to(root_path)
         end
 
         it "can't destroy a project" do
-          expect {get :destroy, :id => project.name}.to_not change{ Project.count }
+          expect {get :destroy, id: project.name}.to_not change{ Project.count }
           expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
-          get :edit, :id => project.name
+          get :edit, id: project.name
           expect(response).to redirect_to(new_user_session_path)
         end
       end
@@ -36,17 +36,17 @@ describe ProjectsController do
         let!(:project) { Factory :project, state: :inactive }
 
         it 'can NOT view project' do
-          get :show, :id => project.name
+          get :show, id: project.name
           expect(response).to redirect_to(root_path)
         end
 
         it "can't destroy a project" do
-          expect{ get :destroy, :id => project.name }.to_not change { Project.count }
+          expect{ get :destroy, id: project.name }.to_not change { Project.count }
           expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
-          get :edit, :id => project.name
+          get :edit, id: project.name
           expect(response).to redirect_to(new_user_session_path)
         end
       end
@@ -55,17 +55,17 @@ describe ProjectsController do
         let!(:project) { Factory :project, state: :active }
 
         it 'CAN view project' do
-          get :show, :id => project.name
+          get :show, id: project.name
           expect(response).to be_success
         end
 
         it "can't destroy a project" do
-          expect{ get :destroy, :id => project.name }.to_not change { Project.count }
+          expect{ get :destroy, id: project.name }.to_not change { Project.count }
           expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
-          get :edit, :id => project.name
+          get :edit, id: project.name
           expect(response).to redirect_to(new_user_session_path)
         end
       end
@@ -74,17 +74,17 @@ describe ProjectsController do
         let!(:project) { Factory :project, state: :funded }
 
         it 'CAN view project' do
-          get :show, :id => project.name
+          get :show, id: project.name
           expect(response).to be_success
         end
 
         it "can't destroy a project" do
-          expect{ get :destroy, :id => project.name }.to_not change { Project.count }
+          expect{ get :destroy, id: project.name }.to_not change { Project.count }
           expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
-          get :edit, :id => project.name
+          get :edit, id: project.name
           expect(response).to redirect_to(new_user_session_path)
         end
       end
@@ -93,17 +93,17 @@ describe ProjectsController do
         let!(:project) { Factory :project, state: :nonfunded }
 
         it 'CAN view project' do
-          get :show, :id => project.name
+          get :show, id: project.name
           expect(response).to be_success
         end
 
         it "can't destroy a project" do
-          expect{ get :destroy, :id => project.name }.to_not change { Project.count }
+          expect{ get :destroy, id: project.name }.to_not change { Project.count }
           expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
-          get :edit, :id => project.name
+          get :edit, id: project.name
           expect(response).to redirect_to(new_user_session_path)
         end
       end
@@ -112,17 +112,17 @@ describe ProjectsController do
         let!(:project) { Factory :project, state: :cancelled }
 
         it 'can NOT view project' do
-          get :show, :id => project.name
+          get :show, id: project.name
           expect(response).to redirect_to(root_path)
         end
 
         it "can't destroy a project" do
-          expect{ get :destroy, :id => project.name }.to_not change { Project.count }
+          expect{ get :destroy, id: project.name }.to_not change { Project.count }
           expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
-          get :edit, :id => project.name
+          get :edit, id: project.name
           expect(response).to redirect_to(new_user_session_path)
         end
       end
@@ -144,18 +144,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, user: user, state: :unconfirmed }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "CAN destroy a project" do
-            expect { get :destroy, :id => project.name }.to change { Project.count }.by(-1)
+            expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
             expect(flash[:alert]).to include "successfully deleted"
             expect(response).to redirect_to(root_path)
           end
 
           it "CAN edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to be_success
           end
         end
@@ -164,18 +164,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, user: user, state: :inactive }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "CAN destroy a project" do
-            expect { get :destroy, :id => project.name }.to change { Project.count }.by(-1)
+            expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
             expect(flash[:alert]).to include "successfully deleted"
             expect(response).to redirect_to(root_path)
           end
 
           it "CAN edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to be_success
           end
         end
@@ -184,18 +184,18 @@ describe ProjectsController do
           let(:project) { Factory :project, user: user, state: :active }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "CAN cancel a project" do
-            get :destroy, :id => project.name
+            get :destroy, id: project.name
             expect(flash[:alert]).to include "Project successfully cancelled."
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
         end
@@ -204,18 +204,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, user: user, state: :funded }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "can NOT cancel or delete a project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(flash[:alert]).to include "You can not cancel or delete this project."
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
         end
@@ -224,18 +224,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, user: user, state: :nonfunded }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "can NOT cancel or delete a project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(flash[:alert]).to include "You can not cancel or delete this project."
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
         end
@@ -244,18 +244,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, user: user, state: :cancelled }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "can NOT cancel or delete a project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(flash[:alert]).to include "You can not cancel or delete this project."
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
 
@@ -267,18 +267,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, state: :unconfirmed }
 
           it 'can NOT view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to redirect_to(root_path)
           end
 
           it "can't destroy a project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(Project.find(project.id)).to_not be_nil
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit a project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
         end
@@ -287,18 +287,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, state: :inactive }
 
           it 'can NOT view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to redirect_to(root_path)
           end
 
           it "can't destroy a project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(Project.find(project.id)).to_not be_nil
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit a project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
 
@@ -308,18 +308,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, state: :active }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "can't destroy a project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(Project.find(project.id)).to_not be_nil
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit a project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
         end
@@ -328,18 +328,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, state: :funded }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "can't destroy the project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(Project.find(project.id)).to_not be_nil
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
         end
@@ -348,18 +348,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, state: :nonfunded }
 
           it 'CAN view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to be_success
           end
 
           it "can't destroy a project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(Project.find(project.id)).to_not be_nil
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
         end
@@ -368,18 +368,18 @@ describe ProjectsController do
           let!(:project) { Factory :project, state: :cancelled }
 
           it 'can NOT view project' do
-            get :show, :id => project.name
+            get :show, id: project.name
             expect(response).to redirect_to(root_path)
           end
 
           it "can't destroy a project" do
-            expect { get :destroy, :id => project.name }.to_not change { Project.count }
+            expect { get :destroy, id: project.name }.to_not change { Project.count }
             expect(Project.find(project.id)).to_not be_nil
             expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
-            get :edit, :id => project.name
+            get :edit, id: project.name
             expect(response).to redirect_to(root_path)
           end
         end
@@ -427,7 +427,7 @@ describe ProjectsController do
         let!(:project) { Factory.create(:project, state: :inactive, user: user) }
 
         it "should succeed destroy" do
-          expect{ delete :destroy, :id => project.name }.to change{ Project.count }.by(-1)
+          expect{ delete :destroy, id: project.name }.to change{ Project.count }.by(-1)
 
           expect(response).to redirect_to(root_path)
           expect(flash[:alert]).to include "successfully deleted"
@@ -436,7 +436,7 @@ describe ProjectsController do
         it "should handle failure" do
           Project.any_instance.stub(:destroy) {false}
 
-          expect{ delete :destroy, :id => project.name }.to_not change{ Project.count }
+          expect{ delete :destroy, id: project.name }.to_not change{ Project.count }
 
           expect(response).to redirect_to(project_path(project))
           expect(flash[:alert]).to include "could not be deleted"

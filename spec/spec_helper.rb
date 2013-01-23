@@ -80,7 +80,7 @@ Spork.prefork do
     # Rspec will then only run the tests that are being focused on.
     # To run all tests again, remove the focus from all tests.
     config.treat_symbols_as_metadata_keys_with_true_values = true
-    config.filter_run :focus => true
+    config.filter_run focus: true
     config.run_all_when_everything_filtered = true
   end
 

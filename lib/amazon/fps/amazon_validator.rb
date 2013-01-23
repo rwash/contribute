@@ -63,7 +63,7 @@ protected
 		params.delete("controller")
 		params.delete("action")
 
-		return utils.validate_request(:parameters => params, :url_end_point => url_end_point, :http_method => "GET")	
+		return utils.validate_request(parameters: params, url_end_point: url_end_point, http_method: "GET")	
 	end
 
 	#these are acceptable status codes for the payment method

@@ -24,11 +24,11 @@ class AmazonProcessTesting
         expect(current_path).to eq new_project_path
 
         #fill in form
-        fill_in 'name' , :with => project.name
-        fill_in 'project_funding_goal', :with => project.funding_goal
-        fill_in 'DatePickerEndDate', :with => project.end_date.strftime('%m/%d/%Y')
-        fill_in 'project_short_description', :with => project.short_description
-        fill_in_ckeditor 'project_long_description', :with => project.long_description
+        fill_in 'name' , with: project.name
+        fill_in 'project_funding_goal', with: project.funding_goal
+        fill_in 'DatePickerEndDate', with: project.end_date.strftime('%m/%d/%Y')
+        fill_in 'project_short_description', with: project.short_description
+        fill_in_ckeditor 'project_long_description', with: project.long_description
 
         click_button 'Create Project'
         get_and_assert_project(project.name)
@@ -66,7 +66,7 @@ class AmazonProcessTesting
         click_button 'Contribute to this project'
         expect(current_path).to eq new_contribution_path(project)
 
-        fill_in 'contribution_amount', :with => 'you_fail_me'
+        fill_in 'contribution_amount', with: 'you_fail_me'
         click_button 'Make Contribution'
 
         expect(page).to have_content('Contribute to')
@@ -103,7 +103,7 @@ class AmazonProcessTesting
       it "fails with smaller contribution amount" do
         contribution = get_and_assert_contribution(project.id)
         visit edit_contribution_path(contribution)
-        fill_in 'contribution_amount', :with => contribution.amount - 5
+        fill_in 'contribution_amount', with: contribution.amount - 5
         click_button 'Update Contribution'
 
         expect(page).to have_content('Edit contribution to')
@@ -113,7 +113,7 @@ class AmazonProcessTesting
       it "fails with invalid contribution amount" do
         contribution = get_and_assert_contribution(project.id)
         visit edit_contribution_path(contribution)
-        fill_in 'contribution_amount', :with => "invalid amount"
+        fill_in 'contribution_amount', with: "invalid amount"
         click_button 'Update Contribution'
 
         expect(page).to have_content('Edit contribution to')
@@ -123,7 +123,7 @@ class AmazonProcessTesting
       it "fails with same amount" do
         contribution = get_and_assert_contribution(project.id)
         visit edit_contribution_path(contribution)
-        fill_in 'contribution_amount', :with => contribution.amount
+        fill_in 'contribution_amount', with: contribution.amount
         click_button 'Update Contribution'
 
         expect(page).to have_content('Edit contribution to')
@@ -133,15 +133,15 @@ class AmazonProcessTesting
       it "succeeds with valid amount" do
         contribution = get_and_assert_contribution(project.id)
         visit edit_contribution_path(contribution)
-        fill_in 'contribution_amount', :with => contribution.amount + 5
+        fill_in 'contribution_amount', with: contribution.amount + 5
         click_button 'Update Contribution'
 
         make_amazon_payment('contribute_testing@hotmail.com', 'testing')
 
         expect(page).to have_content('Contribution successfully updated.')
 
-        cancelled_contribution = project.contributions.where(:status => :cancelled)
-        new_contribution = project.contributions.where(:status => :none)
+        cancelled_contribution = project.contributions.where(status: :cancelled)
+        new_contribution = project.contributions.where(status: :none)
 
         expect(cancelled_contribution).to_not be_nil
         expect(new_contribution).to_not be_nil

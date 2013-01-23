@@ -13,7 +13,7 @@ describe ApprovalsController do
 
     describe 'POST approve' do
       before do
-        post 'approve', :group_id => group.id, :id => approval.id
+        post 'approve', group_id: group.id, id: approval.id
       end
 
       it "updates approval status" do
@@ -26,7 +26,7 @@ describe ApprovalsController do
 
     describe 'POST reject' do
       before do
-        post 'reject', :group_id => group.id, :id => approval.id, :reason => "I dont know"
+        post 'reject', group_id: group.id, id: approval.id, reason: "I dont know"
       end
 
       it "updates approval status" do
@@ -43,7 +43,7 @@ describe ApprovalsController do
     let(:approval) { Factory :approval, group: group }
 
     describe 'POST approve' do
-      before { post 'approve', :group_id => group.id, :id => approval.id }
+      before { post 'approve', group_id: group.id, id: approval.id }
 
       it "does not update approved attribute", :broken do
         expect(approval.reload.approved).to be_nil
@@ -54,10 +54,10 @@ describe ApprovalsController do
     end
 
     describe 'POST reject' do
-      before { post 'reject', :group_id => group.id, :id => approval.id }
+      before { post 'reject', group_id: group.id, id: approval.id }
 
       it "does not allow approvals", :broken do
-        expect { post 'reject', :group_id => group.id, :id => approval.id }.to_not change {approval.reload.approved}
+        expect { post 'reject', group_id: group.id, id: approval.id }.to_not change {approval.reload.approved}
       end
 
       it { should redirect_to root_url }

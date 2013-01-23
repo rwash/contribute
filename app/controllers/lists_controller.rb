@@ -1,6 +1,6 @@
 class ListsController < InheritedResources::Base
   load_and_authorize_resource
-  before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save]
+  before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save]
 
   def sort
     @list = List.find(params[:id])
@@ -12,7 +12,7 @@ class ListsController < InheritedResources::Base
       item.position = params['item'].index(item.id.to_s) + 1
       item.save
     end
-    render :nothing => true
+    render nothing: true
   end
 
   def update
@@ -55,7 +55,7 @@ class ListsController < InheritedResources::Base
   def add_item
     @list = List.find(params[:id])
     @project = Project.find_by_name(params[:project])
-    @list.items << Item.create(:itemable_id => @project.id, :itemable_type => @project.class.name)
+    @list.items << Item.create(itemable_id: @project.id, itemable_type: @project.class.name)
 
     redirect_to :back
   end

@@ -5,11 +5,11 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     if exception.action == :contribute
-      redirect_to exception.subject, :alert => exception.message
+      redirect_to exception.subject, alert: exception.message
     elsif exception.action == :edit_contribution
-      redirect_to exception.subject, :alert => exception.message
+      redirect_to exception.subject, alert: exception.message
     else
-      redirect_to root_url, :alert => exception.message
+      redirect_to root_url, alert: exception.message
     end
   end
 
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def yt_client
-    @yt_client ||= YouTubeIt::Client.new(:username => YT_USERNAME , :password => YT_PASSWORD , :dev_key => YT_DEV_KEY)
+    @yt_client ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)
   end
 
   # list - list to get projects for
@@ -34,13 +34,13 @@ class ApplicationController < ActionController::Base
   def get_projects_in_order(list,limit = Project.count)
     @projects = []
     unless list.listable_type == "User" and list.listable.id == 1
-      @projects << list.listable.projects.where(:state => "active") if list.show_active
-      @projects << list.listable.projects.where(:state => "funded") if list.show_funded
-      @projects << list.listable.projects.where(:state => "nonfunded") if list.show_nonfunded
+      @projects << list.listable.projects.where(state: "active") if list.show_active
+      @projects << list.listable.projects.where(state: "funded") if list.show_funded
+      @projects << list.listable.projects.where(state: "nonfunded") if list.show_nonfunded
       if list.listable_type == "User" and list.permanent? and !current_user.nil? and current_user.id == list.listable.id
-        @projects << list.listable.projects.where(:state => "unconfirmed")
-        @projects << list.listable.projects.where(:state => "inactive")
-        @projects << list.listable.projects.where(:state => "cancelled")
+        @projects << list.listable.projects.where(state: "unconfirmed")
+        @projects << list.listable.projects.where(state: "inactive")
+        @projects << list.listable.projects.where(state: "cancelled")
       end
     else
       @projects << Project.where("state = ?", "active") if list.show_active

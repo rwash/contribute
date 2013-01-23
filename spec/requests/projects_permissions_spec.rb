@@ -20,13 +20,13 @@ describe 'Project permissions' do
       end
 
       it "can view active project" do
-        project = FactoryGirl.create(:project, :user => user, :state => "active")
+        project = FactoryGirl.create(:project, user: user, state: "active")
         visit project_path(project)
         expect(current_path).to eq project_path(project)
         project.delete
       end
       it "can not view inactive project" do
-        project = FactoryGirl.create(:project, :user => user, :state => "inactive")
+        project = FactoryGirl.create(:project, user: user, state: "inactive")
         visit project_path(project)
         expect(current_path).to_not eq project_path(project)
         project.destroy
@@ -37,7 +37,7 @@ describe 'Project permissions' do
         expect(current_path).to eq new_user_session_path
       end
       it "can't destroy a project" do
-        project = FactoryGirl.create(:project, :user => user)
+        project = FactoryGirl.create(:project, user: user)
         visit project_path(project)
         expect { click_button("Delete Project") }.to raise_error
         project.destroy

@@ -8,7 +8,7 @@ class UpdateContributors
   def self.run
     @@logger.info "#{Date.today}: Starting update_contributeors"
 
-    updates_to_process = Update.where(:email_sent => false)
+    updates_to_process = Update.where(email_sent: false)
     @@logger.info "Found #{updates_to_process.size} updates to process"
 
     process_updates(updates_to_process)

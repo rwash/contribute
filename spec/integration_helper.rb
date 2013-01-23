@@ -1,8 +1,8 @@
 def login(email, password)
   visit user_session_path
 
-  fill_in 'Email', :with => email
-  fill_in 'Password', :with => password
+  fill_in 'Email', with: email
+  fill_in 'Password', with: password
   click_button 'Sign in'
 
   expect(page).to have_content('Signed in successfully')
@@ -12,8 +12,8 @@ def login_amazon(email, password)
   expect(page).to have_content('Sign in with your Amazon account')
 
   #Now we're in amazon's sign in
-  fill_in 'ap_email', :with => email
-  fill_in 'ap_password', :with => password
+  fill_in 'ap_email', with: email
+  fill_in 'ap_password', with: password
   click_on 'signInSubmit'
 end
 
@@ -57,7 +57,7 @@ def generate_contribution(user, password, amazon_user, amazon_password, project,
   click_button 'Contribute to this project'
   expect(current_path).to eq new_contribution_path(project)
 
-  fill_in 'contribution_amount', :with => amount
+  fill_in 'contribution_amount', with: amount
   click_button 'Make Contribution'
 
   make_amazon_payment(amazon_user, amazon_password)

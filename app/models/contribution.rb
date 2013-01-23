@@ -24,11 +24,11 @@ class Contribution < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
 
-  validates :payment_key, :presence => true
-  validates_numericality_of :amount, :greater_than_or_equal_to => MIN_CONTRIBUTION_AMT, :message => "must be at least $1"
-  validates_numericality_of :amount, :only_integer => true, :message => "must be a whole dollar amount (no cents please)" 
-  validates :project_id, :presence => :true
-  validates :user_id, :presence => :true
+  validates :payment_key, presence: true
+  validates_numericality_of :amount, greater_than_or_equal_to: MIN_CONTRIBUTION_AMT, message: "must be at least $1"
+  validates_numericality_of :amount, only_integer: true, message: "must be a whole dollar amount (no cents please)" 
+  validates :project_id, presence: :true
+  validates :user_id, presence: :true
 
   attr_accessible :project_id, :user, :amount, :payment_key
 
