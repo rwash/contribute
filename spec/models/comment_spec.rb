@@ -4,21 +4,21 @@ describe Comment do
   # Properties
   describe 'body' do
     it 'is required' do
-      comment = FactoryGirl.build(:comment, :body => '')
+      comment = FactoryGirl.build(:comment, body: '')
       expect(comment.save).to be_false
     end
   end
 
   describe 'project' do
     it 'id is required' do
-      comment = FactoryGirl.build(:comment, :commentable_id => '')
+      comment = FactoryGirl.build(:comment, commentable_id: '')
       expect(comment.save).to be_false
     end
   end
 
   describe 'user' do
     it 'id is required' do
-      comment = FactoryGirl.build(:comment, :user_id => '')
+      comment = FactoryGirl.build(:comment, user_id: '')
       expect(comment.save).to be_false
     end
   end

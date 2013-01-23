@@ -27,14 +27,14 @@ class Project < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   belongs_to :user
-  has_many :contributions, :conditions => ["status not in (:retry_cancel, :fail, :cancelled)", {:retry_cancel => ContributionStatus::RetryCancel, :fail => ContributionStatus::Failure, :cancelled => ContributionStatus::Cancelled}]
+  has_many :contributions, conditions: ["status not in (:retry_cancel, :fail, :cancelled)", {retry_cancel: ContributionStatus::RetryCancel, fail: ContributionStatus::Failure, cancelled: ContributionStatus::Cancelled}]
   acts_as_commentable
   has_and_belongs_to_many :groups
   has_many :comments
   has_many :updates
   belongs_to :category
   has_one :video
-  mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
+  mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
   has_many :approvals
 
   # Attributes --------------------------------------------------------------
@@ -58,34 +58,34 @@ class Project < ActiveRecord::Base
   before_destroy :destroy_video
 
   validates :name,
-            :presence => true,
-            :uniqueness => { :case_sensitive => false },
-            :length => {:maximum => MAX_NAME_LENGTH},
-            :format => { :with => /\A[a-zA-Z0-9\s]+\z/,
-            :message => "can contatin only letters, numbers, and spaces." }
+            presence: true,
+            uniqueness: { case_sensitive: false },
+            length: {maximum: MAX_NAME_LENGTH},
+            format: { with: /\A[a-zA-Z0-9\s]+\z/,
+            message: "can contatin only letters, numbers, and spaces." }
 
   validates :short_description,
-            :presence => true,
-            :length => {:maximum => MAX_SHORT_DESC_LENGTH}
+            presence: true,
+            length: {maximum: MAX_SHORT_DESC_LENGTH}
 
   validates :long_description,
-            :presence => true,
-            :length => {:maximum => MAX_LONG_DESC_LENGTH}
+            presence: true,
+            length: {maximum: MAX_LONG_DESC_LENGTH}
 
   validates_numericality_of :funding_goal,
-            :greater_than_or_equal_to => MIN_FUNDING_GOAL,
-            :message => "must be at least $5"
+            greater_than_or_equal_to: MIN_FUNDING_GOAL,
+            message: "must be at least $5"
 
   validates_numericality_of :funding_goal,
-            :only_integer => true,
-            :message => "must be a whole dollar amount (no cents please)"
+            only_integer: true,
+            message: "must be a whole dollar amount (no cents please)"
 
   validates :end_date,
-            :presence => { :message => "must be of form 'MM/DD/YYYY'" }
+            presence: { message: "must be of form 'MM/DD/YYYY'" }
 
-  validates :payment_account_id, :presence => true
-  validates :category_id, :presence => true
-  validates :user, :presence => true
+  validates :payment_account_id, presence: true
+  validates :category_id, presence: true
+  validates :user, presence: true
 
   # Delegations --------------------------------------------------------------
 
@@ -102,7 +102,7 @@ class Project < ActiveRecord::Base
 
   # Sets end date from a string in the format "mm/dd/yyyy"
   def end_date=(val)
-    write_attribute(:end_date, Timeliness.parse(val, :format => "mm/dd/yyyy"))
+    write_attribute(:end_date, Timeliness.parse(val, format: "mm/dd/yyyy"))
   end
 
   # Sets the funding goal to a given amount

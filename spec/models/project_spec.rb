@@ -4,128 +4,128 @@ describe Project do
 
   describe 'name' do
     it 'is required' do
-      project = FactoryGirl.build(:project, :name => '')
+      project = FactoryGirl.build(:project, name: '')
       expect(project.save).to be_false
     end
 
     it 'validates uniqueness' do
       project = FactoryGirl.create(:project)
-      project2 = FactoryGirl.build(:project, :name => project.name)	
+      project2 = FactoryGirl.build(:project, name: project.name)	
       expect(project2.save).to be_false
     end
 
     it 'can only contain letters and numbers' do
-      project = FactoryGirl.build(:project, :name => "Jake is cool 1234")
+      project = FactoryGirl.build(:project, name: "Jake is cool 1234")
       expect(project.save).to be_true
-      project2 = FactoryGirl.build(:project, :name => 'Sup D@wg.jpeg')
+      project2 = FactoryGirl.build(:project, name: 'Sup D@wg.jpeg')
       expect(project2.save).to be_false
     end
 
     it 'fails with max length + 1' do
-      project = FactoryGirl.build(:project, :name => "a" * (Project::MAX_NAME_LENGTH + 1))
+      project = FactoryGirl.build(:project, name: "a" * (Project::MAX_NAME_LENGTH + 1))
       expect(project.save).to be_false
     end
 
     it 'saves with max length' do
-      project = FactoryGirl.build(:project, :name => "a" * (Project::MAX_NAME_LENGTH))
+      project = FactoryGirl.build(:project, name: "a" * (Project::MAX_NAME_LENGTH))
       expect(project.save).to be_true
     end
   end
 
   describe 'short description' do
     it 'is required' do
-      project = FactoryGirl.build(:project, :short_description => '')
+      project = FactoryGirl.build(:project, short_description: '')
       expect(project.save).to be_false
     end
 
     it 'fails with max length + 1' do
-      project = FactoryGirl.build(:project, :short_description => "a" * (Project::MAX_SHORT_DESC_LENGTH + 1))
+      project = FactoryGirl.build(:project, short_description: "a" * (Project::MAX_SHORT_DESC_LENGTH + 1))
       expect(project.save).to be_false
     end
 
     it 'saves with max length' do
-      project = FactoryGirl.build(:project, :short_description => "a" * (Project::MAX_SHORT_DESC_LENGTH))
+      project = FactoryGirl.build(:project, short_description: "a" * (Project::MAX_SHORT_DESC_LENGTH))
       expect(project.save).to be_true
     end
   end
 
   describe 'long description' do
     it 'is required' do
-      project = FactoryGirl.build(:project, :long_description => '')
+      project = FactoryGirl.build(:project, long_description: '')
       expect(project.save).to be_false
     end
 
     it 'fails with max length + 1' do
-      project = FactoryGirl.build(:project, :long_description => "a" * (Project::MAX_LONG_DESC_LENGTH + 1))
+      project = FactoryGirl.build(:project, long_description: "a" * (Project::MAX_LONG_DESC_LENGTH + 1))
       expect(project.save).to be_false
     end
 
     it 'saves with max length' do
-      project = FactoryGirl.build(:project, :long_description => "a" * (Project::MAX_LONG_DESC_LENGTH))#2
+      project = FactoryGirl.build(:project, long_description: "a" * (Project::MAX_LONG_DESC_LENGTH))#2
       expect(project.save).to be_true
     end
   end
 
   describe 'funding goal' do
     it "is required" do
-      project = FactoryGirl.build(:project, :funding_goal => "")
+      project = FactoryGirl.build(:project, funding_goal: "")
       expect(project.save).to be_false
     end
     it "fails below minimum" do
-      project = FactoryGirl.build(:project, :funding_goal => (Project::MIN_FUNDING_GOAL - 1))
+      project = FactoryGirl.build(:project, funding_goal: (Project::MIN_FUNDING_GOAL - 1))
       expect(project.save).to be_false
     end
     it "takes funding_goals with commas" do
-      project = FactoryGirl.build(:project, :funding_goal => '9,999,999')#3
+      project = FactoryGirl.build(:project, funding_goal: '9,999,999')#3
       expect(project.save).to be_true
     end
     it "is an integer" do
-      project = FactoryGirl.build(:project, :funding_goal => 5.5)
+      project = FactoryGirl.build(:project, funding_goal: 5.5)
       expect(project.save).to be_false
     end
   end
 
   describe 'end date' do
     it 'succeeds with properly formatted date' do
-      project = FactoryGirl.build(:project, :end_date => '03/12/2020')#4
+      project = FactoryGirl.build(:project, end_date: '03/12/2020')#4
       expect(project.save).to be_true
       expect(project.end_date.month).to eq 3
       expect(project.end_date.day).to eq 12
       expect(project.end_date.year).to eq 2020
     end
     it 'fails with improperly formatted date' do
-      project = FactoryGirl.build(:project, :end_date => '03-12-2020')
+      project = FactoryGirl.build(:project, end_date: '03-12-2020')
       expect(project.save).to be_false
     end	
 
     it 'succeeds when equal to tomorrow' do
-      project = FactoryGirl.build(:project, :end_date => Date.today + 1)#5
+      project = FactoryGirl.build(:project, end_date: Date.today + 1)#5
       expect(project.save).to be_true
     end
     #This tests validate_end_date
     it 'fails when equal to today' do
-      project = FactoryGirl.build(:project, :end_date => Date.today)
+      project = FactoryGirl.build(:project, end_date: Date.today)
       expect(project.save).to be_false
     end
   end
 
   describe 'user' do
     it 'id is required' do
-      project = FactoryGirl.build(:project, :user_id => '')
+      project = FactoryGirl.build(:project, user_id: '')
       expect(project.save).to be_false
     end
   end
 
   describe 'category id' do
     it 'is required' do
-      project = FactoryGirl.build(:project, :category_id => '')
+      project = FactoryGirl.build(:project, category_id: '')
       expect(project.save).to be_false
     end
   end
 
   describe 'payment account id' do
     it 'is required' do
-      project = FactoryGirl.build(:project, :payment_account_id => '')
+      project = FactoryGirl.build(:project, payment_account_id: '')
       expect(project.save).to be_false
     end
   end

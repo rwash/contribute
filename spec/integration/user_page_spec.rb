@@ -34,8 +34,8 @@ class UserPageTesting
       #rails does some goofy garbage with the routes
       #expect(current_path).to eq edit_user_registration_path(@path)
 
-      fill_in 'user_name', :with => 'The Hulk'
-      fill_in 'user_current_password', :with => 'aaaaaa'
+      fill_in 'user_name', with: 'The Hulk'
+      fill_in 'user_current_password', with: 'aaaaaa'
 
       click_button 'Update Profile'
 

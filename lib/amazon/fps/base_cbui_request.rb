@@ -33,11 +33,11 @@ class BaseCbuiRequest
 	#creates the signature from the incoming endpoint, and parameters.  Then returns the formatted url from get_url()
 	def url()
 			uri = URI.parse(@service_end_point)
-			signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => @params, 
-																							:aws_secret_key => @secret_key,
-																							:host => uri.host,
-																							:verb => @http_method,
-																							:uri  => uri.path })
+			signature = Amazon::FPS::SignatureUtils.sign_parameters({parameters: @params, 
+																							aws_secret_key: @secret_key,
+																							host: uri.host,
+																							verb: @http_method,
+																							uri:  uri.path })
 			@params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
 
 			return get_url(@service_end_point, @params)

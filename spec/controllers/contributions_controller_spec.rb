@@ -9,7 +9,7 @@ describe ContributionsController do
 
     context 'when user is not signed in' do
       it "does not allow contributions" do
-        expect {get :new, :project => project.id}.to_not change { Contribution.count }
+        expect {get :new, project: project.id}.to_not change { Contribution.count }
         expect(response).to redirect_to(new_user_session_path)
       end	
     end
@@ -19,33 +19,33 @@ describe ContributionsController do
       before(:each) { sign_in user }
 
       it "allows contributions" do
-        get :new, :project => project.name
+        get :new, project: project.name
         expect(response).to be_success
       end
 
       it "does not allow contributions to projects the user owns" do
         project = Factory :project, state: :active, user: user
-        expect {get :new, :project => project.name}.to_not change { Contribution.count }
+        expect {get :new, project: project.name}.to_not change { Contribution.count }
         expect(response).to redirect_to(project)
         expect(flash[:alert]).to include "may not contribute"
       end		
 
       it "lets user edit their contributions" do
-        contribution = FactoryGirl.create(:contribution, :user => user, :project => project)
-        get :edit, :id => contribution.id
+        contribution = FactoryGirl.create(:contribution, user: user, project: project)
+        get :edit, id: contribution.id
         expect(response).to be_success
       end
 
       it "does not let user edit someone else's contribution" do
-        contribution = FactoryGirl.create(:contribution, :project => project)
-        get :edit, :id => contribution.id
+        contribution = FactoryGirl.create(:contribution, project: project)
+        get :edit, id: contribution.id
         expect(response).to redirect_to(project)
         expect(flash[:alert]).to include "may not edit this contribution"
       end
 
       it "does not allow contributions after project end date" do
         Timecop.freeze(project.end_date + 2) do
-          expect {get :new, :project => project.name}.to_not change { Contribution.count }
+          expect {get :new, project: project.name}.to_not change { Contribution.count }
           expect(response).to redirect_to(project)
           expect(flash[:alert]).to include "may not contribute"
         end
@@ -53,7 +53,7 @@ describe ContributionsController do
 
       it "does not allow contributions one day after project end date" do
         Timecop.freeze(project.end_date + 1) do
-          expect {get :new, :project => project.name}.to_not change { Contribution.count }
+          expect {get :new, project: project.name}.to_not change { Contribution.count }
           expect(response).to redirect_to(project)
           expect(flash[:alert]).to include "may not contribute"
         end
@@ -61,14 +61,14 @@ describe ContributionsController do
 
       it "allows contributions on project end date" do
         Timecop.freeze(project.end_date) do
-          expect {get :new, :project => project.name}.to_not change { Contribution.count }
+          expect {get :new, project: project.name}.to_not change { Contribution.count }
           expect(response).to be_success
         end
       end
 
       it "allows contributions before project end date" do
         Timecop.freeze(project.end_date - 1) do
-          expect {get :new, :project => project.name}.to_not change { Contribution.count }
+          expect {get :new, project: project.name}.to_not change { Contribution.count }
           expect(response).to be_success
         end
       end
@@ -81,7 +81,7 @@ describe ContributionsController do
     context 'save action' do
       before(:all) do
         project = FactoryGirl.create(:project)
-        @contribution = FactoryGirl.create(:contribution, :user => user, :project => project)
+        @contribution = FactoryGirl.create(:contribution, user: user, project: project)
       end
 
       before(:each) do
@@ -128,15 +128,15 @@ describe ContributionsController do
 
     describe 'show action' do
       it "raises 404" do
-        expect { get :show, :id => 1 }.to raise_error
+        expect { get :show, id: 1 }.to raise_error
       end
     end
 
     context 'update_save action' do
       before(:all) do
         project = FactoryGirl.create(:project)
-        @editing_contribution = FactoryGirl.create(:contribution, :user => user, :project => project)
-        @contribution = FactoryGirl.build(:contribution, :user => user, :project => project)
+        @editing_contribution = FactoryGirl.create(:contribution, user: user, project: project)
+        @contribution = FactoryGirl.build(:contribution, user: user, project: project)
       end
 
       before(:each) do
@@ -204,13 +204,13 @@ describe ContributionsController do
       before(:each) { sign_in user }
 
       it "handles invalid project" do
-        get :new, :project => project_1.name
+        get :new, project: project_1.name
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to include "error"
       end
 
       it "handles invalid project case: 2" do
-        get :new, :project => project_2.name
+        get :new, project: project_2.name
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to include "error"
       end
@@ -219,7 +219,7 @@ describe ContributionsController do
     describe "method prepare_contribution" do
       it "handles invalid contribution" do
         sign_in user
-        get :edit, {:id => 1 }
+        get :edit, {id: 1 }
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to include "error"
       end

@@ -24,40 +24,40 @@ describe Contribution do
 
   describe "payment key" do
     it "is required" do
-      contribution = FactoryGirl.build(:contribution, :payment_key => "")
+      contribution = FactoryGirl.build(:contribution, payment_key: "")
       expect(contribution.save).to be_false
     end
   end
 
   describe "amount" do
     it "is required" do
-      contribution = FactoryGirl.build(:contribution, :amount => "")
+      contribution = FactoryGirl.build(:contribution, amount: "")
       expect(contribution.save).to be_false
     end
     it "fails below minimum" do
-      contribution = FactoryGirl.build(:contribution, :amount => (Contribution::MIN_CONTRIBUTION_AMT - 1))
+      contribution = FactoryGirl.build(:contribution, amount: (Contribution::MIN_CONTRIBUTION_AMT - 1))
       expect(contribution.save).to be_false
     end
     it "takes amounts with commas" do
-      contribution = FactoryGirl.build(:contribution, :amount => '9,999,999')
+      contribution = FactoryGirl.build(:contribution, amount: '9,999,999')
       expect(contribution.save).to be_true
     end
     it "is an integer" do
-      contribution = FactoryGirl.build(:contribution, :amount => 5.5)
+      contribution = FactoryGirl.build(:contribution, amount: 5.5)
       expect(contribution.save).to be_false
     end
   end
 
   describe "project" do
     it "is required" do
-      contribution = FactoryGirl.build(:contribution, :project_id => "")
+      contribution = FactoryGirl.build(:contribution, project_id: "")
       expect(contribution.save).to be_false
     end
   end
 
   describe "user" do
     it "is required" do
-      contribution = FactoryGirl.build(:contribution, :user_id => "")
+      contribution = FactoryGirl.build(:contribution, user_id: "")
       expect(contribution.save).to be_false
     end
   end
@@ -71,7 +71,7 @@ describe Contribution do
 
     it 'on success, updates contribution status, sets retry count to 0, and e-mails user' do
       Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { :success }
-      EmailManager.stub_chain(:contribution_cancelled, :deliver => true)
+      EmailManager.stub_chain(:contribution_cancelled, deliver: true)
       contribution = FactoryGirl.create(:contribution)
 
       EmailManager.should_receive(:contribution_cancelled).with(contribution).once
@@ -86,7 +86,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('retriable') }
 
-      contribution = FactoryGirl.create(:contribution, :retry_count => 2)
+      contribution = FactoryGirl.create(:contribution, retry_count: 2)
       contribution.cancel
 
       expect(contribution.status).to eq :retry_cancel
@@ -96,7 +96,7 @@ describe Contribution do
     it 'on unretriable error that should e-mail user, updates contribution status, emails admin' do
       Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_user') }
-      EmailManager.stub_chain(:unretriable_cancel_to_admin, :deliver => true)
+      EmailManager.stub_chain(:unretriable_cancel_to_admin, deliver: true)
       contribution = FactoryGirl.create(:contribution)
 
       EmailManager.should_receive(:unretriable_cancel_to_admin).with(instance_of(AmazonError), contribution).once
@@ -109,7 +109,7 @@ describe Contribution do
     it 'on unretriable error that should e-mail admin, updates contribution status and emails admin' do
       Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_admin') }
-      EmailManager.stub_chain(:unretriable_cancel_to_admin, :deliver => true)
+      EmailManager.stub_chain(:unretriable_cancel_to_admin, deliver: true)
       contribution = FactoryGirl.create(:contribution)
 
       EmailManager.should_receive(:unretriable_cancel_to_admin).with(instance_of(AmazonError), contribution).once
@@ -122,7 +122,7 @@ describe Contribution do
     it 'on unretriable error that should e-mail user and admin, updates contribution status, emails admin' do
       Amazon::FPS::AmazonValidator.stub(:get_cancel_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_both') }
-      EmailManager.stub_chain(:unretriable_cancel_to_admin, :deliver => true)
+      EmailManager.stub_chain(:unretriable_cancel_to_admin, deliver: true)
       contribution = FactoryGirl.create(:contribution)
 
       EmailManager.should_receive(:unretriable_cancel_to_admin).with(instance_of(AmazonError), contribution).once
@@ -136,12 +136,12 @@ describe Contribution do
 
   describe "execute_payment" do
     before(:each) do
-      Amazon::FPS::PayRequest.any_instance.stub(:send => { 'PayResult' => { 'TransactionId' => 'abcdefg'} })
+      Amazon::FPS::PayRequest.any_instance.stub(send: { 'PayResult' => { 'TransactionId' => 'abcdefg'} })
     end
 
     it 'on success, updates contribution status, sets retry count to 0, sets transaction id, and sends e-mail to user' do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :success }
-      EmailManager.stub_chain(:contribution_successful, :deliver => true)
+      EmailManager.stub_chain(:contribution_successful, deliver: true)
       contribution = FactoryGirl.create(:contribution)
       contribution.project = mock_model(Project)
 
@@ -168,7 +168,7 @@ describe Contribution do
 
     it 'on cancelled, updates contribution status' do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :cancelled }
-      EmailManager.stub_chain(:cancelled_payment_to_admin, :deliver => true)
+      EmailManager.stub_chain(:cancelled_payment_to_admin, deliver: true)
       contribution = FactoryGirl.create(:contribution)
       contribution.project = mock_model(Project)
 
@@ -183,7 +183,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('retriable') }
 
-      contribution = FactoryGirl.create(:contribution, :retry_count => 2)
+      contribution = FactoryGirl.create(:contribution, retry_count: 2)
       contribution.project = mock_model(Project)
       contribution.execute_payment
 
@@ -194,7 +194,7 @@ describe Contribution do
     it 'on unretriable error that should e-mail user, updates contribution status and e-mails user' do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_user') }
-      EmailManager.stub_chain(:unretriable_payment_to_user, :deliver => true)
+      EmailManager.stub_chain(:unretriable_payment_to_user, deliver: true)
       contribution = FactoryGirl.create(:contribution)
       contribution.project = mock_model(Project)
 
@@ -208,7 +208,7 @@ describe Contribution do
     it 'on unretriable error that should e-mail admin, updates contribution status and emails admin' do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_admin') }
-      EmailManager.stub_chain(:unretriable_payment_to_admin, :deliver => true)
+      EmailManager.stub_chain(:unretriable_payment_to_admin, deliver: true)
       contribution = FactoryGirl.create(:contribution)
       contribution.project = mock_model(Project)
 
@@ -222,8 +222,8 @@ describe Contribution do
     it 'on unretriable error that should e-mail user and admin, updates contribution status, emails both' do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_both') }
-      EmailManager.stub_chain(:unretriable_payment_to_admin, :deliver => true)
-      EmailManager.stub_chain(:unretriable_payment_to_user, :deliver => true)
+      EmailManager.stub_chain(:unretriable_payment_to_admin, deliver: true)
+      EmailManager.stub_chain(:unretriable_payment_to_user, deliver: true)
       contribution = FactoryGirl.create(:contribution)
       contribution.project = mock_model(Project)
 
@@ -245,8 +245,8 @@ describe Contribution do
     it 'on invalid response, e-mails admin error' do
       Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { false }
       Amazon::FPS::AmazonValidator.stub(:get_error) { FactoryGirl.create('email_both') }
-      EmailManager.stub_chain(:failed_status_to_admin, :deliver => true)
-      contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+      EmailManager.stub_chain(:failed_status_to_admin, deliver: true)
+      contribution = FactoryGirl.create(:contribution, transaction_id: 'abcdefg')
 
       EmailManager.should_receive(:failed_status_to_admin).with(instance_of(AmazonError), contribution).once
 
@@ -256,8 +256,8 @@ describe Contribution do
     it 'on success, updates contribution status, sets retry count to 0, and sends e-mail to user' do
       Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { :success }
       Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
-      EmailManager.stub_chain(:contribution_successful, :deliver => true)
-      contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+      EmailManager.stub_chain(:contribution_successful, deliver: true)
+      contribution = FactoryGirl.create(:contribution, transaction_id: 'abcdefg')
 
       EmailManager.should_receive(:contribution_successful).with(contribution).once
 
@@ -270,8 +270,8 @@ describe Contribution do
     it 'on failure, updates contribution status and sends e-mail to user' do
       Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { :failure }
       Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
-      EmailManager.stub_chain(:failed_payment_to_user, :deliver => true)
-      contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+      EmailManager.stub_chain(:failed_payment_to_user, deliver: true)
+      contribution = FactoryGirl.create(:contribution, transaction_id: 'abcdefg')
 
       EmailManager.should_receive(:failed_payment_to_user).with(contribution).once
 
@@ -283,8 +283,8 @@ describe Contribution do
     it 'on cancelled, updates contribution status and sends e-mail to admin' do
       Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { :cancelled }
       Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
-      EmailManager.stub_chain(:cancelled_payment_to_admin, :deliver => true)
-      contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+      EmailManager.stub_chain(:cancelled_payment_to_admin, deliver: true)
+      contribution = FactoryGirl.create(:contribution, transaction_id: 'abcdefg')
 
       EmailManager.should_receive(:cancelled_payment_to_admin).with(contribution).once
 
@@ -297,7 +297,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { :pending }
       Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
 
-      contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg', :status => :pending, :retry_count => 2)
+      contribution = FactoryGirl.create(:contribution, transaction_id: 'abcdefg', status: :pending, retry_count: 2)
       contribution.update_status
 
       expect(contribution.status).to eq :pending
@@ -310,7 +310,7 @@ describe Contribution do
     it 'calls cancel' do
       Contribution.any_instance.stub(:cancel) {}
 
-      contribution = FactoryGirl.create(:contribution, :transaction_id => 'abcdefg')
+      contribution = FactoryGirl.create(:contribution, transaction_id: 'abcdefg')
       contribution.should_receive(:cancel).once
 
       contribution.destroy

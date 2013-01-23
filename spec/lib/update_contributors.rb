@@ -14,7 +14,7 @@ describe UpdateContributors do
       to_funded = FactoryGirl.create(:contribution, amount: 15, project: project)
       to_funded2 = FactoryGirl.create(:contribution, amount: 100, project: project)
 
-      EmailManager.stub_chain(:project_update_to_contributor, :deliver => true)
+      EmailManager.stub_chain(:project_update_to_contributor, deliver: true)
       update.email_sent = true
 
       EmailManager.should_receive(:project_update_to_contributor).with(update, to_funded).once

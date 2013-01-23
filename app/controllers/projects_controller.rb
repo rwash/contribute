@@ -3,17 +3,17 @@ require 'amazon/fps/amazon_logger'
 require 'amazon/fps/amazon_validator'
 
 class ProjectsController < InheritedResources::Base
-  actions :all, :except => [ :create, :edit, :update, :destroy ]
+  actions :all, except: [ :create, :edit, :update, :destroy ]
 
-  before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save]
+  before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save]
   #This allows us to use project names instead of ids for the routes
-  before_filter :set_current_project_by_name, :only => [ :show, :edit, :update, :destroy ]
+  before_filter :set_current_project_by_name, only: [ :show, :edit, :update, :destroy ]
   #This is authorization through CanCan. The before_filter handles load_resource
   authorize_resource
 
 
   def index
-    @projects = Project.where(:state => :active).order("end_date ASC").page(params[:page]).per(8)
+    @projects = Project.where(state: :active).order("end_date ASC").page(params[:page]).per(8)
     @lists = User.find_by_id(1) ? User.find(1).lists : []
     index!
   end
@@ -26,7 +26,7 @@ class ProjectsController < InheritedResources::Base
 
     if @project.save
       unless params[:project][:video].nil?
-        @project.video = Video.create(:title => @project.name, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@project.short_description}\n\nFind more projects from MSU:#{root_url}", :project_id => @project.id)
+        @project.video = Video.create(title: @project.name, description: "Contribute to this project: #{project_url(@project)}\n\n#{@project.short_description}\n\nFind more projects from MSU:#{root_url}", project_id: @project.id)
         @project.video.delay.upload_video(params[:project][:video].path)
         @project.save # Save the ID of the video
       end
@@ -36,12 +36,12 @@ class ProjectsController < InheritedResources::Base
       request = Amazon::FPS::RecipientRequest.new(save_project_url)
       return redirect_to request.url
     else
-      render :action => :new
+      render action: :new
     end
   end
 
   def update
-    @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first 
+    @project = Project.where(name: params[:id].gsub(/-/, ' ')).first 
 
     if params[:project] && params[:project][:video]
       if @project.video
@@ -54,10 +54,10 @@ class ProjectsController < InheritedResources::Base
       @project.save!
       @video.save!
 
-      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech', :keywords => YT_TAGS, :list => "denied")
+      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, title: @video.title, description: "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "denied")
 
       if @response
-        @video.update_attributes(:yt_video_id => @response.unique_id, :is_complete => true)
+        @video.update_attributes(yt_video_id: @response.unique_id, is_complete: true)
         @video.save!
         Video.delete_incomplete_videos
       else
@@ -84,7 +84,7 @@ class ProjectsController < InheritedResources::Base
 
     @project.state = :active
     #make video public
-    Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'Tech', :keywords => YT_TAGS, :list => "allowed") unless @video.nil?
+    Video.yt_session.video_update(@video.yt_video_id, title: @video.title, description: "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "allowed") unless @video.nil?
 
     #send out emails for any group requests
     @project.approvals.each do |approval|
@@ -125,7 +125,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def destroy
-    @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+    @project = Project.where(name: params[:id].gsub(/-/, ' ')).first
     @video = @project.video
 
     if @project.state.unconfirmed? || @project.state.inactive?
@@ -141,7 +141,7 @@ class ProjectsController < InheritedResources::Base
       #project will not be deleted but will be CANCELLED and only visible to user
       @project.state = :cancelled
       @project.save!
-      @response = Video.yt_session.video_update(@video.yt_video_id, :title => @video.title, :description => "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", :category => 'People',:keywords => YT_TAGS, :list => "denied") if @video
+      @response = Video.yt_session.video_update(@video.yt_video_id, title: @video.title, description: "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", category: 'People',keywords: YT_TAGS, list: "denied") if @video
       flash[:alert] = "Project successfully cancelled. This project is now only visible to you."
     else
       flash[:alert] = "You can not cancel or delete this project."
@@ -150,7 +150,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def show
-    @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+    @project = Project.where(name: params[:id].gsub(/-/, ' ')).first
     @project = ProjectDecorator.decorate @project if @project
     #somthing was up with this page and permissions so i moved them here
     return redirect_to root_path if @project.nil?
@@ -172,7 +172,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def edit
-    @project = Project.where(:name => params[:id].gsub(/-/, ' ')).first
+    @project = Project.where(name: params[:id].gsub(/-/, ' ')).first
     @video = @project.video
   end
 

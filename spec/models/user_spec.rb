@@ -11,7 +11,7 @@ describe User do
 
   describe 'name' do
     it 'is required' do
-      user = FactoryGirl.build(:user, :name => '')
+      user = FactoryGirl.build(:user, name: '')
       expect(user.save).to be_false
     end
   end

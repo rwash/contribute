@@ -23,10 +23,10 @@ describe RetryContributions do
       Contribution.any_instance.stub(:execute_payment) {}
       Contribution.any_instance.stub(:cancel) {}
 
-      success = FactoryGirl.create(:contribution, :status => :success, :retry_count => 0)
-      pending = FactoryGirl.create(:contribution, :status => :pending, :retry_count => 0)
-      retry_cancel = FactoryGirl.create(:contribution, :status => :retry_cancel, :retry_count => 0)
-      retry_pay = FactoryGirl.create(:contribution, :status => :retry_pay, :retry_count => 0)
+      success = FactoryGirl.create(:contribution, status: :success, retry_count: 0)
+      pending = FactoryGirl.create(:contribution, status: :pending, retry_count: 0)
+      retry_cancel = FactoryGirl.create(:contribution, status: :retry_cancel, retry_count: 0)
+      retry_pay = FactoryGirl.create(:contribution, status: :retry_pay, retry_count: 0)
 
 # TODO: Can't get should_receives to work on objects, as opposed to static classes
 # Tried stubbing on the object itself and should receiving on Contribution. No luck.
@@ -45,12 +45,12 @@ describe RetryContributions do
       Contribution.any_instance.stub(:execute_payment) {}
       Contribution.any_instance.stub(:cancel) {}
 
-      success = FactoryGirl.create(:contribution, :status => :success, :retry_count => 4)
-      pending = FactoryGirl.create(:contribution, :status => :pending, :retry_count => 4)
-      retry_cancel = FactoryGirl.create(:contribution, :status => :retry_cancel, :retry_count => 4)
-      retry_pay = FactoryGirl.create(:contribution, :status => :retry_pay, :retry_count => 4)
+      success = FactoryGirl.create(:contribution, status: :success, retry_count: 4)
+      pending = FactoryGirl.create(:contribution, status: :pending, retry_count: 4)
+      retry_cancel = FactoryGirl.create(:contribution, status: :retry_cancel, retry_count: 4)
+      retry_pay = FactoryGirl.create(:contribution, status: :retry_pay, retry_count: 4)
 
-      EmailManager.stub_chain(:failed_retries, :deliver => true)
+      EmailManager.stub_chain(:failed_retries, deliver: true)
       expectedArray = [ pending, retry_pay, retry_cancel ]
       EmailManager.should_receive(:failed_retries).with(expectedArray).once
 

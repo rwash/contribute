@@ -5,7 +5,7 @@ require 'amazon/fps/amazon_validator'
 ERROR_STRING = "An error occurred with your contribution. Please try again."
 
 class ContributionsController < ApplicationController
-  before_filter :authenticate_user!, :only => [ :new, :create, :save, :edit, :update, :update_save, :destroy ]
+  before_filter :authenticate_user!, only: [ :new, :create, :save, :edit, :update, :update_save, :destroy ]
 
   cache_sweeper :contribution_sweeper
 
@@ -39,7 +39,7 @@ class ContributionsController < ApplicationController
       redirect_to request.url
     else
       flash[:alert] = "Sorry, this project is no longer taking contributions."
-      render :action => :new
+      render action: :new
     end
   end
 
@@ -96,17 +96,17 @@ class ContributionsController < ApplicationController
     end
 
     if !@contribution.valid?
-      return render :action => :edit
+      return render action: :edit
     end
 
     if @contribution.amount < @editing_contribution.amount
       @contribution.errors.add(:amount, "can't be less than the original amount")
-      return render :action => :edit
+      return render action: :edit
     end
 
     if @contribution.amount == @editing_contribution.amount
       @contribution.errors.add(:amount, "No changes were made to your contribution")
-      return render :action => :edit
+      return render action: :edit
     end
 
     session[:contribution] = @contribution

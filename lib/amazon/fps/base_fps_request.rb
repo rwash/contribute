@@ -45,15 +45,15 @@ module Amazon
       # The signature is also created before being sent
       def send()
         uri = URI.parse(@service_end_point)
-        signature = Amazon::FPS::SignatureUtils.sign_parameters({:parameters => @params, 
-                                                                :aws_secret_key => @secret_key,
-                                                                :host => uri.host,
-                                                                :verb => @http_method,
-                                                                :uri  => uri.path })
+        signature = Amazon::FPS::SignatureUtils.sign_parameters({parameters: @params, 
+                                                                aws_secret_key: @secret_key,
+                                                                host: uri.host,
+                                                                verb: @http_method,
+                                                                uri:  uri.path })
         @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
 
         request = log_request(@params)
-        response = self.class.get(@service_end_point, :query => @params)
+        response = self.class.get(@service_end_point, query: @params)
         response = strip_response(response)
 
         log_response(response, request)

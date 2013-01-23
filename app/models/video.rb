@@ -10,8 +10,8 @@
 class Video < ActiveRecord::Base
   belongs_to :project
 
-  scope :completes,   where(:is_complete => true)
-  scope :incompletes, where(:is_complete => false)
+  scope :completes,   where(is_complete: true)
+  scope :incompletes, where(is_complete: false)
 
   validates_presence_of :project
 
@@ -20,17 +20,17 @@ class Video < ActiveRecord::Base
   def upload_video(path)
     puts "Uploading video at #{path}"
     tempfile = File.open path
-    response = Video.yt_session.video_upload(tempfile, :title => self.title, :description => self.description, :category => 'Tech',:keywords => YT_TAGS, :list => "denied")
+    response = Video.yt_session.video_upload(tempfile, title: self.title, description: self.description, category: 'Tech',keywords: YT_TAGS, list: "denied")
 
     unless response.nil?
-      self.update_attributes(:yt_video_id => response.unique_id, :is_complete => true)
+      self.update_attributes(yt_video_id: response.unique_id, is_complete: true)
       self.save!
     end
   end
   handle_asynchronously :upload_video
 
   def self.yt_session
-    @yt_session ||= YouTubeIt::Client.new(:username => YT_USERNAME , :password => YT_PASSWORD , :dev_key => YT_DEV_KEY)    
+    @yt_session ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)    
   end
 
   def self.delete_video(video)
@@ -56,10 +56,10 @@ class Video < ActiveRecord::Base
 
   private
   def self.video_options(title, description)
-    opts = {:title => title,
-            :description => description,
-            :category => "People",
-            :keywords => ["test"]}
+    opts = {title: title,
+            description: description,
+            category: "People",
+            keywords: ["test"]}
     #params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
   end
 

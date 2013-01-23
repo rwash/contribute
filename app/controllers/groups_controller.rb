@@ -1,6 +1,6 @@
 class GroupsController < InheritedResources::Base
   load_and_authorize_resource
-  before_filter :authenticate_user!, :only => [ :new, :create, :edit, :update, :destroy, :save, :new_add]
+  before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save, :new_add]
 
   def index
     @groups = Group.all
@@ -46,13 +46,13 @@ class GroupsController < InheritedResources::Base
       @project.update_project_video unless @video.nil?
 
       flash[:notice] = "Your project has been added to the group."
-    elsif !Approval.where(:group_id => @group.id, :project_id => @project.id, :approved => nil).first.nil?
+    elsif !Approval.where(group_id: @group.id, project_id: @project.id, approved: nil).first.nil?
       flash[:error] = "You have already submitted this project. Please wait for the admin to approve or reject your request."
     elsif @group.admin_user == current_user
       @group.projects << @project
       flash[:notice] = "Your project has been added."
     else
-      @approval = Approval.create(:group => @group, :project => @project)
+      @approval = Approval.create(group: @group, project: @project)
       flash[:notice] = "Your project has been submitted to the group admin for approval."
       EmailManager.project_to_group_approval(@approval, @project, @group).deliver
     end
@@ -82,7 +82,7 @@ class GroupsController < InheritedResources::Base
 
   def add_list
     @group = Group.find(params[:id])
-    @group.lists << List.create(:listable_id => @group.id, :listable_type => @group.class.name)
+    @group.lists << List.create(listable_id: @group.id, listable_type: @group.class.name)
 
     redirect_to :back
   end

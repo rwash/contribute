@@ -5,7 +5,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def add_list
     @user = current_user
-    @user.lists << List.create(:listable_id => @user.id, :listable_type => @user.class.name)
+    @user.lists << List.create(listable_id: @user.id, listable_type: @user.class.name)
 
     redirect_to :back
   end

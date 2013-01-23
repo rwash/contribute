@@ -8,7 +8,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
 	#SHOW TESTING
 	test "show_on_valid_id" do
-		get(:show, :id => @project.id)
+		get(:show, id: @project.id)
 		assert_response :success
 	end
 
@@ -33,7 +33,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
 		@project.fundingGoal = -1
 		post :create, project: @project.attributes
-		assert_select "h2", {:text => /(.*)error(.*)/}, "heading does not contain errors"
+		assert_select "h2", {text: /(.*)error(.*)/}, "heading does not contain errors"
 		
 		#put project back in db
 		@project.fundingGoal = Project.MIN_FUNDING_GOAL + 1
@@ -48,6 +48,6 @@ class ProjectsControllerTest < ActionController::TestCase
 	test "update_failure_on_invalid_parameters" do
 		@project.fundingGoal = -1
 		put :update, id: @project.to_param, project: @project.attributes
-		assert_select "h2", {:text => /(.*)error(.*)/}, "heading does not contain errors" 
+		assert_select "h2", {text: /(.*)error(.*)/}, "heading does not contain errors" 
 	end
 end

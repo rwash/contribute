@@ -14,18 +14,18 @@
 class Group < ActiveRecord::Base
   has_and_belongs_to_many :projects
   has_many :approvals
-  has_many :lists, :as =>  :listable
+  has_many :lists, as:  :listable
 
   belongs_to :admin_user, class_name: "User"
 
-  mount_uploader :picture, PictureUploader, :mount_on => :picture_file_name
+  mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
 
   after_create :add_first_list
   after_save :approve_all
 
   def approve_all
     if self.open
-      for approval in self.approvals.where(:approved => nil)
+      for approval in self.approvals.where(approved: nil)
         group = approval.group
         project = approval.project
 
@@ -39,6 +39,6 @@ class Group < ActiveRecord::Base
   end
 
   def add_first_list
-    self.lists << List.create(:title => "Recent Projects", :permanent => true, :show_funded => true, :show_nonfunded => true, :show_active => true)
+    self.lists << List.create(title: "Recent Projects", permanent: true, show_funded: true, show_nonfunded: true, show_active: true)
   end
 end
