@@ -1,27 +1,12 @@
 require 'spec_helper'
 
 describe Comment do
-  # Properties
-  describe 'body' do
-    it 'is required' do
-      comment = FactoryGirl.build(:comment, body: '')
-      expect(comment.save).to be_false
-    end
-  end
+  # Validations
 
-  describe 'project' do
-    it 'id is required' do
-      comment = FactoryGirl.build(:comment, commentable_id: '')
-      expect(comment.save).to be_false
-    end
-  end
+  it { should validate_presence_of :body }
+  it { should validate_presence_of :commentable_id }
+  it { should validate_presence_of :user }
 
-  describe 'user' do
-    it 'id is required' do
-      comment = FactoryGirl.build(:comment, user_id: '')
-      expect(comment.save).to be_false
-    end
-  end
 =begin
   describe 'delete' do
     it 'will replace with DELETED if comment has children' do
