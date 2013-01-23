@@ -2,16 +2,10 @@ require 'spec_helper'
 
 describe User do
   describe 'valid case' do
-    before(:all) do
-      @user = FactoryGirl.create(:user)
-    end
-
-    after(:all) do
-      @user.delete
-    end
+    let(:user) { Factory :user }
 
     it 'checks validity to make the before run :)' do
-      expect(@user).to_not be_nil
+      expect(user).to_not be_nil
     end
   end
 

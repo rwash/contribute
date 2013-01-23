@@ -58,7 +58,7 @@ describe 'Project permissions' do
 #      it 'can create a project' do
 #        sign_in @user
 #        visit new_project_path
-#        assert_equal new_project_path, current_path
+#        expect(current_path).to eq new_project_path
 #      end
 #      it "can't destroy a project they don't own" do
 #        project = FactoryGirl.create(:project)
@@ -72,7 +72,7 @@ describe 'Project permissions' do
 #        sign_in @user
 #        visit project_path(project)
 #        click_button "Delete Project"
-#        assert_equal root_path, current_path
+#        expect(current_path).to eq root_path
 #        # Flash says success
 #        project.destroy
 #      end

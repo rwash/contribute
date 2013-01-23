@@ -6,6 +6,6 @@ describe ApplicationHelper do
 
     formatted = format_date(date)
 
-    assert_equal '04/26/2012', formatted
+    expect(formatted).to eq '04/26/2012'
   end
 end

@@ -1,16 +1,6 @@
 require 'spec_helper'
 
 describe Project do
-  describe 'valid case' do
-    before(:all) do
-      @project = FactoryGirl.create(:project)
-    end
-
-    after(:all) do
-      @project.delete
-    end
-  end
-
   describe 'title' do
     it 'is required' do
       update = FactoryGirl.build(:update, :title => '')
@@ -38,5 +28,4 @@ describe Project do
       expect(update.save).to be_false
     end
   end
-
 end
