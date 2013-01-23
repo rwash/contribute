@@ -5,7 +5,6 @@ require 'amazon/fps/cancel_token_request'
 require 'amazon/fps/amazon_validator'
 
 describe Contribution do
-  #Begin Properties
   describe "valid case" do
     let(:contribution) { Factory :contribution }
 
@@ -22,50 +21,20 @@ describe Contribution do
     end
   end
 
-  describe "payment key" do
-    it "is required" do
-      contribution = FactoryGirl.build(:contribution, payment_key: "")
-      expect(contribution.save).to be_false
-    end
-  end
+  it { should validate_presence_of :payment_key }
 
-  describe "amount" do
-    it "is required" do
-      contribution = FactoryGirl.build(:contribution, amount: "")
-      expect(contribution.save).to be_false
-    end
-    it "fails below minimum" do
-      contribution = FactoryGirl.build(:contribution, amount: (Contribution::MIN_CONTRIBUTION_AMT - 1))
-      expect(contribution.save).to be_false
-    end
-    it "takes amounts with commas" do
-      contribution = FactoryGirl.build(:contribution, amount: '9,999,999')
-      expect(contribution.save).to be_true
-    end
-    it "is an integer" do
-      contribution = FactoryGirl.build(:contribution, amount: 5.5)
-      expect(contribution.save).to be_false
-    end
-  end
+  it { should validate_presence_of(:amount) }
+  it { should validate_numericality_of(:amount).only_integer.with_message(/whole dollar amount/) }
+  it { should allow_value(1).for :amount }
+  it { should_not allow_value(0).for :amount }
+  it { should allow_value('9,999,999').for :amount }
 
-  describe "project" do
-    it "is required" do
-      contribution = FactoryGirl.build(:contribution, project_id: "")
-      expect(contribution.save).to be_false
-    end
-  end
-
-  describe "user" do
-    it "is required" do
-      contribution = FactoryGirl.build(:contribution, user_id: "")
-      expect(contribution.save).to be_false
-    end
-  end
-  #End Properties
+  it { should validate_presence_of :project_id }
+  it { should validate_presence_of :user_id }
 
   #Begin Methods
   describe "cancel" do
-    before(:each) do
+    before do
       Amazon::FPS::CancelTokenRequest.any_instance.stub(:send) {}
     end
 
@@ -135,7 +104,7 @@ describe Contribution do
   end
 
   describe "execute_payment" do
-    before(:each) do
+    before do
       Amazon::FPS::PayRequest.any_instance.stub(send: { 'PayResult' => { 'TransactionId' => 'abcdefg'} })
     end
 
@@ -238,7 +207,7 @@ describe Contribution do
   end
 
   describe "update_status" do
-    before(:each) do
+    before do
       Amazon::FPS::GetTransactionStatusRequest.any_instance.stub(:send) {}
     end
 
