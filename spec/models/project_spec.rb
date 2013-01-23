@@ -151,12 +151,12 @@ describe Project do
 
     it 'contributions_total is correct' do
       sum = contributions.map{|c| c.amount}.inject(:+)
-      project.contributions_total.should eq sum
+      expect(project.contributions_total).to eq sum
     end
 
     it 'contributions_percentage is correct' do
       sum = contributions.map{|c| c.amount}.inject(:+)
-      project.contributions_percentage.should eq((sum.to_f/project.funding_goal * 100).to_i)
+      expect(project.contributions_percentage).to eq((sum.to_f/project.funding_goal * 100).to_i)
     end
 
     it 'destroy cancels contributions and sets to inactive'

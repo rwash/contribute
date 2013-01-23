@@ -22,19 +22,19 @@ describe 'Project permissions' do
       it "can view active project" do
         project = FactoryGirl.create(:project, :user => user, :state => "active")
         visit project_path(project)
-        current_path.should eq project_path(project)
+        expect(current_path).to eq project_path(project)
         project.delete
       end
       it "can not view inactive project" do
         project = FactoryGirl.create(:project, :user => user, :state => "inactive")
         visit project_path(project)
-        current_path.should_not eq project_path(project)
+        expect(current_path).to_not eq project_path(project)
         project.destroy
       end
       it "can't create a project" do
         visit new_project_path
         # new_user_session_path is the login page
-        current_path.should eq new_user_session_path
+        expect(current_path).to eq new_user_session_path
       end
       it "can't destroy a project" do
         project = FactoryGirl.create(:project, :user => user)

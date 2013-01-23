@@ -10,7 +10,7 @@ describe ContributionsController do
     context 'when user is not signed in' do
       it "does not allow contributions" do
         expect {get :new, :project => project.id}.to_not change { Contribution.count }
-        response.should redirect_to(new_user_session_path)
+        expect(response).to redirect_to(new_user_session_path)
       end	
     end
 
@@ -20,56 +20,56 @@ describe ContributionsController do
 
       it "allows contributions" do
         get :new, :project => project.name
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "does not allow contributions to projects the user owns" do
         project = Factory :project, state: :active, user: user
         expect {get :new, :project => project.name}.to_not change { Contribution.count }
-        response.should redirect_to(project)
-        flash[:alert].should include "may not contribute"
+        expect(response).to redirect_to(project)
+        expect(flash[:alert]).to include "may not contribute"
       end		
 
       it "lets user edit their contributions" do
         contribution = FactoryGirl.create(:contribution, :user => user, :project => project)
         get :edit, :id => contribution.id
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "does not let user edit someone else's contribution" do
         contribution = FactoryGirl.create(:contribution, :project => project)
         get :edit, :id => contribution.id
-        response.should redirect_to(project)
-        flash[:alert].should include "may not edit this contribution"
+        expect(response).to redirect_to(project)
+        expect(flash[:alert]).to include "may not edit this contribution"
       end
 
       it "does not allow contributions after project end date" do
         Timecop.freeze(project.end_date + 2) do
           expect {get :new, :project => project.name}.to_not change { Contribution.count }
-          response.should redirect_to(project)
-          flash[:alert].should include "may not contribute"
+          expect(response).to redirect_to(project)
+          expect(flash[:alert]).to include "may not contribute"
         end
       end
 
       it "does not allow contributions one day after project end date" do
         Timecop.freeze(project.end_date + 1) do
           expect {get :new, :project => project.name}.to_not change { Contribution.count }
-          response.should redirect_to(project)
-          flash[:alert].should include "may not contribute"
+          expect(response).to redirect_to(project)
+          expect(flash[:alert]).to include "may not contribute"
         end
       end
 
       it "allows contributions on project end date" do
         Timecop.freeze(project.end_date) do
           expect {get :new, :project => project.name}.to_not change { Contribution.count }
-          response.should be_success
+          expect(response).to be_success
         end
       end
 
       it "allows contributions before project end date" do
         Timecop.freeze(project.end_date - 1) do
           expect {get :new, :project => project.name}.to_not change { Contribution.count }
-          response.should be_success
+          expect(response).to be_success
         end
       end
     end
@@ -94,16 +94,16 @@ describe ContributionsController do
         session[:contribution_id] = @contribution.id
 
         get :save, @params
-        response.should redirect_to(@contribution.project)
-        flash[:alert].should include "submitted"
+        expect(response).to redirect_to(@contribution.project)
+        expect(flash[:alert]).to include "submitted"
       end
 
       it "displays an error for a nil contribution" do
         session[:contribution_id] = nil
 
         get :save, @params
-        response.should redirect_to(root_path)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to include "error"
       end
 
       it "handles invalid parameters" do
@@ -111,8 +111,8 @@ describe ContributionsController do
         @params["tokenID"] = nil
 
         get :save, @params
-        response.should redirect_to(@contribution.project)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(@contribution.project)
+        expect(flash[:alert]).to include "error"
       end
 
       it "shows an error if contribution doesn't save" do
@@ -121,8 +121,8 @@ describe ContributionsController do
         session[:contribution_id] = @contribution.id
 
         get :save, @params
-        response.should redirect_to(@contribution.project)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(@contribution.project)
+        expect(flash[:alert]).to include "error"
       end
     end
 
@@ -150,8 +150,8 @@ describe ContributionsController do
         session[:contribution] = @contribution #new contribution
         session[:editing_contribution_id] = @editing_contribution.id #old contribution	
         get :update_save, @params
-        response.should redirect_to(@contribution.project)
-        flash[:alert].should include "successfully updated"
+        expect(response).to redirect_to(@contribution.project)
+        expect(flash[:alert]).to include "successfully updated"
       end
 
       it "fails if there is no contribution in session" do
@@ -159,8 +159,8 @@ describe ContributionsController do
         session[:editing_contribution_id] = @editing_contribution.id
 
         get :update_save, @params
-        response.should redirect_to(root_path)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to include "error"
       end
 
       it "fails when given invalid params" do
@@ -169,8 +169,8 @@ describe ContributionsController do
         @params["tokenID"] = nil
 
         get :update_save, @params
-        response.should redirect_to(@contribution.project)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(@contribution.project)
+        expect(flash[:alert]).to include "error"
       end
 
       it "displays error message if the contribution can't save" do
@@ -180,8 +180,8 @@ describe ContributionsController do
         session[:editing_contribution_id] = @editing_contribution.id
 
         get :update_save, @params
-        response.should redirect_to(@contribution.project)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(@contribution.project)
+        expect(flash[:alert]).to include "error"
       end
 
       it "displays error message if editing contribution can't cancel" do
@@ -192,8 +192,8 @@ describe ContributionsController do
         session[:editing_contribution_id] = @editing_contribution.id
 
         get :update_save, @params
-        response.should redirect_to(@contribution.project)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(@contribution.project)
+        expect(flash[:alert]).to include "error"
       end
     end
 
@@ -205,14 +205,14 @@ describe ContributionsController do
 
       it "handles invalid project" do
         get :new, :project => project_1.name
-        response.should redirect_to(root_path)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to include "error"
       end
 
       it "handles invalid project case: 2" do
         get :new, :project => project_2.name
-        response.should redirect_to(root_path)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to include "error"
       end
     end
 
@@ -220,8 +220,8 @@ describe ContributionsController do
       it "handles invalid contribution" do
         sign_in user
         get :edit, {:id => 1 }
-        response.should redirect_to(root_path)
-        flash[:alert].should include "error"
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to include "error"
       end
     end
   end

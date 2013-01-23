@@ -27,7 +27,7 @@ class AmazonProcessTesting
 
         #create a project
         visit(new_project_path)
-        current_path.should == new_project_path
+        expect(current_path).to eq new_project_path
 
         #fill in form
         fill_in 'name' , :with => project.name
@@ -42,26 +42,26 @@ class AmazonProcessTesting
         get_and_assert_project(project.name)
         #project is now unconfirmed
 
-        click_button('Edit Project')
-        page.should have_content('Amazon Payments')
+        click_button 'Edit Project'
+        expect(page).to have_content 'Amazon Payments'
 
-        click_button('Update Project')
-        page.should have_content('Sign in with your Amazon account')
-        login_amazon('spartanfan10@hotmail.com', 'testing')
+        click_button 'Update Project'
+        expect(page).to have_content 'Sign in with your Amazon account'
+        login_amazon 'spartanfan10@hotmail.com', 'testing'
         click_amazon_continue
         find('a').click
-        page.should have_content('Project saved successfully')
+        expect(page).to have_content 'Project saved successfully'
         #project is no inactive
 
         click_button('Activate')
         page.driver.browser.switch_to.alert.accept
-        page.should have_content('Successfully activated project.')
+        expect(page).to have_content 'Successfully activated project.'
         #project is now active
 
         visit(project_path(project))
-        click_button('Cancel Project')
+        click_button 'Cancel Project'
         page.driver.browser.switch_to.alert.accept
-        page.should have_content('Project successfully cancelled.')
+        expect(page).to have_content 'Project successfully cancelled.'
         #project is now cancelled
 
       end

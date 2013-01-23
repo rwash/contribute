@@ -9,7 +9,7 @@ describe ProjectsController do
       it "can't create a project" do
         get :new
         #new_user_session_path is the login page
-        response.should redirect_to(new_user_session_path)	
+        expect(response).to redirect_to(new_user_session_path)	
       end
 
       # Start State Tests (These tests are added after those above. Some of the ones below may cover the same thing as one above.)
@@ -18,17 +18,17 @@ describe ProjectsController do
 
         it 'can NOT view project' do
           get :show, :id => project.name
-          response.should redirect_to(root_path)
+          expect(response).to redirect_to(root_path)
         end
 
         it "can't destroy a project" do
           expect {get :destroy, :id => project.name}.to_not change{ Project.count }
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
           get :edit, :id => project.name
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
       end
 
@@ -37,17 +37,17 @@ describe ProjectsController do
 
         it 'can NOT view project' do
           get :show, :id => project.name
-          response.should redirect_to(root_path)
+          expect(response).to redirect_to(root_path)
         end
 
         it "can't destroy a project" do
           expect{ get :destroy, :id => project.name }.to_not change { Project.count }
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
           get :edit, :id => project.name
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
       end
 
@@ -56,17 +56,17 @@ describe ProjectsController do
 
         it 'CAN view project' do
           get :show, :id => project.name
-          response.should be_success
+          expect(response).to be_success
         end
 
         it "can't destroy a project" do
           expect{ get :destroy, :id => project.name }.to_not change { Project.count }
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
           get :edit, :id => project.name
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
       end
 
@@ -75,17 +75,17 @@ describe ProjectsController do
 
         it 'CAN view project' do
           get :show, :id => project.name
-          response.should be_success
+          expect(response).to be_success
         end
 
         it "can't destroy a project" do
           expect{ get :destroy, :id => project.name }.to_not change { Project.count }
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
           get :edit, :id => project.name
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
       end
 
@@ -94,17 +94,17 @@ describe ProjectsController do
 
         it 'CAN view project' do
           get :show, :id => project.name
-          response.should be_success
+          expect(response).to be_success
         end
 
         it "can't destroy a project" do
           expect{ get :destroy, :id => project.name }.to_not change { Project.count }
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
           get :edit, :id => project.name
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
       end
 
@@ -113,17 +113,17 @@ describe ProjectsController do
 
         it 'can NOT view project' do
           get :show, :id => project.name
-          response.should redirect_to(root_path)
+          expect(response).to redirect_to(root_path)
         end
 
         it "can't destroy a project" do
           expect{ get :destroy, :id => project.name }.to_not change { Project.count }
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
 
         it "can't edit a project" do
           get :edit, :id => project.name
-          response.should redirect_to(new_user_session_path)
+          expect(response).to redirect_to(new_user_session_path)
         end
       end
     end
@@ -134,7 +134,7 @@ describe ProjectsController do
 
       it 'can create a project' do
         get :new
-        response.should be_success
+        expect(response).to be_success
       end
 
       #Again the tests below were added after those above and may test some of the same thing.
@@ -145,18 +145,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "CAN destroy a project" do
             expect { get :destroy, :id => project.name }.to change { Project.count }.by(-1)
-            flash[:alert].should include "successfully deleted"
-            response.should redirect_to(root_path)
+            expect(flash[:alert]).to include "successfully deleted"
+            expect(response).to redirect_to(root_path)
           end
 
           it "CAN edit the project" do
             get :edit, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
         end
 
@@ -165,18 +165,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "CAN destroy a project" do
             expect { get :destroy, :id => project.name }.to change { Project.count }.by(-1)
-            flash[:alert].should include "successfully deleted"
-            response.should redirect_to(root_path)
+            expect(flash[:alert]).to include "successfully deleted"
+            expect(response).to redirect_to(root_path)
           end
 
           it "CAN edit the project" do
             get :edit, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
         end
 
@@ -185,18 +185,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "CAN cancel a project" do
             get :destroy, :id => project.name
-            flash[:alert].should include "Project successfully cancelled."
-            response.should redirect_to(root_path)
+            expect(flash[:alert]).to include "Project successfully cancelled."
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
         end
 
@@ -205,18 +205,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "can NOT cancel or delete a project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            flash[:alert].should include "You can not cancel or delete this project."
-            response.should redirect_to(root_path)
+            expect(flash[:alert]).to include "You can not cancel or delete this project."
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
         end
 
@@ -225,18 +225,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "can NOT cancel or delete a project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            flash[:alert].should include "You can not cancel or delete this project."
-            response.should redirect_to(root_path)
+            expect(flash[:alert]).to include "You can not cancel or delete this project."
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
         end
 
@@ -245,18 +245,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "can NOT cancel or delete a project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            flash[:alert].should include "You can not cancel or delete this project."
-            response.should redirect_to(root_path)
+            expect(flash[:alert]).to include "You can not cancel or delete this project."
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
 
         end
@@ -268,18 +268,18 @@ describe ProjectsController do
 
           it 'can NOT view project' do
             get :show, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't destroy a project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            Project.find(project.id).should_not be_nil
-            response.should redirect_to(root_path)
+            expect(Project.find(project.id)).to_not be_nil
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit a project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
         end
 
@@ -288,18 +288,18 @@ describe ProjectsController do
 
           it 'can NOT view project' do
             get :show, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't destroy a project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            Project.find(project.id).should_not be_nil
-            response.should redirect_to(root_path)
+            expect(Project.find(project.id)).to_not be_nil
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit a project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
 
         end
@@ -309,18 +309,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "can't destroy a project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            Project.find(project.id).should_not be_nil
-            response.should redirect_to(root_path)
+            expect(Project.find(project.id)).to_not be_nil
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit a project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
         end
 
@@ -329,18 +329,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "can't destroy the project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            Project.find(project.id).should_not be_nil
-            response.should redirect_to(root_path)
+            expect(Project.find(project.id)).to_not be_nil
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
         end
 
@@ -349,18 +349,18 @@ describe ProjectsController do
 
           it 'CAN view project' do
             get :show, :id => project.name
-            response.should be_success
+            expect(response).to be_success
           end
 
           it "can't destroy a project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            Project.find(project.id).should_not be_nil
-            response.should redirect_to(root_path)
+            expect(Project.find(project.id)).to_not be_nil
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
         end
 
@@ -369,18 +369,18 @@ describe ProjectsController do
 
           it 'can NOT view project' do
             get :show, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't destroy a project" do
             expect { get :destroy, :id => project.name }.to_not change { Project.count }
-            Project.find(project.id).should_not be_nil
-            response.should redirect_to(root_path)
+            expect(Project.find(project.id)).to_not be_nil
+            expect(response).to redirect_to(root_path)
           end
 
           it "can't edit the project" do
             get :edit, :id => project.name
-            response.should redirect_to(root_path)
+            expect(response).to redirect_to(root_path)
           end
         end
       end
@@ -391,7 +391,7 @@ describe ProjectsController do
     context "index action" do
       it "should succeed" do
         get "index"
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
@@ -410,16 +410,16 @@ describe ProjectsController do
           expect{ post 'create', project: Factory.attributes_for(:project) }.to change{ Project.count }.by 1
 
           request = Amazon::FPS::RecipientRequest.new(save_project_url)
-          response.should redirect_to(request.url)
+          expect(response).to redirect_to(request.url)
         end
 
         it "handles errors for invalid attributes" do
           invalid_attributes = Factory.attributes_for(:project, funding_goal: -5)
           expect{post 'create', project: invalid_attributes}.to_not change{ Project.count }
 
-          response.should be_success
-          response.body.inspect.should include("error")
-          Project.find_by_name(invalid_attributes[:name]).should be_nil
+          expect(response).to be_success
+          expect(response.body.inspect).to include("error")
+          expect(Project.find_by_name(invalid_attributes[:name])).to be_nil
         end
       end
 
@@ -429,8 +429,8 @@ describe ProjectsController do
         it "should succeed destroy" do
           expect{ delete :destroy, :id => project.name }.to change{ Project.count }.by(-1)
 
-          response.should redirect_to(root_path)
-          flash[:alert].should include "successfully deleted"
+          expect(response).to redirect_to(root_path)
+          expect(flash[:alert]).to include "successfully deleted"
         end
 
         it "should handle failure" do
@@ -438,8 +438,8 @@ describe ProjectsController do
 
           expect{ delete :destroy, :id => project.name }.to_not change{ Project.count }
 
-          response.should redirect_to(project_path(project))
-          flash[:alert].should include "could not be deleted"
+          expect(response).to redirect_to(project_path(project))
+          expect(flash[:alert]).to include "could not be deleted"
         end
       end
 
@@ -454,8 +454,8 @@ describe ProjectsController do
         it "should succeed with valid input" do
           session[:project_id] = project.id
           get :save, params
-          response.should redirect_to(project)
-          flash[:alert].should include "saved successfully"
+          expect(response).to redirect_to(project)
+          expect(flash[:alert]).to include "saved successfully"
         end
 
         it "should handle unsuccessful input" do
@@ -463,8 +463,8 @@ describe ProjectsController do
           params["status"] = "NP"
 
           get :save, params
-          response.should redirect_to(root_path)
-          flash[:alert].should include "error"
+          expect(response).to redirect_to(root_path)
+          expect(flash[:alert]).to include "error"
         end
 
         it "should handle unsuccessful input case: 2" do
@@ -472,8 +472,8 @@ describe ProjectsController do
           session[:project_id] = project.id
 
           get :save, params
-          response.should redirect_to(root_path)
-          flash[:alert].should include "error"
+          expect(response).to redirect_to(root_path)
+          expect(flash[:alert]).to include "error"
         end
       end
     end
