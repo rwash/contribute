@@ -3,7 +3,7 @@
 require 'logger'
 
 class RetryContributions
-	@@logger = Logger.new('log/cron_log.log')
+  @@logger = Logger.new('log/cron_log.log')
   @@still_failing = Array.new
 
   def self.run
