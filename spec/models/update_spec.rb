@@ -14,28 +14,28 @@ describe Project do
   describe 'title' do
     it 'is required' do
       update = FactoryGirl.build(:update, :title => '')
-      assert !update.save, 'Incorrectly saved update with blank title'
+      expect(update.save).to be_false
     end
   end
 
   describe 'content' do
     it 'is required' do
       update = FactoryGirl.build(:update, :content => '')
-      assert !update.save, 'Incorrectly saved update with blank content'
+      expect(update.save).to be_false
     end
   end
 
   describe 'user_id' do
     it 'is required' do
       update = FactoryGirl.build(:update, :user_id => '')
-      assert !update.save, 'Incorrectly saved update with no user_id'
+      expect(update.save).to be_false
     end
   end
 
   describe 'project_id' do
     it "is required" do
       update = FactoryGirl.build(:update, :project_id => "")
-      assert !update.save, "Incorrectly saved update with no project_id"
+      expect(update.save).to be_false
     end
   end
 
