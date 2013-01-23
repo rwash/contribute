@@ -11,14 +11,14 @@ describe User do
     end
 
     it 'checks validity to make the before run :)' do
-      assert_not_nil @user
+      expect(@user).to_not be_nil
     end
   end
 
   describe 'name' do
     it 'is required' do
       user = FactoryGirl.build(:user, :name => '')
-      assert !user.save, "Incorrectly saved user with blank name"
+      expect(user.save).to be_false
     end
   end
 end

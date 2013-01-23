@@ -50,7 +50,7 @@ class VideoUploadTesting
         client = Video.yt_session
         response = client.video_by(video.yt_video_id)
 
-        assert !response.listed?, "Video should be unlisted on YouTube"
+        expect(response.listed?).to be_false
 
         visit(project_path(project))
         click_button('Edit Project')
@@ -72,7 +72,7 @@ class VideoUploadTesting
         expect(page).to have_content('Successfully activated project.')
 
         response = client.video_by(video.yt_video_id)
-        assert response.listed?, "Video should be listed/public on YouTube"
+        expect(response.listed?).to be_true
     end
 =end
   end

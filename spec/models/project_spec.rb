@@ -5,128 +5,128 @@ describe Project do
   describe 'name' do
     it 'is required' do
       project = FactoryGirl.build(:project, :name => '')
-      assert !project.save, 'Incorrectly saved project with blank name'
+      expect(project.save).to be_false
     end
 
     it 'validates uniqueness' do
       project = FactoryGirl.create(:project)
       project2 = FactoryGirl.build(:project, :name => project.name)	
-      assert !project2.save, 'Incorrectly saved project with duplicate name'	
+      expect(project2.save).to be_false
     end
 
     it 'can only contain letters and numbers' do
       project = FactoryGirl.build(:project, :name => "Jake is cool 1234")
-      assert project.save, 'Project could not be saved with a title of only letters and numbers.'
+      expect(project.save).to be_true
       project2 = FactoryGirl.build(:project, :name => 'Sup D@wg.jpeg')
-      assert !project2.save, 'Project incorretly saved with a tile containing sysmbols other than A-Z,a-z, 0-9'
+      expect(project2.save).to be_false
     end
 
     it 'fails with max length + 1' do
       project = FactoryGirl.build(:project, :name => "a" * (Project::MAX_NAME_LENGTH + 1))
-      assert !project.save, 'Incorrectly saved project with name too long'
+      expect(project.save).to be_false
     end
 
     it 'saves with max length' do
       project = FactoryGirl.build(:project, :name => "a" * (Project::MAX_NAME_LENGTH))
-      assert project.save, 'Failed to save project with correct name length'
+      expect(project.save).to be_true
     end
   end
 
   describe 'short description' do
     it 'is required' do
       project = FactoryGirl.build(:project, :short_description => '')
-      assert !project.save, 'Incorrectly saved project with blank short_description'
+      expect(project.save).to be_false
     end
 
     it 'fails with max length + 1' do
       project = FactoryGirl.build(:project, :short_description => "a" * (Project::MAX_SHORT_DESC_LENGTH + 1))
-      assert !project.save, 'Incorrectly saved project with short description too long'
+      expect(project.save).to be_false
     end
 
     it 'saves with max length' do
       project = FactoryGirl.build(:project, :short_description => "a" * (Project::MAX_SHORT_DESC_LENGTH))
-      assert project.save, 'Failed to save project with correct short description length'
+      expect(project.save).to be_true
     end
   end
 
   describe 'long description' do
     it 'is required' do
       project = FactoryGirl.build(:project, :long_description => '')
-      assert !project.save, 'Incorrectly saved project with blank long_description'
+      expect(project.save).to be_false
     end
 
     it 'fails with max length + 1' do
       project = FactoryGirl.build(:project, :long_description => "a" * (Project::MAX_LONG_DESC_LENGTH + 1))
-      assert !project.save, 'Incorrectly saved project with long description too long'
+      expect(project.save).to be_false
     end
 
     it 'saves with max length' do
       project = FactoryGirl.build(:project, :long_description => "a" * (Project::MAX_LONG_DESC_LENGTH))#2
-      assert project.save, 'Failed to save project with correct long description length'
+      expect(project.save).to be_true
     end
   end
 
   describe 'funding goal' do
     it "is required" do
       project = FactoryGirl.build(:project, :funding_goal => "")
-      assert !project.save, "Incorrectly saved project without a funding_goal"
+      expect(project.save).to be_false
     end
     it "fails below minimum" do
       project = FactoryGirl.build(:project, :funding_goal => (Project::MIN_FUNDING_GOAL - 1))
-      assert !project.save, "Incorrectly saved project without funding_goal below minimum project"
+      expect(project.save).to be_false
     end
     it "takes funding_goals with commas" do
       project = FactoryGirl.build(:project, :funding_goal => '9,999,999')#3
-      assert project.save, "Should have saved project with funding_goal with commas"
+      expect(project.save).to be_true
     end
     it "is an integer" do
       project = FactoryGirl.build(:project, :funding_goal => 5.5)
-      assert !project.save, "Incorrectly saved project with funding_goal that's not an int"
+      expect(project.save).to be_false
     end
   end
 
   describe 'end date' do
     it 'succeeds with properly formatted date' do
       project = FactoryGirl.build(:project, :end_date => '03/12/2020')#4
-      assert project.save, 'Failed to save project with proper date'
-      assert_equal project.end_date.month, 3
-      assert_equal project.end_date.day, 12
-      assert_equal project.end_date.year, 2020
+      expect(project.save).to be_true
+      expect(project.end_date.month).to eq 3
+      expect(project.end_date.day).to eq 12
+      expect(project.end_date.year).to eq 2020
     end
     it 'fails with improperly formatted date' do
       project = FactoryGirl.build(:project, :end_date => '03-12-2020')
-      assert !project.save, 'Incorrectly saved project with improperly formatted date'
+      expect(project.save).to be_false
     end	
 
     it 'succeeds when equal to tomorrow' do
       project = FactoryGirl.build(:project, :end_date => Date.today + 1)#5
-      assert project.save, 'Failed to save project with date of tomorrow'
+      expect(project.save).to be_true
     end
     #This tests validate_end_date
     it 'fails when equal to today' do
       project = FactoryGirl.build(:project, :end_date => Date.today)
-      assert !project.save, 'Incorrectly saved project with date of today'
+      expect(project.save).to be_false
     end
   end
 
   describe 'user' do
     it 'id is required' do
       project = FactoryGirl.build(:project, :user_id => '')
-      assert !project.save, 'Incorrectly saved project without user id'
+      expect(project.save).to be_false
     end
   end
 
   describe 'category id' do
     it 'is required' do
       project = FactoryGirl.build(:project, :category_id => '')
-      assert !project.save, 'Incorrectly saved project without category id'
+      expect(project.save).to be_false
     end
   end
 
   describe 'payment account id' do
     it 'is required' do
       project = FactoryGirl.build(:project, :payment_account_id => '')
-      assert !project.save, 'Incorrectly saved project without payment account id'
+      expect(project.save).to be_false
     end
   end
 
@@ -200,7 +200,7 @@ describe Project do
   describe 'to_param' do
     it 'returns name' do
       project = FactoryGirl.create(:project)
-      assert_equal project.name.gsub(/\W/, '-') , project.to_param
+      expect(project.name.gsub(/\W/, '-')).to eq project.to_param
       project.delete
     end
   end
