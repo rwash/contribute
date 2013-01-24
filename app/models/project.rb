@@ -73,9 +73,9 @@ class Project < ActiveRecord::Base
             length: {maximum: MAX_LONG_DESC_LENGTH}
 
   validates :funding_goal,
-            presence: true,
-            numericality: { greater_than_or_equal_to: MIN_FUNDING_GOAL, message: "must be at least $5"},
-            numericality: { only_integer: true, message: "must be a whole dollar amount (no cents please)" }
+            numericality: { greater_than_or_equal_to: 5,
+                            only_integer: true,
+                            message: "must be at least $5, and a whole dollar amount (no cents please)"}
 
   validates :end_date,
             presence: { message: "must be of form 'MM/DD/YYYY'" }
