@@ -36,7 +36,7 @@ class ProjectsControllerTest < ActionController::TestCase
 		assert_select "h2", {text: /(.*)error(.*)/}, "heading does not contain errors"
 		
 		#put project back in db
-		@project.fundingGoal = Project.MIN_FUNDING_GOAL + 1
+		@project.fundingGoal = 6
 		@project.save!
 	end
 

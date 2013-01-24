@@ -24,7 +24,7 @@ class ProjectTest < ActiveSupport::TestCase
 
 	test "valid funding goal" do
 		project = get_valid_project(:goggles)	
-		project.fundingGoal = Project.MIN_FUNDING_GOAL - 1
+		project.fundingGoal = 4
 		assert project.invalid?
 
 		#project.fundingGoal = Project.MAX_FUNDING_GOAL + 1
@@ -33,16 +33,16 @@ class ProjectTest < ActiveSupport::TestCase
 		project.fundingGoal = -1
 		assert project.invalid?
 
-		project.fundingGoal = Project.MIN_FUNDING_GOAL + 0.1234
+		project.fundingGoal = 5.1234
 		assert project.invalid?
 
-		project.fundingGoal = Project.MIN_FUNDING_GOAL + 1
+		project.fundingGoal = 6
 		assert project.valid?
 
 		#project.fundingGoal = Project.MAX_FUNDING_GOAL - 1
 		#assert project.valid?
 
-		project.fundingGoal = Project.MIN_FUNDING_GOAL + 0.11
+		project.fundingGoal = 5.11
 		assert project.valid?
 	end
 
