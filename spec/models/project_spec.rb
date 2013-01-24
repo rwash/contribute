@@ -26,10 +26,11 @@ describe Project do
   end
 
   describe 'funding goal validations' do
-    it { should validate_presence_of(:funding_goal).with_message 'must be at least $5' }
+    it { should validate_presence_of(:funding_goal).with_message(/must be at least \$5/) }
     it { should validate_numericality_of(:funding_goal).only_integer.with_message(/whole dollar amount/) }
     it { should allow_value(5).for :funding_goal }
     it { should_not allow_value(4).for :funding_goal }
+    it { should_not allow_value(-5).for :funding_goal }
     it { should allow_value('9,999,999').for :funding_goal }
   end
 
