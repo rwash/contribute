@@ -13,10 +13,10 @@ end
 gem 'jquery-rails'
 
 # RSpec is our testing framework, at the heart of our tests
-gem 'rspec-rails', :group => [:test, :development]
+gem 'rspec-rails', :group => [:test, :mysql_test, :mysql_development, :development]
 
 # Testing gems!
-group :test do
+group :test, :mysql_test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
   # Factory Girl is used in place of fixtures
@@ -60,7 +60,12 @@ gem 'rvm-capistrano'
 #gem 'linecache19'
 #gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
 
-gem 'mysql2'
+# Use MySQL for production and development and testing on orithena
+gem 'mysql2', group: [:production, :mysql_development, :mysql_test]
+
+# Use SQLite for easy development and test when not on Orithena
+gem 'sqlite3', group: [:development, :test]
+
 gem 'json'
 
 # Used in ProjectsController to create default CRUD methods
