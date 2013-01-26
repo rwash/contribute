@@ -46,7 +46,7 @@ class GroupsController < InheritedResources::Base
       @project.update_project_video unless @video.nil?
 
       flash[:notice] = "Your project has been added to the group."
-    elsif !Approval.where(group_id: @group.id, project_id: @project.id, approved: nil).first.nil?
+    elsif @project.approvals.where(group_id: @group.id, approved: nil).any?
       flash[:error] = "You have already submitted this project. Please wait for the admin to approve or reject your request."
     elsif @group.admin_user == current_user
       @group.projects << @project

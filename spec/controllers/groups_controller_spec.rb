@@ -134,7 +134,7 @@ describe GroupsController do
 
         expect(response).to redirect_to(group)
         expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(Approval.where(project_id: project.id, group_id: group.id, approved: nil).first).to_not be_nil
+        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
       end
 
       it 'allows adding of inactive project to group' do
@@ -144,7 +144,7 @@ describe GroupsController do
 
         expect(response).to redirect_to(group)
         expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(Approval.where(project_id: project.id, group_id: group.id, approved: nil).first).to_not be_nil
+        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
       end
 
       it 'allows adding of active project to group' do
@@ -154,7 +154,7 @@ describe GroupsController do
 
         expect(response).to redirect_to(group)
         expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(Approval.where(project_id: project.id, group_id: group.id, approved: nil).first).to_not be_nil
+        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
       end
 
       it 'allows adding of funded project to group' do
@@ -164,7 +164,7 @@ describe GroupsController do
 
         expect(response).to redirect_to(group)
         expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(Approval.where(project_id: project.id, group_id: group.id, approved: nil).first).to_not be_nil
+        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
       end
 
       it 'allows adding of nonfunded project to group' do
@@ -174,7 +174,7 @@ describe GroupsController do
 
         expect(response).to redirect_to(group)
         expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(Approval.where(project_id: project.id, group_id: group.id, approved: nil).first).to_not be_nil
+        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
       end
 
       it 'does not allow adding of cancelled project to group' do

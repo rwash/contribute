@@ -41,7 +41,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def update
-    @project = Project.where(name: params[:id].gsub(/-/, ' ')).first 
+    @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
 
     if params[:project] && params[:project][:video]
       if @project.video
@@ -125,7 +125,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def destroy
-    @project = Project.where(name: params[:id].gsub(/-/, ' ')).first
+    @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
     @video = @project.video
 
     if @project.state.unconfirmed? || @project.state.inactive?
@@ -150,7 +150,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def show
-    @project = Project.where(name: params[:id].gsub(/-/, ' ')).first
+    @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
     @project = ProjectDecorator.decorate @project if @project
     #somthing was up with this page and permissions so i moved them here
     return redirect_to root_path if @project.nil?
@@ -172,7 +172,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def edit
-    @project = Project.where(name: params[:id].gsub(/-/, ' ')).first
+    @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
     @video = @project.video
   end
 

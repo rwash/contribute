@@ -4,7 +4,7 @@ require 'integration_helper'
 class AmazonFpsTesting
   describe "fps requests should" do
 
-    let(:project) { Factory.create(:project, state: 'active') }
+    let(:project) { Factory.create(:project, state: :active) }
 
     before :all do
       Project.delete_all

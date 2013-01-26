@@ -40,10 +40,10 @@ class ListsController < InheritedResources::Base
     @list = List.find(params[:id])
     return redirect_to @list.listable if @list.permanent?
 
-    if !current_user.nil? and current_user.admin
-      @projects = Project.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
+    if current_user and current_user.admin
+      @projects = [:active,:funded,:nonfunded].map { |state| Project.find_all_by_state(state) }.flatten
     else
-      @projects = @list.listable.projects.where("state = ? OR state = ? OR state = ?", 'active', 'funded', 'nonfunded')
+      @projects = [:active, :funded, :nonfunded].map { |state| @list.listable.projects.find_all_by_state(state) }.flatten
     end
     @source = []
     for project in @projects
