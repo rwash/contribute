@@ -34,18 +34,18 @@ class ApplicationController < ActionController::Base
   def get_projects_in_order(list,limit = Project.count)
     @projects = []
     unless list.listable_type == "User" and list.listable.id == 1
-      @projects << list.listable.projects.where(state: "active") if list.show_active
-      @projects << list.listable.projects.where(state: "funded") if list.show_funded
-      @projects << list.listable.projects.where(state: "nonfunded") if list.show_nonfunded
+      @projects << list.listable.projects.where(state: :active) if list.show_active
+      @projects << list.listable.projects.where(state: :funded) if list.show_funded
+      @projects << list.listable.projects.where(state: :nonfunded) if list.show_nonfunded
       if list.listable_type == "User" and list.permanent? and !current_user.nil? and current_user.id == list.listable.id
-        @projects << list.listable.projects.where(state: "unconfirmed")
-        @projects << list.listable.projects.where(state: "inactive")
-        @projects << list.listable.projects.where(state: "cancelled")
+        @projects << list.listable.projects.where(state: :unconfirmed)
+        @projects << list.listable.projects.where(state: :inactive)
+        @projects << list.listable.projects.where(state: :cancelled)
       end
     else
-      @projects << Project.where("state = ?", "active") if list.show_active
-      @projects << Project.where("state = ?", "funded") if list.show_funded
-      @projects << Project.where("state = ?", "nonfunded") if list.show_nonfunded
+      @projects << Project.find_by_state(:active) if list.show_active
+      @projects << Project.find_by_state(:funded) if list.show_funded
+      @projects << Project.find_by_state(:nonfunded) if list.show_nonfunded
     end
     @projects.flatten!
 
