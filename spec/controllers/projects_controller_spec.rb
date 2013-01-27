@@ -9,7 +9,7 @@ describe ProjectsController do
       it "can't create a project" do
         get :new
         #new_user_session_path is the login page
-        expect(response).to redirect_to(new_user_session_path)	
+        expect(response).to redirect_to(new_user_session_path)
       end
 
       # Start State Tests (These tests are added after those above. Some of the ones below may cover the same thing as one above.)
@@ -400,6 +400,7 @@ describe ProjectsController do
       before(:each) { sign_in user }
 
       context "create action" do
+        # TODO
         render_views
 
         before(:all) do
@@ -407,7 +408,8 @@ describe ProjectsController do
         end
 
         it "succeeds for valid attributes" do
-          expect{ post 'create', project: Factory.attributes_for(:project) }.to change{ Project.count }.by 1
+          p = Factory.build(:project).attributes.symbolize_keys
+          expect{ post 'create', project: p }.to change{ Project.count }.by 1
 
           request = Amazon::FPS::RecipientRequest.new(save_project_url)
           expect(response).to redirect_to(request.url)

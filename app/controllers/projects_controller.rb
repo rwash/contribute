@@ -23,6 +23,7 @@ class ProjectsController < InheritedResources::Base
     @project.user = current_user
     @project.payment_account_id = Project::UNDEFINED_PAYMENT_ACCOUNT_ID #To pass validation at valid?
     @project.state = :unconfirmed
+    @project.category = Category.find params[:project][:category_id] if params[:project][:category_id]
 
     if @project.save
       unless params[:project][:video].nil?
