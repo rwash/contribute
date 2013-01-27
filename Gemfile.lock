@@ -40,6 +40,10 @@ GEM
     awesome_nested_set (2.1.5)
       activerecord (>= 3.0.0)
     bcrypt-ruby (3.0.1)
+    better_errors (0.3.2)
+      coderay (>= 1.0.0)
+      erubis (>= 2.7.0)
+    binding_of_caller (0.6.8)
     bootstrap-kaminari-views (0.0.2)
       kaminari (>= 0.13)
       rails (>= 3.1)
@@ -317,6 +321,8 @@ PLATFORMS
 DEPENDENCIES
   acts_as_commentable_with_threading
   acts_as_list
+  better_errors
+  binding_of_caller
   bootstrap-kaminari-views
   cancan
   capistrano

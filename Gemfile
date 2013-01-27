@@ -51,6 +51,13 @@ group :test, :mysql_test do
   gem 'timecop'
 end
 
+# Find and squish bugs easier with better_errors
+group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+end
+
+
 # Deploy with Capistrano
 gem 'capistrano'
 gem 'rvm-capistrano'
