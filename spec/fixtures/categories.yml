@@ -1,9 +1,0 @@
-music:
-  id: 1
-  short_description: 'Music'
-  long_description: 'This category is for music'
-
-movies:
-  id: 2
-  short_description: 'Movies'
-  long_description: 'This category is for movies'
