@@ -3,6 +3,11 @@ class ApplicationController < ActionController::Base
 
   helper_method :logged_in?, :comment_owner, :yt_client, :get_projects_in_order, :confirmation_approver?
 
+  # Ensure authorization happens on every action in the application.
+  # This will raise an exception if authorization is not performed in an action.
+  # See https://github.com/ryanb/cancan#4-lock-it-down
+  check_authorization unless: :devise_controller?
+
   rescue_from CanCan::AccessDenied do |exception|
     if exception.action == :contribute
       redirect_to exception.subject, alert: exception.message
