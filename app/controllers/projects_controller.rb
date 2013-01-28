@@ -120,7 +120,7 @@ class ProjectsController < InheritedResources::Base
       # model. Might be worth doing that for this too.
       successful_save
 
-      flash[:alert] = "Project saved successfully. Here's to getting funded!"
+      flash[:notice] = "Project saved successfully. Here's to getting funded!"
       return redirect_to @project
     end
   end
@@ -135,7 +135,7 @@ class ProjectsController < InheritedResources::Base
         flash[:alert] = "Project could not be deleted. Please try again."
         return redirect_to @project
       else 
-        flash[:alert] = "Project successfully deleted. Sorry to see you go!"
+        flash[:notice] = "Project successfully deleted. Sorry to see you go!"
         return redirect_to root_path
       end
     elsif @project.state.active?
@@ -143,7 +143,7 @@ class ProjectsController < InheritedResources::Base
       @project.state = :cancelled
       @project.save!
       @response = Video.yt_session.video_update(@video.yt_video_id, title: @video.title, description: "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", category: 'People',keywords: YT_TAGS, list: "denied") if @video
-      flash[:alert] = "Project successfully cancelled. This project is now only visible to you."
+      flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
     else
       flash[:alert] = "You can not cancel or delete this project."
     end

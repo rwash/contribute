@@ -171,7 +171,7 @@ describe ProjectsController do
 
           it "CAN destroy a project" do
             expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
-            expect(flash[:alert]).to include "successfully deleted"
+            expect(flash[:notice]).to include "successfully deleted"
             expect(response).to redirect_to(root_path)
           end
 
@@ -191,7 +191,7 @@ describe ProjectsController do
 
           it "CAN destroy a project" do
             expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
-            expect(flash[:alert]).to include "successfully deleted"
+            expect(flash[:notice]).to include "successfully deleted"
             expect(response).to redirect_to(root_path)
           end
 
@@ -211,7 +211,7 @@ describe ProjectsController do
 
           it "CAN cancel a project" do
             get :destroy, id: project.name
-            expect(flash[:alert]).to include "Project successfully cancelled."
+            expect(flash[:notice]).to include "Project successfully cancelled."
             expect(response).to redirect_to(root_path)
           end
 
@@ -454,7 +454,7 @@ describe ProjectsController do
           expect{ delete :destroy, id: project.name }.to change{ Project.count }.by(-1)
 
           expect(response).to redirect_to(root_path)
-          expect(flash[:alert]).to include "successfully deleted"
+          expect(flash[:notice]).to include "successfully deleted"
         end
 
         it "should handle failure" do
@@ -479,7 +479,7 @@ describe ProjectsController do
           session[:project_id] = project.id
           get :save, params
           expect(response).to redirect_to(project)
-          expect(flash[:alert]).to include "saved successfully"
+          expect(flash[:notice]).to include "saved successfully"
         end
 
         it "should handle unsuccessful input" do
