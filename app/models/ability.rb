@@ -17,6 +17,10 @@ class Ability
     end
     can :create_update_for, Project, user: user
 
+    can :destroy, Video do |v|
+      v.project.user = user
+    end
+
     # Comments
     can :comment_on, Project if user.id
     can :destroy, Comment, user: user
