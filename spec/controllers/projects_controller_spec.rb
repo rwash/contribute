@@ -4,6 +4,10 @@ require 'controller_helper'
 describe ProjectsController do
   include Devise::TestHelpers
 
+  # TODO stub the CanCan ability class so we aren't testing the abilities.
+  # We test abilities in the model layer. Here, we should only be testing
+  # what the controller does when the user is authorized or (more importantly,
+  # not authorized for an action)
   describe 'permissions' do
     context 'user is not signed in' do
       it "can't create a project" do
