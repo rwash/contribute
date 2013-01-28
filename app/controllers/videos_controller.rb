@@ -13,7 +13,12 @@ class VideosController < InheritedResources::Base
     else
       flash[:error] = "Failed to Delete Video"
     end
-    redirect_to :back
+
+    begin
+      redirect_to :back
+    rescue
+      redirect_to @project
+    end
   end
 
   protected

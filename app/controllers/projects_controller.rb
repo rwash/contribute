@@ -74,7 +74,7 @@ class ProjectsController < InheritedResources::Base
       session[:project_id] = @project.id
       request = Amazon::FPS::RecipientRequest.new(save_project_url)
       return redirect_to request.url
-    else 
+    else
       respond_with(@project)
     end
   end
@@ -177,7 +177,8 @@ class ProjectsController < InheritedResources::Base
     @video = @project.video
   end
 
-  protected	
+  protected
+  # TODO rename this method -- and all of the email methods while we're at it
   def successful_save
     EmailManager.add_project(@project).deliver
   end

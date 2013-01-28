@@ -3,6 +3,10 @@ class ItemsController < InheritedResources::Base
     @item = Item.find(params[:id])
     @item.destroy
 
-    redirect_to :back
+    begin
+      redirect_to :back
+    rescue
+      redirect_to :root
+    end
   end
 end

@@ -4,6 +4,23 @@ require 'controller_helper'
 describe ProjectsController do
   include Devise::TestHelpers
 
+  describe 'POST update' do
+    let(:project) { Factory :project }
+    before { sign_in project.user }
+    before { post :update, id: project.name, project: Factory.attributes_for(:project) }
+
+    it { should set_the_flash.to(/Successfully updated project/) }
+  end
+
+  describe 'POST activate' do
+    let(:project) { Factory :project }
+    before { post :activate, id: project.to_param }
+
+    it 'sets project state to active' do
+      expect(project.reload.state).to eq :active
+    end
+  end
+
   # TODO stub the CanCan ability class so we aren't testing the abilities.
   # We test abilities in the model layer. Here, we should only be testing
   # what the controller does when the user is authorized or (more importantly,
@@ -393,10 +410,11 @@ describe ProjectsController do
 
   describe "functional tests:" do
     context "index action" do
-      it "should succeed" do
-        get "index"
-        expect(response).to be_success
-      end
+      before { get :index }
+
+      it { should respond_with :success }
+      it { should render_template :index }
+      it { should assign_to :projects }
     end
 
     context "user is signed in" do
@@ -413,7 +431,7 @@ describe ProjectsController do
 
         it "succeeds for valid attributes" do
           p = Factory.build(:project).attributes.symbolize_keys
-          expect{ post 'create', project: p }.to change{ Project.count }.by 1
+          expect{ post :create, project: p }.to change{ Project.count }.by 1
 
           request = Amazon::FPS::RecipientRequest.new(save_project_url)
           expect(response).to redirect_to(request.url)
@@ -421,7 +439,7 @@ describe ProjectsController do
 
         it "handles errors for invalid attributes" do
           invalid_attributes = Factory.attributes_for(:project, funding_goal: -5)
-          expect{post 'create', project: invalid_attributes}.to_not change{ Project.count }
+          expect{post :create, project: invalid_attributes}.to_not change{ Project.count }
 
           expect(response).to be_success
           expect(response.body.inspect).to include("error")

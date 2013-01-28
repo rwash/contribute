@@ -4,6 +4,16 @@ require 'controller_helper'
 describe GroupsController do
   include Devise::TestHelpers
 
+  describe 'GET index' do
+    before { get :index }
+
+    it { should respond_with :success }
+    it { should assign_to(:groups).with(Group.all) }
+    it { should assign_to :user_groups }
+    it { should assign_to :admin_groups }
+    it { should render_template :index }
+  end
+
   describe 'POST create' do
     context "when not signed in" do
       it "does not allow group creation" do
@@ -23,55 +33,14 @@ describe GroupsController do
     end
   end
 
-  describe 'POST destroy' do
-    context 'when not signed in' do
-      it "does not allow group deletion" do
-        group = Factory :group
-        expect {get 'destroy', id: group.id}.to_not change{Group.count}
-        expect(flash[:alert]).to include "You are not authorized to access this page."
-      end
-    end
-    context 'when group owner is signed in' do
-      let(:user) { Factory :user }
-      before(:each) { sign_in user }
-      let!(:owned_group) { Factory :group, admin_user: user }
-      it "allows group deletion" do
-        expect {get 'destroy', id: owned_group.id}.to change {Group.count}.by(-1)
-        expect(response).to redirect_to(groups_path)
-      end
-    end
-    context "when the user does not own the group" do
-      let!(:other_group) { Factory :group }
+  describe 'POST new_add' do
+    let(:group) { Factory :group }
+    before { sign_in Factory :user }
+    before { post :new_add, id: group.id }
 
-      it "does not allow group deletion" do
-        expect {get 'destroy', id: other_group.id}.to_not change {Group.count}
-        expect(flash[:alert]).to include "You are not authorized to access this page."
-      end
-    end
-  end
-
-  describe 'GET edit' do
-    context "when the user is signed in" do
-      let(:user) { Factory :user }
-      before(:each) { sign_in user }
-
-      context "when the user owns the group" do
-        let!(:owned_group) { Factory :group, admin_user: user }
-
-        it "allows group editing" do
-          get 'edit', id: owned_group.id
-          expect(response).to be_success
-        end
-      end
-      context "when the user does not own the group" do
-        let!(:other_group) { Factory :group }
-
-        it "does not allow group editing" do
-          get 'edit', id: other_group.id
-          expect(flash[:alert]).to include "You are not authorized to access this page."
-        end
-      end
-    end
+    it { should respond_with :success }
+    it { should assign_to :group }
+    it { should render_template :new_add }
   end
 
   describe 'POST submit_add' do
@@ -220,4 +189,80 @@ describe GroupsController do
 
     end
   end
+
+  describe 'GET admin' do
+    let(:approval) { Factory :approval }
+    before { get :admin, id: approval.group.id, approval_id: approval.id }
+    before { sign_in approval.group.admin_user }
+
+    it { should redirect_to :root }
+  end
+
+  describe 'POST remove_project' do
+    let(:group) { Factory :group }
+    let(:project) { Factory :project }
+    before { group.projects << project }
+    before { post :remove_project, id: group.id, project_id: project.id }
+
+    it { should set_the_flash }
+    it { should redirect_to group_path(group) }
+  end
+
+  describe 'POST add_list' do
+    before { post :add_list, id: Factory(:group).id }
+
+    it { should respond_with :redirect }
+  end
+
+  describe 'POST destroy' do
+    context 'when not signed in' do
+      it "does not allow group deletion" do
+        group = Factory :group
+        expect {get 'destroy', id: group.id}.to_not change{Group.count}
+        expect(flash[:alert]).to include "You are not authorized to access this page."
+      end
+    end
+    context 'when group owner is signed in' do
+      let(:user) { Factory :user }
+      before(:each) { sign_in user }
+      let!(:owned_group) { Factory :group, admin_user: user }
+      it "allows group deletion" do
+        expect {get 'destroy', id: owned_group.id}.to change {Group.count}.by(-1)
+        expect(response).to redirect_to(groups_path)
+      end
+    end
+    context "when the user does not own the group" do
+      let!(:other_group) { Factory :group }
+
+      it "does not allow group deletion" do
+        expect {get 'destroy', id: other_group.id}.to_not change {Group.count}
+        expect(flash[:alert]).to include "You are not authorized to access this page."
+      end
+    end
+  end
+
+  describe 'GET edit' do
+    context "when the user is signed in" do
+      let(:user) { Factory :user }
+      before(:each) { sign_in user }
+
+      context "when the user owns the group" do
+        let!(:owned_group) { Factory :group, admin_user: user }
+
+        it "allows group editing" do
+          get 'edit', id: owned_group.id
+          expect(response).to be_success
+        end
+      end
+      context "when the user does not own the group" do
+        let!(:other_group) { Factory :group }
+
+        it "does not allow group editing" do
+          get 'edit', id: other_group.id
+          expect(flash[:alert]).to include "You are not authorized to access this page."
+        end
+      end
+    end
+  end
+
 end
