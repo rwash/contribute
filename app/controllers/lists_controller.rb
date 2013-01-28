@@ -15,6 +15,8 @@ class ListsController < InheritedResources::Base
     render nothing: true
   end
 
+  # TODO This should not all be done manually. We should be using
+  # the update_attributes method that ActiveRecord provides
   def update
     @list = List.find(params[:id])
     @list.kind = "#{params[:kind].gsub(/\W/, '-')}"

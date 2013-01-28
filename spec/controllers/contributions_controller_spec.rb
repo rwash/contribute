@@ -68,32 +68,10 @@ describe ContributionsController do
     end
   end
 
-  describe 'GET edit' do
-    context 'when contribution owner is signed in' do
-      let(:contribution) { Factory :contribution, project: project, user: user }
+  describe 'POST create' do
+    before { post :create, contribution: Factory.attributes_for(:contribution) }
 
-      before { sign_in user }
-      before { get :edit, id: contribution.id }
-
-      it { should respond_with :success }
-    end
-
-    context "when user doesn't own contribution" do
-      let(:contribution) { Factory :contribution, project: project }
-
-      before { sign_in user }
-      before { get :edit, id: contribution.id }
-
-      it { should redirect_to project_path(project) }
-      it { should set_the_flash.to(/may not edit this contribution/) }
-    end
-
-    it "handles invalid contribution" do
-      sign_in user
-      get :edit, {id: 1 }
-      expect(response).to redirect_to(root_path)
-      expect(flash[:alert]).to include "error"
-    end
+    it { should respond_with :redirect }
   end
 
   describe 'POST save' do
@@ -140,6 +118,49 @@ describe ContributionsController do
       expect(response).to redirect_to(contribution.project)
       expect(flash[:alert]).to include "error"
     end
+  end
+
+  # Keep this test in, because the error is being raised in the
+  # ContributionsController, instead of by the Rails Routing system
+  describe 'GET show' do
+    it 'is not a valid route' do
+      expect { get :show, id: Factory(:contribution) }.to raise_error
+    end
+  end
+
+  describe 'GET edit' do
+    context 'when contribution owner is signed in' do
+      let(:contribution) { Factory :contribution, project: project, user: user }
+
+      before { sign_in user }
+      before { get :edit, id: contribution.id }
+
+      it { should respond_with :success }
+    end
+
+    context "when user doesn't own contribution" do
+      let(:contribution) { Factory :contribution, project: project }
+
+      before { sign_in user }
+      before { get :edit, id: contribution.id }
+
+      it { should redirect_to project_path(project) }
+      it { should set_the_flash.to(/may not edit this contribution/) }
+    end
+
+    it "handles invalid contribution" do
+      sign_in user
+      get :edit, {id: 1 }
+      expect(response).to redirect_to(root_path)
+      expect(flash[:alert]).to include "error"
+    end
+  end
+
+  describe 'POST update' do
+    let(:contribution) { Factory :contribution }
+    before { post :update, id: contribution.id, contribution: contribution.attributes.symbolize_keys }
+
+    it { should respond_with :redirect }
   end
 
   describe 'POST update_save' do

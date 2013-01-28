@@ -77,7 +77,11 @@ class GroupsController < InheritedResources::Base
       flash[:error] = "You do not have permission to remove this project."
     end
 
-    redirect_to :back
+    begin
+      redirect_to :back
+    rescue
+      redirect_to :group
+    end
   end
 
   def add_list

@@ -4,22 +4,12 @@ require 'controller_helper'
 describe ListsController do
   include Devise::TestHelpers
 
-  describe 'GET show' do
-    context "when user is not signed in" do
-      it "displays users list" do
-        list = FactoryGirl.create(:list, listable_id: Factory(:user).id, listable_type: "User")
-        get :show, id: list.id
-        expect(response).to be_success
-        list.delete
-      end
+  describe 'POST sort' do
+    # TODO we should have a test that at least touches this action
+  end
 
-      it "displays groups list" do
-        list = FactoryGirl.create(:list, listable_id: Factory(:group).id, listable_type: "Group")
-        get :show, id: list.id
-        expect(response).to be_success
-        list.delete
-      end
-    end
+  describe 'POST update' do
+    # TODO we should have a test that at least touches this action
   end
 
   describe 'DELETE destroy' do
@@ -87,4 +77,25 @@ describe ListsController do
     end
   end
 
+  describe 'POST add_item' do
+    # TODO we should have a test that at least touches this action
+  end
+
+  describe 'GET show' do
+    context "when user is not signed in" do
+      it "displays users list" do
+        list = FactoryGirl.create(:list, listable_id: Factory(:user).id, listable_type: "User")
+        get :show, id: list.id
+        expect(response).to be_success
+        list.delete
+      end
+
+      it "displays groups list" do
+        list = FactoryGirl.create(:list, listable_id: Factory(:group).id, listable_type: "Group")
+        get :show, id: list.id
+        expect(response).to be_success
+        list.delete
+      end
+    end
+  end
 end

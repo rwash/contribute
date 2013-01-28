@@ -1,9 +1,10 @@
 class CommentsController < InheritedResources::Base
   def create
     @project = Project.find(params[:projectid])
-    @comment = Comment.build_from( @project, current_user.id, params[:comment][:body] )
 
     if user_signed_in? #from devise, check their github page for more info
+      @comment = Comment.build_from( @project, current_user.id, params[:comment][:body] )
+
       @comment.user = current_user
 
       if @comment.valid?
@@ -25,6 +26,7 @@ class CommentsController < InheritedResources::Base
     end
   end
 
+  # TODO: change action name to 'destroy'
   def delete
     @comment = Comment.find(params[:id])
 
@@ -35,16 +37,20 @@ class CommentsController < InheritedResources::Base
       else
         if !@comment.delete
           flash[:alert] = "Comment could not be deleted."
-        else 
+        else
           flash[:alert] = "Comment successfully deleted."
         end
       end
 
     else
-      flash[:alert] = "You cannot delete other peoples comments."
+      flash[:alert] = "You cannot delete comments you don't own."
     end
 
-    redirect_to :back
+    begin
+      redirect_to :back
+    rescue
+      redirect_to :root
+    end
   end
 
 end
