@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
       redirect_to exception.subject, alert: exception.message
     elsif exception.action == :edit_contribution
       redirect_to exception.subject, alert: exception.message
+    elsif exception.action == :create_update_for
+      redirect_to exception.subject, alert: exception.message
     else
       redirect_to root_url, alert: exception.message
     end
