@@ -13,6 +13,7 @@ describe UpdatesController do
       before { reset_email }
 
       context 'for a valid update' do
+        let(:project) { Factory :project, state: :unconfirmed }
         before { post :create, project_id: project.id, update: Factory.attributes_for(:update) }
 
         it 'creates an update' do
@@ -57,8 +58,8 @@ describe UpdatesController do
     context "when user is not signed in" do
       before { post :create, project_id: project.id, update: Factory.attributes_for(:update) }
 
-      it { should redirect_to project_path(project) }
-      it { should set_the_flash.to(/You cannot update this project\./) }
+      it { should redirect_to new_user_session_path }
+      it { should set_the_flash.to(/sign in/) }
 
       it 'does not create an update' do
         expect {post 'create', project_id: project.id, update: FactoryGirl.attributes_for(:update)}.to_not change {Update.count}

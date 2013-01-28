@@ -15,9 +15,7 @@ class Ability
     can :read, Project do |p|
       p.public_can_view? or p.user == user or p.confirmation_approver?
     end
-    can :update, Project do |p|
-      p.user == user and p.can_edit?
-    end
+    can :create_update_for, Project, user: user
 
     # Comments
     can :comment_on, Project if user.id
