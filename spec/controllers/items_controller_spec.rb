@@ -5,6 +5,7 @@ describe ItemsController do
   include Devise::TestHelpers
 
   describe 'DELETE destroy' do
+    # TODO create Item factory
     let(:item) { Item.create(itemable_id: 2, itemable_type:'Project') }
     before { delete :destroy, id: item.id }
 
