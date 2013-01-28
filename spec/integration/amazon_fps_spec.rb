@@ -6,9 +6,6 @@ class AmazonFpsTesting
     let(:project) { Factory.create(:project, state: :active) }
 
     before :all do
-      Project.delete_all
-      Contribution.delete_all
-
       Capybara.default_driver = :selenium
 
       @headless = Headless.new
@@ -16,9 +13,6 @@ class AmazonFpsTesting
     end
 
     after :all do
-      Project.delete_all
-      Contribution.delete_all
-
       delete_logs()
     end
 

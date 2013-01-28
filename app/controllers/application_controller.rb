@@ -40,6 +40,7 @@ class ApplicationController < ActionController::Base
 
   # list - list to get projects for
   # limit - optional limit to number of projects you want
+  # TODO move this somewhere else
   def get_projects_in_order(list,limit = Project.count)
     @projects = []
     unless list.listable_type == "User" and list.listable.id == 1
@@ -57,6 +58,7 @@ class ApplicationController < ActionController::Base
       @projects << Project.find_by_state(:nonfunded) if list.show_nonfunded
     end
     @projects.flatten!
+    @projects.compact! # remove nil elements
 
     case list.kind
     when "manual"

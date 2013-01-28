@@ -41,6 +41,7 @@ end
 
 def generate_contribution(user, amazon_user, amazon_password, project,amount)
   #login
+  #TODO move to a before filter
   login_as user
 
   #go to project page
