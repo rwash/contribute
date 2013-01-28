@@ -3,8 +3,6 @@ require 'integration_helper'
 
 class AmazonProcessTesting
   describe 'amazon process' do
-    fixtures :users
-
     before :all do
       Capybara.default_driver = :selenium
 
@@ -21,9 +19,10 @@ class AmazonProcessTesting
     describe 'project' do
       it "create successfully" do
         project = FactoryGirl.build(:project)
+        user = Factory :user
 
         #login with our project creator
-        login_as User.find_by_email 'mthelen2@gmail.com'
+        login_as user
 
         #create a project
         visit(new_project_path)
