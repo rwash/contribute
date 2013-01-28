@@ -42,6 +42,14 @@ class Ability
     can :edit_contribution, Project do |project|
       !user.id.nil? and !project.contributions.find_by_user_id(user.id).nil?
     end
+    # TODO remove the contribute and edit_contribution abilities on the Project model,
+    # and use these instead
+    can :create, Contribution do |contribution|
+      can? :contribute, contribution.project
+    end
+    can :update, Contribution do |contribution|
+      can? :edit_contribution, contribution.project
+    end
 
     # Groups
     can [:read, :create, :new_add, :submit_add], Group
