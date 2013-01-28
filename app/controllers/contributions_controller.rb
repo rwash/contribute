@@ -9,6 +9,9 @@ class ContributionsController < ApplicationController
 
   cache_sweeper :contribution_sweeper
 
+  load_and_authorize_resource except: [:new, :save, :show, :edit, :update_save]
+  skip_authorization_check only: [:save, :show, :edit, :update_save]
+
   def new
     @project = Project.find_by_name params[:project].gsub(/-/, ' ')
     authorize! :contribute, @project
@@ -72,6 +75,7 @@ class ContributionsController < ApplicationController
   end
 
   # Routing for edit and update doesn't work unless route for show exists
+  # TODO look into the routing. This method shouldn't have to exist
   def show
     raise ActionController::RoutingError.new('Not Found')
   end
