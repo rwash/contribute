@@ -19,6 +19,10 @@ class Ability
       p.user == user and p.can_edit?
     end
 
+    # Comments
+    can :comment_on, Project if user.id
+    can :destroy, Comment, user: user
+
     # Contributions
     # Make sure the user isn't a project owner and doesn't have a contribution already
     can :contribute, Project do |project|
