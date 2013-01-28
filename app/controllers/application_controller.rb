@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
     !current_user.nil?
   end
 
+  # TODO what is this i don't even...
   def comment_owner(comment)
     logged_in? && current_user == comment.user
   end
