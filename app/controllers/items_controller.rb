@@ -1,4 +1,6 @@
 class ItemsController < InheritedResources::Base
+  load_and_authorize_resource
+
   def destroy
     @item = Item.find(params[:id])
     @item.destroy
