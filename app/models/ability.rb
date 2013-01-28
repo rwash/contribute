@@ -15,6 +15,11 @@ class Ability
     can :read, Project do |p|
       p.public_can_view? or p.user == user or p.confirmation_approver?
     end
+    # Note: this 'update' refers to the Update and Edit actions of ProjectsController,
+    # not the ability to create Update objects associated with a project
+    can :update, Project, user: user, can_edit?: true
+    # This 'create_update_for' refers to the ability to create an Update associated
+    # with a Project.
     can :create_update_for, Project, user: user
 
     can :destroy, Video do |v|
