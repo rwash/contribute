@@ -1,4 +1,7 @@
 class VideosController < InheritedResources::Base
+  before_filter :authenticate_user!
+  load_and_authorize_resource
+
   def destroy
     @video = Video.find(params[:id])
     @project = @video.project
