@@ -3,8 +3,6 @@ require 'integration_helper'
 
 class VideoUploadTesting
   describe 'upload video' do
-        fixtures :users
-
     before :all do
       Capybara.default_driver = :selenium
 
@@ -17,7 +15,7 @@ class VideoUploadTesting
         project = FactoryGirl.build(:project)
 
         #login with our project creator
-        login_as User.find_by_email 'mthelen2@gmail.com'
+        login_as project.user
 
         #create a project
         visit(new_project_path)

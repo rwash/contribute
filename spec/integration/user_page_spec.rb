@@ -3,8 +3,6 @@ require 'integration_helper'
 
 class UserPageTesting
   describe 'user page' do
-    fixtures :users
-
     before :all do
       Capybara.default_driver = :selenium
 
@@ -12,30 +10,28 @@ class UserPageTesting
       @headless.start
     end
 
-    it "should show successfully" do
-      #login with our project creator
-      login_as User.find_by_email 'mthelen2@gmail.com'
+    let(:user) { Factory :user }
+    before do
+      login_as user
+    end
 
-      user = User.find_by_email('mthelen2@gmail.com')
+    it "should show successfully" do
       visit user_path(user)
 
       expect(current_path).to eq user_path(user)
 
       #find('div#userProfile').has_content?('Batman')
-      expect(page).to have_content('Batman')
+      expect(page).to have_content(user.name)
     end
 
     it "should edit successfully" do
-      login_as User.find_by_email 'mthelen2@gmail.com'
-
-      user = User.find_by_email('mthelen2@gmail.com')
       visit edit_user_registration_path(user)
 
       #rails does some goofy garbage with the routes
       #expect(current_path).to eq edit_user_registration_path(@path)
 
       fill_in 'user_name', with: 'The Hulk'
-      fill_in 'user_current_password', with: 'aaaaaa'
+      fill_in 'user_current_password', with: user.password
 
       click_button 'Update Profile'
 

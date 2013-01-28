@@ -3,7 +3,6 @@ require 'integration_helper'
 
 class AmazonFpsTesting
   describe "fps requests should" do
-
     let(:project) { Factory.create(:project, state: :active) }
 
     before :all do
@@ -23,10 +22,11 @@ class AmazonFpsTesting
       delete_logs()
     end
 
+    let(:user) { Factory :user }
+
     it "succeed on pay request and check transaction status" do
       contribution = generate_contribution(
-        'thelen56@msu.edu', #contribution login
-        'aaaaaa',
+        user, #contribution login
         'contribute_testing@hotmail.com', #amazon login
         'testing',
         project, #the project to contribute to
@@ -52,8 +52,7 @@ class AmazonFpsTesting
 
     it "succeed on cancel token request" do
       contribution = generate_contribution(
-        'thelen56@msu.edu', #contribution login
-        'aaaaaa',
+        user, #contribution login
         'contribute_testing@hotmail.com', #amazon login
         'testing',
         project, #the project to contribute to

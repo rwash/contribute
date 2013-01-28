@@ -39,9 +39,9 @@ def make_amazon_payment(user, password)
   click_amazon_continue
 end
 
-def generate_contribution(email, password, amazon_user, amazon_password, project,amount)
+def generate_contribution(user, amazon_user, amazon_password, project,amount)
   #login
-  login_as User.find_by_email email
+  login_as user
 
   #go to project page
   visit project_path(project)

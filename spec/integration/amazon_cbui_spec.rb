@@ -3,8 +3,6 @@ require 'integration_helper'
 
 class AmazonCbuiTesting
   describe 'amazon process' do
-    fixtures :users
-
     before :all do
       Capybara.default_driver = :selenium
 

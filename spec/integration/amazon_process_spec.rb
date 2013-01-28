@@ -3,8 +3,6 @@ require 'integration_helper'
 
 class AmazonProcessTesting
   describe 'amazon process' do
-    fixtures :users
-
     before :all do
       Capybara.default_driver = :selenium
 
@@ -12,11 +10,13 @@ class AmazonProcessTesting
       @headless.start
     end
 
+    let(:user) { Factory :user }
+
     describe 'project' do
       it "create successfully" do
         project = FactoryGirl.build(:project)
 
-        login_as User.find_by_email 'mthelen2@gmail.com'
+        login_as user
 
         #create a project
         visit(new_project_path)
@@ -46,7 +46,7 @@ class AmazonProcessTesting
 
         get_and_assert_project(project.name)
 
-        expect(last_email.to).to eq(['mthelen2@gmail.com'])
+        expect(last_email.to).to eq([user.email])
         expect(last_email.subject).to match(project.name)
         expect(last_email.subject).to match('has been created')
       end
@@ -56,7 +56,7 @@ class AmazonProcessTesting
       let(:project) { Factory.create(:project, state: :active) }
 
       it "fails with invalid amount" do
-        login_as User.find_by_email 'thelen56@msu.edu'
+        login_as user
 
         #go to project page
         visit project_path(project)
@@ -74,14 +74,13 @@ class AmazonProcessTesting
 
       it "succeeds with valid amount" do
         generate_contribution(
-          'thelen56@msu.edu', #contribution login
-          'aaaaaa',
+          user, #contribution login
           'contribute_testing@hotmail.com', #amazon login
           'testing',
           project, #the project to contribute to
           100) #the amount
 
-          expect(last_email.to).to eq(['thelen56@msu.edu'])
+          expect(last_email.to).to eq([user.email])
           expect(last_email.subject).to match(project.name)
           expect(last_email.subject).to match('Your contribution to')
       end
@@ -89,10 +88,10 @@ class AmazonProcessTesting
 
     describe 'editing contribution' do
       let(:project) { Factory :project, state: :active }
+
       before(:each) do
         generate_contribution(
-          'thelen56@msu.edu', #contribution login
-          'aaaaaa',
+          user, #contribution login
           'contribute_testing@hotmail.com', #amazon login
           'testing',
           project, #the project to contribute to
@@ -145,7 +144,7 @@ class AmazonProcessTesting
         expect(cancelled_contribution).to_not be_nil
         expect(new_contribution).to_not be_nil
 
-        expect(last_email.to).to eq(['thelen56@msu.edu'])
+        expect(last_email.to).to eq([user.email])
         expect(last_email.subject).to match(project.name)
         expect(last_email.subject).to match('Your edited contribution to')
       end
