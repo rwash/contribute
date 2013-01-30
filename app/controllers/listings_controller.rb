@@ -1,9 +1,9 @@
-class ItemsController < InheritedResources::Base
+class ListingsController < InheritedResources::Base
   load_and_authorize_resource
 
   def destroy
-    @item = Item.find(params[:id])
-    @item.destroy
+    @listing = Listing.find(params[:id])
+    @listing.destroy
 
     begin
       redirect_to :back

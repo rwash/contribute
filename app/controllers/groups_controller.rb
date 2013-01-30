@@ -63,7 +63,6 @@ class GroupsController < InheritedResources::Base
   def admin
     @group = Group.find(params[:id])
     @approval = Approval.find(params[:approval_id])
-    #@items = @group.lists.first.items
   end
 
   def remove_project

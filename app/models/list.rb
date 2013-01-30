@@ -13,7 +13,7 @@
 class List < ActiveRecord::Base
   LIST_KINDS = %w[default manual created-at-descending created-at-ascending end-date-descending end-date-ascending funding-goal-descending funding-goal-ascending amount-left-to-goal-in-dollars-descending amount-left-to-goal-in-dollars-ascending amount-left-to-goal-as-percent-descending amount-left-to-goal-as-percent-ascending amount-donated-in-dollars-descending amount-donated-in-dollars-ascending amount-donated-as-percent-of-goal-descending amount-donated-as-percent-of-goal-ascending random-descending random-ascending]
 
-  has_many :items, order: "position"
+  has_many :listings, order: "position"
   belongs_to :listable, polymorphic: true
   validate :validate_kind
 

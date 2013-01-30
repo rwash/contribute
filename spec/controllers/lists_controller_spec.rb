@@ -77,7 +77,7 @@ describe ListsController do
     end
   end
 
-  describe 'POST add_item' do
+  describe 'POST add_listing' do
     # TODO we should have a test that at least touches this action
   end
 

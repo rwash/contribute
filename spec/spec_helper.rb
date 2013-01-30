@@ -104,7 +104,7 @@ Spork.each_run do
   Approval.delete_all
   Comment.delete_all
   Contribution.delete_all
-  Item.delete_all
+  Listing.delete_all
   Update.delete_all
   Video.delete_all
   Project.delete_all

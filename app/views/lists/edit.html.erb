@@ -44,9 +44,9 @@ $(document).ready(function(){
       <div class="tab-pane" id="manual">
         <div class="row">
         <div class="span8">
-        <ul id="items">
-        <% @list.items.each do |item| %>
-          <li id=<%= "item_#{item.id}" %> >
+        <ul id="listings">
+        <% @list.listings.each do |listing| %>
+          <li id=<%= "listing_#{listing.id}" %> >
            <div class="row">
            <div class="span1">
            <span class='handle'>
@@ -54,20 +54,20 @@ $(document).ready(function(){
            </span>
          </div>
          <div class="span11">
-           <%= link_to item.itemable.name, item.itemable, :title => "Item #{item.id}" %>&nbsp;
-           <%= number_to_currency(item.itemable.contributions_total, :precision => 0) %> raised out of <%= number_to_currency(item.itemable.funding_goal) %>&nbsp;
-           <%= item.itemable.contributions.size %> backers&nbsp;
-           <%= item.itemable.short_description %>&nbsp;
-           End Date: <%= item.itemable.end_date %>
+           <%= link_to listing.project.name, listing.project, :title => project.name %>&nbsp;
+           <%= number_to_currency(listing.project.contributions_total, :precision => 0) %> raised out of <%= number_to_currency(listing.project.funding_goal) %>&nbsp;
+           <%= listing.project.contributions.size %> backers&nbsp;
+           <%= listing.project.short_description %>&nbsp;
+           End Date: <%= listing.project.end_date %>
          </div>
-         <%= link_to 'Remove', destroy_item_path(item) %>
+         <%= link_to 'Remove', destroy_listing_path(listing) %>
          </li>
        <% end %>
        </ul>
        </div>
 
       <div class="span4">
-        <%= form_tag add_item_path(@list) do %>
+        <%= form_tag add_listing_path(@list) do %>
           <div class="controls">
           List Title: <%= text_field_tag :title, @list.title %>
           <div class="input-append">
