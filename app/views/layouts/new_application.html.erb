@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<%= render 'application/head' %>
+
+<body>
+  <script>
+    $(".alert").alert('close')
+  </script>
+
+  <%= render :partial => 'application/nav_bar' %>
+  <%= render 'application/flash', flash: flash%>
+
+  <div class="container">
+    <div class="row">
+      <% if content_for? :sidebar %>
+        <div class="span7 offset1">
+          <%= yield %>
+        </div>
+        <div id="sidebar" class="span3 well">
+          <%= yield :sidebar %>
+        </div>
+      <% else %>
+        <div class="span10 offset1">
+          <%= yield %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%= render 'application/footer' %>
+</body>
+
+</html>
