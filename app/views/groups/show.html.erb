@@ -1,18 +1,13 @@
-<div class="group-header">
 <h1><%= @group.name %></h1>
 <blockquote><%= @group.description %></blockquote>
-<div class="row">
-  <div class="span7">
-    <%= image_tag @group.picture.url(:show), :class => "groupImage" if @group.picture? %>
-    &nbsp;
-  </div>
-  <div class="span2 well">
-    <%= link_to "Submit a project", new_add_path(@group), :class => 'btn btn-large btn-primary add-btn' %><br><br>
-    <%= link_to " Admin Page", group_admin_path(@group) if group_admin?(@group) %>
-  </div>
-</div>
-</div>
+<%= image_tag @group.picture.url(:show), class: "groupImage" if @group.picture? %>
+&nbsp;
 
 <% for list in @group.lists %>
   <%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project-small", :limit => 5} %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= link_to "Submit a project", new_add_path(@group), :class => 'btn btn-large btn-primary' %><br><br>
+  <%= link_to "Admin Page", group_admin_path(@group) if group_admin?(@group) %>
 <% end %>
