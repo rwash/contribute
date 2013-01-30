@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130130163541) do
+ActiveRecord::Schema.define(:version => 20130130165127) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -122,17 +122,6 @@ ActiveRecord::Schema.define(:version => 20130130163541) do
   end
 
   add_index "groups_projects", ["group_id", "project_id"], :name => "index_groups_projects_on_group_id_and_project_id", :unique => true
-
-  create_table "items", :force => true do |t|
-    t.integer  "itemable_id",                                :null => false
-    t.string   "itemable_type", :limit => 20,                :null => false
-    t.integer  "list_id"
-    t.integer  "position",                    :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "items", ["itemable_id", "itemable_type"], :name => "index_items_on_itemable_id_and_itemable_type"
 
   create_table "listings", :force => true do |t|
     t.integer  "list_id"
