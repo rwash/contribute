@@ -28,7 +28,9 @@ class Ability
 
     # Comments
     can :comment_on, Project if user.id
-    can :destroy, Comment, user: user
+    can :destroy, Comment do |comment|
+      comment.user == user and comment.body != "comment deleted"
+    end
 
     # Contributions
     # Make sure the user isn't a project owner and doesn't have a contribution already

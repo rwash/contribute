@@ -77,7 +77,7 @@
       <div id="comment_body">
         <li>
         <%= comment.body %><br>
-        <% if comment_owner(comment) %>
+        <% if can? :destroy, comment %>
           <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
         <% end %>
       </li>

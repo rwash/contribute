@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :logged_in?, :comment_owner, :yt_client, :get_projects_in_order, :confirmation_approver?
+  helper_method :logged_in?, :yt_client, :get_projects_in_order, :confirmation_approver?
 
   # Ensure authorization happens on every action in the application.
   # This will raise an exception if authorization is not performed in an action.
@@ -22,11 +22,6 @@ class ApplicationController < ActionController::Base
 
   def logged_in?
     !current_user.nil?
-  end
-
-  # TODO what is this i don't even...
-  def comment_owner(comment)
-    logged_in? && current_user == comment.user
   end
 
   def yt_client

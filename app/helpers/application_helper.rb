@@ -7,10 +7,6 @@ module ApplicationHelper
     !current_user.nil?
   end
 
-  def comment_owner(comment)
-   logged_in? && current_user == comment.user
-  end
-
   def list_owner?(l)
     return false if current_user.nil?
     if l.listable_type == "Group"
