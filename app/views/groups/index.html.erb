@@ -1,49 +1,44 @@
-<div class="groups-container"> 
-  <div class="row">  
-    <div class="span7">
-      <% @groups.each do |group| %>
-        <div class="group-container">
-          <%= link_to "", group, :class => "group-link" %>
-          <span class="group-name"><%= group.name %></span> 
-          <![if !IE]>
-            <span class="num-projects"><%= pluralize(group.projects.count, 'Project') %></span><br>
-          <![endif]>
-          <span class="group-description"><%= group.description %></span>
-          <% group.projects.limit(6).each do |p| %>
-            <div class="group-pic">
-              <% if p.picture? %>
-                <%= image_tag p.picture.url(:thumb), :width => '60' %><br>
-              <% else %>
-                <%= image_tag "BlockSThumb.png", :width => '60' %>
-              <% end %>
-            </div>
+<% @groups.each do |group| %>
+  <%= link_to group do %>
+    <div class="well group-bar">
+      <span class="group-name"><%= group.name %></span>
+      <![if !IE]>
+        <span class="num-projects"><%= pluralize(group.projects.count, 'Project') %></span><br>
+      <![endif]>
+      <span class="group-description"><%= group.description %></span>
+      <% group.projects.limit(6).each do |p| %>
+        <div class="group-pic">
+          <% if p.picture? %>
+            <%= image_tag p.picture.url(:thumb), width: '60' %><br>
+          <% else %>
+            <%= image_tag "BlockSThumb.png", width: '60' %>
           <% end %>
         </div>
       <% end %>
     </div>
+  <% end %>
+<% end %>
 
-    <div class="groups-sidebar">
-      <%= link_to "Create a New Group", new_group_path, :class => 'btn btn-large btn-primary new-group' %>
+<% content_for :sidebar do %>
+  <%= link_to "Create a New Group", new_group_path, class: 'btn btn-large btn-primary', id: 'new-group' %>
 
-      <% if @user_groups.any? %>
-        <h3>You have projects in:</h3>
-        <% for group in @user_groups %>
-          <%= link_to group.name, group, :class => 'sidebar-group' %><br>
-        <% end %>
-        <br>
-      <% end %>
+  <% if @user_groups.any? %>
+    <h4>You have projects in:</h4>
+    <% for group in @user_groups %>
+      <%= link_to group.name, group, class: 'sidebar-group' %><br>
+    <% end %>
+    <br>
+  <% end %>
 
-      <% if @admin_groups.any? %>
-        <h3>Groups you own:</h3>
-        <% for group in @admin_groups %>
-          <%= link_to group.name, group, :class => 'sidebar-group' %><br>
-          <span class="sidebar-needs-approval">
-            <%= link_to "- #{pluralize(group.approvals.where(approved: nil).count, "project")} needs your approval", group_admin_path(group) %>
-          </span><br>
-        <% end %>
-      <% end %>
+  <% if @admin_groups.any? %>
+    <h4>Groups you own:</h4>
+    <% for group in @admin_groups %>
+      <%= link_to group.name, group, class: 'sidebar-group' %><br>
+      <span class="sidebar-needs-approval">
+        <%= link_to "- #{pluralize(group.approvals.where(approved: nil).count, "project")} needs your approval", group_admin_path(group) %>
+      </span><br>
+    <% end %>
+  <% end %>
+<% end %>
 
-    </div>
-  </div>
-</div>
 <p>&nbsp;</p>

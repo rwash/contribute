@@ -7,6 +7,8 @@ class GroupsController < InheritedResources::Base
 
     @user_groups = current_user.nil? ? [] : current_user.projects.map { |p| p.groups }.flatten.uniq
     @admin_groups = current_user.nil? ? [] : current_user.owned_groups
+
+    render layout: 'new_application'
   end
 
   def create
