@@ -5,147 +5,137 @@ $('.tabs').button()
 <script src="showHide.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-   $('.show_hide').showHide({
+  $('.show_hide').showHide({
   });
 });
 </script>
 
-<div id="projectWrapper">
-<div class="row">
-
 <!-- --------------Bootstrap-tabs------------------- -->
 
-<div class="span7 well">
+<div class="well">
   <div id="projectHead" align="center">
-          <h1><%= @project.name %></h1>
-          <h2><%= @project.user.location %></h2>
-          <h3>By: <%= link_to @project.user.name, @project.user %> </h3>
-          <div class="add_show">
-        <div class="star_up"></div>
-        <div class="star_on"></div>
-      </div>
+    <h1><%= @project.name %></h1>
+    <h2><%= @project.user.location %></h2>
+    <h3>By: <%= link_to @project.user.name, @project.user %> </h3>
+    <div class="add_show">
+      <div class="star_up"></div>
+      <div class="star_on"></div>
+    </div>
   </div>
 
   <div id="tabs">
-      <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs">
       <li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a></li>
       <li><a href="#projectContributors" data-toggle="tab">Contributions</a></li>
       <li><a href="#projectComments" data-toggle="tab">Comments</a></li>
       <li><a href="#projectUpdates" data-toggle="tab">Updates</a></li>
-      </ul>
+    </ul>
   </div>
 
-
-
   <div class="tab-content">
-      <div class="tab-pane active" id="projectContent">
+    <div class="tab-pane active" id="projectContent">
 
-          <% if @project.video %>
-             <%= render @project.video %>
-          <% elsif @project.picture? %>
-             <%= image_tag @project.picture.url(:show), :class => "projectImage" %>
-          <% else %>
-             <%= image_tag "BlockSShow.png", :class => "projectImage" %>
-          <% end %>
+      <% if @project.video %>
+        <%= render @project.video %>
+      <% elsif @project.picture? %>
+        <%= image_tag @project.picture.url(:show), :class => "projectImage" %>
+      <% else %>
+        <%= image_tag "BlockSShow.png", :class => "projectImage" %>
+      <% end %>
 
-            <br/><br/>
-            <%= raw(@project.long_description) %><br/>
-       </div>
+      <br/><br/>
+      <%= raw(@project.long_description) %><br/>
+    </div>
 
     <div class="tab-pane" id="projectContributors">
       <h3> Contributors </h3>
       <ul class="projectContributors">
-      <% if @project.contributions.any? %>
-              <% @project.contributions.each do |contribution|%>
-                <li>
-    <%= link_to contribution.user do %>
-      <% if contribution.user.picture? %>
-                    <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage", :width=>"50" %>
-      <% else %>
-                    <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"50" %>
-            <% end %>
-
-    <%=contribution.user.name%>
-                <% if can? :destroy, @project %>
-                        - <%= number_to_currency(contribution.amount, :precision => 0) %>
-                <% end %>
-                <% end %>
-    </li>
-    <br/>
+        <% if @project.contributions.any? %>
+          <% @project.contributions.each do |contribution|%>
+            <li>
+            <%= link_to contribution.user do %>
+              <% if contribution.user.picture? %>
+                <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage", :width=>"50" %>
+              <% else %>
+                <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"50" %>
               <% end %>
-      <% else %>
-              <p>Be the first!</p>
-      <% end %>
-      </ul>
-  </div>
 
-  <div class="tab-pane" id="projectComments">
-    <p>
+              <%=contribution.user.name%>
+              <% if can? :destroy, @project %>
+                - <%= number_to_currency(contribution.amount, :precision => 0) %>
+              <% end %>
+            <% end %>
+            </li>
+            <br/>
+          <% end %>
+        <% else %>
+          <p>Be the first!</p>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="tab-pane" id="projectComments">
+      <p>
       <h3> Comments </h3><br>
       <ul class="projectComments">
         <h4><%= "There are no comments for this project." if @rootComments.empty? %></h4>
 
-      <% @rootComments.each do |comment|%>
-        <%= render :partial => 'comments/comment', :object => comment, :locals =>{:comment_depth => 0} %>
-      <% end %>
-    </ul>
-    </p>
-    <br>
-    <p class="comment">
+        <% @rootComments.each do |comment|%>
+          <%= render :partial => 'comments/comment', :object => comment, :locals =>{:comment_depth => 0} %>
+        <% end %>
+      </ul>
+      </p>
+      <br>
+      <p class="comment">
       <%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? and @project.can_comment? %>
       <% if !logged_in? %>
-      <div class="alert">
-        <%= link_to "You must log in to comment.", new_user_session_path %>
-      </div>
+        <div class="alert">
+          <%= link_to "You must log in to comment.", new_user_session_path %>
+        </div>
       <% end %>
-    </p>
-  </div>
+      </p>
+    </div>
 
-  <div class="tab-pane" id="projectUpdates">
+    <div class="tab-pane" id="projectUpdates">
       <ul class="projectUpdates">
         <h4><%= "There are no updates for this project." if @updates.empty? %></h4>
 
         <%= render :partial => 'updates/update', :object => @update, :collection => @updates %>
 
-    </ul>
-    <p>&nbsp;</p>
-    <p class="update">
+      </ul>
+      <p>&nbsp;</p>
+      <p class="update">
       <%= render :partial => "updates/update_form", :object => @update if @project.can_update? and logged_in? and @project.user == current_user %>
-    </p>
-  </div>
-
-</div>
-</div>
-
-
-<div class="span3 well pull-right">
-  <div class="projectBtn" align="center">
-    <% if logged_in? and @project.user == current_user %>
-      <p>
-      <%= @project.colored_state_description %>
       </p>
-      <br>
-    <% end %>
-    <%= render 'action_links' %>
+    </div>
   </div>
+</div>
+
+<% content_for :sidebar do %>
+  <% if logged_in? and @project.user == current_user %>
+    <p>
+    <%= @project.colored_state_description %>
+    </p>
+    <br>
+  <% end %>
+  <%= render 'action_links' %>
   <ul>
     <li>End Date: <%= @project.end_date %></li><br>
     <li>Category: <%= @project.category.short_description %></li><br>
     <li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li><br>
     <li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
   </ul>
-</div>
-</div>
+<% end %>
 
 <script>
-  $(".add_show").click (function () {
-    $(".star_up").toggle(0);
-    $(".star_on").toggle(0);
-  });
+$(".add_show").click (function () {
+  $(".star_up").toggle(0);
+  $(".star_on").toggle(0);
+});
 </script>
 
 <style>
-  .star_on {
-    display: none;
-  }
+.star_on {
+  display: none;
+}
 </style>

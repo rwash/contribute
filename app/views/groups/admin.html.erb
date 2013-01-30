@@ -10,7 +10,7 @@
 <% end %>
 </div>
 
-<div class="row group-tiles">
+<div class="row">
 <ul class="thumbnails-small">
   <% @group.approvals.where(:approved => nil).each do |approval| %>
   <% @project = approval.project %>
@@ -76,7 +76,7 @@
   <%= link_to "see all >", list, :class => 'more' %>
 </div>
 
-<div class="row group-tiles">
+<div class="row">
   <ul class="thumbnails-small">
     <% for project in get_projects_in_order(list,5) %>
       <li class="project-span">
