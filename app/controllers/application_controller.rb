@@ -53,8 +53,8 @@ class ApplicationController < ActionController::Base
     case list.kind
     when "manual"
       @projects = []
-      for item in list.items.order("position DESC").limit(limit)
-        @projects << item.itemable
+      for listing in list.listings.order("position DESC").limit(limit)
+        @projects << listing.project
       end
       @projects
     when "created-at-descending"

@@ -7,10 +7,11 @@ class ListsController < InheritedResources::Base
     @list.title = params[:title].to_s
     @list.save!
 
-    @items = @list.items.order("position DESC")
-    @items.each do |item|
-      item.position = params['item'].index(item.id.to_s) + 1
-      item.save
+    @listing = @list.listings.order("position DESC")
+    @listings.each do |listing|
+      # TODO wat. Look into using the listable gem helper functions
+      listing.position = params['listing'].index(listing.id.to_s) + 1
+      listing.save
     end
     render nothing: true
   end
@@ -54,10 +55,10 @@ class ListsController < InheritedResources::Base
     end
   end
 
-  def add_item
+  def add_listing
     @list = List.find(params[:id])
     @project = Project.find_by_name(params[:project])
-    @list.items << Item.create(itemable_id: @project.id, itemable_type: @project.class.name)
+    @list.listings << Listing.create(project_id: @project.id)
 
     redirect_to :back
   end

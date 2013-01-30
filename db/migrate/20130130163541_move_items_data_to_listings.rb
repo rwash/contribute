@@ -1,3 +1,7 @@
+# Required to run the migration if the Item class no longer exists in the application
+class Item < ActiveRecord::Base
+end
+
 class MoveItemsDataToListings < ActiveRecord::Migration
   def up
     Item.all.each do |item|

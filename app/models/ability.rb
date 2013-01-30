@@ -66,7 +66,7 @@ class Ability
 
     #Lists
     can :read, List
-    can [:destroy, :edit, :update, :sort, :add_item], List do |l|
+    can [:destroy, :edit, :update, :sort, :add_listing], List do |l|
       if l.listable_type == "Group"
         l.listable.admin_user == user
       elsif l.listable_type == "User"
