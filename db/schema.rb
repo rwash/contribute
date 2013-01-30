@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121173452) do
+ActiveRecord::Schema.define(:version => 20130130162727) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(:version => 20130121173452) do
     t.integer  "commentable_id",   :default => 0
     t.string   "commentable_type", :default => ""
     t.string   "title",            :default => ""
-    t.text     "body"
+    t.text     "body",             :default => ""
     t.string   "subject",          :default => ""
     t.integer  "user_id",          :default => 0,  :null => false
     t.integer  "parent_id"
@@ -133,6 +133,14 @@ ActiveRecord::Schema.define(:version => 20130121173452) do
   end
 
   add_index "items", ["itemable_id", "itemable_type"], :name => "index_items_on_itemable_id_and_itemable_type"
+
+  create_table "listings", :force => true do |t|
+    t.integer  "list_id"
+    t.integer  "project_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "lists", :force => true do |t|
     t.string   "kind",                         :default => "default"
