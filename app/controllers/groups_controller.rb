@@ -11,6 +11,10 @@ class GroupsController < InheritedResources::Base
     render layout: 'new_application'
   end
 
+  def show
+    render layout: 'new_application'
+  end
+
   def create
     @group = Group.new(params[:group])
     @group.admin_user = current_user
