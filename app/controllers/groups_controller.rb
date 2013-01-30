@@ -2,17 +2,13 @@ class GroupsController < InheritedResources::Base
   load_and_authorize_resource
   before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save, :new_add]
 
+  layout 'new_application'
+
   def index
     @groups = Group.all
 
     @user_groups = current_user.nil? ? [] : current_user.projects.map { |p| p.groups }.flatten.uniq
     @admin_groups = current_user.nil? ? [] : current_user.owned_groups
-
-    render layout: 'new_application'
-  end
-
-  def show
-    render layout: 'new_application'
   end
 
   def create
