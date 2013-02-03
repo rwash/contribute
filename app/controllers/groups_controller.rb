@@ -2,8 +2,6 @@ class GroupsController < InheritedResources::Base
   load_and_authorize_resource
   before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save, :new_add]
 
-  layout 'new_application'
-
   def index
     @groups = Group.all
 
