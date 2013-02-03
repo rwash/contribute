@@ -12,6 +12,8 @@ class ContributionsController < ApplicationController
   load_and_authorize_resource except: [:new, :save, :show, :edit, :update_save]
   skip_authorization_check only: [:save, :show, :edit, :update_save]
 
+  layout 'new_application'
+
   def new
     @project = Project.find_by_name params[:project].gsub(/-/, ' ')
     authorize! :contribute, @project
