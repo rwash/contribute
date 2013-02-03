@@ -13,6 +13,7 @@ class ApprovalsController < InheritedResources::Base
       group.projects << project unless group.projects.include?(project)
       project.update_project_video
     else
+      # TODO move approval state to an enumeration
       flash[:error] = "This project has already been #{(approval.approved)? 'approved' : 'denied'}."
     end
 

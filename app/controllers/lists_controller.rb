@@ -2,6 +2,8 @@ class ListsController < InheritedResources::Base
   load_and_authorize_resource
   before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save]
 
+  layout 'new_application'
+
   def sort
     @list = List.find(params[:id])
     @list.title = params[:title].to_s
