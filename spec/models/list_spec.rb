@@ -7,20 +7,20 @@ describe List do
 
   it { should ensure_inclusion_of(:kind).in_array %w[default
                                              manual
-                                             created-at-descending
-                                             created-at-ascending
-                                             end-date-descending
-                                             end-date-ascending
-                                             funding-goal-descending
-                                             funding-goal-ascending
-                                             amount-left-to-goal-in-dollars-descending
-                                             amount-left-to-goal-in-dollars-ascending
-                                             amount-left-to-goal-as-percent-descending
-                                             amount-left-to-goal-as-percent-ascending
-                                             amount-donated-in-dollars-descending
-                                             amount-donated-in-dollars-ascending
-                                             amount-donated-as-percent-of-goal-descending
-                                             amount-donated-as-percent-of-goal-ascending
-                                             random-descending
-                                             random-ascending] }
+                                             created_at_descending
+                                             created_at_ascending
+                                             end_date_descending
+                                             end_date_ascending
+                                             funding_goal_descending
+                                             funding_goal_ascending
+                                             amount_left_to_goal_in_dollars_descending
+                                             amount_left_to_goal_in_dollars_ascending
+                                             amount_left_to_goal_as_percent_descending
+                                             amount_left_to_goal_as_percent_ascending
+                                             amount_donated_in_dollars_descending
+                                             amount_donated_in_dollars_ascending
+                                             amount_donated_as_percent_of_goal_descending
+                                             amount_donated_as_percent_of_goal_ascending
+                                             random_descending
+                                             random_ascending] }
 end

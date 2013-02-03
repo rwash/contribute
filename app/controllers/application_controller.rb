@@ -51,43 +51,43 @@ class ApplicationController < ActionController::Base
     @projects.compact! # remove nil elements
 
     case list.kind
-    when "manual"
+    when :manual
       @projects = []
       for listing in list.listings.order("position DESC").limit(limit)
         @projects << listing.project
       end
       @projects
-    when "created-at-descending"
+    when :created_at_descending
       @projects.sort {|a,b| b.created_at <=> a.created_at }.slice!(0,limit)
-    when "created-at-ascending"
+    when :created_at_ascending
       @projects.sort {|a,b| a.created_at <=> b.created_at }.slice!(0,limit)
-    when "end-date-descending"
+    when :end_date_descending
       @projects.sort {|a,b| b.end_date <=> a.end_date }.slice!(0,limit)
-    when "end-date-ascending"
+    when :end_date_ascending
       @projects.sort {|a,b| a.end_date <=> b.end_date }.slice!(0,limit)
-    when "funding-goal-descending"
+    when :funding_goal_descending
       @projects.sort {|a,b| b.funding_goal <=> a.funding_goal }.slice!(0,limit)
-    when "funding-goal-ascending"
+    when :funding_goal_ascending
       @projects.sort {|a,b| a.funding_goal <=> b.funding_goal }.slice!(0,limit)
-    when "amount-left-to-goal-in-dollars-descending"
+    when :amount_left_to_goal_in_dollars_descending
       @projects.sort {|a,b| b.left_to_goal <=> a.left_to_goal }.slice!(0,limit)
-    when "amount-left-to-goal-in-dollars-ascending"
+    when :amount_left_to_goal_in_dollars_ascending
       @projects.sort {|a,b| a.left_to_goal <=> b.left_to_goal }.slice!(0,limit)
-    when "amount-left-to-goal-as-percent-descending"
+    when :amount_left_to_goal_as_percent_descending
       @projects.sort {|a,b| a.contributions_percentage <=> b.contributions_percentage }.slice!(0,limit)
-    when "amount-left-to-goal-as-percent-ascending"
+    when :amount_left_to_goal_as_percent_ascending
       @projects.sort {|a,b| b.contributions_percentage <=> a.contributions_percentage }.slice!(0,limit)
-    when "amount-donated-in-dollars-descending"
+    when :amount_donated_in_dollars_descending
       @projects.sort {|a,b| b.contributions_total <=> a.contributions_total }.slice!(0,limit)
-    when "amount-donated-in-dollars-ascending"
+    when :amount_donated_in_dollars_ascending
       @projects.sort {|a,b| a.contributions_total <=> b.contributions_total }.slice!(0,limit)
-    when "amount-donated-as-percent-of-goal-descending"
+    when :amount_donated_as_percent_of_goal_descending
       @projects.sort {|a,b| b.contributions_percentage <=> a.contributions_percentage }.slice!(0,limit)
-    when "amount-donated-as-percent-of-goal-ascending"
+    when :amount_donated_as_percent_of_goal_ascending
       @projects.sort {|a,b| a.contributions_percentage <=> b.contributions_percentage }.slice!(0,limit)
-    when "random-descending"
+    when :random_descending
       @projects.shuffle.slice!(0,limit)
-    when "random-ascending"
+    when :random_ascending
       @projects.shuffle.slice!(0,limit)
     else #default
       @projects.sort {|a,b| b.created_at <=> a.created_at }.slice!(0,limit)
