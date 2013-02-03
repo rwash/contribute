@@ -11,8 +11,6 @@ class ProjectsController < InheritedResources::Base
   #This is authorization through CanCan. The before_filter handles load_resource
   authorize_resource
 
-  layout 'new_application'
-
   def set_current_project_by_name
     @project = Project.find_by_name(params[:id])
   end

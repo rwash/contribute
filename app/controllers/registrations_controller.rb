@@ -1,6 +1,4 @@
 class RegistrationsController < Devise::RegistrationsController
-  layout 'new_application'
-
   def show
     @user = User.find(params[:id])
   end
