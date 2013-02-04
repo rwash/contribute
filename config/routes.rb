@@ -2,17 +2,17 @@ Contribute::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
 
   #Listings
-  post "lists/:id/listings/sort", :to => "lists#sort"
+  post "lists/:id/listings/sort", :to => "project_lists#sort"
   match 'listings/:id/destroy', :to => "listings#destroy", :as => :destroy_listing
 
   #Lists
 
   match 'groups/:id/add-list', :to => "groups#add_list", :as => :add_list_to_group
-  match 'lists/:id/edit', :to => "lists#edit", :as => :edit_list
-  match 'lists/:id/destroy', :to => "lists#destroy", :as => :destroy_list
-  match 'lists/:id/add-listing', :to => "lists#add_listing", :as => :add_listing
-  match 'lists/:id', :to => "lists#show", :as => :list
-  match 'lists/:id/update', :to => "lists#update", :as => :update_list
+  match 'lists/:id/edit', :to => "project_lists#edit", :as => :edit_list
+  match 'lists/:id/destroy', :to => "project_lists#destroy", :as => :destroy_list
+  match 'lists/:id/add-listing', :to => "project_lists#add_listing", :as => :add_listing
+  match 'lists/:id', :to => "project_lists#show", :as => :list
+  match 'lists/:id/update', :to => "project_lists#update", :as => :update_list
 
   #Comments
   resources :comments do

@@ -1,4 +1,4 @@
-class ListsController < InheritedResources::Base
+class ProjectListsController < InheritedResources::Base
   load_and_authorize_resource
   before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save]
 
@@ -64,7 +64,7 @@ class ListsController < InheritedResources::Base
   end
 
   def show
-    @list = List.find(params[:id])
+    @list = ProjectList.find(params[:id])
     @group = @list.listable if @list.listable_type == 'Group'
     @projects = @list.sorted_projects
     if @projects.class.name == 'Array'
@@ -72,6 +72,5 @@ class ListsController < InheritedResources::Base
     else
       @projects = @projects.page(params[:page]).per(12)
     end
-
   end
 end

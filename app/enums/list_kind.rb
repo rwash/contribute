@@ -7,7 +7,7 @@ class ListKind < ClassyEnum::Base
   # limit - optional limit to number of projects you want
   def sorted_projects(limit = Project.count)
     projects = []
-    if owner.listable == User.find(1)
+    if owner.listable == User.find_by_id(1)
       projects << Project.find_by_state(:active) if owner.show_active
       projects << Project.find_by_state(:funded) if owner.show_funded
       projects << Project.find_by_state(:nonfunded) if owner.show_nonfunded
