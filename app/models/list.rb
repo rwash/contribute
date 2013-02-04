@@ -18,4 +18,6 @@ class List < ActiveRecord::Base
 
   validates :listable_id, presence: true
   validates :listable_type, presence: true
+
+  delegate :sorted_projects, to: :kind
 end
