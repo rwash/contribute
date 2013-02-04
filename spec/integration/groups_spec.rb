@@ -67,7 +67,7 @@ describe 'Groups' do
 
         visit groups_index_path
         # Group name should appear exactly once on the page
-        expect(page.all('div.groups-sidebar a', text: group.name).count).to eq 1
+        expect(page.all('#sidebar a', text: group.name).count).to eq 1
       end
     end
   end

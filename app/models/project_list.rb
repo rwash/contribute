@@ -10,9 +10,10 @@
 # * *show_funded* (+boolean+)
 # * *show_nonfunded* (+boolean+)
 # * *permanent* (+boolean+)
-class List < ActiveRecord::Base
-  belongs_to :listable, polymorphic: true
+class ProjectList < List
+  classy_enum_attr :kind, enum: 'ListKind'
 
-  validates :listable_id, presence: true
-  validates :listable_type, presence: true
+  has_many :project_listings, order: "position"
+
+  delegate :sorted_projects, to: :kind
 end

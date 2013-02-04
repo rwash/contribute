@@ -5,8 +5,11 @@
 # * *position* (+integer+)
 # * *created_at* (+datetime+)
 # * *updated_at* (+datetime+)
-class Listing < ActiveRecord::Base
-  acts_as_list scope: :list
+class ProjectListing < Listing
+  belongs_to :list, class_name: 'ProjectList'
 
+  belongs_to :item, class_name: 'Project'
   paginates_per 8
+
+  alias project item
 end
