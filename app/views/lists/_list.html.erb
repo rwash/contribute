@@ -19,7 +19,7 @@
 
 <div class="row">
   <ul class="thumbnails-small">
-    <% for project in get_projects_in_order(list,limit) %>
+    <% for project in list.sorted_projects(limit) %>
       <li class="project-span">
       	<%= render :partial => partial, :locals => { :project => project } %><br>
       </li>

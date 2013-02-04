@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :logged_in?, :yt_client, :get_projects_in_order, :confirmation_approver?
+  helper_method :logged_in?, :yt_client, :confirmation_approver?
 
   # Ensure authorization happens on every action in the application.
   # This will raise an exception if authorization is not performed in an action.
@@ -26,12 +26,5 @@ class ApplicationController < ActionController::Base
 
   def yt_client
     @yt_client ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)
-  end
-
-  # list - list to get projects for
-  # limit - optional limit to number of projects you want
-  # TODO move this somewhere else
-  def get_projects_in_order(list,limit = Project.count)
-    list.sorted_projects(limit)
   end
 end
