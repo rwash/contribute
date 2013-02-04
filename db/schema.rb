@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204172159) do
+ActiveRecord::Schema.define(:version => 20130204182907) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -125,16 +125,17 @@ ActiveRecord::Schema.define(:version => 20130204172159) do
 
   create_table "listings", :force => true do |t|
     t.integer  "list_id"
-    t.integer  "project_id"
+    t.integer  "item_id"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type",       :default => "ProjectListing"
   end
 
   create_table "lists", :force => true do |t|
     t.string   "kind",                         :default => "default"
-    t.integer  "listable_id",                                         :null => false
-    t.string   "listable_type",  :limit => 20,                        :null => false
+    t.integer  "listable_id",                                             :null => false
+    t.string   "listable_type",  :limit => 20,                            :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title",                        :default => ""
@@ -142,6 +143,7 @@ ActiveRecord::Schema.define(:version => 20130204172159) do
     t.boolean  "show_funded",                  :default => false
     t.boolean  "show_nonfunded",               :default => false
     t.boolean  "permanent",                    :default => false
+    t.string   "type",                         :default => "ProjectList"
   end
 
   add_index "lists", ["listable_id", "listable_type"], :name => "index_lists_on_listable_id_and_listable_type"
