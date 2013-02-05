@@ -32,6 +32,67 @@ describe Contribution do
   it { should validate_presence_of :project_id }
   it { should validate_presence_of :user_id }
 
+  # TODO overlap of tests between this and project model
+  describe 'Abilities' do
+    subject { ability }
+    let(:ability) { Ability.new(user) }
+    let(:contribution) { Factory.build :contribution }
+    let(:project) { contribution.project }
+
+    context 'when not signed in' do
+      let(:user) { nil }
+
+      it { should_not be_able_to :contribute, :project }
+    end
+
+    context 'when signed in' do
+      let(:user) { Factory :user }
+
+      it { should be_able_to :create, contribution }
+
+      context 'one week after the end date' do
+        before { Timecop.freeze project.end_date + 1.week }
+        it { should_not be_able_to :create, contribution }
+      end
+
+      context 'one day after the end date' do
+        before { Timecop.freeze project.end_date + 1 }
+        it { should_not be_able_to :create, contribution }
+      end
+
+      context 'on end date' do
+        before { Timecop.freeze project.end_date }
+        it { should be_able_to :create, contribution }
+      end
+
+      context 'before end date' do
+        before { Timecop.freeze project.end_date - 1 }
+        it { should be_able_to :create, contribution }
+      end
+    end
+
+    context 'when user owns project' do
+      let(:user) { contribution.project.user }
+
+      it { should_not be_able_to :create, contribution }
+    end
+
+    context 'when user owns contribution' do
+      let(:user) { Factory :user }
+      let(:contribution) { Factory :contribution, user: user }
+
+      it { should be_able_to :update, contribution }
+      it { should be_able_to :edit, contribution }
+    end
+
+    context 'when signed in as admin' do
+      let(:user) { Factory :user, admin: true }
+
+      it { should be_able_to :create, contribution }
+      it { should_not be_able_to :update, contribution }
+    end
+  end
+
   #Begin Methods
   describe "cancel" do
     before do

@@ -10,11 +10,11 @@ class Ability
     user ||= User.new
 
     # Projects
-    can [:create, :save, :upload], Project
-    can [:activate, :destroy], Project, user: user
-    can :read, Project do |p|
-      p.public_can_view? or p.user == user or p.confirmation_approver?
-    end
+    can :read, Project, public_can_view?: true
+    can :create, Project if user.id
+    can [:read, :save, :activate, :destroy], Project, user: user
+    can :read, Project, confirmation_approver?: true
+
     # Note: this 'update' refers to the Update and Edit actions of ProjectsController,
     # not the ability to create Update objects associated with a project
     can :update, Project, user: user, can_edit?: true
@@ -27,6 +27,7 @@ class Ability
     end
 
     # Comments
+    # TODO: change this to can :create, Comment
     can :comment_on, Project if user.id
     can :destroy, Comment do |comment|
       comment.user == user and comment.body != "comment deleted"
@@ -54,7 +55,8 @@ class Ability
     end
 
     # Groups
-    can [:read, :create, :new_add, :submit_add], Group
+    can :read, Group
+    can [:create, :new_add, :submit_add], Group if user.id
     can :remove_project, Group # had to move check for admin or project owner to controller
 
     can [:edit, :update, :admin, :add_list, :destroy], Group, admin_user: user
