@@ -13,7 +13,9 @@
 class ProjectList < List
   classy_enum_attr :kind, enum: 'ListKind'
 
-  has_many :project_listings, order: "position"
+  has_many :project_listings, order: "position", foreign_key: :list_id
 
   delegate :sorted_projects, to: :kind
+
+  alias listings project_listings
 end
