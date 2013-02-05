@@ -4,501 +4,213 @@ require 'controller_helper'
 describe ProjectsController do
   include Devise::TestHelpers
 
-  describe 'POST update' do
-    let(:project) { Factory :project }
-    before { sign_in project.user }
-    before { post :update, id: project.name, project: Factory.attributes_for(:project) }
+  # For stubbing abilities
+  # See https://github.com/ryanb/cancan/wiki/Testing-Abilities
+  before do
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    controller.stub!(:current_ability).and_return(@ability)
+  end
 
-    it { should set_the_flash.to(/Successfully updated project/) }
+  let(:user) { Factory :user }
+  let!(:project) { Factory :project }
+
+  context "GET index" do
+    before { @ability.stub!(:can?).with(:index, Project).and_return(true) }
+    before { get :index }
+
+    it { should respond_with :success }
+    it { should render_template :index }
+    it { should assign_to :projects }
+  end
+
+  describe 'POST update' do
+    context 'with permission' do
+      let(:project) { Factory :project }
+      before { sign_in user }
+      before { @ability.stub!(:can?).with(:update, project).and_return(true) }
+      before { post :update, id: project.name, project: Factory.attributes_for(:project) }
+
+      it { should set_the_flash.to(/Successfully updated project/) }
+    end
   end
 
   describe 'POST activate' do
-    let(:project) { Factory :project }
-    before { post :activate, id: project.to_param }
+    context 'with permission' do
+      let(:project) { Factory :project }
+      before { @ability.stub!(:can?).with(:activate, Project).and_return(true) }
+      before { post :activate, id: project.to_param }
 
-    it 'sets project state to active' do
-      expect(project.reload.state).to eq :active
+      it 'sets project state to active' do
+        expect(project.reload.state).to eq :active
+      end
     end
   end
 
-  # TODO stub the CanCan ability class so we aren't testing the abilities.
-  # We test abilities in the model layer. Here, we should only be testing
-  # what the controller does when the user is authorized or (more importantly,
-  # not authorized for an action)
-  describe 'permissions' do
-    context 'user is not signed in' do
+  describe 'GET new' do
+    context 'when not signed in' do
       it "can't create a project" do
         get :new
-        #new_user_session_path is the login page
         expect(response).to redirect_to(new_user_session_path)
-      end
-
-      # Start State Tests (These tests are added after those above. Some of the ones below may cover the same thing as one above.)
-      context 'project is unconfirmed,' do
-        let!(:project) { Factory :project, state: :unconfirmed }
-
-        it 'can NOT view project' do
-          get :show, id: project.name
-          expect(response).to redirect_to(root_path)
-        end
-
-        it "can't destroy a project" do
-          expect {get :destroy, id: project.name}.to_not change{ Project.count }
-          expect(response).to redirect_to(new_user_session_path)
-        end
-
-        it "can't edit a project" do
-          get :edit, id: project.name
-          expect(response).to redirect_to(new_user_session_path)
-        end
-      end
-
-      context 'project is inactive,' do
-        let!(:project) { Factory :project, state: :inactive }
-
-        it 'can NOT view project' do
-          get :show, id: project.name
-          expect(response).to redirect_to(root_path)
-        end
-
-        it "can't destroy a project" do
-          expect{ get :destroy, id: project.name }.to_not change { Project.count }
-          expect(response).to redirect_to(new_user_session_path)
-        end
-
-        it "can't edit a project" do
-          get :edit, id: project.name
-          expect(response).to redirect_to(new_user_session_path)
-        end
-      end
-
-      context 'project is active,' do
-        let!(:project) { Factory :project, state: :active }
-
-        it 'CAN view project' do
-          get :show, id: project.name
-          expect(response).to be_success
-        end
-
-        it "can't destroy a project" do
-          expect{ get :destroy, id: project.name }.to_not change { Project.count }
-          expect(response).to redirect_to(new_user_session_path)
-        end
-
-        it "can't edit a project" do
-          get :edit, id: project.name
-          expect(response).to redirect_to(new_user_session_path)
-        end
-      end
-
-      context 'project is funded,' do
-        let!(:project) { Factory :project, state: :funded }
-
-        it 'CAN view project' do
-          get :show, id: project.name
-          expect(response).to be_success
-        end
-
-        it "can't destroy a project" do
-          expect{ get :destroy, id: project.name }.to_not change { Project.count }
-          expect(response).to redirect_to(new_user_session_path)
-        end
-
-        it "can't edit a project" do
-          get :edit, id: project.name
-          expect(response).to redirect_to(new_user_session_path)
-        end
-      end
-
-      context 'project is nonfunded,' do
-        let!(:project) { Factory :project, state: :nonfunded }
-
-        it 'CAN view project' do
-          get :show, id: project.name
-          expect(response).to be_success
-        end
-
-        it "can't destroy a project" do
-          expect{ get :destroy, id: project.name }.to_not change { Project.count }
-          expect(response).to redirect_to(new_user_session_path)
-        end
-
-        it "can't edit a project" do
-          get :edit, id: project.name
-          expect(response).to redirect_to(new_user_session_path)
-        end
-      end
-
-      context 'project is cancelled,' do
-        let!(:project) { Factory :project, state: :cancelled }
-
-        it 'can NOT view project' do
-          get :show, id: project.name
-          expect(response).to redirect_to(root_path)
-        end
-
-        it "can't destroy a project" do
-          expect{ get :destroy, id: project.name }.to_not change { Project.count }
-          expect(response).to redirect_to(new_user_session_path)
-        end
-
-        it "can't edit a project" do
-          get :edit, id: project.name
-          expect(response).to redirect_to(new_user_session_path)
-        end
       end
     end
 
-    context 'user is signed in' do
-      let(:user) { Factory :user }
-      before(:each) { sign_in user }
+    context 'when signed in' do
+      before { sign_in user }
 
-      it 'can create a project' do
-        get :new
-        expect(response).to be_success
-      end
-
-      #Again the tests below were added after those above and may test some of the same thing.
-      context "user is project owner" do
-
-        context 'project is unconfirmed,' do
-          let!(:project) { Factory :project, user: user, state: :unconfirmed }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "CAN destroy a project" do
-            expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
-            expect(flash[:notice]).to include "successfully deleted"
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "CAN edit the project" do
-            get :edit, id: project.name
-            expect(response).to be_success
-          end
-        end
-
-        context 'project is inactive,' do
-          let!(:project) { Factory :project, user: user, state: :inactive }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "CAN destroy a project" do
-            expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
-            expect(flash[:notice]).to include "successfully deleted"
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "CAN edit the project" do
-            get :edit, id: project.name
-            expect(response).to be_success
-          end
-        end
-
-        context 'project is active,' do
-          let(:project) { Factory :project, user: user, state: :active }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "CAN cancel a project" do
-            get :destroy, id: project.name
-            expect(flash[:notice]).to include "Project successfully cancelled."
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit the project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-        end
-
-        context 'project is funded,' do
-          let!(:project) { Factory :project, user: user, state: :funded }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "can NOT cancel or delete a project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(flash[:alert]).to include "You can not cancel or delete this project."
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit the project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-        end
-
-        context 'project is nonfunded,' do
-          let!(:project) { Factory :project, user: user, state: :nonfunded }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "can NOT cancel or delete a project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(flash[:alert]).to include "You can not cancel or delete this project."
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit the project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-        end
-
-        context 'project is cancelled,' do
-          let!(:project) { Factory :project, user: user, state: :cancelled }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "can NOT cancel or delete a project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(flash[:alert]).to include "You can not cancel or delete this project."
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit the project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-
-        end
-      end
-
-      context "user is not project owner" do
-        context 'project is unconfirmed,' do
-          let!(:project) { Factory :project, state: :unconfirmed }
-
-          it 'can NOT view project' do
-            get :show, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't destroy a project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(Project.find(project.id)).to_not be_nil
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit a project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-        end
-
-        context 'project is inactive,' do
-          let!(:project) { Factory :project, state: :inactive }
-
-          it 'can NOT view project' do
-            get :show, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't destroy a project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(Project.find(project.id)).to_not be_nil
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit a project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-
-        end
-
-        context 'project is active,' do
-          let!(:project) { Factory :project, state: :active }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "can't destroy a project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(Project.find(project.id)).to_not be_nil
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit a project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-        end
-
-        context 'project is funded,' do
-          let!(:project) { Factory :project, state: :funded }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "can't destroy the project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(Project.find(project.id)).to_not be_nil
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit the project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-        end
-
-        context 'project is nonfunded,' do
-          let!(:project) { Factory :project, state: :nonfunded }
-
-          it 'CAN view project' do
-            get :show, id: project.name
-            expect(response).to be_success
-          end
-
-          it "can't destroy a project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(Project.find(project.id)).to_not be_nil
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit the project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-        end
-
-        context 'project is cancelled,' do
-          let!(:project) { Factory :project, state: :cancelled }
-
-          it 'can NOT view project' do
-            get :show, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't destroy a project" do
-            expect { get :destroy, id: project.name }.to_not change { Project.count }
-            expect(Project.find(project.id)).to_not be_nil
-            expect(response).to redirect_to(root_path)
-          end
-
-          it "can't edit the project" do
-            get :edit, id: project.name
-            expect(response).to redirect_to(root_path)
-          end
+      context 'with permission' do
+        before { @ability.stub!(:can?).with(:new, Project).and_return(true) }
+        it 'can create a project' do
+          get :new
+          expect(response).to be_success
         end
       end
     end
   end
 
-  describe "functional tests:" do
-    context "index action" do
-      before { get :index }
+  describe 'GET show' do
+    context 'with permission' do
+      before { @ability.stub!(:can?).with(:show, project).and_return(true) }
 
-      it { should respond_with :success }
-      it { should render_template :index }
-      it { should assign_to :projects }
+      it 'CAN view project' do
+        get :show, id: project.name
+        expect(response).to be_success
+      end
     end
 
+    context 'without permission' do
+      before { @ability.stub!(:can?).with(:show, project).and_return(false) }
+
+      it 'can NOT view project' do
+        get :show, id: project.name
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'GET edit' do
+    context 'without permission' do
+      before { @ability.stub!(:can?).with(:edit, project).and_return(false) }
+
+      it "can't edit a project" do
+        get :edit, id: project.name
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'with permission' do
+      before { sign_in user }
+      before { @ability.stub!(:can?).with(:edit, project).and_return(true) }
+
+      it "CAN edit the project" do
+        get :edit, id: project.name
+        expect(response).to be_success
+      end
+    end
+  end
+
+  describe 'POST create' do
+    render_views
+
+    context 'user is signed in' do
+      before { sign_in user }
+
+      before { UUIDTools::UUID.stub(:random_create){} }
+      before { @ability.stub!(:can?).with(:create, Project).and_return(true) }
+
+      it "succeeds for valid attributes" do
+        p = Factory.build(:project).attributes.symbolize_keys
+        expect{ post :create, project: p }.to change{ Project.count }.by 1
+
+        request = Amazon::FPS::RecipientRequest.new(save_project_url)
+        expect(response).to redirect_to(request.url)
+      end
+
+      it "handles errors for invalid attributes" do
+        invalid_attributes = Factory.attributes_for(:project, funding_goal: -5)
+        expect{post :create, project: invalid_attributes}.to_not change{ Project.count }
+
+        expect(response).to be_success
+        expect(response.body.inspect).to include("error")
+        expect(Project.find_by_name(invalid_attributes[:name])).to be_nil
+      end
+    end
+  end
+
+  describe 'DELETE destroy' do
+    context 'with permission' do
+      before { sign_in user }
+      before { @ability.stub!(:can?).with(:destroy, project).and_return(true) }
+
+      it "CAN destroy a project" do
+        expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
+        expect(flash[:notice]).to include "successfully deleted"
+        expect(response).to redirect_to(root_path)
+      end
+
+      it "should succeed destroy" do
+        expect{ delete :destroy, id: project.name }.to change{ Project.count }.by(-1)
+
+        expect(response).to redirect_to(root_path)
+        expect(flash[:notice]).to include "successfully deleted"
+      end
+
+      it "should handle failure" do
+        Project.any_instance.stub(:destroy) {false}
+
+        expect{ delete :destroy, id: project.name }.to_not change{ Project.count }
+
+        expect(response).to redirect_to(project_path(project))
+        expect(flash[:alert]).to include "could not be deleted"
+      end
+    end
+
+    context 'without permission' do
+      before { @ability.stub!(:can?).with(:destroy, project).and_return(false) }
+
+      it "can't destroy a project" do
+        expect {get :destroy, id: project.name}.to_not change{ Project.count }
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+  end
+
+  context "save action" do
+    let(:project) { Factory.create(:project, state: 'unconfirmed') }
+    let(:params) { {"tokenID"=>"C5Q3L4H4UL4U18BA1IE12MXSDDAGCEBV1A56A5T243XF8QTDJQZ1JD9RFQW5CCWG", "status"=>"SR"} }
+
     context "user is signed in" do
-      let(:user) { Factory :user }
-      before(:each) { sign_in user }
+      before { sign_in user }
 
-      context "create action" do
-        # TODO
-        render_views
+      before { @ability.stub!(:can?).with(:save, Project).and_return(true) }
 
-        before(:all) do
-          UUIDTools::UUID.stub(:random_create){}
-        end
-
-        it "succeeds for valid attributes" do
-          p = Factory.build(:project).attributes.symbolize_keys
-          expect{ post :create, project: p }.to change{ Project.count }.by 1
-
-          request = Amazon::FPS::RecipientRequest.new(save_project_url)
-          expect(response).to redirect_to(request.url)
-        end
-
-        it "handles errors for invalid attributes" do
-          invalid_attributes = Factory.attributes_for(:project, funding_goal: -5)
-          expect{post :create, project: invalid_attributes}.to_not change{ Project.count }
-
-          expect(response).to be_success
-          expect(response.body.inspect).to include("error")
-          expect(Project.find_by_name(invalid_attributes[:name])).to be_nil
-        end
+      before do
+        Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
       end
 
-      context "destroy action" do
-        let!(:project) { Factory.create(:project, state: :inactive, user: user) }
-
-        it "should succeed destroy" do
-          expect{ delete :destroy, id: project.name }.to change{ Project.count }.by(-1)
-
-          expect(response).to redirect_to(root_path)
-          expect(flash[:notice]).to include "successfully deleted"
-        end
-
-        it "should handle failure" do
-          Project.any_instance.stub(:destroy) {false}
-
-          expect{ delete :destroy, id: project.name }.to_not change{ Project.count }
-
-          expect(response).to redirect_to(project_path(project))
-          expect(flash[:alert]).to include "could not be deleted"
-        end
+      it "should succeed with valid input" do
+        session[:project_id] = project.id
+        get :save, params
+        expect(response).to redirect_to(project)
+        expect(flash[:notice]).to include "saved successfully"
       end
 
-      context "save action" do
-        let(:project) { Factory.create(:project, user: user, state: 'unconfirmed') }
-        let(:params) { {"signature"=>"Vttw5Q909REPbf2YwvVn9DGAmz/rWQdKWSOj3tLxxYXBmCi7XvHSPgZGVAnNEo1O5SkSJavDod5j\n8XlUkZ99qn7CgqfAtOq0jnWEdmk4uYScfaHZNK6Xhw+KFCuTGBDn9tQoLVIpcXqRjds+aJ237Goh\n1J0btKmw1R363dFTLXA=", "refundTokenID"=>"C7Q3D4C4UP42186ADIE428XSRD3GCNBT1AN6E5TA43XF4QMDJSZNJD7RDQWGC5WV", "signatureVersion"=>"2", "signatureMethod"=>"RSA-SHA1", "certificateUrl"=>"https://fps.sandbox.amazonaws.com/certs/090911/PKICert.pem?requestId=bjzj0tpgedksa8xv8c5jns5i4d7ugwehryvxtzspigd3omooy0o", "tokenID"=>"C5Q3L4H4UL4U18BA1IE12MXSDDAGCEBV1A56A5T243XF8QTDJQZ1JD9RFQW5CCWG", "status"=>"SR", "callerReference"=>"8cc8eb48-7ed8-4fb4-81f2-fe83389d58f5", "controller"=>"projects", "action"=>"save"} }
+      it "should handle unsuccessful input" do
+        session[:project_id] = project.id
+        params["status"] = "NP"
 
-        before(:each) do
-          Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
-        end
+        get :save, params
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to include "error"
+      end
 
-        it "should succeed with valid input" do
-          session[:project_id] = project.id
-          get :save, params
-          expect(response).to redirect_to(project)
-          expect(flash[:notice]).to include "saved successfully"
-        end
+      it "should handle unsuccessful input case: 2" do
+        Project.any_instance.stub(:save){false}
+        session[:project_id] = project.id
 
-        it "should handle unsuccessful input" do
-          session[:project_id] = project.id
-          params["status"] = "NP"
-
-          get :save, params
-          expect(response).to redirect_to(root_path)
-          expect(flash[:alert]).to include "error"
-        end
-
-        it "should handle unsuccessful input case: 2" do
-          Project.any_instance.stub(:save){false}
-          session[:project_id] = project.id
-
-          get :save, params
-          expect(response).to redirect_to(root_path)
-          expect(flash[:alert]).to include "error"
-        end
+        get :save, params
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to include "error"
       end
     end
   end
