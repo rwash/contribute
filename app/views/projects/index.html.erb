@@ -1,5 +1,5 @@
 <div id="header">Michigan State University's crowd funding platform. Contribute to creativity.</div>
 
 <% for list in @lists %>
-  <%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
+  <%= render :partial => 'project_lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
 <% end %>
