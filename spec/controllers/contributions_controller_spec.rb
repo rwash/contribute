@@ -4,6 +4,14 @@ require 'controller_helper'
 describe ContributionsController do
   include Devise::TestHelpers
 
+  # For stubbing abilities
+  # See https://github.com/ryanb/cancan/wiki/Testing-Abilities
+  before do
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    controller.stub!(:current_ability).and_return(@ability)
+  end
+
   let(:user) { Factory :user }
   let!(:project) { Factory :project, state: :active }
 
@@ -18,53 +26,20 @@ describe ContributionsController do
     context 'when user is signed in' do
       before { sign_in user }
 
-      context 'after project end date' do
-        before do
-          Timecop.freeze(project.end_date + 2)
-          get :new, project: project.name
-        end
-
+      context 'without permission' do
+        before { @ability.stub!(:can?).with(:contribute, project).and_return(false) }
+        before { get :new, project: project.name }
         it { should redirect_to project_path(project) }
         it { should set_the_flash.to(/may not contribute/) }
       end
 
-      context 'one day after project end date' do
-        before do
-          Timecop.freeze(project.end_date + 1)
-          get :new, project: project.name
-        end
-
-        it { should redirect_to project_path(project) }
-        it { should set_the_flash.to(/may not contribute/) }
-      end
-
-      context 'on project end date' do
-        before do
-          Timecop.freeze(project.end_date)
-          get :new, project: project.name
-        end
+      context 'with permission' do
+        before { @ability.stub!(:can?).with(:contribute, project).and_return(true) }
+        before { get :new, project: project.name }
 
         it { should respond_with :success }
         it { should_not set_the_flash }
       end
-
-      context 'before project end date' do
-        before do
-          Timecop.freeze(project.end_date - 1)
-          get :new, project: project.name
-        end
-
-        it { should respond_with :success }
-        it { should_not set_the_flash }
-      end
-    end
-
-    context 'when project owner is signed in' do
-      before { sign_in project.user }
-      before { get :new, project: project.name }
-
-      it { should redirect_to project_path(project) }
-      it { should set_the_flash.to(/may not contribute/) }
     end
   end
 
@@ -129,19 +104,21 @@ describe ContributionsController do
   end
 
   describe 'GET edit' do
-    context 'when contribution owner is signed in' do
+    context 'with permission' do
       let(:contribution) { Factory :contribution, project: project, user: user }
 
       before { sign_in user }
+      before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(true) }
       before { get :edit, id: contribution.id }
 
       it { should respond_with :success }
     end
 
-    context "when user doesn't own contribution" do
-      let(:contribution) { Factory :contribution, project: project }
+    context "without permission" do
+      let(:contribution) { Factory :contribution, project: project, user: user }
 
       before { sign_in user }
+      before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(false) }
       before { get :edit, id: contribution.id }
 
       it { should redirect_to project_path(project) }
@@ -158,6 +135,7 @@ describe ContributionsController do
 
   describe 'POST update' do
     let(:contribution) { Factory :contribution }
+    before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(true) }
     before { post :update, id: contribution.id, contribution: contribution.attributes.symbolize_keys }
 
     it { should respond_with :redirect }
@@ -229,6 +207,9 @@ describe ContributionsController do
   describe "method validate_project" do
     let(:project_1) { Factory :project, active: 0 }
     let(:project_2) { Factory :project, confirmed: 0 }
+
+    before { @ability.stub!(:can?).with(:contribute, project_1).and_return(true) }
+    before { @ability.stub!(:can?).with(:contribute, project_2).and_return(true) }
 
     before(:each) { sign_in user }
 
