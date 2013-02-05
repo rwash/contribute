@@ -5,9 +5,19 @@ describe CommentsController do
   let(:user) { Factory :user }
   let(:project) { Factory :project }
 
+  # For stubbing abilities
+  # See https://github.com/ryanb/cancan/wiki/Testing-Abilities
+  before do
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    controller.stub!(:current_ability).and_return(@ability)
+  end
+
   describe 'POST create' do
     context 'when user is signed in' do
       before { sign_in user }
+
+      before { @ability.stub!(:can?).with(:comment_on, project).and_return(true) }
       before { post :create, comment: Factory.attributes_for(:comment), projectid: project.id }
 
       it { should redirect_to project_path(project) }
@@ -23,10 +33,11 @@ describe CommentsController do
   end
 
   describe 'DELETE delete' do
-    context 'when user is signed in' do
+    context 'with permission' do
       before { sign_in user }
       let(:comment) { Factory :comment, user: user }
 
+      before { @ability.stub!(:can?).with(:destroy, comment).and_return(true) }
       before { delete :delete, id: comment.id }
       it { should set_the_flash.to(/successfully deleted/) }
     end
@@ -39,10 +50,12 @@ describe CommentsController do
       it { should redirect_to new_user_session_path }
     end
 
-    context 'when user does not own project' do
+    context 'without permission' do
       before { sign_in user }
+      let(:comment) { Factory :comment }
 
-      before { delete :delete, id: Factory(:comment).id }
+      before { @ability.stub!(:can?).with(:destroy, comment).and_return(false) }
+      before { delete :delete, id: comment.id }
       it { should set_the_flash.to(/cannot delete comments you don't own/) }
       it { should redirect_to :root }
     end
