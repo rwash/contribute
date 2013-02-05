@@ -50,7 +50,6 @@ class ProjectListsController < InheritedResources::Base
     end
     @source = []
     for project in @projects
-      #@source  << "#{project.name} - #{project.state}"
       @source  << project.name
     end
   end
