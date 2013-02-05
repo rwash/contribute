@@ -158,7 +158,6 @@ class ProjectsController < InheritedResources::Base
     @project = ProjectDecorator.decorate @project if @project
     #somthing was up with this page and permissions so i moved them here
     return redirect_to root_path if @project.nil?
-    return redirect_to root_path unless @project.public_can_view? or (logged_in? and (@project.confirmation_approver? or @project.user == current_user))
 
     @video = @project.video
     #for some reason youtube returns the most recent upload if the video token is nil
