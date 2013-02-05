@@ -4,6 +4,14 @@ require 'controller_helper'
 describe ProjectListsController do
   include Devise::TestHelpers
 
+  # For stubbing abilities
+  # See https://github.com/ryanb/cancan/wiki/Testing-Abilities
+  before do
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    controller.stub!(:current_ability).and_return(@ability)
+  end
+
   describe 'POST sort' do
     # TODO we should have a test that at least touches this action
   end
@@ -12,14 +20,14 @@ describe ProjectListsController do
     # TODO we should have a test that at least touches this action
   end
 
+  let(:user) { Factory :user }
   describe 'DELETE destroy' do
     context "when user is signed in" do
-      let(:current_user) { Factory :user }
-      before(:each) { sign_in current_user }
+      before { sign_in user }
 
-      context "when user does not own the list" do
+      context 'without permission' do
         let(:group) { Factory :group }
-        let(:user) { group.admin_user }
+        before { @ability.stub(:can?).and_return(false) }
 
         it "does not allow group list deletion" do
           list = FactoryGirl.create(:project_list, listable_id: group.id, listable_type: "Group")
@@ -28,37 +36,39 @@ describe ProjectListsController do
         end
 
         it "does not allow user list deletion" do
-          list = FactoryGirl.create(:project_list, listable_id: user.id, listable_type: "User")
+          list = FactoryGirl.create(:project_list, listable: Factory(:user))
           expect { get :destroy, id: list.id }.to_not change {List.count}
           expect(response).to redirect_to(root_path)
         end
       end
 
-    context "when user owns the list" do
-      let(:user) { current_user }
-      let(:group) { Factory :group, admin_user: user }
+      context "when user owns the list" do
+        let(:group) { Factory :group, admin_user: user }
+        before { @ability.stub(:can?).and_return(true) }
 
-      it "allows group list destruction" do
-        list = FactoryGirl.create(:project_list, listable_id: group.id, listable_type: "Group")
-        expect { get :destroy, id: list.id }.to change {List.count}.by(-1)
-        expect(response).to redirect_to(list.listable)
-      end
+        it "allows group list destruction" do
+          list = FactoryGirl.create(:project_list, listable_id: group.id, listable_type: "Group")
+          expect { get :destroy, id: list.id }.to change {List.count}.by(-1)
+          expect(response).to redirect_to(list.listable)
+        end
 
-      it "allows user list destruction" do
-        list = FactoryGirl.create(:project_list, listable_id: user.id, listable_type: "User")
-        expect { get :destroy, id: list.id }.to change {List.count}.by(-1)
-        expect(response).to redirect_to(list.listable)
+        it "allows user list destruction" do
+          list = FactoryGirl.create(:project_list, listable_id: user.id, listable_type: "User")
+          expect { get :destroy, id: list.id }.to change {List.count}.by(-1)
+          expect(response).to redirect_to(list.listable)
+        end
       end
-    end
     end
   end
 
   describe 'GET edit' do
     context "when user is signed in" do
-      let(:current_user) { Factory :user }
-      before(:each) { sign_in current_user }
+      let(:user) { Factory :user }
+      before(:each) { sign_in user }
 
-      context "when user does not own the list" do
+      context 'without permission' do
+        before { @ability.stub!(:can?).and_return(false) }
+
         let(:group) { Factory :group }
         let(:user) { group.admin_user }
 
@@ -83,18 +93,22 @@ describe ProjectListsController do
 
   describe 'GET show' do
     context "when user is not signed in" do
-      it "displays users list" do
-        list = FactoryGirl.create(:project_list, listable_id: Factory(:user).id, listable_type: "User")
-        get :show, id: list.id
-        expect(response).to be_success
-        list.delete
-      end
+      context 'with permission' do
+        before { @ability.stub(:can?).and_return(true) }
 
-      it "displays groups list" do
-        list = FactoryGirl.create(:project_list, listable_id: Factory(:group).id, listable_type: "Group")
-        get :show, id: list.id
-        expect(response).to be_success
-        list.delete
+        it "displays users list" do
+          list = FactoryGirl.create(:project_list, listable_id: Factory(:user).id, listable_type: "User")
+          get :show, id: list.id
+          expect(response).to be_success
+          list.delete
+        end
+
+        it "displays groups list" do
+          list = FactoryGirl.create(:project_list, listable_id: Factory(:group).id, listable_type: "Group")
+          get :show, id: list.id
+          expect(response).to be_success
+          list.delete
+        end
       end
     end
   end
