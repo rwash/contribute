@@ -1,6 +1,6 @@
 class GroupsController < InheritedResources::Base
   load_and_authorize_resource
-  before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save, :new_add]
+  before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save, :new_add, :submit_add]
 
   def index
     @groups = Group.all
@@ -41,7 +41,7 @@ class GroupsController < InheritedResources::Base
     elsif @group.projects.include?(@project)
       flash[:error] = "Your project is already in this group."
     elsif @group.open?
-      @group.projects << @project			
+      @group.projects << @project
       @video = @project.video
       @project.update_project_video unless @video.nil?
 

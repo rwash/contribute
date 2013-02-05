@@ -4,7 +4,16 @@ require 'controller_helper'
 describe GroupsController do
   include Devise::TestHelpers
 
+  # For stubbing abilities
+  # See https://github.com/ryanb/cancan/wiki/Testing-Abilities
+  before do
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    controller.stub!(:current_ability).and_return(@ability)
+  end
+
   describe 'GET index' do
+    before { @ability.stub!(:can?).and_return(true) }
     before { get :index }
 
     it { should respond_with :success }
@@ -16,15 +25,19 @@ describe GroupsController do
 
   describe 'POST create' do
     context "when not signed in" do
+      before { @ability.stub!(:can?).and_return(true) }
+
       it "does not allow group creation" do
-        expect {post 'create', group: FactoryGirl.attributes_for(:group)}.to_not change{Group.count}
-        expect(response).to redirect_to('/users/sign_in')
+        expect{ post 'create', group: FactoryGirl.attributes_for(:group) }.to_not change{ Group.count }
+        expect(response).to redirect_to(new_user_session_path)
         expect(flash[:alert]).to include "You need to sign in or sign up before continuing."
       end
     end
+
     context "when the user is signed in" do
       let(:user) { Factory :user }
       before(:each) { sign_in user }
+      before { @ability.stub!(:can?).and_return(true) }
 
       it "allows group creation" do
         expect {post 'create', group: FactoryGirl.attributes_for(:group)}.to change {Group.count}.by 1
@@ -36,6 +49,7 @@ describe GroupsController do
   describe 'POST new_add' do
     let(:group) { Factory :group }
     before { sign_in Factory :user }
+    before { @ability.stub!(:can?).and_return(true) }
     before { post :new_add, id: group.id }
 
     it { should respond_with :success }
@@ -44,148 +58,153 @@ describe GroupsController do
   end
 
   describe 'POST submit_add' do
+
     context 'when the user is signed in' do
       let(:user) { Factory :user }
-      before(:each) { sign_in user }
+      before { sign_in user }
+
+      before { @ability.stub!(:can?).with(:submit_add, group).and_return(true) }
+
       context "when the group is open and user is not the admin" do
+
         let(:group) { Factory :group, open: true }
 
         it 'allows adding of unconfirmed project to group' do
           project = Factory(:project, state: 'unconfirmed', user: user)
 
-          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
 
           expect(response).to redirect_to(group)
           expect(flash[:notice]).to include "Your project has been added to the group."
         end
 
-      it 'allows adding of inactive project to group' do
-        project = Factory(:project, state: 'inactive', user: user)
+        it 'allows adding of inactive project to group' do
+          project = Factory(:project, state: 'inactive', user: user)
 
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
 
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been added to the group."
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'allows adding of active project to group' do
+          project = Factory(:project, state: 'active', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'allows adding of funded project to group' do
+          project = Factory(:project, state: 'funded', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'allows adding of nonfunded project to group' do
+          project = Factory(:project, state: 'nonfunded', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'does not allow adding of cancelled project to group' do
+          project = Factory(:project, state: 'cancelled', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.projects.count}
+
+          expect(response).to redirect_to(group)
+          expect(flash[:error]).to include "You cannot add a cancelled project."
+        end
+
+        it 'does not allow multiple additions of the same project to a group' do
+          project = Factory(:project, state: 'active', user: user)
+          group.projects << project
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.projects.count}
+
+          expect(response).to redirect_to(group)
+          expect(flash[:error]).to include "Your project is already in this group."
+        end
       end
 
-      it 'allows adding of active project to group' do
-        project = Factory(:project, state: 'active', user: user)
+      context "when group is closed" do
+        let(:admin) { Factory :user }
+        let(:group) { Factory :group, open: false, admin_user: admin }
 
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
+        it 'allows adding of unconfirmed project to group' do
+          project = Factory(:project, state: 'unconfirmed', user: user)
 
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been added to the group."
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
+        end
+
+        it 'allows adding of inactive project to group' do
+          project = Factory(:project, state: 'inactive', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
+        end
+
+        it 'allows adding of active project to group' do
+          project = Factory(:project, state: 'active', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
+        end
+
+        it 'allows adding of funded project to group' do
+          project = Factory(:project, state: 'funded', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
+        end
+
+        it 'allows adding of nonfunded project to group' do
+          project = Factory(:project, state: 'nonfunded', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
+        end
+
+        it 'does not allow adding of cancelled project to group' do
+          project = Factory(:project, state: 'cancelled', user: user)
+
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.approvals.count}
+
+          expect(response).to redirect_to(group)
+          expect(flash[:error]).to include "You cannot add a cancelled project."
+        end
+
+        it 'does not allow multiple additions of the same project to a group' do
+          project = Factory(:project, state: 'active', user: user)
+          group.projects << project
+          expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.approvals.count}
+
+          expect(response).to redirect_to(group)
+          expect(flash[:error]).to include "Your project is already in this group."
+        end
       end
-
-      it 'allows adding of funded project to group' do
-        project = Factory(:project, state: 'funded', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been added to the group."
-      end
-
-      it 'allows adding of nonfunded project to group' do
-        project = Factory(:project, state: 'nonfunded', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been added to the group."
-      end
-
-      it 'does not allow adding of cancelled project to group' do
-        project = Factory(:project, state: 'cancelled', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:error]).to include "You cannot add a cancelled project."
-      end
-
-      it 'does not allow multiple additions of the same project to a group' do
-        project = Factory(:project, state: 'active', user: user)
-        group.projects << project
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.projects.count}
-
-        expect(response).to redirect_to(group)
-        expect(flash[:error]).to include "Your project is already in this group."
-      end
-      end
-
-    context "when group is closed" do
-      let(:admin) { Factory :user }
-      let(:group) { Factory :group, open: false, admin_user: admin }
-
-      it 'allows adding of unconfirmed project to group' do
-        project = Factory(:project, state: 'unconfirmed', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
-      end
-
-      it 'allows adding of inactive project to group' do
-        project = Factory(:project, state: 'inactive', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
-      end
-
-      it 'allows adding of active project to group' do
-        project = Factory(:project, state: 'active', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
-      end
-
-      it 'allows adding of funded project to group' do
-        project = Factory(:project, state: 'funded', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
-      end
-
-      it 'allows adding of nonfunded project to group' do
-        project = Factory(:project, state: 'nonfunded', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
-        expect(project.approvals.where(group_id: group.id, approved: nil).first).to_not be_nil
-      end
-
-      it 'does not allow adding of cancelled project to group' do
-        project = Factory(:project, state: 'cancelled', user: user)
-
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to change {Group.count}.by 1
-
-        expect(response).to redirect_to(group)
-        expect(flash[:error]).to include "You cannot add a cancelled project."
-      end
-
-      it 'does not allow multiple additions of the same project to a group' do
-        project = Factory(:project, state: 'active', user: user)
-        group.projects << project
-        expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.projects.count}
-
-        expect(response).to redirect_to(group)
-        expect(flash[:error]).to include "Your project is already in this group."
-      end
-    end
 
     end
   end
@@ -202,6 +221,7 @@ describe GroupsController do
     let(:group) { Factory :group }
     let(:project) { Factory :project }
     before { group.projects << project }
+    before { @ability.stub!(:can?).and_return(true) }
     before { post :remove_project, id: group.id, project_id: project.id }
 
     it { should set_the_flash }
@@ -222,20 +242,24 @@ describe GroupsController do
         expect(flash[:alert]).to include "You are not authorized to access this page."
       end
     end
-    context 'when group owner is signed in' do
+    context 'with permission' do
       let(:user) { Factory :user }
-      before(:each) { sign_in user }
-      let!(:owned_group) { Factory :group, admin_user: user }
+      before { sign_in user }
+      let!(:group) { Factory :group, admin_user: user }
+      before { @ability.stub!(:can?).with(:destroy, group).and_return(true) }
+
       it "allows group deletion" do
-        expect {get 'destroy', id: owned_group.id}.to change {Group.count}.by(-1)
+        expect {get 'destroy', id: group.id}.to change {Group.count}.by(-1)
         expect(response).to redirect_to(groups_path)
       end
     end
-    context "when the user does not own the group" do
-      let!(:other_group) { Factory :group }
+
+    context 'without permission' do
+      let!(:group) { Factory :group }
+      before { @ability.stub!(:can?).with(:destroy, group).and_return(false) }
 
       it "does not allow group deletion" do
-        expect {get 'destroy', id: other_group.id}.to_not change {Group.count}
+        expect {get 'destroy', id: group.id}.to_not change {Group.count}
         expect(flash[:alert]).to include "You are not authorized to access this page."
       end
     end
@@ -246,19 +270,22 @@ describe GroupsController do
       let(:user) { Factory :user }
       before(:each) { sign_in user }
 
-      context "when the user owns the group" do
-        let!(:owned_group) { Factory :group, admin_user: user }
+      context 'with permission' do
+        let!(:group) { Factory :group, admin_user: user }
+        before { @ability.stub!(:can?).with(:edit, group).and_return(true) }
 
         it "allows group editing" do
-          get 'edit', id: owned_group.id
+          get 'edit', id: group.id
           expect(response).to be_success
         end
       end
-      context "when the user does not own the group" do
-        let!(:other_group) { Factory :group }
+
+      context 'without permission' do
+        let!(:group) { Factory :group }
+        before { @ability.stub!(:can?).with(:edit, group).and_return(false) }
 
         it "does not allow group editing" do
-          get 'edit', id: other_group.id
+          get 'edit', id: group.id
           expect(flash[:alert]).to include "You are not authorized to access this page."
         end
       end
