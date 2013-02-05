@@ -157,6 +157,7 @@ class ContributionsController < ApplicationController
   end
 
   protected
+  # TODO move to CanCan
   def validate_project
     if !@project.state.active?
       flash[:alert] = ERROR_STRING
