@@ -10,7 +10,7 @@ class UpdatesController < InheritedResources::Base
     @update.email_sent = false
 
     @update.user = current_user
-    flash[:notice] = @update.save ? "Update saved succesfully." : "Update failed to save. Please try again."
+    flash[:notice] = @update.save ? "Update saved successfully." : "Update failed to save. Please try again."
     redirect_to @project
   end
 
