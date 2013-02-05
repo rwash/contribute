@@ -4,7 +4,7 @@
 &nbsp;
 
 <% for list in @group.lists %>
-  <%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project-small", :limit => 5} %>
+  <%= render :partial => 'project_lists/list', :locals => {:list => list, :partial => "shared/project-small", :limit => 5} %>
 <% end %>
 
 <% content_for :sidebar do %>

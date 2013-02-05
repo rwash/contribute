@@ -33,7 +33,7 @@
   </div>
 <% else %>
   <% for list in @user.lists %>
-    <%= render :partial => 'lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
+    <%= render :partial => 'project_lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
   <% end %>
 <% end %>
 <div class="row offset1-5">
