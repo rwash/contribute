@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Project do
   # Abilities
-  # create, save, activate, destroy, read, update, contribute, edit_contribution
+  # create, save, activate, destroy, read, update, contribute
   describe 'Abilities' do
     subject { ability }
     let(:ability) { Ability.new(user) }
@@ -26,7 +26,6 @@ describe Project do
       it { should_not be_able_to :activate, project }
       it { should_not be_able_to :destroy, project }
       it { should_not be_able_to :update, project }
-      it { should_not be_able_to :edit_contribution, project }
     end
 
     context 'when signed in' do
@@ -47,8 +46,6 @@ describe Project do
       it { should_not be_able_to :activate, project }
       it { should_not be_able_to :destroy, project }
       it { should_not be_able_to :update, project }
-      # TODO change this to :edit, contribution
-      # it { should be_able_to :edit_contribution, project }
     end
 
     context 'when user owns project' do
@@ -71,7 +68,6 @@ describe Project do
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
-      it { should_not be_able_to :edit_contribution, project }
 
       it { should be_able_to :destroy, Factory.build(:project, user: user, state: :unconfirmed) }
       it { should be_able_to :destroy, Factory.build(:project, user: user, state: :inactive) }
@@ -101,8 +97,6 @@ describe Project do
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
-      # TODO
-      # it { should be_able_to :edit_contribution, project }
 
       it { should be_able_to :destroy, Factory.build(:project, user: user, state: :unconfirmed) }
       it { should be_able_to :destroy, Factory.build(:project, user: user, state: :inactive) }

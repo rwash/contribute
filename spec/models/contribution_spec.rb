@@ -43,6 +43,7 @@ describe Contribution do
       let(:user) { nil }
 
       it { should_not be_able_to :create, contribution }
+      it { should_not be_able_to :edit, contribution }
     end
 
     context 'when signed in' do
@@ -75,6 +76,7 @@ describe Contribution do
       let(:user) { contribution.project.user }
 
       it { should_not be_able_to :create, contribution }
+      it { should_not be_able_to :edit, contribution }
     end
 
     context 'when user owns contribution' do
@@ -90,6 +92,7 @@ describe Contribution do
 
       it { should be_able_to :create, contribution }
       it { should_not be_able_to :update, contribution }
+      it { should be_able_to :update, Factory(:contribution, user: user) }
     end
   end
 

@@ -88,6 +88,10 @@ class ContributionsController < ApplicationController
 
     #Setup contribution parameters that aren't specified by user...
     @contribution = prepare_contribution()
+    # DONT CHANGE THIS LINE.
+    # We don't want to do @contribution.project = @editing_contribution.project
+    # because that will assign the entire project object. Later, we'll be storing this object in
+    # the session variable. We're fine storing a single id, but we can't store the entire project.
     @contribution.project_id = @project.id
 
     if @project.end_date < Date.today
@@ -165,7 +169,7 @@ class ContributionsController < ApplicationController
     @editing_contribution = Contribution.find(params[:id])
 
     @project = @editing_contribution.project
-    authorize! :edit_contribution, @project
+    authorize! :edit, @editing_contribution
     validate_project @project
 
   rescue ActiveRecord::RecordNotFound
