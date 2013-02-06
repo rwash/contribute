@@ -109,7 +109,7 @@ describe ContributionsController do
       let(:contribution) { Factory :contribution, project: project, user: user }
 
       before { sign_in user }
-      before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(true) }
+      before { @ability.stub!(:can?).and_return(true) }
       before { get :edit, id: contribution.id }
 
       it { should respond_with :success }
@@ -119,7 +119,7 @@ describe ContributionsController do
       let(:contribution) { Factory :contribution, project: project, user: user }
 
       before { sign_in user }
-      before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(false) }
+      before { @ability.stub!(:can?).and_return(false) }
       before { get :edit, id: contribution.id }
 
       it { should redirect_to project_path(project) }
@@ -136,7 +136,7 @@ describe ContributionsController do
 
   describe 'POST update' do
     let(:contribution) { Factory :contribution }
-    before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(true) }
+    before { @ability.stub!(:can?).and_return(true) }
     before { post :update, id: contribution.id, contribution: contribution.attributes.symbolize_keys }
 
     it { should respond_with :redirect }

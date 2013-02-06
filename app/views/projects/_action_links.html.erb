@@ -4,14 +4,17 @@
 <% elsif logged_in? and @project.user == current_user and @project.state.inactive? %>
   <%= @project.edit_button %>
   <%= @project.activate_button %>
-  <%= @project.delete_button %> 
+  <%= @project.delete_button %>
 <% elsif logged_in? and @project.user == current_user and @project.state.active? %>
   <%= @project.cancel_button %>
 <% elsif logged_in? and @project.user == current_user and (@project.state.funded? or @project.state.nonfunded?) %>
 
-<% elsif can? :edit_contribution, @project %>
-  <%= button_to "Edit Contribution", edit_contribution_url(@project.contributions.find_by_user_id(current_user.id)),:method => :get,  :class => 'btn btn-primary btn-large' %>
-<% elsif @project.state.cancelled? %>
 <% else %>
-  <%= button_to "Contribute to this project", new_contribution_url(@project), :method=>:get, :class => 'btn btn-success btn-large' %>
+  <% existing_contribution = @project.contributions.find_by_user_id(current_user.id) %>
+  <% if existing_contribution and can? :edit, existing_contribution %>
+    <%= button_to "Edit Contribution", edit_contribution_url(existing_contribution),:method => :get,  :class => 'btn btn-primary btn-large' %>
+  <% elsif @project.state.cancelled? %>
+  <% else %>
+    <%= button_to "Contribute to this project", new_contribution_url(@project), :method=>:get, :class => 'btn btn-success btn-large' %>
+  <% end %>
 <% end %>
