@@ -29,10 +29,9 @@ class Ability
     end
 
     # Comments
-    # TODO: change this to can :create, Comment
-    can :comment_on, Project if user.id
+    can :create, Comment if user.id
     can :destroy, Comment do |comment|
-      comment.user == user and comment.body != "comment deleted"
+      (user.admin? or comment.user == user) and comment.body != "comment deleted"
     end
 
     # Contributions
