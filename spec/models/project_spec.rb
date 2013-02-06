@@ -26,7 +26,6 @@ describe Project do
       it { should_not be_able_to :activate, project }
       it { should_not be_able_to :destroy, project }
       it { should_not be_able_to :update, project }
-      it { should_not be_able_to :contribute, project }
       it { should_not be_able_to :edit_contribution, project }
     end
 
@@ -44,33 +43,12 @@ describe Project do
       end
 
       it { should be_able_to :create, project }
-      it { should be_able_to :contribute, project }
       it { should_not be_able_to :save, project }
       it { should_not be_able_to :activate, project }
       it { should_not be_able_to :destroy, project }
       it { should_not be_able_to :update, project }
       # TODO change this to :edit, contribution
       # it { should be_able_to :edit_contribution, project }
-
-      context 'one week after the end date' do
-        before { Timecop.freeze project.end_date + 1.week }
-        it { should_not be_able_to :contribute, project }
-      end
-
-      context 'one day after the end date' do
-        before { Timecop.freeze project.end_date + 1 }
-        it { should_not be_able_to :contribute, project }
-      end
-
-      context 'on end date' do
-        before { Timecop.freeze project.end_date }
-        it { should be_able_to :contribute, project }
-      end
-
-      context 'before end date' do
-        before { Timecop.freeze project.end_date - 1 }
-        it { should be_able_to :contribute, project }
-      end
     end
 
     context 'when user owns project' do
@@ -93,7 +71,6 @@ describe Project do
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
-      it { should_not be_able_to :contribute, project }
       it { should_not be_able_to :edit_contribution, project }
 
       it { should be_able_to :destroy, Factory.build(:project, user: user, state: :unconfirmed) }
@@ -124,7 +101,6 @@ describe Project do
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
-      it { should be_able_to :contribute, project }
       # TODO
       # it { should be_able_to :edit_contribution, project }
 
@@ -138,7 +114,6 @@ describe Project do
   end
 
   # Validations
-
   describe 'name validations' do
     it { should validate_presence_of :name }
     it { should validate_uniqueness_of(:name).case_insensitive }

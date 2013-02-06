@@ -42,7 +42,7 @@ describe Contribution do
     context 'when not signed in' do
       let(:user) { nil }
 
-      it { should_not be_able_to :contribute, :project }
+      it { should_not be_able_to :create, contribution }
     end
 
     context 'when signed in' do

@@ -36,10 +36,11 @@ class Ability
 
     # Contributions
     # Make sure the user isn't a project owner and doesn't have a contribution already
-    can :contribute, Project do |project|
-      !user.id.nil? and project.user != user and
-      project.contributions.find_by_user_id(user.id).nil? and
-      project.end_date >= Time.zone.today
+    can :create, Contribution do |contribution|
+      user.id and
+        (user.admin? or contribution.project.user != user) and
+        contribution.project.contributions.find_by_user_id(user.id).nil? and
+        contribution.project.end_date >= Time.zone.today
     end
     # If the user is logged in, doesn't own the project,  and has a contribution on this project,
     # they can edit
@@ -48,9 +49,6 @@ class Ability
     end
     # TODO remove the contribute and edit_contribution abilities on the Project model,
     # and use these instead
-    can :create, Contribution do |contribution|
-      can? :contribute, contribution.project
-    end
     can :update, Contribution do |contribution|
       can? :edit_contribution, contribution.project
     end

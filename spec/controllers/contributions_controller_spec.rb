@@ -27,14 +27,15 @@ describe ContributionsController do
       before { sign_in user }
 
       context 'without permission' do
-        before { @ability.stub!(:can?).with(:contribute, project).and_return(false) }
+        before { @ability.stub!(:can?).and_return(false) }
         before { get :new, project: project.name }
+
         it { should redirect_to project_path(project) }
         it { should set_the_flash.to(/may not contribute/) }
       end
 
       context 'with permission' do
-        before { @ability.stub!(:can?).with(:contribute, project).and_return(true) }
+        before { @ability.stub!(:can?).and_return(true) }
         before { get :new, project: project.name }
 
         it { should respond_with :success }
@@ -208,8 +209,8 @@ describe ContributionsController do
     let(:project_1) { Factory :project, active: 0 }
     let(:project_2) { Factory :project, confirmed: 0 }
 
-    before { @ability.stub!(:can?).with(:contribute, project_1).and_return(true) }
-    before { @ability.stub!(:can?).with(:contribute, project_2).and_return(true) }
+    before { @ability.stub!(:can?).and_return(true) }
+    before { @ability.stub!(:can?).and_return(true) }
 
     before(:each) { sign_in user }
 
