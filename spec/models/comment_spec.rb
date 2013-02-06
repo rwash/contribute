@@ -32,14 +32,14 @@ describe Comment do
     context 'when not signed in' do
       let(:user) { nil }
 
-      it { should_not be_able_to(:comment_on, Factory.build(:project)) }
+      it { should_not be_able_to(:create, Factory.build(:comment)) }
       it { should_not be_able_to(:destroy, Factory(:comment)) }
     end
 
     context 'when signed in' do
       let(:user) { Factory :user }
 
-      it { should be_able_to(:comment_on, Factory.build(:project)) }
+      it { should be_able_to(:create, Factory.build(:comment)) }
       it { should_not be_able_to(:destroy, Factory(:comment)) }
     end
 
@@ -47,14 +47,14 @@ describe Comment do
       let(:user) { Factory :user }
       let(:comment) { Factory :comment, user: user }
 
-      it { should be_able_to(:comment_on, Factory.build(:project)) }
+      it { should be_able_to(:create, Factory.build(:comment)) }
       it { should be_able_to(:destroy, comment) }
     end
 
     context 'when signed in as admin' do
       let(:user) { Factory :user, admin: true }
 
-      it { should be_able_to(:comment_on, Factory.build(:project)) }
+      it { should be_able_to(:create, Factory.build(:comment)) }
       it { should be_able_to(:destroy, Factory(:comment)) }
     end
   end

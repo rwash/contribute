@@ -17,7 +17,7 @@ describe CommentsController do
     context 'when user is signed in' do
       before { sign_in user }
 
-      before { @ability.stub!(:can?).with(:comment_on, project).and_return(true) }
+      before { @ability.stub!(:can?).and_return(true) }
       before { post :create, comment: Factory.attributes_for(:comment), projectid: project.id }
 
       it { should redirect_to project_path(project) }
