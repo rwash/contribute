@@ -22,7 +22,7 @@ describe UpdatesController do
       before { reset_email }
 
       context 'with permission' do
-        before { @ability.stub!(:can?).with(:create_update_for, project).and_return(true) }
+        before { @ability.stub!(:can?).and_return(true) }
 
         context 'for a valid update' do
           let(:project) { Factory :project, state: :unconfirmed }
@@ -54,14 +54,14 @@ describe UpdatesController do
       end
 
       context 'without permission' do
-        before { @ability.stub!(:can?).with(:create_update_for, project).and_return(false) }
+        before { @ability.stub!(:can?).and_return(false) }
         before { post 'create', project_id: project.id, update: FactoryGirl.attributes_for(:update) }
 
         it 'does not create an update' do
           expect {post 'create', project_id: project.id, update: FactoryGirl.attributes_for(:update)}.to_not change{ Update.count }
         end
 
-        it { should redirect_to project_path(project) }
+        it { should redirect_to :root }
         it { should set_the_flash.to(/cannot update/) }
       end
     end
