@@ -18,9 +18,11 @@ class Ability
     # Note: this 'update' refers to the Update and Edit actions of ProjectsController,
     # not the ability to create Update objects associated with a project
     can :update, Project, user: user, can_edit?: true
-    # This 'create_update_for' refers to the ability to create an Update associated
-    # with a Project.
-    can :create_update_for, Project, user: user
+
+    can :create, Update do |update|
+      update.project.can_update? and
+        (update.project.user == user or user.admin?)
+    end
 
     can :destroy, Video do |v|
       v.project.user = user

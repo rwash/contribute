@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Project do
   # Abilities
-  # create, save, activate, destroy, read, update, create_update_for, comment_on, contribute, edit_contribution
+  # create, save, activate, destroy, read, update, comment_on, contribute, edit_contribution
   describe 'Abilities' do
     subject { ability }
     let(:ability) { Ability.new(user) }
@@ -26,7 +26,6 @@ describe Project do
       it { should_not be_able_to :activate, project }
       it { should_not be_able_to :destroy, project }
       it { should_not be_able_to :update, project }
-      it { should_not be_able_to :create_update_for, project }
       it { should_not be_able_to :comment_on, project }
       it { should_not be_able_to :contribute, project }
       it { should_not be_able_to :edit_contribution, project }
@@ -52,7 +51,6 @@ describe Project do
       it { should_not be_able_to :activate, project }
       it { should_not be_able_to :destroy, project }
       it { should_not be_able_to :update, project }
-      it { should_not be_able_to :create_update_for, project }
       # TODO change this to :edit, contribution
       # it { should be_able_to :edit_contribution, project }
 
@@ -97,7 +95,6 @@ describe Project do
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
-      it { should be_able_to :create_update_for, project }
       it { should be_able_to :comment_on, project }
       it { should_not be_able_to :contribute, project }
       it { should_not be_able_to :edit_contribution, project }
@@ -130,7 +127,6 @@ describe Project do
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
-      it { should be_able_to :create_update_for, project }
       it { should be_able_to :comment_on, project }
       it { should be_able_to :contribute, project }
       # TODO
