@@ -3,10 +3,10 @@ class CommentsController < InheritedResources::Base
 
   def create
     @project = Project.find(params[:projectid])
-    authorize! :comment_on, @project
 
     @comment = Comment.build_from( @project, current_user.id, params[:comment][:body] )
     @comment.user = current_user
+    authorize! :create, @comment
 
     if @comment.valid?
       @comment.save

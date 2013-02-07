@@ -105,7 +105,7 @@ $(document).ready(function(){
       </ul>
       <p>&nbsp;</p>
       <p class="update">
-      <%= render :partial => "updates/update_form", :object => @update if @project.can_update? and logged_in? and @project.user == current_user %>
+      <%= render :partial => "updates/update_form", :object => @update if can? :create, @project.updates.new %>
       </p>
     </div>
   </div>
