@@ -16,10 +16,6 @@ en:
       project: "This project is not active."
     update:
       project: "This project is not active or you do not own it."
-    contribute:
-      project: "You may not contribute to this project. The contribution period has ended."
-    edit_contribution:
-      project: "You may not edit this contribution."
   views:
     pagination:
       previous: "&lt; Previous"

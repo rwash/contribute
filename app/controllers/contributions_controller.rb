@@ -9,26 +9,22 @@ class ContributionsController < ApplicationController
 
   cache_sweeper :contribution_sweeper
 
-  load_and_authorize_resource except: [:new, :save, :show, :edit, :update_save]
+  load_and_authorize_resource except: [:new, :create, :save, :show, :edit, :update_save]
   skip_authorization_check only: [:save, :show, :edit, :update_save]
 
   def new
     @project = Project.find_by_name params[:project].gsub(/-/, ' ')
-    authorize! :contribute, @project
-    validate_project
-
-    @contribution = Contribution.new
+    @contribution = @project.contributions.new
+    authorize! :create, @contribution
+    validate_project @project
   end
 
   def create
-    @project = Project.find(params[:contribution][:project_id])
+    @contribution = prepare_contribution
+    authorize! :create, @contribution
+    validate_project @contribution.project
 
-    authorize! :contribute, @project
-    validate_project
-
-    @contribution = prepare_contribution()
-    @contribution.project_id = @project.id
-    if @contribution.valid? && @project.end_date >= Date.today
+    if @contribution.valid? && @contribution.project.end_date >= Date.today
       #Worth considering alternatives if the performance on this is bad
       #E.g. memcached, writing to the DB and marking record incomplete
 
@@ -37,7 +33,7 @@ class ContributionsController < ApplicationController
         return redirect_to @contribution.project
       end
       session[:contribution_id] = @contribution.id
-      request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
+      request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @contribution.project.payment_account_id, @contribution.amount, @contribution.project.name)
 
       redirect_to request.url
     else
@@ -92,6 +88,10 @@ class ContributionsController < ApplicationController
 
     #Setup contribution parameters that aren't specified by user...
     @contribution = prepare_contribution()
+    # DONT CHANGE THIS LINE.
+    # We don't want to do @contribution.project = @editing_contribution.project
+    # because that will assign the entire project object. Later, we'll be storing this object in
+    # the session variable. We're fine storing a single id, but we can't store the entire project.
     @contribution.project_id = @project.id
 
     if @project.end_date < Date.today
@@ -158,8 +158,8 @@ class ContributionsController < ApplicationController
 
   protected
   # TODO move to CanCan
-  def validate_project
-    if !@project.state.active?
+  def validate_project(project)
+    if !project.state.active?
       flash[:alert] = ERROR_STRING
       redirect_to root_path
     end
@@ -169,18 +169,20 @@ class ContributionsController < ApplicationController
     @editing_contribution = Contribution.find(params[:id])
 
     @project = @editing_contribution.project
-    authorize! :edit_contribution, @project
-    validate_project
+    authorize! :edit, @editing_contribution
+    validate_project @project
 
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = ERROR_STRING
     redirect_to root_url
   end
 
+  # TODO get rid of this
   def prepare_contribution
     contribution = Contribution.new params[:contribution]
 
     #Setup contribution parameters that aren't specified by user...
+    #TODO this can be a default value in the database
     contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
     if(user_signed_in?)
       contribution.user_id = current_user.id

@@ -1,8 +1,113 @@
 require 'spec_helper'
 
 describe Project do
-  # Validations
+  # Abilities
+  # create, save, activate, destroy, read, update, contribute
+  describe 'Abilities' do
+    subject { ability }
+    let(:ability) { Ability.new(user) }
+    let(:project) { Factory.build :project, state: :active }
 
+    context 'when not signed in' do
+      let(:user) { nil }
+
+      context 'when project is publicly viewable' do
+        before { project.stub!(:public_can_view?).and_return(true) }
+        it { should be_able_to :show, project }
+      end
+
+      context 'when project is not publicly viewable' do
+        before { project.stub!(:public_can_view?).and_return(false) }
+        it { should_not be_able_to :show, project }
+      end
+
+      it { should_not be_able_to :create, Project }
+      it { should_not be_able_to :save, project }
+      it { should_not be_able_to :activate, project }
+      it { should_not be_able_to :destroy, project }
+      it { should_not be_able_to :update, project }
+    end
+
+    context 'when signed in' do
+      let(:user) { Factory :user }
+
+      context 'when project is publicly viewable' do
+        before { project.stub!(:public_can_view?).and_return(true) }
+        it { should be_able_to :show, project }
+      end
+
+      context 'when project is not publicly viewable' do
+        before { project.stub!(:public_can_view?).and_return(false) }
+        it { should_not be_able_to :show, project }
+      end
+
+      it { should be_able_to :create, project }
+      it { should_not be_able_to :save, project }
+      it { should_not be_able_to :activate, project }
+      it { should_not be_able_to :destroy, project }
+      it { should_not be_able_to :update, project }
+    end
+
+    context 'when user owns project' do
+      let(:user) { project.user }
+
+      context 'when project is not publicly viewable' do
+        before { project.stub!(:public_can_view?).and_return(false) }
+        it { should be_able_to :show, project }
+      end
+
+      context 'when project is editable' do
+        before { project.stub!(:can_edit?).and_return(true) }
+        it { should be_able_to :update, Factory.build(:project, user: user, state: :inactive) }
+      end
+
+      context 'when project is not editable' do
+        before { project.stub!(:can_edit?).and_return(false) }
+        it { should_not be_able_to :update, Factory.build(:project, user: user, state: :active) }
+      end
+
+      it { should be_able_to :save, project }
+      it { should be_able_to :activate, project }
+
+      it { should be_able_to :destroy, Factory.build(:project, user: user, state: :unconfirmed) }
+      it { should be_able_to :destroy, Factory.build(:project, user: user, state: :inactive) }
+      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :active) }
+      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :nonfunded) }
+      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :funded) }
+      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :cancelled) }
+    end
+
+    context 'when signed in as admin' do
+      let(:user) { Factory :user, admin: true }
+
+      context 'when project is not publicly viewable' do
+        before { project.stub!(:public_can_view?).and_return(false) }
+        it { should be_able_to :show, project }
+      end
+
+      context 'when project is editable' do
+        before { project.stub!(:can_edit?).and_return(true) }
+        it { should be_able_to :update, Factory.build(:project, user: user, state: :inactive) }
+      end
+
+      context 'when project is not editable' do
+        before { project.stub!(:can_edit?).and_return(false) }
+        it { should_not be_able_to :update, Factory.build(:project, user: user, state: :active) }
+      end
+
+      it { should be_able_to :save, project }
+      it { should be_able_to :activate, project }
+
+      it { should be_able_to :destroy, Factory.build(:project, user: user, state: :unconfirmed) }
+      it { should be_able_to :destroy, Factory.build(:project, user: user, state: :inactive) }
+      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :active) }
+      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :nonfunded) }
+      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :funded) }
+      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :cancelled) }
+    end
+  end
+
+  # Validations
   describe 'name validations' do
     it { should validate_presence_of :name }
     it { should validate_uniqueness_of(:name).case_insensitive }

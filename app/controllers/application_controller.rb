@@ -9,12 +9,10 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
-    if exception.action == :contribute
-      redirect_to exception.subject, alert: exception.message
-    elsif exception.action == :edit_contribution
-      redirect_to exception.subject, alert: exception.message
-    elsif exception.action == :create_update_for
-      redirect_to exception.subject, alert: exception.message
+    if exception.action == :create and exception.subject.instance_of? Contribution
+      redirect_to exception.subject.project, alert: "You may not contribute to this project. The contribution period has ended."
+    elsif exception.action == :edit and exception.subject.instance_of? Contribution
+      redirect_to exception.subject.project, alert: "You may not edit this contribution."
     else
       redirect_to root_url, alert: exception.message
     end

@@ -12,7 +12,7 @@
   <% end %>
 
 <p>Amount: $<%= f.text_field :amount %></p>
-<%= f.hidden_field :project_id, :value => @project.id %>
+<%= f.hidden_field :project_id, :value => @contribution.project.id %>
 
 <p><i>Clicking "Make Contribution" will  redirect you to Amazon Payments to confirm your contribution and payment type.</i></p>
 

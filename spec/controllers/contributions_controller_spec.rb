@@ -27,14 +27,15 @@ describe ContributionsController do
       before { sign_in user }
 
       context 'without permission' do
-        before { @ability.stub!(:can?).with(:contribute, project).and_return(false) }
+        before { @ability.stub!(:can?).and_return(false) }
         before { get :new, project: project.name }
+
         it { should redirect_to project_path(project) }
         it { should set_the_flash.to(/may not contribute/) }
       end
 
       context 'with permission' do
-        before { @ability.stub!(:can?).with(:contribute, project).and_return(true) }
+        before { @ability.stub!(:can?).and_return(true) }
         before { get :new, project: project.name }
 
         it { should respond_with :success }
@@ -108,7 +109,7 @@ describe ContributionsController do
       let(:contribution) { Factory :contribution, project: project, user: user }
 
       before { sign_in user }
-      before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(true) }
+      before { @ability.stub!(:can?).and_return(true) }
       before { get :edit, id: contribution.id }
 
       it { should respond_with :success }
@@ -118,7 +119,7 @@ describe ContributionsController do
       let(:contribution) { Factory :contribution, project: project, user: user }
 
       before { sign_in user }
-      before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(false) }
+      before { @ability.stub!(:can?).and_return(false) }
       before { get :edit, id: contribution.id }
 
       it { should redirect_to project_path(project) }
@@ -135,7 +136,7 @@ describe ContributionsController do
 
   describe 'POST update' do
     let(:contribution) { Factory :contribution }
-    before { @ability.stub!(:can?).with(:edit_contribution, project).and_return(true) }
+    before { @ability.stub!(:can?).and_return(true) }
     before { post :update, id: contribution.id, contribution: contribution.attributes.symbolize_keys }
 
     it { should respond_with :redirect }
@@ -208,8 +209,8 @@ describe ContributionsController do
     let(:project_1) { Factory :project, active: 0 }
     let(:project_2) { Factory :project, confirmed: 0 }
 
-    before { @ability.stub!(:can?).with(:contribute, project_1).and_return(true) }
-    before { @ability.stub!(:can?).with(:contribute, project_2).and_return(true) }
+    before { @ability.stub!(:can?).and_return(true) }
+    before { @ability.stub!(:can?).and_return(true) }
 
     before(:each) { sign_in user }
 
