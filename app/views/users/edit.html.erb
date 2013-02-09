@@ -14,25 +14,4 @@
     %>
 <% end %>
 
-<div id='statistics' class='row'>
-  <div id='num-projects' class='span3 offset1'>
-    <span class='number'>
-      <%= @user.projects.count %>
-    </span><br/>
-    <%= @user.projects.one? ? 'Project' : 'Projects' %>
-  </div>
-
-  <div id='num-contributions' class='span2'>
-    <span class='number'>
-      <%= @user.contributions.count %>
-    </span><br/>
-    <%= @user.contributions.one? ? 'Contribution' : 'Contributions' %>
-  </div>
-
-  <div id='contributions-total' class='span3'>
-    <span class='number'>
-      $<%= @user.contributions.map(&:amount).inject(:+).to_i %>
-    </span><br/>
-    Contributed
-  </div>
-</div>
+<%= render :partial => 'stats_banner' %>
