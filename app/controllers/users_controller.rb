@@ -4,6 +4,11 @@ class UsersController < ApplicationController
     authorize! :read, @user
   end
 
+  def edit
+    @user = User.find(params[:id])
+    authorize! :edit, @user
+  end
+
   def index
     @users = User.all
     # TODO this line should be:
