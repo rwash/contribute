@@ -31,6 +31,24 @@ describe UsersController do
     end
   end
 
+  describe "GET 'edit'" do
+    context 'with permission' do
+      before { @ability.stub!(:can?).with(:edit, user).and_return(true) }
+      before { get :edit, id: user.id }
+
+      it { should respond_with :success }
+      it { should_not set_the_flash }
+    end
+
+    context 'without permission' do
+      before { @ability.stub!(:can?).with(:edit, user).and_return(false) }
+      before { get :edit, id: user.id }
+
+      it { should redirect_to :root }
+      it { should set_the_flash.to(/not authorized/) }
+    end
+  end
+
   describe "GET 'index'" do
     context 'with permission' do
       before { @ability.stub!(:can?).with(:read, User).and_return(true) }

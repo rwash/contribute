@@ -130,7 +130,7 @@ class Ability
       can [:read, :destroy, :update, :sort, :add_listing], List
 
       # Users
-      can [:read, :block, :toggle_admin], User
+      can [:read, :update, :block, :toggle_admin], User
     end
   end
 end

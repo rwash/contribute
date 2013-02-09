@@ -1,2 +1,27 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<h1>Users</h1>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <td>Id</td>
+      <td>Name</td>
+      <td>Email</td>
+      <td>Projects</td>
+      <td>Contributions</td>
+      <td>Admin?</td>
+      <td><%#Action links%></td>
+    </tr>
+  </thead>
+
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= link_to user.name, user %>
+      <td><%= mail_to user.email %></td>
+      <td><%= user.projects.count %></td>
+      <td><%= user.contributions.count %></td>
+      <td><%= user.admin? ? 'Admin' : '---' %></td>
+      <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-small btn-primary' %></td>
+    </tr>
+  <% end %>
+</table>
