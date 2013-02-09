@@ -5,7 +5,7 @@
  *= require_self
  *= require jquery-ui
  *= require bootstrap_and_overrides
- *= require_tree . 
+ *= require_tree .
 */
 
 .container {padding-top: 90px;}

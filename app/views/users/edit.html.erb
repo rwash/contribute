@@ -1,0 +1,38 @@
+<h1><%= @user.name %></h1>
+
+<span id='user-email'><%= @user.email %></span>
+
+<p>Member for <%= distance_of_time_in_words @user.created_at, Time.now %></p>
+
+<%= "#{@user.name} is #{'not' unless @user.admin?} an admin" %>
+<% if can? :toggle_admin, @user %>
+  <%= if @user.admin?
+        button_to 'Demote from admin', toggle_admin_user_path(@user, admin: false), method: :post, class: 'btn btn-warning'
+      else
+        button_to 'Promote to admin', toggle_admin_user_path(@user, admin: true), method: :post, class: 'btn btn-success'
+      end
+    %>
+<% end %>
+
+<div id='statistics' class='row'>
+  <div id='num-projects' class='span3 offset1'>
+    <span class='number'>
+      <%= @user.projects.count %>
+    </span><br/>
+    <%= @user.projects.one? ? 'Project' : 'Projects' %>
+  </div>
+
+  <div id='num-contributions' class='span2'>
+    <span class='number'>
+      <%= @user.contributions.count %>
+    </span><br/>
+    <%= @user.contributions.one? ? 'Contribution' : 'Contributions' %>
+  </div>
+
+  <div id='contributions-total' class='span3'>
+    <span class='number'>
+      $<%= @user.contributions.map(&:amount).inject(:+).to_i %>
+    </span><br/>
+    Contributed
+  </div>
+</div>
