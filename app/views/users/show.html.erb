@@ -1,2 +1,6 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<h1><%= @user.name %></h1>
+
+<span id='user-email'><%= @user.email %></span>
+<p>Member for <%= distance_of_time_in_words @user.created_at, Time.now %></p>
+
+<%= render :partial => 'stats_banner' %>
