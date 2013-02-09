@@ -1,4 +1,5 @@
 Contribute::Application.routes.draw do
+
   mount Ckeditor::Engine => '/ckeditor'
 
   #Listings
@@ -17,6 +18,7 @@ Contribute::Application.routes.draw do
 
   #Comments
   resources :comments do
+    #TODO change this to the default destroy action
     delete :delete, :on => :member
   end
 
@@ -25,9 +27,14 @@ Contribute::Application.routes.draw do
 
   #Users
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
+  # TODO take these out of devise, and move them to the users resource
   devise_scope :user do
     get 'users/show/:id', :to => 'registrations#show', :as => :user
     match 'users/add-list', :to => "registrations#add_list", :as => :add_list_to_user
+  end
+  resources :users do
+    post 'block', on: :member
+    post 'toggle_admin', on: :member
   end
 
   #Contribution resource routes
