@@ -38,6 +38,7 @@ describe UsersController do
 
       it { should respond_with :success }
       it { should_not set_the_flash }
+      it { should assign_to :users }
     end
 
     context 'without permission' do
@@ -54,8 +55,8 @@ describe UsersController do
       before { @ability.stub!(:can?).with(:block, user).and_return(true) }
       before { post :block, id: user.id }
 
-      it { should respond_with :success }
-      it { should_not set_the_flash }
+      it { should redirect_to user_path(user) }
+      it { should set_the_flash }
     end
 
     context 'without permission' do
@@ -72,8 +73,8 @@ describe UsersController do
       before { @ability.stub!(:can?).with(:toggle_admin, user).and_return(true) }
       before { post :toggle_admin, id: user.id }
 
-      it { should respond_with :success }
-      it { should_not set_the_flash }
+      it { should redirect_to user_path(user) }
+      it { should set_the_flash }
     end
 
     context 'without permission' do
