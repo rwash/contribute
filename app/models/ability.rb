@@ -7,7 +7,6 @@ class Ability
 
   # Sets up user permissions (abilities)
   def initialize(user)
-
     # Basic privileges that are granted to everyone,
     # even when they aren't signed in
     can :read, Project, public_can_view?: true
@@ -79,6 +78,8 @@ class Ability
           false
         end
       end
+
+      can :read, User, id: user.id
     end
     # Even more privileges if you're a site admin!
     if user and user.admin?
@@ -114,6 +115,7 @@ class Ability
       # If the user is logged in, doesn't own the project,  and has a contribution on this project,
       # they can edit
       can :update, Contribution do |contribution|
+        # TODO clean this up...
         !contribution.project.contributions.find_by_user_id(user.id).nil?
       end
 
@@ -126,6 +128,9 @@ class Ability
 
       #Lists
       can [:read, :destroy, :update, :sort, :add_listing], List
+
+      # Users
+      can [:read, :block, :toggle_admin], User
     end
   end
 end
