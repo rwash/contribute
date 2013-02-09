@@ -87,12 +87,30 @@ describe UsersController do
   end
 
   describe "POST 'toggle_admin'" do
+    before { @request.env['HTTP_REFERER'] = user_path(user) }
+
     context 'with permission' do
       before { @ability.stub!(:can?).with(:toggle_admin, user).and_return(true) }
-      before { post :toggle_admin, id: user.id }
 
-      it { should redirect_to user_path(user) }
-      it { should set_the_flash }
+      context "with 'admin': true" do
+        before { post :toggle_admin, id: user.id, admin: true }
+
+        it { should respond_with :redirect }
+        it { should set_the_flash.to(/successfully updated/) }
+        it 'should toggle admin status' do
+          expect(user.reload.admin?).to be_true
+        end
+      end
+
+      context "with 'admin': false" do
+        before { post :toggle_admin, id: user.id, admin: false }
+
+        it { should respond_with :redirect }
+        it { should set_the_flash.to(/successfully updated/) }
+        it 'should toggle admin status' do
+          expect(user.reload.admin?).to be_false
+        end
+      end
     end
 
     context 'without permission' do

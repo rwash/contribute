@@ -29,9 +29,14 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     authorize! :toggle_admin, user
 
-    # TODO
+    redirect_to :back and return if params[:admin].nil?
+    user.admin = params[:admin]
 
-    redirect_to user, notice: 'User not yet promoted to admin status'
+    if user.save
+      redirect_to :back, notice: "#{user.name}'s privileges were successfully updated"
+    else
+      redirect_to :back, notice: "Failed to save changes to #{user.name}'s account"
+    end
   end
 
 end
