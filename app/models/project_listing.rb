@@ -11,5 +11,7 @@ class ProjectListing < Listing
   belongs_to :item, class_name: 'Project'
   paginates_per 8
 
+  attr_accessor :item, :project
   alias project item
+  alias project= item=
 end
