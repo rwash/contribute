@@ -15,10 +15,10 @@ describe ListingsController do
   describe 'DELETE destroy' do
     context 'without permission' do
       before { @ability.stub!(:can?).and_return(false) }
-      before { delete :destroy, id: Factory(:project_listing) }
+      before { delete :destroy, id: create(:project_listing) }
 
       it 'does not destroy the record' do
-        listing = Factory(:project_listing)
+        listing = create(:project_listing)
         expect { delete :destroy, id: listing }.to_not change { ProjectListing.count }
       end
       it { should redirect_to :root }
@@ -27,10 +27,10 @@ describe ListingsController do
 
     context 'with permission' do
       before { @ability.stub!(:can?).and_return(true) }
-      before { delete :destroy, id: Factory(:project_listing) }
+      before { delete :destroy, id: create(:project_listing) }
 
       it 'destroys the record' do
-        listing = Factory(:project_listing)
+        listing = create(:project_listing)
         expect { delete :destroy, id: listing }.to change { ProjectListing.count }.by(-1)
       end
       it { should redirect_to :root }

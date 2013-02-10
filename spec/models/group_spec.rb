@@ -6,7 +6,7 @@ describe Group do
   describe 'Abilities' do
     subject { ability }
     let(:ability) { Ability.new(user) }
-    let(:group) { Factory.build :group }
+    let(:group) { build :group }
 
     context 'when not signed in' do
       let(:user) { nil }
@@ -24,7 +24,7 @@ describe Group do
     end
 
     context 'when signed in' do
-      let(:user) { Factory :user }
+      let(:user) { create :user }
 
       it { should be_able_to :read, group }
       it { should be_able_to :show, group }
@@ -54,7 +54,7 @@ describe Group do
     end
 
     context 'when signed in as admin' do
-      let(:user) { Factory :user, admin: true }
+      let(:user) { create :user, admin: true }
 
       it { should be_able_to :read, group }
       it { should be_able_to :show, group }
@@ -74,8 +74,8 @@ describe Group do
   it { should validate_presence_of :admin_user }
 
   describe 'approvals' do
-    let(:project) { Factory :project, state: 'active' }
-    let(:approval) { Factory :approval, project: project }
+    let(:project) { create :project, state: 'active' }
+    let(:approval) { create :approval, project: project }
     let(:group) { approval.group }
 
     it 'Approves all approvals when changes to open group' do

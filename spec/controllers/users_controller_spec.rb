@@ -3,7 +3,7 @@ require 'controller_helper'
 
 describe UsersController do
   include Devise::TestHelpers
-  let(:user) { Factory :user }
+  let(:user) { create :user }
 
   # For stubbing abilities
   # See https://github.com/ryanb/cancan/wiki/Testing-Abilities

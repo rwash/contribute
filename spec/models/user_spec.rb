@@ -13,7 +13,7 @@ describe User do
   describe 'Abilities' do
     subject { ability }
     let(:ability) { Ability.new(user) }
-    let(:member) { Factory :user }
+    let(:member) { create :user }
 
     context 'when not signed in' do
       let(:user) { nil }
@@ -22,14 +22,14 @@ describe User do
     end
 
     context 'when signed in' do
-      let(:user) { Factory :user }
+      let(:user) { create :user }
 
       it { should_not be_able_to :read, member }
       it { should be_able_to :read, user }
     end
 
     context 'when signed in as admin' do
-      let(:user) { Factory :user, admin: true }
+      let(:user) { create :user, admin: true }
 
       it { should be_able_to :read, member }
       it { should be_able_to :read, user }

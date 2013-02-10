@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ProjectState do
-  let(:project) { Factory :project, state: project_state }
+  let(:project) { create :project, state: project_state }
 
   context "is unconfirmed" do
     let(:project_state) { 'unconfirmed' }
@@ -189,13 +189,13 @@ describe ProjectState do
   end
 
   it 'guards against invalid values' do
-    project = Factory.build :project, state: 'invalid_state'
+    project = build :project, state: 'invalid_state'
     expect(project.valid?).to be_false
     expect(project.save).to be_false
   end
 
   it 'guards against nil value' do
-    project = Factory.build :project, state: nil
+    project = build :project, state: nil
     expect(project.valid?).to be_false
     expect(project.save).to be_false
   end

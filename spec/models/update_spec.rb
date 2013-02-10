@@ -15,27 +15,27 @@ describe Update do
     context 'when not signed in' do
       let(:user) { nil }
 
-      it { should_not be_able_to(:create, Factory.build(:update)) }
+      it { should_not be_able_to(:create, build(:update)) }
     end
 
     context 'when signed in' do
-      let(:user) { Factory :user }
+      let(:user) { create :user }
 
       context 'when user owns the project' do
-        let(:project) { Factory :project, user: user, state: :active }
+        let(:project) { create :project, user: user, state: :active }
 
         it { should be_able_to(:create, project.updates.new) }
       end
 
       context 'when user does not own the project' do
-        let(:project) { Factory :project, state: :active }
+        let(:project) { create :project, state: :active }
 
         it { should_not be_able_to(:create, project.updates.new) }
       end
 
       context 'when signed in as admin' do
-        let(:user) { Factory :user, admin: true }
-        let(:project) { Factory :project, state: :active }
+        let(:user) { create :user, admin: true }
+        let(:project) { create :project, state: :active }
 
         it { should be_able_to(:create, project.updates.new) }
       end

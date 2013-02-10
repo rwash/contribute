@@ -10,9 +10,9 @@ describe Comment do
 =begin
   describe 'delete' do
     it 'will replace with DELETED if comment has children' do
-      comment = FactoryGirl.build(:comment)
+      comment = build(:comment)
       comment.save
-      comment2 = FactoryGirl.build(:comment)
+      comment2 = build(:comment)
       comment2.save
       comment2.move_to_child_of(comment)
       expect(comment.children.any?).to be_true
@@ -32,30 +32,30 @@ describe Comment do
     context 'when not signed in' do
       let(:user) { nil }
 
-      it { should_not be_able_to(:create, Factory.build(:comment)) }
-      it { should_not be_able_to(:destroy, Factory(:comment)) }
+      it { should_not be_able_to(:create, build(:comment)) }
+      it { should_not be_able_to(:destroy, create(:comment)) }
     end
 
     context 'when signed in' do
-      let(:user) { Factory :user }
+      let(:user) { create :user }
 
-      it { should be_able_to(:create, Factory.build(:comment)) }
-      it { should_not be_able_to(:destroy, Factory(:comment)) }
+      it { should be_able_to(:create, build(:comment)) }
+      it { should_not be_able_to(:destroy, create(:comment)) }
     end
 
     context 'when user owns comment' do
-      let(:user) { Factory :user }
-      let(:comment) { Factory :comment, user: user }
+      let(:user) { create :user }
+      let(:comment) { create :comment, user: user }
 
-      it { should be_able_to(:create, Factory.build(:comment)) }
+      it { should be_able_to(:create, build(:comment)) }
       it { should be_able_to(:destroy, comment) }
     end
 
     context 'when signed in as admin' do
-      let(:user) { Factory :user, admin: true }
+      let(:user) { create :user, admin: true }
 
-      it { should be_able_to(:create, Factory.build(:comment)) }
-      it { should be_able_to(:destroy, Factory(:comment)) }
+      it { should be_able_to(:create, build(:comment)) }
+      it { should be_able_to(:destroy, create(:comment)) }
     end
   end
 end

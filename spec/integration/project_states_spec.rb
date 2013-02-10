@@ -18,8 +18,8 @@ class AmazonProcessTesting
 
     describe 'project' do
       it "create successfully" do
-        project = FactoryGirl.build(:project)
-        user = Factory :user
+        project = build(:project)
+        user = create :user
 
         #login with our project creator
         login_as user

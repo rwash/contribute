@@ -10,11 +10,11 @@ class AmazonProcessTesting
       @headless.start
     end
 
-    let(:user) { Factory :user }
+    let(:user) { create :user }
 
     describe 'project' do
       it "create successfully" do
-        project = FactoryGirl.build(:project)
+        project = build(:project)
 
         login_as user
 
@@ -41,7 +41,7 @@ class AmazonProcessTesting
         find('a').click
 
         #Now we should be back at contribute
-        # expect(current_path).to eq project_path(project)
+        expect(current_path).to eq project_path(project)
         expect(page).to have_content('Project saved successfully')
 
         get_and_assert_project(project.name)
@@ -53,7 +53,7 @@ class AmazonProcessTesting
     end
 
     describe 'creating contribution' do
-      let(:project) { Factory.create(:project, state: :active) }
+      let(:project) { create(:project, state: :active) }
 
       it "fails with invalid amount" do
         login_as user
@@ -87,7 +87,7 @@ class AmazonProcessTesting
     end
 
     describe 'editing contribution' do
-      let(:project) { Factory :project, state: :active }
+      let(:project) { create :project, state: :active }
 
       before(:each) do
         generate_contribution(

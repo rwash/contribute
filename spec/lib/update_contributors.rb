@@ -5,14 +5,14 @@ describe UpdateContributors do
   describe "integration tests" do
     it "run works" do
 
-      project = Factory :project, state: :active, end_date: 1.week.from_now
-      update = Factory :update, email_sent: false, project: project
+      project = create :project, state: :active, end_date: 1.week.from_now
+      update = create :update, email_sent: false, project: project
 
       Contribution.any_instance.stub(:execute_payment) {}
       Contribution.any_instance.stub(:cancel) {}
 
-      to_funded = FactoryGirl.create(:contribution, amount: 15, project: project)
-      to_funded2 = FactoryGirl.create(:contribution, amount: 100, project: project)
+      to_funded = create(:contribution, amount: 15, project: project)
+      to_funded2 = create(:contribution, amount: 100, project: project)
 
       EmailManager.stub_chain(:project_update_to_contributor, deliver: true)
       update.email_sent = true

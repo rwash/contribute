@@ -6,7 +6,7 @@ describe Project do
   describe 'Abilities' do
     subject { ability }
     let(:ability) { Ability.new(user) }
-    let(:project) { Factory.build :project, state: :active }
+    let(:project) { build :project, state: :active }
 
     context 'when not signed in' do
       let(:user) { nil }
@@ -29,7 +29,7 @@ describe Project do
     end
 
     context 'when signed in' do
-      let(:user) { Factory :user }
+      let(:user) { create :user }
 
       context 'when project is publicly viewable' do
         before { project.stub!(:public_can_view?).and_return(true) }
@@ -58,27 +58,27 @@ describe Project do
 
       context 'when project is editable' do
         before { project.stub!(:can_edit?).and_return(true) }
-        it { should be_able_to :update, Factory.build(:project, user: user, state: :inactive) }
+        it { should be_able_to :update, build(:project, user: user, state: :inactive) }
       end
 
       context 'when project is not editable' do
         before { project.stub!(:can_edit?).and_return(false) }
-        it { should_not be_able_to :update, Factory.build(:project, user: user, state: :active) }
+        it { should_not be_able_to :update, build(:project, user: user, state: :active) }
       end
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
 
-      it { should be_able_to :destroy, Factory.build(:project, user: user, state: :unconfirmed) }
-      it { should be_able_to :destroy, Factory.build(:project, user: user, state: :inactive) }
-      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :active) }
-      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :nonfunded) }
-      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :funded) }
-      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :cancelled) }
+      it { should be_able_to :destroy, build(:project, user: user, state: :unconfirmed) }
+      it { should be_able_to :destroy, build(:project, user: user, state: :inactive) }
+      it { should_not be_able_to :destroy, build(:project, user: user, state: :active) }
+      it { should_not be_able_to :destroy, build(:project, user: user, state: :nonfunded) }
+      it { should_not be_able_to :destroy, build(:project, user: user, state: :funded) }
+      it { should_not be_able_to :destroy, build(:project, user: user, state: :cancelled) }
     end
 
     context 'when signed in as admin' do
-      let(:user) { Factory :user, admin: true }
+      let(:user) { create :user, admin: true }
 
       context 'when project is not publicly viewable' do
         before { project.stub!(:public_can_view?).and_return(false) }
@@ -87,23 +87,23 @@ describe Project do
 
       context 'when project is editable' do
         before { project.stub!(:can_edit?).and_return(true) }
-        it { should be_able_to :update, Factory.build(:project, user: user, state: :inactive) }
+        it { should be_able_to :update, build(:project, user: user, state: :inactive) }
       end
 
       context 'when project is not editable' do
         before { project.stub!(:can_edit?).and_return(false) }
-        it { should_not be_able_to :update, Factory.build(:project, user: user, state: :active) }
+        it { should_not be_able_to :update, build(:project, user: user, state: :active) }
       end
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
 
-      it { should be_able_to :destroy, Factory.build(:project, user: user, state: :unconfirmed) }
-      it { should be_able_to :destroy, Factory.build(:project, user: user, state: :inactive) }
-      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :active) }
-      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :nonfunded) }
-      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :funded) }
-      it { should_not be_able_to :destroy, Factory.build(:project, user: user, state: :cancelled) }
+      it { should be_able_to :destroy, build(:project, user: user, state: :unconfirmed) }
+      it { should be_able_to :destroy, build(:project, user: user, state: :inactive) }
+      it { should_not be_able_to :destroy, build(:project, user: user, state: :active) }
+      it { should_not be_able_to :destroy, build(:project, user: user, state: :nonfunded) }
+      it { should_not be_able_to :destroy, build(:project, user: user, state: :funded) }
+      it { should_not be_able_to :destroy, build(:project, user: user, state: :cancelled) }
     end
   end
 
@@ -153,7 +153,7 @@ describe Project do
   it { should validate_presence_of :payment_account_id }
 
   it 'parses time string correctly' do
-    project = FactoryGirl.build(:project, end_date: '03/12/2020')#4
+    project = build(:project, end_date: '03/12/2020')#4
     expect(project.save).to be_true
     expect(project.end_date.month).to eq 3
     expect(project.end_date.day).to eq 12
@@ -166,12 +166,12 @@ describe Project do
   describe 'contributions' do
     #These are instance variables so they can be accessed outside of the before. If they're not
     # in a before, they appear to like a before(:each) by default and cause duplicate errors
-    let(:project) { Factory :project, state: 'active' }
+    let(:project) { create :project, state: 'active' }
     let(:contributions) do
-      3.times.map { Factory :contribution, project: project }
+      3.times.map { create :contribution, project: project }
     end
     #Since this one is cancelled it shouldn't count towards the total
-    let(:cancelled) { Factory :contribution, project: project, status: :cancelled }
+    let(:cancelled) { create :contribution, project: project, status: :cancelled }
 
     before(:all) do
       Contribution.any_instance.stub(:destroy) { true }
@@ -207,12 +207,12 @@ describe Project do
 
   describe 'destroy_video' do
     it 'should delete video' do
-      project = Factory(:video).project
+      project = create(:video).project
       expect{ project.destroy_video }.to change{Video.count}.by(-1)
     end
 
     it 'should leave project.video as nil' do
-      p = Factory(:video).project
+      p = create(:video).project
       p.destroy_video
       expect(p.reload.video).to be_nil
     end
@@ -220,14 +220,14 @@ describe Project do
 
   describe 'update_project_video' do
     it "should not raise an exception" do
-      project = Factory :project
+      project = create :project
       project.update_project_video
     end
   end
 
   describe 'to_param' do
     it 'returns name' do
-      project = FactoryGirl.create(:project)
+      project = create(:project)
       expect(project.name.gsub(/\W/, '-')).to eq project.to_param
       project.delete
     end

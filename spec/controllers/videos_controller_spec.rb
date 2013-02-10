@@ -12,7 +12,7 @@ describe VideosController do
     controller.stub!(:current_ability).and_return(@ability)
   end
 
-  let(:user) { Factory :user }
+  let(:user) { create :user }
 
   describe 'DELETE destroy' do
     context 'while signed in' do
@@ -20,7 +20,7 @@ describe VideosController do
 
       context 'with permission' do
         before { @ability.stub!(:can?).with(:destroy, video).and_return(true) }
-        let(:video) { Factory :video }
+        let(:video) { create :video }
 
         before { delete :destroy, id: video.id }
 
@@ -30,7 +30,7 @@ describe VideosController do
 
       context 'when user does not own video' do
         before { @ability.stub!(:can?).with(:destroy, video).and_return(false) }
-        let(:video) { Factory :video }
+        let(:video) { create :video }
         before { delete :destroy, id: video.id }
 
         it { should set_the_flash.to(/not authorized/) }
@@ -39,7 +39,7 @@ describe VideosController do
     end
 
     context 'while not signed in' do
-      let(:video) { Factory :video }
+      let(:video) { create :video }
       before { delete :destroy, id: video.id }
 
       it { should set_the_flash.to(/sign in/) }

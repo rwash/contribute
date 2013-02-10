@@ -30,8 +30,6 @@ Spork.prefork do
   require 'capybara/rspec'
   require 'cancan/matchers'
 
-  require 'database_cleaner'
-
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -68,6 +66,14 @@ Spork.prefork do
 
     # Capybara uses a DSL to allow test cases to interact with web pages
     config.include Capybara::DSL
+
+    # Allows the use of FactoryGirl methods without the namespace
+    # old:
+    #     FactoryGirl.create(:user)
+    #
+    # new:
+    #     create(:user)
+    config.include FactoryGirl::Syntax::Methods
 
     # The following options allow a developer to focus on specific tests,
     # excluding the rest of the test suite. To do so,

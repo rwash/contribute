@@ -12,8 +12,8 @@ describe ProjectsController do
     controller.stub!(:current_ability).and_return(@ability)
   end
 
-  let(:user) { Factory :user }
-  let!(:project) { Factory :project }
+  let(:user) { create :user }
+  let!(:project) { create :project }
 
   context "GET index" do
     before { @ability.stub!(:can?).with(:index, Project).and_return(true) }
@@ -26,10 +26,10 @@ describe ProjectsController do
 
   describe 'POST update' do
     context 'with permission' do
-      let(:project) { Factory :project }
+      let(:project) { create :project }
       before { sign_in user }
       before { @ability.stub!(:can?).with(:update, project).and_return(true) }
-      before { post :update, id: project.name, project: Factory.attributes_for(:project) }
+      before { post :update, id: project.name, project: attributes_for(:project) }
 
       it { should set_the_flash.to(/Successfully updated project/) }
     end
@@ -37,7 +37,7 @@ describe ProjectsController do
 
   describe 'POST activate' do
     context 'with permission' do
-      let(:project) { Factory :project }
+      let(:project) { create :project }
       before { @ability.stub!(:can?).with(:activate, Project).and_return(true) }
       before { post :activate, id: project.to_param }
 
@@ -119,7 +119,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:create, Project).and_return(true) }
 
       it "succeeds for valid attributes" do
-        p = Factory.build(:project).attributes.symbolize_keys
+        p = build(:project).attributes.symbolize_keys
         expect{ post :create, project: p }.to change{ Project.count }.by 1
 
         request = Amazon::FPS::RecipientRequest.new(save_project_url)
@@ -127,7 +127,7 @@ describe ProjectsController do
       end
 
       it "handles errors for invalid attributes" do
-        invalid_attributes = Factory.attributes_for(:project, funding_goal: -5)
+        invalid_attributes = attributes_for(:project, funding_goal: -5)
         expect{post :create, project: invalid_attributes}.to_not change{ Project.count }
 
         expect(response).to be_success
@@ -176,7 +176,7 @@ describe ProjectsController do
   end
 
   context "save action" do
-    let(:project) { Factory.create(:project, state: 'unconfirmed') }
+    let(:project) { create(:project, state: 'unconfirmed') }
     let(:params) { {"tokenID"=>"C5Q3L4H4UL4U18BA1IE12MXSDDAGCEBV1A56A5T243XF8QTDJQZ1JD9RFQW5CCWG", "status"=>"SR"} }
 
     context "user is signed in" do

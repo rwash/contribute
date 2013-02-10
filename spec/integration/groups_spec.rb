@@ -4,12 +4,13 @@ require 'integration_helper'
 describe 'Groups' do
 
   describe 'index page' do
+    # TODO use let() to reduce the number of records we're creating here
     describe 'group sidebar' do
       it 'does not display project groups when user has none' do
-        user = Factory :user
-        group = Factory :group, admin_user: user
+        user = create :user
+        group = create :group, admin_user: user
         # project is not in the group we created
-        project = Factory :project, user: user
+        project = create :project, user: user
 
         login_as user
 
@@ -18,9 +19,9 @@ describe 'Groups' do
       end
 
       it 'does not display admin groups when user has none' do
-        user = Factory :user
-        group = Factory :group
-        project = Factory :project, user: user
+        user = create :user
+        group = create :group
+        project = create :project, user: user
         project.groups << group
 
         login_as user
@@ -30,9 +31,9 @@ describe 'Groups' do
       end
 
       it 'displays project groups when user has some' do
-        user = Factory :user
-        group = Factory :group
-        project = Factory :project, user: user
+        user = create :user
+        group = create :group
+        project = create :project, user: user
         project.groups << group
 
         login_as user
@@ -42,10 +43,10 @@ describe 'Groups' do
       end
 
       it 'displays admin groups when user has some' do
-        user = Factory :user
-        group = Factory :group, admin_user: user
+        user = create :user
+        group = create :group, admin_user: user
         # Other user's project
-        project = Factory :project
+        project = create :project
         project.groups << group
 
         login_as user
@@ -55,10 +56,10 @@ describe 'Groups' do
       end
 
       it 'does not display group twice when user has two projects in a group' do
-        user = Factory :user
-        group = Factory :group
+        user = create :user
+        group = create :group
         projects = 2.times.map do
-          project = Factory :project, user: user
+          project = create :project, user: user
           project.groups.push group
           project
         end

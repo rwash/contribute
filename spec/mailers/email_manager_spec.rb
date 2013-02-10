@@ -14,8 +14,8 @@ describe EmailManager do
   end
 
   it "add project" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project, user: user)
+    user = create(:user)
+    project = create(:project, user: user)
 
     EmailManager.add_project(project).deliver
 
@@ -26,9 +26,9 @@ describe EmailManager do
   end
 
   it "contribute to project" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    contribution = create(:contribution, user: user, project: project)
 
     EmailManager.contribute_to_project(contribution).deliver
 
@@ -38,10 +38,10 @@ describe EmailManager do
   end
 
   it "edit contribution" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    old_contribution = FactoryGirl.create(:contribution, user: user, project: project, status: :cancelled)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    old_contribution = create(:contribution, user: user, project: project, status: :cancelled)
+    contribution = create(:contribution, user: user, project: project)
 
     EmailManager.edit_contribution(old_contribution, contribution).deliver
 
@@ -51,9 +51,9 @@ describe EmailManager do
   end
 
   it "contribution cancelled" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    contribution = create(:contribution, user: user, project: project)
 
     EmailManager.contribution_cancelled(contribution).deliver
 
@@ -63,9 +63,9 @@ describe EmailManager do
   end
 
   it "contribution successful" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    contribution = create(:contribution, user: user, project: project)
 
     EmailManager.contribution_successful(contribution).deliver
 
@@ -75,8 +75,8 @@ describe EmailManager do
   end
 
   it "failed retries" do
-    contribution = FactoryGirl.create(:contribution, status: :retry_cancel)
-    contribution2 = FactoryGirl.create(:contribution, status: :pending)
+    contribution = create(:contribution, status: :retry_cancel)
+    contribution2 = create(:contribution, status: :pending)
     argArray = [ contribution, contribution2 ]
 
     EmailManager.failed_retries(argArray).deliver
@@ -86,8 +86,8 @@ describe EmailManager do
   end
 
   it "project funded to owner" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project, user: user)
+    user = create(:user)
+    project = create(:project, user: user)
 
     EmailManager.project_funded_to_owner(project).deliver
 
@@ -97,8 +97,8 @@ describe EmailManager do
   end
 
   it "project not funded to owner" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project, user: user)
+    user = create(:user)
+    project = create(:project, user: user)
 
     EmailManager.project_not_funded_to_owner(project).deliver
 
@@ -108,9 +108,9 @@ describe EmailManager do
   end
 
   it "project funded to contributor" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    contribution = create(:contribution, user: user, project: project)
 
     EmailManager.project_funded_to_contributor(contribution).deliver
 
@@ -120,9 +120,9 @@ describe EmailManager do
   end
 
   it "project not funded to contributor" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    contribution = create(:contribution, user: user, project: project)
 
     EmailManager.project_not_funded_to_contributor(contribution).deliver
 
@@ -132,8 +132,8 @@ describe EmailManager do
   end
 
   it "project deleted to owner" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project, user: user)
+    user = create(:user)
+    project = create(:project, user: user)
 
     EmailManager.project_deleted_to_owner(project).deliver
 
@@ -143,9 +143,9 @@ describe EmailManager do
   end
 
   it "project deleted to contributor" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    contribution = create(:contribution, user: user, project: project)
 
     EmailManager.project_deleted_to_contributor(contribution).deliver
 
@@ -155,7 +155,7 @@ describe EmailManager do
   end
 
   it "unretriable cancel to admin" do
-    contribution = FactoryGirl.create(:contribution)
+    contribution = create(:contribution)
     error = AmazonError.find_by_error("TransactionDenied")
 
     EmailManager.unretriable_cancel_to_admin(error, contribution).deliver
@@ -167,9 +167,9 @@ describe EmailManager do
   end
 
   it "unretriable payment to user" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    contribution = create(:contribution, user: user, project: project)
     error = AmazonError.find_by_error("UnverifiedEmailAddress_Sender")
 
     EmailManager.unretriable_payment_to_user(error, contribution).deliver
@@ -181,8 +181,8 @@ describe EmailManager do
   end
 
   it "unretriable payment to admin" do
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, project: project)
+    project = create(:project)
+    contribution = create(:contribution, project: project)
     error = AmazonError.find_by_error("UnverifiedEmailAddress_Recipient")
 
     EmailManager.unretriable_payment_to_admin(error, contribution).deliver
@@ -194,8 +194,8 @@ describe EmailManager do
   end
 
   it "cancelled payment to admin" do
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, project: project)
+    project = create(:project)
+    contribution = create(:contribution, project: project)
     error = AmazonError.find_by_error("InvalidTokenId_Sender")
 
     EmailManager.cancelled_payment_to_admin(contribution).deliver
@@ -207,9 +207,9 @@ describe EmailManager do
   end
 
   it "failed payment to user" do
-    user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, user: user, project: project)
+    user = create(:user)
+    project = create(:project)
+    contribution = create(:contribution, user: user, project: project)
     error = AmazonError.find_by_error("UnverifiedEmailAddress_Sender")
 
     EmailManager.failed_payment_to_user(contribution).deliver
@@ -221,8 +221,8 @@ describe EmailManager do
   end
 
   it "failed status to admin" do
-    project = FactoryGirl.create(:project)
-    contribution = FactoryGirl.create(:contribution, project: project)
+    project = create(:project)
+    contribution = create(:contribution, project: project)
     error = AmazonError.find_by_error("InvalidTokenId_Sender")
 
     EmailManager.failed_status_to_admin(error, contribution).deliver
@@ -234,10 +234,10 @@ describe EmailManager do
   end
 
   it "project update to contributor" do
-    project = FactoryGirl.create(:project)
-    user = FactoryGirl.create(:user)
-    contribution = FactoryGirl.create(:contribution, project: project, user: user)
-    update = FactoryGirl.create(:update, project: project, user: user)
+    project = create(:project)
+    user = create(:user)
+    contribution = create(:contribution, project: project, user: user)
+    update = create(:update, project: project, user: user)
 
     EmailManager.project_update_to_contributor(update, contribution).deliver
 
@@ -249,11 +249,11 @@ describe EmailManager do
   end
 
   it "project_to_group_approval" do # approval, project, group, project owner, group owner,
-    proj_user = FactoryGirl.create(:user)
-    group_user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project, user: proj_user)
-    group = FactoryGirl.create(:group, admin_user: group_user, open: false)
-    approval = FactoryGirl.create(:approval, project: project, group: group)
+    proj_user = create(:user)
+    group_user = create(:user)
+    project = create(:project, user: proj_user)
+    group = create(:group, admin_user: group_user, open: false)
+    approval = create(:approval, project: project, group: group)
 
     EmailManager.project_to_group_approval(approval, project, group).deliver
 
@@ -264,11 +264,11 @@ describe EmailManager do
   end
 
   it "group_reject_project" do # approval project group, project owner
-    proj_user = FactoryGirl.create(:user)
-    group_user = FactoryGirl.create(:user)
-    project = FactoryGirl.create(:project, user: proj_user)
-    group = FactoryGirl.create(:group, admin_user: group_user, open: false)
-    approval = FactoryGirl.create(:approval, project: project, group: group, reason: "I hate you.")
+    proj_user = create(:user)
+    group_user = create(:user)
+    project = create(:project, user: proj_user)
+    group = create(:group, admin_user: group_user, open: false)
+    approval = create(:approval, project: project, group: group, reason: "I hate you.")
 
     EmailManager.group_reject_project(approval, project, group).deliver
 

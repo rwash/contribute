@@ -24,8 +24,8 @@ class AmazonCbuiTesting
 
     #if you receive a not well formed :[recipientTokenList] update the project factor
     it "multi token request should direct to amazon login" do
-      @project = FactoryGirl.create(:project)
-      @contribution = FactoryGirl.create(:contribution)
+      @project = create(:project)
+      @contribution = create(:contribution)
 
       session = {}
       session[:contribution] = @contribution

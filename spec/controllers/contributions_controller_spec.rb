@@ -12,8 +12,8 @@ describe ContributionsController do
     controller.stub!(:current_ability).and_return(@ability)
   end
 
-  let(:user) { Factory :user }
-  let!(:project) { Factory :project, state: :active }
+  let(:user) { create :user }
+  let!(:project) { create :project, state: :active }
 
   describe 'GET new' do
     context 'when user is not signed in' do
@@ -45,13 +45,13 @@ describe ContributionsController do
   end
 
   describe 'POST create' do
-    before { post :create, contribution: Factory.attributes_for(:contribution) }
+    before { post :create, contribution: attributes_for(:contribution) }
 
     it { should respond_with :redirect }
   end
 
   describe 'POST save' do
-    let(:contribution) { Factory :contribution, user: user }
+    let(:contribution) { create :contribution, user: user }
     let(:params) { {"tokenID"=>"I6TRJVI1ARAHBNCZFJII35UPJXJCXMD5ID9RHMMIUJ6DAJAZDSDEKDAEVBDPQBB3",
                     "status"=>"SC" } }
 
@@ -100,13 +100,13 @@ describe ContributionsController do
   # ContributionsController, instead of by the Rails Routing system
   describe 'GET show' do
     it 'is not a valid route' do
-      expect { get :show, id: Factory(:contribution) }.to raise_error
+      expect { get :show, id: create(:contribution) }.to raise_error
     end
   end
 
   describe 'GET edit' do
     context 'with permission' do
-      let(:contribution) { Factory :contribution, project: project, user: user }
+      let(:contribution) { create :contribution, project: project, user: user }
 
       before { sign_in user }
       before { @ability.stub!(:can?).and_return(true) }
@@ -116,7 +116,7 @@ describe ContributionsController do
     end
 
     context "without permission" do
-      let(:contribution) { Factory :contribution, project: project, user: user }
+      let(:contribution) { create :contribution, project: project, user: user }
 
       before { sign_in user }
       before { @ability.stub!(:can?).and_return(false) }
@@ -135,7 +135,7 @@ describe ContributionsController do
   end
 
   describe 'POST update' do
-    let(:contribution) { Factory :contribution }
+    let(:contribution) { create :contribution }
     before { @ability.stub!(:can?).and_return(true) }
     before { post :update, id: contribution.id, contribution: contribution.attributes.symbolize_keys }
 
@@ -143,8 +143,8 @@ describe ContributionsController do
   end
 
   describe 'POST update_save' do
-    let(:contribution) { Factory :contribution, user: user }
-    let(:editing_contribution) { Factory :contribution, user: user, project: contribution.project }
+    let(:contribution) { create :contribution, user: user }
+    let(:editing_contribution) { create :contribution, user: user, project: contribution.project }
     let(:params) { {"tokenID"=>"I4TRCVA1ATAFBN1ZJJI634UP4XQCX9DDIDNR1MM7UF6DDJ6ZDDD7KD9E4BDVQIBF",
                     "status"=>"SC"} }
 
@@ -206,8 +206,8 @@ describe ContributionsController do
   end
 
   describe "method validate_project" do
-    let(:project_1) { Factory :project, active: 0 }
-    let(:project_2) { Factory :project, confirmed: 0 }
+    let(:project_1) { create :project, active: 0 }
+    let(:project_2) { create :project, confirmed: 0 }
 
     before { @ability.stub!(:can?).and_return(true) }
     before { @ability.stub!(:can?).and_return(true) }

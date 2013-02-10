@@ -10,7 +10,7 @@ class UserPageTesting
       @headless.start
     end
 
-    let(:user) { Factory :user }
+    let(:user) { create :user }
     before do
       login_as user
     end
@@ -46,7 +46,7 @@ class UserPageTesting
 =begin
 Reason for failure unknown.
 ---
-        user = Factory.build :user
+        user = build :user
 
         visit new_user_registration_path
         fill_in 'user_name', :with => user.name
@@ -64,9 +64,9 @@ Reason for failure unknown.
 #TODO: For some reason these two tests fail like the user still exists, though
  it should be gone from the User.delete_all. WTF.
       it "should create user successfully and redirect to project page" do
-        @user = FactoryGirl.build(:user)
+        @user = build(:user)
 
-        @project = FactoryGirl.create(:project)
+        @project = create(:project)
         visit project_path(@project)
 
         click_button 'Contribute to this project'
@@ -84,7 +84,7 @@ Reason for failure unknown.
       end
 
       it "should redirect to edit on confirm" do
-        @user = FactoryGirl.create(:user)
+        @user = create(:user)
 
         visit "/users/confirmation?confirmation_token=#{@user.confirmation_token}"
 
