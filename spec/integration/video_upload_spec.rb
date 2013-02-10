@@ -12,7 +12,7 @@ class VideoUploadTesting
 
     it "can upload video"
 =begin
-        project = FactoryGirl.build(:project)
+        project = build(:project)
 
         #login with our project creator
         login_as project.user

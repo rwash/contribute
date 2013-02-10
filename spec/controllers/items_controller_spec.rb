@@ -14,7 +14,7 @@ describe ListingsController do
 
   describe 'DELETE destroy' do
     # TODO make sure this calls CanCan::can?
-    let(:listing) { Factory :project_listing }
+    let(:listing) { create :project_listing }
     before { delete :destroy, id: listing.id }
 
     it { should redirect_to :root }

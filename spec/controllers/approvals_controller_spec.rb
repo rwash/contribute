@@ -4,11 +4,11 @@ require 'controller_helper'
 describe ApprovalsController do
   include Devise::TestHelpers
 
-  let(:user) { Factory :user }
+  let(:user) { create :user }
   before { sign_in user }
 
-  let(:group) { Factory :group, open: false }
-  let(:approval) { Factory :approval, group: group }
+  let(:group) { create :group, open: false }
+  let(:approval) { create :approval, group: group }
 
   # For stubbing abilities
   # See https://github.com/ryanb/cancan/wiki/Testing-Abilities

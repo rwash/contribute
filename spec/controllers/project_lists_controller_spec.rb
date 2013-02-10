@@ -20,40 +20,40 @@ describe ProjectListsController do
     # TODO we should have a test that at least touches this action
   end
 
-  let(:user) { Factory :user }
+  let(:user) { create :user }
   describe 'DELETE destroy' do
     context "when user is signed in" do
       before { sign_in user }
 
       context 'without permission' do
-        let(:group) { Factory :group }
+        let(:group) { create :group }
         before { @ability.stub(:can?).and_return(false) }
 
         it "does not allow group list deletion" do
-          list = FactoryGirl.create(:project_list, listable_id: group.id, listable_type: "Group")
+          list = create(:project_list, listable_id: group.id, listable_type: "Group")
           expect { get :destroy, id: list.id }.to_not change {List.count}
           expect(response).to redirect_to(root_path)
         end
 
         it "does not allow user list deletion" do
-          list = FactoryGirl.create(:project_list, listable: Factory(:user))
+          list = create(:project_list, listable: create(:user))
           expect { get :destroy, id: list.id }.to_not change {List.count}
           expect(response).to redirect_to(root_path)
         end
       end
 
       context "when user owns the list" do
-        let(:group) { Factory :group, admin_user: user }
+        let(:group) { create :group, admin_user: user }
         before { @ability.stub(:can?).and_return(true) }
 
         it "allows group list destruction" do
-          list = FactoryGirl.create(:project_list, listable_id: group.id, listable_type: "Group")
+          list = create(:project_list, listable_id: group.id, listable_type: "Group")
           expect { get :destroy, id: list.id }.to change {List.count}.by(-1)
           expect(response).to redirect_to(list.listable)
         end
 
         it "allows user list destruction" do
-          list = FactoryGirl.create(:project_list, listable_id: user.id, listable_type: "User")
+          list = create(:project_list, listable_id: user.id, listable_type: "User")
           expect { get :destroy, id: list.id }.to change {List.count}.by(-1)
           expect(response).to redirect_to(list.listable)
         end
@@ -63,23 +63,23 @@ describe ProjectListsController do
 
   describe 'GET edit' do
     context "when user is signed in" do
-      let(:user) { Factory :user }
+      let(:user) { create :user }
       before(:each) { sign_in user }
 
       context 'without permission' do
         before { @ability.stub!(:can?).and_return(false) }
 
-        let(:group) { Factory :group }
+        let(:group) { create :group }
         let(:user) { group.admin_user }
 
         it "does not allow group list editing" do
-          list = FactoryGirl.create(:project_list, listable_id: group.id, listable_type: "Group")
+          list = create(:project_list, listable_id: group.id, listable_type: "Group")
           get :edit, id: list.id
           expect(response).to redirect_to(root_path)
         end
 
         it "does not allow user list editing" do
-          list = FactoryGirl.create(:project_list, listable_id: user.id, listable_type: "User")
+          list = create(:project_list, listable_id: user.id, listable_type: "User")
           get :edit, id: list.id
           expect(response).to redirect_to(root_path)
         end
@@ -97,14 +97,14 @@ describe ProjectListsController do
         before { @ability.stub(:can?).and_return(true) }
 
         it "displays users list" do
-          list = FactoryGirl.create(:project_list, listable_id: Factory(:user).id, listable_type: "User")
+          list = create(:project_list, listable_id: create(:user).id, listable_type: "User")
           get :show, id: list.id
           expect(response).to be_success
           list.delete
         end
 
         it "displays groups list" do
-          list = FactoryGirl.create(:project_list, listable_id: Factory(:group).id, listable_type: "Group")
+          list = create(:project_list, listable_id: create(:group).id, listable_type: "Group")
           get :show, id: list.id
           expect(response).to be_success
           list.delete

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe CommentsController do
   include Devise::TestHelpers
-  let(:user) { Factory :user }
-  let(:project) { Factory :project }
+  let(:user) { create :user }
+  let(:project) { create :project }
 
   # For stubbing abilities
   # See https://github.com/ryanb/cancan/wiki/Testing-Abilities
@@ -18,14 +18,14 @@ describe CommentsController do
       before { sign_in user }
 
       before { @ability.stub!(:can?).and_return(true) }
-      before { post :create, comment: Factory.attributes_for(:comment), projectid: project.id }
+      before { post :create, comment: attributes_for(:comment), projectid: project.id }
 
       it { should redirect_to project_path(project) }
       it { should_not set_the_flash }
     end
 
     context 'when user is not signed in' do
-      before { post :create, comment: Factory.attributes_for(:comment), projectid: project.id }
+      before { post :create, comment: attributes_for(:comment), projectid: project.id }
 
       it { should redirect_to new_user_session_path }
       it { should set_the_flash.to(/sign in/) }
@@ -35,7 +35,7 @@ describe CommentsController do
   describe 'DELETE delete' do
     context 'with permission' do
       before { sign_in user }
-      let(:comment) { Factory :comment, user: user }
+      let(:comment) { create :comment, user: user }
 
       before { @ability.stub!(:can?).with(:destroy, comment).and_return(true) }
       before { delete :delete, id: comment.id }
@@ -43,7 +43,7 @@ describe CommentsController do
     end
 
     context 'when user is not signed in' do
-      let(:comment) { Factory :comment }
+      let(:comment) { create :comment }
 
       before { delete :delete, id: comment.id }
       it { should set_the_flash.to(/sign in/) }
@@ -52,7 +52,7 @@ describe CommentsController do
 
     context 'without permission' do
       before { sign_in user }
-      let(:comment) { Factory :comment }
+      let(:comment) { create :comment }
 
       before { @ability.stub!(:can?).with(:destroy, comment).and_return(false) }
       before { delete :delete, id: comment.id }

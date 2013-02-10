@@ -3,7 +3,7 @@ require 'integration_helper'
 
 class AmazonFpsTesting
   describe "fps requests should" do
-    let(:project) { Factory.create(:project, state: :active) }
+    let(:project) { create(:project, state: :active) }
 
     before :all do
       Capybara.default_driver = :selenium
@@ -16,7 +16,7 @@ class AmazonFpsTesting
       delete_logs()
     end
 
-    let(:user) { Factory :user }
+    let(:user) { create :user }
 
     it "succeed on pay request and check transaction status" do
       contribution = generate_contribution(
