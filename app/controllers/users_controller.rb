@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     user.blocked = params[:blocked]
 
     if user.save
-      redirect_to :back, notice: "#{user.name}'s account was successfully blocked."
+      redirect_to :back, notice: "#{user.name}'s privileges were successfully updated."
     else
       redirect_to :back, notice: "Failed to save changes to #{user.name}'s account"
     end
