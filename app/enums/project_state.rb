@@ -71,3 +71,8 @@ end
 class ProjectState::Cancelled < ProjectState
   def color_class() 'inverse' end
 end
+
+class ProjectState::Blocked < ProjectState
+  def color_class() 'inverse' end
+  def can_edit?() true end
+end
