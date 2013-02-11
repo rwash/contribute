@@ -78,7 +78,7 @@ describe UsersController do
         before { post :block, id: user.id, blocked: true }
 
         it { should redirect_to user_path(user) }
-        it { should set_the_flash }
+        it { should set_the_flash.to(/successfully updated/) }
         it 'should set blocked to true' do
           expect(user.reload.blocked?).to be_true
         end
@@ -88,7 +88,7 @@ describe UsersController do
         before { post :block, id: user.id, blocked: false }
 
         it { should redirect_to user_path(user) }
-        it { should set_the_flash }
+        it { should set_the_flash.to(/successfully updated/) }
         it 'should set blocked to false' do
           expect(user.reload.blocked?).to be_false
         end
