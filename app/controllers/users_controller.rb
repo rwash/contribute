@@ -20,9 +20,14 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     authorize! :block, user
 
-    # TODO
+    redirect_to :back and return if params[:blocked].nil?
+    user.blocked = params[:blocked]
 
-    redirect_to user, notice: 'user not blocked yet'
+    if user.save
+      redirect_to :back, notice: "#{user.name}'s account was successfully blocked."
+    else
+      redirect_to :back, notice: "Failed to save changes to #{user.name}'s account"
+    end
   end
 
   def toggle_admin

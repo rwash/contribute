@@ -69,17 +69,35 @@ describe UsersController do
   end
 
   describe "POST 'block'" do
+    before { @request.env['HTTP_REFERER'] = user_path(user) }
+
     context 'with permission' do
       before { @ability.stub!(:can?).with(:block, user).and_return(true) }
-      before { post :block, id: user.id }
 
-      it { should redirect_to user_path(user) }
-      it { should set_the_flash }
+      context "with 'blocked': true" do
+        before { post :block, id: user.id, blocked: true }
+
+        it { should redirect_to user_path(user) }
+        it { should set_the_flash }
+        it 'should set blocked to true' do
+          expect(user.reload.blocked?).to be_true
+        end
+      end
+
+      context "with 'blocked': false" do
+        before { post :block, id: user.id, blocked: false }
+
+        it { should redirect_to user_path(user) }
+        it { should set_the_flash }
+        it 'should set blocked to false' do
+          expect(user.reload.blocked?).to be_false
+        end
+      end
     end
 
     context 'without permission' do
       before { @ability.stub!(:can?).with(:block, user).and_return(false) }
-      before { post :block, id: user.id }
+      before { post :block, id: user.id, blocked: true }
 
       it { should redirect_to :root }
       it { should set_the_flash.to(/not authorized/) }
@@ -115,7 +133,7 @@ describe UsersController do
 
     context 'without permission' do
       before { @ability.stub!(:can?).with(:toggle_admin, user).and_return(false) }
-      before { post :toggle_admin, id: user.id }
+      before { post :toggle_admin, id: user.id, admin: true }
 
       it { should redirect_to :root }
       it { should set_the_flash.to(/not authorized/) }
