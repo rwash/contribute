@@ -49,6 +49,22 @@ class User < ActiveRecord::Base
 
   after_create :add_first_list
 
+  # Override the default devise filter for active users
+  # so that we can guard against blocked users
+  def active_for_authentication?
+    super && !blocked?
+  end
+
+  # If a user is not allowed to sign in, display the following error message
+  # (found in config/locales/devise.##.yml)
+  def inactive_message
+    if blocked?
+      :blocked
+    else
+      super
+    end
+  end
+
   def add_first_list
     self.lists << List.create(title: "#{self.name}'s Projects", permanent: true, show_funded: true, show_nonfunded: true, show_active: true)
   end
