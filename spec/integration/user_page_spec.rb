@@ -20,7 +20,6 @@ class UserPageTesting
 
       expect(current_path).to eq user_path(user)
 
-      #find('div#userProfile').has_content?('Batman')
       expect(page).to have_content(user.name)
     end
 
@@ -36,7 +35,6 @@ class UserPageTesting
       click_button 'Update Profile'
 
       expect(current_path).to eq user_path(user)
-      #find('div#edit_user').has_content?('The Hulk')
       expect(page).to have_content('The Hulk')
     end
 

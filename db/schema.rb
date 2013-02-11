@@ -293,7 +293,6 @@ ActiveRecord::Schema.define(:version => 20130211191703) do
     t.datetime "picture_updated_at"
     t.boolean  "admin",                  :default => false
     t.boolean  "starred"
-    t.datetime "blocked_at"
     t.boolean  "blocked",                :default => false
   end
 
