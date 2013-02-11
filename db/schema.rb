@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204182907) do
+ActiveRecord::Schema.define(:version => 20130211191703) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -293,8 +293,11 @@ ActiveRecord::Schema.define(:version => 20130204182907) do
     t.datetime "picture_updated_at"
     t.boolean  "admin",                  :default => false
     t.boolean  "starred"
+    t.datetime "blocked_at"
+    t.boolean  "blocked",                :default => false
   end
 
+  add_index "users", ["blocked"], :name => "index_users_on_blocked"
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

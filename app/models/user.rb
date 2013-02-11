@@ -27,6 +27,7 @@
 # * *picture_updated_at* (+datetime+)
 # * *admin* (+boolean+)
 # * *starred* (+boolean+)
+# * *blocked* (+boolean+)
 class User < ActiveRecord::Base
   mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
 
@@ -36,7 +37,7 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :location, :picture, :picture_cache
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :location, :picture, :picture_cache, :blocked
 
   has_many :projects, dependent: :destroy
   has_many :comments, dependent: :destroy
