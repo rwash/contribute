@@ -84,7 +84,7 @@ class Ability
     # Even more privileges if you're a site admin!
     if user and user.admin?
       # Projects
-      can [:read, :create, :save, :activate], Project
+      can [:read, :create, :save, :activate, :block], Project
       can :destroy, Project, state: :inactive
       can :destroy, Project, state: :unconfirmed
 

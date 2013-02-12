@@ -35,14 +35,24 @@ describe ProjectsController do
     end
   end
 
-  describe 'POST activate' do
+  describe 'PUT activate' do
     context 'with permission' do
       let(:project) { create :project }
       before { @ability.stub!(:can?).with(:activate, Project).and_return(true) }
-      before { post :activate, id: project.to_param }
+      before { put :activate, id: project.to_param }
 
       it 'sets project state to active' do
         expect(project.reload.state).to eq :active
+      end
+    end
+
+    context 'without permission' do
+      let(:project) { create :project }
+      before { @ability.stub!(:can?).with(:activate, Project).and_return(false) }
+      before { put :activate, id: project.to_param }
+
+      it 'sets project state to active' do
+        expect(project.reload.state).to_not eq :active
       end
     end
   end
@@ -171,6 +181,28 @@ describe ProjectsController do
       it "can't destroy a project" do
         expect {get :destroy, id: project.name}.to_not change{ Project.count }
         expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+  end
+
+  describe 'PUT block' do
+    context 'with permission' do
+      let(:project) { create :project }
+      before { @ability.stub!(:can?).with(:block, Project).and_return(true) }
+      before { put :block, id: project.to_param }
+
+      it 'sets project state to active' do
+        expect(project.reload.state).to eq :blocked
+      end
+    end
+
+    context 'without permission' do
+      let(:project) { create :project }
+      before { @ability.stub!(:can?).with(:block, Project).and_return(false) }
+      before { put :block, id: project.to_param }
+
+      it 'sets project state to active' do
+        expect(project.reload.state).to_not eq :blocked
       end
     end
   end
