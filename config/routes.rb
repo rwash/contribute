@@ -47,8 +47,9 @@ Contribute::Application.routes.draw do
 
   #The :id being passed through the routes is really the name of the project
   match 'projects/save' => 'projects#save', :as => :save_project
-  match 'projects/:id/activate' => 'projects#activate', :as => :activate_project
+  put 'projects/:id/activate' => 'projects#activate', :as => :activate_project
   match 'projects/:id/edit/upload' => 'projects#upload', :as => :upload_project_video
+  put 'projects/:id/block' => 'projects#block', as: :block_project
   resources :projects, :only => [:index, :new, :create, :edit, :update, :show, :destroy]
 
   #Videos
