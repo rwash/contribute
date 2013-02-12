@@ -101,6 +101,22 @@ class ProjectsController < InheritedResources::Base
     respond_with(@project)
   end
 
+  def block
+    project = Project.find_by_name(params[:id].gsub(/-/, ' '))
+    video = project.video
+
+    project.state = :blocked
+    #make video non-public
+    Video.yt_session.video_update(video.yt_video_id, title: video.title, description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "denied") unless video.nil?
+
+    #TODO send out email to project owner
+    #TODO send out emails to any contributors
+
+    project.save!
+    flash[:notice] = "Successfully blocked project."
+    redirect_to project
+  end
+
   def save
     Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
 
@@ -155,6 +171,7 @@ class ProjectsController < InheritedResources::Base
 
   def show
     @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
+    authorize! :show, @project
     @project = ProjectDecorator.decorate @project if @project
     #somthing was up with this page and permissions so i moved them here
     return redirect_to root_path if @project.nil?
