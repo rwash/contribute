@@ -69,6 +69,9 @@ Contribute::Application.routes.draw do
 
   resources :groups
 
+  # Static pages, through HighVoltage
+  match '/pages/*id' => 'pages#show', as: :page, format: false
+
   root :to => 'projects#index'
 
   mount Ckeditor::Engine => "/ckeditor"
