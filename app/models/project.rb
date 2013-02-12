@@ -51,7 +51,7 @@ class Project < ActiveRecord::Base
 
   # Validations --------------------------------------------------------------
 
-  validate :validate_end_date
+  validate :end_date_in_future?, on: :create
 
   before_destroy :destroy_prep
   before_destroy :destroy_video
@@ -107,7 +107,7 @@ class Project < ActiveRecord::Base
   end
 
   # Returns true if the end date exists and is in the future
-  def validate_end_date
+  def end_date_in_future?
     if !end_date
       return
     elsif end_date < Date.today + 1
