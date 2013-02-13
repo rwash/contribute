@@ -35,13 +35,7 @@ $(document).ready(function(){
   <div class="tab-content">
     <div class="tab-pane active" id="projectContent">
 
-      <% if @project.video %>
-        <%= render @project.video %>
-      <% elsif @project.picture? %>
-        <%= image_tag @project.picture.url(:show), :class => "projectImage" %>
-      <% else %>
-        <%= image_tag "BlockSShow.png", :class => "projectImage" %>
-      <% end %>
+      <%= @project.media %>
 
       <br/><br/>
       <%= raw(@project.long_description) %><br/>
@@ -113,12 +107,11 @@ $(document).ready(function(){
 
 <% content_for :sidebar do %>
   <% if logged_in? and @project.user == current_user %>
-    <p>
-    <%= @project.colored_state_description %>
-    </p>
-    <br>
+    <p><%= @project.colored_state_description %></p><br/>
   <% end %>
+
   <%= render 'action_links' %>
+
   <ul id='project-info'>
     <li>End Date: <%= @project.end_date %></li><br>
     <li>Category: <%= @project.category.short_description %></li><br>

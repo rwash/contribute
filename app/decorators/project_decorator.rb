@@ -49,4 +49,14 @@ class ProjectDecorator < Draper::Decorator
       'Project has ended'
     end
   end
+
+  def media
+    if model.video
+      render model.video
+    elsif model.picture?
+      image_tag model.picture.url(:show), :class => "projectImage"
+    else
+      image_tag "BlockSShow.png", :class => "projectImage"
+    end
+  end
 end
