@@ -28,24 +28,20 @@
   <div class="section-header">
     <h3><%= @user.name %>'s Projects</h3>
   </div>
-  <div class="row offset1-5">
-    <%= link_to "No Projects yet. Click here to get going!", new_project_url %>
-  </div>
+  <h3><%= link_to "No Projects yet. Click here to get going!", new_project_url %></h3>
 <% else %>
   <% for list in @user.lists %>
     <%= render :partial => 'project_lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
   <% end %>
 <% end %>
-<div class="row offset1-5">
 <h3><%= link_to "+ Add a List", add_list_to_user_path(@user) %></h3>
-</div>
 <p>&nbsp;</p>
-  <div id="tabs">
-      <ul class="nav nav-tabs">
-      <li class="active"><a href="#userContributions" data-toggle="tab">Contributions</a></li>
-      <li><a href="#userComments" data-toggle="tab">Comments</a></li>
-      </ul>
-  </div>
+<div id="tabs">
+    <ul class="nav nav-tabs">
+    <li class="active"><a href="#userContributions" data-toggle="tab">Contributions</a></li>
+    <li><a href="#userComments" data-toggle="tab">Comments</a></li>
+    </ul>
+</div>
 
 <div class="tab-content">
   <div class="tab-pane active" id ="userContributions">
