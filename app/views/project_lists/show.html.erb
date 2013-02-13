@@ -14,7 +14,7 @@
 <div class="autopagerize_page_element">
   <div class="row">
     <ul class="thumbnails-small">
-      <% for project in list.sorted_projects %>
+      <% for project in list.sorted_projects(as_owner: list.listable == current_user) %>
         <li class="project-span">
           <%= render :partial => 'shared/project', :locals => { :project => project } %><br>
         </li>
@@ -32,5 +32,5 @@
   <% end %>
   </h3>
   <p>&nbsp;</p>
-    <%= paginate list.sorted_projects %>
+    <%= paginate list.sorted_projects(as_owner: list.listable == current_user) %>
 </div>

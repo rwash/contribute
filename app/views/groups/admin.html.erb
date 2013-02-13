@@ -78,7 +78,7 @@
 
 <div class="row">
   <ul class="thumbnails-small">
-    <% for project in list.sorted_projects(5) %>
+    <% for project in list.sorted_projects(limit: 5, as_owner: list.listable == current_user) %>
       <li class="project-span">
         <%= render :partial => 'shared/project-small', :locals => { :project => project } %><br>
       </li>
