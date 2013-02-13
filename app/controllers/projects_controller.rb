@@ -130,7 +130,7 @@ class ProjectsController < InheritedResources::Base
     #TODO send out email to project owner
 
     project.save!
-    flash[:notice] = "Successfully blocked project."
+    flash[:notice] = "Successfully unblocked project."
     redirect_to project
   end
 
