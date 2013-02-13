@@ -121,7 +121,11 @@ class ProjectsController < InheritedResources::Base
     project = Project.find_by_name(params[:id].gsub(/-/, ' '))
 
     # TODO reset project state to unconfirmed or inactive
-    # project.state = :blocked
+    if project.payment_account_id == Project::UNDEFINED_PAYMENT_ACCOUNT_ID
+      project.state = :unconfirmed
+    else
+      project.state = :inactive
+    end
 
     #TODO send out email to project owner
 
