@@ -65,7 +65,7 @@ class ProjectListsController < InheritedResources::Base
   def show
     @list = ProjectList.find(params[:id])
     @group = @list.listable if @list.listable_type == 'Group'
-    @projects = @list.sorted_projects
+    @projects = @list.sorted_projects(as_owner: @list.listable == current_user)
     if @projects.class.name == 'Array'
       @projects = Kaminari.paginate_array(@projects).page(params[:page]).per(12)
     else

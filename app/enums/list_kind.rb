@@ -4,8 +4,12 @@ class ListKind < ClassyEnum::Base
     projects.sort {|a,b| b.created_at <=> a.created_at }
   end
 
+  # Options:
   # limit - optional limit to number of projects you want
-  def sorted_projects(limit = Project.count)
+  # as_owner - whether or not the list is being viewed by its owner.
+  #     If true, then all projects are displayed, even unconfirmed, inactive, and cancelled ones
+  def sorted_projects(options)
+    limit = options[:limit] || Project.count
     projects = []
     if owner.listable == User.find_by_id(1)
       projects << Project.find_by_state(:active) if owner.show_active
@@ -15,7 +19,7 @@ class ListKind < ClassyEnum::Base
       projects << owner.listable.projects.where(state: :active) if owner.show_active
       projects << owner.listable.projects.where(state: :funded) if owner.show_funded
       projects << owner.listable.projects.where(state: :nonfunded) if owner.show_nonfunded
-      if owner.listable_type == "User" and owner.permanent? and !current_user.nil? and current_user.id == owner.listable.id
+      if options[:as_owner]
         projects << owner.listable.projects.where(state: :unconfirmed)
         projects << owner.listable.projects.where(state: :inactive)
         projects << owner.listable.projects.where(state: :cancelled)
