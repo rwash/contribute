@@ -213,7 +213,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:unblock, Project).and_return(true) }
       before { put :unblock, id: project.to_param }
 
-      it 'does not unblock project' do
+      it 'unblocks project' do
         expect(project.reload.state).to_not eq :blocked
       end
     end

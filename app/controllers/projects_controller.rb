@@ -38,67 +38,67 @@ class ProjectsController < InheritedResources::Base
       session[:project_id] = @project.id
 
       request = Amazon::FPS::RecipientRequest.new(save_project_url)
-      return redirect_to request.url
+      redirect_to request.url
     else
       render action: :new
     end
   end
 
   def update
-    @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
+    project = Project.find_by_name(params[:id].gsub(/-/, ' '))
 
     if params[:project] && params[:project][:video]
-      if @project.video
-        Video.delete_video(@project.video)
+      if project.video
+        Video.delete_video(project.video)
       end
 
-      @video = Video.create(title: @project.name, description: @project.short_description)
-      @project.video = @video
-      @video.project = @project
-      @project.save!
-      @video.save!
+      video = Video.create(title: project.name, description: project.short_description)
+      project.video = video
+      video.project = project
+      project.save!
+      video.save!
 
-      @response = Video.yt_session.video_upload(params[:project][:video].tempfile, title: @video.title, description: "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "denied")
+      result = Video.yt_session.video_upload(params[:project][:video].tempfile, title: video.title, description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "denied")
 
-      if @response
-        @video.update_attributes(yt_video_id: @response.unique_id, is_complete: true)
-        @video.save!
+      if result
+        video.update_attributes(yt_video_id: result.unique_id, is_complete: true)
+        video.save!
         Video.delete_incomplete_videos
       else
-        Video.delete_video(@video)
+        Video.delete_video(video)
       end
     end
 
-    if @project.update_attributes(params[:project])
+    if project.update_attributes(params[:project])
       flash[:notice] = "Successfully updated project."
     end
 
-    if @project.state.unconfirmed?
-      session[:project_id] = @project.id
+    if project.state.unconfirmed?
+      session[:project_id] = project.id
       request = Amazon::FPS::RecipientRequest.new(save_project_url)
       return redirect_to request.url
     else
-      respond_with(@project)
+      respond_with(project)
     end
   end
 
   def activate
-    @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
-    @video = @project.video
+    project = Project.find_by_name(params[:id].gsub(/-/, ' '))
+    video = project.video
 
-    @project.state = :active
+    project.state = :active
     #make video public
-    Video.yt_session.video_update(@video.yt_video_id, title: @video.title, description: "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "allowed") unless @video.nil?
+    Video.yt_session.video_update(video.yt_video_id, title: video.title, description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "allowed") unless video.nil?
 
     #send out emails for any group requests
-    @project.approvals.each do |approval|
-      @group = approval.group
-      EmailManager.project_to_group_approval(approval, @project, @group).deliver
+    project.approvals.each do |approval|
+      group = approval.group
+      EmailManager.project_to_group_approval(approval, project, group).deliver
     end
 
-    @project.save!
+    project.save!
     flash[:notice] = "Successfully activated project."
-    respond_with(@project)
+    respond_with(project)
   end
 
   def block
@@ -138,48 +138,48 @@ class ProjectsController < InheritedResources::Base
       return redirect_to root_path
     end
 
-    @project = Project.find(session[:project_id])
-    @project.state = :inactive
-    @project.payment_account_id = params[:tokenID]
+    project = Project.find(session[:project_id])
+    project.state = :inactive
+    project.payment_account_id = params[:tokenID]
 
     session[:project_id] = nil
 
-    if !@project.save 
-      flash[:alert] = "An error occurred with your project. Please try again."	
-      return redirect_to root_path
-    else
-      #TODO: This is inconsistent. All the other project and contribution e-mails go through the 
+    if project.save
+      #TODO: This is inconsistent. All the other project and contribution e-mails go through the
       # model. Might be worth doing that for this too.
-      successful_save
+      successful_save project
 
       flash[:notice] = "Project saved successfully. Here's to getting funded!"
-      return redirect_to @project
+      redirect_to project
+    else
+      flash[:alert] = "An error occurred with your project. Please try again."
+      redirect_to root_path
     end
   end
 
   def destroy
-    @project = Project.find_by_name(params[:id].gsub(/-/, ' '))
-    @video = @project.video
+    project = Project.find_by_name(params[:id].gsub(/-/, ' '))
+    video = project.video
 
-    if @project.state.unconfirmed? || @project.state.inactive?
-      @project.destroy
-      if !@project.destroyed?
+    if project.state.unconfirmed? || project.state.inactive?
+      project.destroy
+      if !project.destroyed?
         flash[:alert] = "Project could not be deleted. Please try again."
-        return redirect_to @project
-      else 
+        return redirect_to project
+      else
         flash[:notice] = "Project successfully deleted. Sorry to see you go!"
         return redirect_to root_path
       end
-    elsif @project.state.active?
+    elsif project.state.active?
       #project will not be deleted but will be CANCELLED and only visible to user
-      @project.state = :cancelled
-      @project.save!
-      @response = Video.yt_session.video_update(@video.yt_video_id, title: @video.title, description: "Contribute to this project: #{project_url(@project)}\n\n#{@video.description}\n\nFind more projects from MSU:#{root_url}", category: 'People',keywords: YT_TAGS, list: "denied") if @video
+      project.state = :cancelled
+      project.save!
+      Video.yt_session.video_update(video.yt_video_id, title: video.title, description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}", category: 'People',keywords: YT_TAGS, list: "denied") if video
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
     else
       flash[:alert] = "You can not cancel or delete this project."
     end
-    return redirect_to root_path
+    redirect_to root_path
   end
 
   def show
@@ -211,7 +211,7 @@ class ProjectsController < InheritedResources::Base
 
   protected
   # TODO rename this method -- and all of the email methods while we're at it
-  def successful_save
-    EmailManager.add_project(@project).deliver
+  def successful_save(project)
+    EmailManager.add_project(project).deliver
   end
 end
