@@ -76,7 +76,8 @@ $(document).ready(function(){
       </p>
       <br>
       <p class="comment">
-      <%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? and @project.can_comment? # TODO cancan %>
+      <%# TODO cancan  %>
+      <%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? and @project.can_comment? %>
       <% if !logged_in? %>
         <div class="alert">
           <%= link_to "You must log in to comment.", new_user_session_path %>

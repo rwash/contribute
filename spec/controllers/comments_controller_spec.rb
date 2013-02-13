@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe CommentsController do
+  render_views
+
   include Devise::TestHelpers
   let(:user) { create :user }
   let(:project) { create :project }
@@ -19,6 +21,12 @@ describe CommentsController do
 
       before { @ability.stub!(:can?).and_return(true) }
       before { post :create, comment: attributes_for(:comment), projectid: project.id }
+
+      it 'creates a comment' do
+        expect {
+          post :create, comment: attributes_for(:comment), projectid: project.id
+        }.to change{Comment.count}.by 1
+      end
 
       it { should redirect_to project_path(project) }
       it { should_not set_the_flash }
