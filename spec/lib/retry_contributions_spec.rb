@@ -9,12 +9,6 @@ describe RetryContributions do
       User.delete_all
     end
 
-    after(:each) do
-      Contribution.delete_all
-      Project.delete_all
-      User.delete_all
-    end
-
     it "success tests" do
       user = create(:user)
       project = create(:project)

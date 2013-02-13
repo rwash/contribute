@@ -10,12 +10,6 @@ class AmazonProcessTesting
       @headless.start
     end
 
-    after :all do
-      Project.delete_all
-      Contribution.delete_all
-    end
-
-
     describe 'project' do
       it "create successfully" do
         project = build(:project)
