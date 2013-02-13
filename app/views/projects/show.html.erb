@@ -44,25 +44,20 @@ $(document).ready(function(){
     <div class="tab-pane" id="projectContributors">
       <h3> Contributors </h3>
       <ul class="projectContributors">
-        <% if @project.contributions.any? %>
-          <% @project.contributions.each do |contribution|%>
-            <li>
+        <% @project.contributions.each do |contribution|%>
+          <li>
             <%= link_to contribution.user do %>
-              <% if contribution.user.picture? %>
-                <%= image_tag contribution.user.picture.url(:thumb), :class => "userImage", :width=>"50" %>
-              <% else %>
-                <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"50" %>
-              <% end %>
+              <%= contribution.user.decorate.picture_tag %>
 
               <%=contribution.user.name%>
-              <% if can? :destroy, @project %>
+              <% if can? :destroy, @project # TODO abuse of abilities%>
                 - <%= number_to_currency(contribution.amount, :precision => 0) %>
               <% end %>
             <% end %>
-            </li>
-            <br/>
-          <% end %>
-        <% else %>
+          </li>
+          <br/>
+        <% end %>
+        <% if @project.contributions.none? %>
           <p>Be the first!</p>
         <% end %>
       </ul>
@@ -81,7 +76,7 @@ $(document).ready(function(){
       </p>
       <br>
       <p class="comment">
-      <%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? and @project.can_comment? %>
+      <%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? and @project.can_comment? # TODO cancan %>
       <% if !logged_in? %>
         <div class="alert">
           <%= link_to "You must log in to comment.", new_user_session_path %>
@@ -106,7 +101,7 @@ $(document).ready(function(){
 </div>
 
 <% content_for :sidebar do %>
-  <% if logged_in? and @project.user == current_user %>
+  <% if @project.user == current_user %>
     <p><%= @project.colored_state_description %></p><br/>
   <% end %>
 

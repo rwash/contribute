@@ -24,6 +24,7 @@ class Project < ActiveRecord::Base
   # TODO change this to nil
   UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
 
+  # TODO this shouldn't be here.
   include Rails.application.routes.url_helpers
 
   belongs_to :user
