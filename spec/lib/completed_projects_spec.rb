@@ -9,12 +9,6 @@ describe CompletedProjects do
       User.delete_all
     end
 
-    after(:each) do
-      Contribution.delete_all
-      Project.delete_all
-      User.delete_all
-    end
-
     it "run works" do
       funded = build(:project, state: 'active', funding_goal: 10, end_date: (Date.today - 1))
       #Validation prevents projects with an end_date before or on today. So skip validation.

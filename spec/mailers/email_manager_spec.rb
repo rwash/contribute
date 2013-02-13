@@ -7,12 +7,6 @@ describe EmailManager do
     Contribution.delete_all
   end
 
-  after(:each) do
-    User.delete_all
-    Project.delete_all
-    Contribution.delete_all
-  end
-
   it "add project" do
     user = create(:user)
     project = create(:project, user: user)

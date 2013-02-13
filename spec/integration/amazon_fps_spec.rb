@@ -12,10 +12,6 @@ class AmazonFpsTesting
       @headless.start
     end
 
-    after :all do
-      delete_logs()
-    end
-
     let(:user) { create :user }
 
     it "succeed on pay request and check transaction status" do

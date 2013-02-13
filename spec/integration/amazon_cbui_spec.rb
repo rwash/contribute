@@ -10,11 +10,6 @@ class AmazonCbuiTesting
       @headless.start
     end
 
-    after :all do
-      Project.delete_all
-      Contribution.delete_all
-    end
-
     it "recipient request should direct to amazon login" do
       request = Amazon::FPS::RecipientRequest.new(save_project_url)
       visit(request.url)
