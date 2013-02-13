@@ -21,6 +21,7 @@ class Project < ActiveRecord::Base
   MAX_NAME_LENGTH = 75
   MAX_SHORT_DESC_LENGTH = 200
   MAX_LONG_DESC_LENGTH = 50000
+  # TODO change this to nil
   UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
 
   include Rails.application.routes.url_helpers
