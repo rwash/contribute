@@ -88,6 +88,9 @@ class Ability
       can :destroy, Project, state: :inactive
       can :destroy, Project, state: :unconfirmed
 
+      cannot :block, Project, state: :blocked
+      can :unblock, Project, state: :blocked
+
       # Note: this 'update' refers to the Update and Edit actions of ProjectsController,
       # not the ability to create Update objects associated with a project
       can :update, Project, can_edit?: true
