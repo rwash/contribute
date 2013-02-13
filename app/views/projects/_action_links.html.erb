@@ -21,5 +21,8 @@
 <% end %>
 
 <% if can? :block, @project %>
-  <%= button_to 'Block Project', block_project_url(@project), method: :put, class: 'btn btn-danger' %>
+  <%= button_to 'Block Project', block_project_url(@project), method: :put, class: 'btn btn-large btn-danger' %>
+<% end %>
+<% if can? :unblock, @project %>
+  <%= button_to 'Unblock Project', unblock_project_url(@project), method: :put, class: 'btn btn-large btn-info' %>
 <% end %>
