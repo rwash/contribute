@@ -117,6 +117,19 @@ class ProjectsController < InheritedResources::Base
     redirect_to project
   end
 
+  def unblock
+    project = Project.find_by_name(params[:id].gsub(/-/, ' '))
+
+    # TODO reset project state to unconfirmed or inactive
+    # project.state = :blocked
+
+    #TODO send out email to project owner
+
+    project.save!
+    flash[:notice] = "Successfully blocked project."
+    redirect_to project
+  end
+
   def save
     Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
 
