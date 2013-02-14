@@ -43,15 +43,10 @@ class ProjectListsController < InheritedResources::Base
     @list = List.find(params[:id])
     return redirect_to @list.listable if @list.permanent?
 
-    if current_user and current_user.admin
-      @projects = [:active,:funded,:nonfunded].map { |state| Project.find_all_by_state(state) }.flatten
-    else
-      @projects = [:active, :funded, :nonfunded].map { |state| @list.listable.projects.find_all_by_state(state) }.flatten
+    @projects = [:active, :funded, :nonfunded].map do |state|
+      @list.listable.projects.find_all_by_state(state)
     end
-    @source = []
-    for project in @projects
-      @source  << project.name
-    end
+    @projects.flatten!
   end
 
   def add_listing
