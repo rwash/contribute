@@ -1,5 +1,9 @@
 <%# TODO refactor using CanCan %>
-<% if logged_in? and @project.user == current_user and @project.state.unconfirmed? %>
+<% if current_user and current_user.admin? %>
+  <%= @project.edit_button %>
+  <%= @project.activate_button %>
+  <%= @project.delete_button %>
+<% elsif logged_in? and @project.user == current_user and @project.state.unconfirmed? %>
   <%= @project.edit_button %>
   <%= @project.delete_button %>
 <% elsif logged_in? and @project.user == current_user and @project.state.inactive? %>
@@ -10,7 +14,7 @@
   <%= @project.cancel_button %>
 <% elsif logged_in? and @project.user == current_user and (@project.state.funded? or @project.state.nonfunded?) %>
 
-<% else %>
+<% elsif current_user %>
   <% existing_contribution = @project.contributions.find_by_user_id(current_user.id) %>
   <% if existing_contribution and can? :edit, existing_contribution %>
     <%= button_to "Edit Contribution", edit_contribution_url(existing_contribution),:method => :get,  :class => 'btn btn-primary btn-large' %>
