@@ -3,6 +3,7 @@ require 'controller_helper'
 
 describe ApprovalsController do
   include Devise::TestHelpers
+  render_views
 
   let(:user) { create :user }
   before { sign_in user }

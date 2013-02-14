@@ -3,6 +3,7 @@ require 'controller_helper'
 
 describe ProjectsController do
   include Devise::TestHelpers
+  render_views
 
   # For stubbing abilities
   # See https://github.com/ryanb/cancan/wiki/Testing-Abilities
@@ -80,6 +81,7 @@ describe ProjectsController do
 
   describe 'GET show' do
     context 'with permission' do
+      before { @ability.stub!(:can?).and_return(true) }
       before { @ability.stub!(:can?).with(:show, project).and_return(true) }
 
       it 'CAN view project' do

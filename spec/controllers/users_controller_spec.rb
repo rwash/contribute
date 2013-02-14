@@ -3,6 +3,8 @@ require 'controller_helper'
 
 describe UsersController do
   include Devise::TestHelpers
+  render_views
+
   let(:user) { create :user }
 
   # For stubbing abilities
@@ -33,6 +35,7 @@ describe UsersController do
 
   describe "GET 'edit'" do
     context 'with permission' do
+      before { @ability.stub!(:can?).and_return(true) }
       before { @ability.stub!(:can?).with(:edit, user).and_return(true) }
       before { get :edit, id: user.id }
 
