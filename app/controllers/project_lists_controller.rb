@@ -3,12 +3,12 @@ class ProjectListsController < InheritedResources::Base
   before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save]
 
   def sort
-    @list = List.find(params[:id])
-    @list.title = params[:title].to_s
-    @list.save!
+    list = List.find(params[:id])
+    list.title = params[:title].to_s
+    list.save!
 
-    @listing = @list.listings.order("position DESC")
-    @listings.each do |listing|
+    listings = list.listings.order("position DESC")
+    listings.each do |listing|
       # TODO wat. Look into using the listable gem helper functions
       listing.position = params['listing'].index(listing.id.to_s) + 1
       listing.save
@@ -19,24 +19,24 @@ class ProjectListsController < InheritedResources::Base
   # TODO This should not all be done manually. We should be using
   # the update_attributes method that ActiveRecord provides
   def update
-    @list = List.find(params[:id])
-    @list.kind = "#{params[:kind].gsub(/\W/, '_')}"
-    @list.kind += "_#{params[:order]}" unless @list.kind == 'manual'
-    @list.title = params[:title]
-    @list.show_active = params[:showActive]
-    @list.show_funded = params[:showFunded]
-    @list.show_nonfunded = params[:showNonfunded]
-    @list.save!
+    list = List.find(params[:id])
+    list.kind = "#{params[:kind].gsub(/\W/, '_')}"
+    list.kind += "_#{params[:order]}" unless list.kind == 'manual'
+    list.title = params[:title]
+    list.show_active = params[:showActive]
+    list.show_funded = params[:showFunded]
+    list.show_nonfunded = params[:showNonfunded]
+    list.save!
 
-    redirect_to @list.listable
+    redirect_to list.listable
   end
 
   def destroy
-    @list = List.find(params[:id])
-    unless @list.destroy
+    list = List.find(params[:id])
+    unless list.destroy
       flash[:error] = "Failed to delete list. Please try again."
     end
-    redirect_to @list.listable
+    redirect_to list.listable
   end
 
   def edit
@@ -55,9 +55,9 @@ class ProjectListsController < InheritedResources::Base
   end
 
   def add_listing
-    @list = List.find(params[:id])
-    @project = Project.find_by_name(params[:project])
-    @list.listings << Listing.create(project_id: @project.id)
+    list = List.find(params[:id])
+    project = Project.find_by_name(params[:project])
+    list.listings << Listing.create(project_id: project.id)
 
     redirect_to :back
   end
