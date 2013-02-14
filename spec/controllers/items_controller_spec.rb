@@ -3,6 +3,7 @@ require 'controller_helper'
 
 describe ListingsController do
   include Devise::TestHelpers
+  render_views
 
   # For stubbing abilities
   # See https://github.com/ryanb/cancan/wiki/Testing-Abilities

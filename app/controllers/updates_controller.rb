@@ -1,21 +1,20 @@
 class UpdatesController < InheritedResources::Base
   before_filter :authenticate_user!
 
-  # TODO get rid of @ for local variables
   def create
-    @project = Project.find(params[:project_id])
-    @update = @project.updates.new(params[:update])
-    authorize! :create, @update, message: "You cannot update this project."
-    @update.project = @project
-    @update.email_sent = false
+    project = Project.find(params[:project_id])
+    update = project.updates.new(params[:update])
+    authorize! :create, update, message: "You cannot update this project."
+    update.project = project
+    update.email_sent = false
 
-    @update.user = current_user
-    if @update.save
+    update.user = current_user
+    if update.save
       flash[:notice] = "Update saved successfully."
     else
       flash[:alert] = "Update failed to save. Please try again."
     end
-    redirect_to @project
+    redirect_to project
   end
 
 end

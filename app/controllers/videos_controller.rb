@@ -3,10 +3,10 @@ class VideosController < InheritedResources::Base
   load_and_authorize_resource
 
   def destroy
-    @video = Video.find(params[:id])
-    @project = @video.project
+    video = Video.find(params[:id])
+    project = video.project
 
-    if Video.delete_video(@video)
+    if Video.delete_video(video)
       flash[:notice] = "Video Successfully Deleted"
     else
       flash[:error] = "Failed to Delete Video"
@@ -15,7 +15,7 @@ class VideosController < InheritedResources::Base
     begin
       redirect_to :back
     rescue
-      redirect_to @project
+      redirect_to project
     end
   end
 

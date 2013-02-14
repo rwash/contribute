@@ -3,6 +3,7 @@ require 'controller_helper'
 
 describe PagesController do
   include Devise::TestHelpers
+  render_views
 
   # We'll perform these two tests for each of our static pages.
   # To test a new page, just add the name of the page to this list.

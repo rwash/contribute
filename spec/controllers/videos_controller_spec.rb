@@ -3,6 +3,7 @@ require 'controller_helper'
 
 describe VideosController do
   include Devise::TestHelpers
+  render_views
 
   # For stubbing CanCan Abilities
   # See https://github.com/ryanb/cancan/wiki/Testing-Abilities

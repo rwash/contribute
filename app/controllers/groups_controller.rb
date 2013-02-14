@@ -31,33 +31,33 @@ class GroupsController < InheritedResources::Base
   end
 
   def submit_add
-    @group = Group.find(params[:id])
-    @project = Project.find(params[:project_id])
+    group = Group.find(params[:id])
+    project = Project.find(params[:project_id])
 
-    if @project.nil?
+    if project.nil?
       #Do Nothing
-    elsif @project.state.cancelled?
+    elsif project.state.cancelled?
       flash[:error] = "You cannot add a cancelled project."
-    elsif @group.projects.include?(@project)
+    elsif group.projects.include?(project)
       flash[:error] = "Your project is already in this group."
-    elsif @group.open?
-      @group.projects << @project
-      @video = @project.video
-      @project.update_project_video unless @video.nil?
+    elsif group.open?
+      group.projects << project
+      video = project.video
+      project.update_project_video unless video.nil?
 
       flash[:notice] = "Your project has been added to the group."
-    elsif @project.approvals.where(group_id: @group.id, approved: nil).any?
+    elsif project.approvals.where(group_id: group.id, approved: nil).any?
       flash[:error] = "You have already submitted this project. Please wait for the admin to approve or reject your request."
-    elsif @group.admin_user == current_user
-      @group.projects << @project
+    elsif group.admin_user == current_user
+      group.projects << project
       flash[:notice] = "Your project has been added."
     else
-      @approval = Approval.create(group: @group, project: @project)
+      approval = Approval.create(group: group, project: project)
       flash[:notice] = "Your project has been submitted to the group admin for approval."
-      EmailManager.project_to_group_approval(@approval, @project, @group).deliver
+      EmailManager.project_to_group_approval(approval, project, group).deliver
     end
 
-    redirect_to @group
+    redirect_to group
   end
 
   def admin
@@ -66,12 +66,12 @@ class GroupsController < InheritedResources::Base
   end
 
   def remove_project
-    @group = Group.find(params[:id])
-    @project = Project.find(params[:project_id].gsub(/-/, ' '))
-    if @group.admin_user == current_user or @project.user == current_user
-      @group.projects.delete(@project)
-      @project.update_project_video
-      flash[:notice] = "#{@project.name} removed from group #{@group.name}."
+    group = Group.find(params[:id])
+    project = Project.find(params[:project_id].gsub(/-/, ' '))
+    if group.admin_user == current_user or project.user == current_user
+      group.projects.delete(project)
+      project.update_project_video
+      flash[:notice] = "#{project.name} removed from group #{group.name}."
     else
       flash[:error] = "You do not have permission to remove this project."
     end
@@ -84,15 +84,15 @@ class GroupsController < InheritedResources::Base
   end
 
   def add_list
-    @group = Group.find(params[:id])
-    @group.lists << List.create(listable_id: @group.id, listable_type: @group.class.name)
+    group = Group.find(params[:id])
+    group.lists << List.create(listable_id: group.id, listable_type: group.class.name)
 
     redirect_to :back
   end
 
   def destroy
-    @group = Group.find(params[:id])
-    if !@group.destroy
+    group = Group.find(params[:id])
+    if !group.destroy
       flash[:error] = "Failed to delete group. Please try again."
     end
     redirect_to groups_path
