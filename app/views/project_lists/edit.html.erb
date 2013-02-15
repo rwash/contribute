@@ -10,11 +10,12 @@
 <% end %>
 
 <h3>Projects</h3>
+<h4 class="muted">(Drag to sort)</h4>
 
-<ul id="project_listings" data-update-url="<%= sort_listings_url %>">
+<ul id="project_listings" class="thumbnails-small" data-update-url="<%= sort_listings_url %>">
   <% @ordered_listings.each do |listing| %>
-    <%= content_tag_for :li, listing do %>
-      <%= listing.item.name %>
+    <%= content_tag_for :li, listing, class: 'project-span' do %>
+      <%= render :partial => 'shared/project', :locals => { :project => listing.item } %><br>
     <% end %>
   <% end %>
 </ul>
