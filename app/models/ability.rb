@@ -69,7 +69,7 @@ class Ability
       end
 
       #Lists
-      can [:destroy, :update, :sort, :add_listing], List do |l|
+      can [:destroy, :update, :add_listing], List do |l|
         if l.listable_type == "Group"
           l.listable.admin_user == user
         elsif l.listable_type == "User"
@@ -77,6 +77,9 @@ class Ability
         else
           false
         end
+      end
+      can :sort, Listing do |l|
+        can? :update, l.list
       end
 
       can :read, User, id: user.id

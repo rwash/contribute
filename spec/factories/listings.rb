@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :project_listing, class: 'ProjectListing' do
-    project
+    item { create :project }
     list { create :project_list }
   end
 end

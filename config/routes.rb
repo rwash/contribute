@@ -3,8 +3,9 @@ Contribute::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
 
   #Listings
-  post "lists/:id/listings/sort", :to => "project_lists#sort"
-  match 'listings/:id/destroy', :to => "listings#destroy", :as => :destroy_listing
+  resources :listings, only: [:destroy] do
+    post :sort, on: :collection
+  end
 
   #Lists
 
