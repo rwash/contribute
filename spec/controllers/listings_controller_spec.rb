@@ -38,4 +38,30 @@ describe ListingsController do
       it { should_not set_the_flash }
     end
   end
+
+  describe 'POST sort' do
+    let(:list) { create :project_list }
+    let(:listings) do
+     2.times.map { create :project_listing, list: list }
+    end
+
+    context 'without permission' do
+      before { @ability.stub!(:can?).and_return(false) }
+      before { post :sort, project_listing: [listings[1].id, listings[0].id] }
+
+      it 'should not reorder the listings' do
+        list.reload.listings.order('position').map(&:id).should eq [listings[0].id, listings[1].id]
+      end
+    end
+
+    context 'with permission' do
+      before { @ability.stub!(:can?).and_return(true) }
+      before { post :sort, project_listing: [listings[1].id, listings[0].id] }
+
+      it 'should reorder the listings' do
+        list.reload.listings.order('position').map(&:id).should eq [listings[1].id, listings[0].id]
+      end
+      it { should_not set_the_flash }
+    end
+  end
 end
