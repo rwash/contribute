@@ -37,7 +37,7 @@ end
 
 class ListKind::Manual < ListKind
   def sort(projects)
-    owner.listings.order("position DESC").map { |listing| listing.project }
+    owner.listings.order("position DESC").map { |listing| listing.item }
   end
 end
 

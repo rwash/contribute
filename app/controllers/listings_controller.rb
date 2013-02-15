@@ -11,4 +11,12 @@ class ListingsController < InheritedResources::Base
       redirect_to :root
     end
   end
+
+  def sort
+    params[:project_listing].each_with_index do |id, index|
+      ProjectListing.update_all({position: index + 1}, id: id)
+    end
+    render nothing: true
+  end
+
 end

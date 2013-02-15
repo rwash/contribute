@@ -2,20 +2,6 @@ class ProjectListsController < InheritedResources::Base
   load_and_authorize_resource
   before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save]
 
-  def sort
-    list = List.find(params[:id])
-    list.title = params[:title].to_s
-    list.save!
-
-    listings = list.listings.order("position DESC")
-    listings.each do |listing|
-      # TODO wat. Look into using the listable gem helper functions
-      listing.position = params['listing'].index(listing.id.to_s) + 1
-      listing.save
-    end
-    render nothing: true
-  end
-
   # TODO This should not all be done manually. We should be using
   # the update_attributes method that ActiveRecord provides
   def update
@@ -43,10 +29,7 @@ class ProjectListsController < InheritedResources::Base
     @list = List.find(params[:id])
     return redirect_to @list.listable if @list.permanent?
 
-    @projects = [:active, :funded, :nonfunded].map do |state|
-      @list.listable.projects.find_all_by_state(state)
-    end
-    @projects.flatten!
+    @ordered_listings = @list.listings.order("position")
   end
 
   def add_listing
