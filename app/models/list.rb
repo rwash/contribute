@@ -1,6 +1,5 @@
 # === Attributes
 #
-# * *kind* (+string+)
 # * *listable_id* (+integer+)
 # * *listable_type* (+string+)
 # * *created_at* (+datetime+)
