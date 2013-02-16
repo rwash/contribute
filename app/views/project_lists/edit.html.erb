@@ -10,7 +10,23 @@
 <% end %>
 
 <h3>Projects</h3>
-<h4 class="muted">(Drag to sort)</h4>
+
+Drag to sort, or sort by an attribute:<br/>
+
+<select id="sort-attribute">
+  <option value="created-at">Creation Date</option>
+  <option value="end-date">End Date</option>
+  <option value="funding-goal">Funding Goal</option>
+  <option value="amount-left-to-goal-in-dollars">Amount Remaining</option>
+  <option value="amount-left-to-goal-as-percent">Percent Remaining</option>
+  <option value="amount-donated-in-dollars">Amount Donated</option>
+  <option value="amount-donate-as-percent-of-goal">Percent Donated</option>
+</select>
+<select id="sort-order">
+  <option value="asc">Ascending</option>
+  <option value="desc">Descending</option>
+</select>
+<button id="reorder-by-attribute" class="btn btn-primary">Reorder!</button>
 
 <ul id="project_listings" class="thumbnails-small" data-update-url="<%= sort_listings_url %>">
   <% @ordered_listings.each do |listing| %>
