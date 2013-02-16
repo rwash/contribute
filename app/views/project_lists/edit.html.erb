@@ -14,7 +14,16 @@
 
 <ul id="project_listings" class="thumbnails-small" data-update-url="<%= sort_listings_url %>">
   <% @ordered_listings.each do |listing| %>
-    <%= content_tag_for :li, listing, class: 'project-span' do %>
+    <% project = listing.item %>
+    <%= content_tag_for :li, listing, class: 'project-span', data: {
+          created_at: project.created_at,
+          end_date: project.end_date,
+          funding_goal: project.funding_goal,
+          amount_left_to_goal_in_dollars: project.left_to_goal,
+          amount_left_to_goal_as_percent: project.contributions_percentage,
+          amount_donated_in_dollars: project.contributions_total,
+          amount_donated_as_percent_of_goal: project.contributions_percentage
+        } do %>
       <%= render :partial => 'shared/project', :locals => { :project => listing.item } %><br>
     <% end %>
   <% end %>

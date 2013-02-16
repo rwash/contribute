@@ -7,6 +7,7 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+//= require jquery.tinysort.min.js
 //= require twitter/bootstrap
 //= require ckeditor/init
 //= require underscore
