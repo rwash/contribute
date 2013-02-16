@@ -9,6 +9,8 @@ jQuery ->
     sort_listings_by_data_attribute $('#sort-attribute')[0].value, $('#sort-order')[0].value
 
 @sort_listings_by_data_attribute = (attribute, order) ->
+  # Sorting is done with the TinySort library
+  # http://tinysort.sjeiti.com/
   $('ul#project_listings>li.project_listing').tsort
     data: attribute
     order: order
