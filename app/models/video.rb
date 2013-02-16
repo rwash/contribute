@@ -15,6 +15,11 @@ class Video < ActiveRecord::Base
 
   validates_presence_of :project
 
+  extend ActiveModel::Callbacks
+  define_model_callbacks :destroy
+
+  before_destroy :delete_yt_video
+
   include Rails.application.routes.url_helpers
 
   def upload_video(path)
@@ -33,11 +38,9 @@ class Video < ActiveRecord::Base
     @yt_session ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)    
   end
 
-  def self.delete_video(video)
-    yt_session.video_delete(video.yt_video_id)
-    video.destroy
+  def delete_yt_video
+    yt_session.video_delete(yt_video_id)
   rescue
-    video.destroy
   end
 
   def self.update_video(video, params)
