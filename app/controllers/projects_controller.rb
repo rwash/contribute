@@ -49,7 +49,8 @@ class ProjectsController < InheritedResources::Base
 
     if params[:project] && params[:project][:video]
       if project.video
-        Video.delete_video(project.video)
+        project.video.destroy
+        project.video = nil
       end
 
       video = Video.create(title: project.name, description: project.short_description)
@@ -65,7 +66,8 @@ class ProjectsController < InheritedResources::Base
         video.save!
         Video.delete_incomplete_videos
       else
-        Video.delete_video(video)
+        project.video.destroy
+        project.video = nil
       end
     end
 
