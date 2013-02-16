@@ -8,3 +8,4 @@ jQuery ->
   $('ul#project_listings>li.project_listing').tsort
     data: attribute
     order: order
+  $.post($('#project_listings').data('update-url'), $('#project_listings').sortable('serialize'))
