@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211191703) do
+ActiveRecord::Schema.define(:version => 20130216183011) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(:version => 20130211191703) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reason"
+  end
+
+  create_table "blocks", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "reason"
+    t.integer  "blocked_id"
+    t.string   "blocked_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "categories", :force => true do |t|
@@ -133,7 +142,6 @@ ActiveRecord::Schema.define(:version => 20130211191703) do
   end
 
   create_table "lists", :force => true do |t|
-    t.string   "kind",                         :default => "default"
     t.integer  "listable_id",                                             :null => false
     t.string   "listable_type",  :limit => 20,                            :null => false
     t.datetime "created_at"
@@ -293,6 +301,7 @@ ActiveRecord::Schema.define(:version => 20130211191703) do
     t.datetime "picture_updated_at"
     t.boolean  "admin",                  :default => false
     t.boolean  "starred"
+    t.datetime "blocked_at"
     t.boolean  "blocked",                :default => false
   end
 

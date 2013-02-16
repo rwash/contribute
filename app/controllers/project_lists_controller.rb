@@ -6,8 +6,6 @@ class ProjectListsController < InheritedResources::Base
   # the update_attributes method that ActiveRecord provides
   def update
     list = List.find(params[:id])
-    list.kind = "#{params[:kind].gsub(/\W/, '_')}"
-    list.kind += "_#{params[:order]}" unless list.kind == 'manual'
     list.title = params[:title]
     list.show_active = params[:showActive]
     list.show_funded = params[:showFunded]
