@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
+    logger.warn "Unauthorized access: trying to #{exception.action} #{exception.subject}"
     if exception.action == :create and exception.subject.instance_of? Contribution
       redirect_to exception.subject.project, alert: "You may not contribute to this project. The contribution period has ended."
     elsif exception.action == :edit and exception.subject.instance_of? Contribution
