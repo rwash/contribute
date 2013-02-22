@@ -12,9 +12,7 @@ class UserPageTesting
 
     context "when signed in" do
       let(:user) { create :user }
-      before do
-        login_as user
-      end
+      before { login_as user }
 
       it "should show successfully" do
         visit user_path(user)
@@ -22,6 +20,20 @@ class UserPageTesting
         expect(current_path).to eq user_path(user)
 
         expect(page).to have_content(user.name)
+      end
+
+      it "should show inactive projects" do
+        project = create :project, state: :inactive, user: user
+
+        visit user_path(user)
+        expect(page).to have_content(project.name)
+      end
+
+      it "should show unconfirmed projects" do
+        project = create :project, state: :unconfirmed, user: user
+
+        visit user_path(user)
+        expect(page).to have_content(project.name)
       end
 
       it "should edit successfully" do
