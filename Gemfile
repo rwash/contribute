@@ -100,7 +100,6 @@ gem 'carrierwave'
 # Resizing in Carrierwave
 # Dependency Carrierwave has to be able to resize pictures to more
 # useful sizes
-gem 'rmagick'
 gem 'mini_magick'
 
 # REST interaction

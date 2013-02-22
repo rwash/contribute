@@ -223,7 +223,6 @@ GEM
     request_store (1.0.5)
     responders (0.9.3)
       railties (~> 3.1)
-    rmagick (2.13.2)
     rspec (2.12.0)
       rspec-core (~> 2.12.0)
       rspec-expectations (~> 2.12.0)
@@ -352,7 +351,6 @@ DEPENDENCIES
   rails
   rb-fsevent
   rdoc
-  rmagick
   rspec-rails
   rvm-capistrano
   sass-rails
