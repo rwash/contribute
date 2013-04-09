@@ -43,7 +43,7 @@ Contribute::Application.routes.draw do
   match 'contributions/update_save' => 'contributions#update_save', :as => :update_save_contribution
   match 'contributions/execute/:id' => 'contributions#executePayment', :as => :execute_contribution
   match "more" => "registrations#more", :as => "more"
-  resources :contributions, :only => [:create, :edit, :show, :update]
+  resources :contributions, :only => [:create, :edit, :update]
 
   #The :id being passed through the routes is really the name of the project
   match 'projects/save' => 'projects#save', :as => :save_project

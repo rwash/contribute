@@ -9,8 +9,8 @@ class ContributionsController < ApplicationController
 
   cache_sweeper :contribution_sweeper
 
-  load_and_authorize_resource except: [:new, :create, :save, :show, :edit, :update_save]
-  skip_authorization_check only: [:save, :show, :edit, :update_save]
+  load_and_authorize_resource except: [:new, :create, :save, :edit, :update_save]
+  skip_authorization_check only: [:save, :edit, :update_save]
 
   def new
     @project = Project.find_by_name params[:project].gsub(/-/, ' ')
