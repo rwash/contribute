@@ -178,7 +178,7 @@ class Project < ActiveRecord::Base
       description += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
     end
 
-    Video.yt_session.video_update(video.yt_video_id, title: video.title, description: description, category: 'Tech', keywords: tags, list: "allowed")
+    video.update(title: video.title, description: description, category: 'Tech', keywords: tags, list: "allowed")
   end
 
   def confirmation_approver?
