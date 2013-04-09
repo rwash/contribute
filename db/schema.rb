@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130216183011) do
+ActiveRecord::Schema.define(:version => 20130218201030) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.boolean  "retriable"
     t.boolean  "email_user"
     t.boolean  "email_admin"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "error"
   end
 
@@ -28,16 +28,16 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.integer  "group_id"
     t.integer  "project_id"
     t.boolean  "approved"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "reason"
   end
 
   create_table "blocks", :force => true do |t|
     t.integer  "user_id"
-    t.text     "reason"
     t.integer  "blocked_id"
     t.string   "blocked_type"
+    t.text     "reason"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
   create_table "categories", :force => true do |t|
     t.string   "short_description"
     t.text     "long_description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "ckeditor_assets", :force => true do |t|
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.string   "type",              :limit => 30
     t.integer  "width"
     t.integer  "height"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   add_index "ckeditor_assets", ["assetable_type", "assetable_id"], :name => "idx_ckeditor_assetable"
@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.integer  "parent_id"
     t.integer  "lft"
     t.integer  "rgt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
 
   add_index "comments", ["commentable_id"], :name => "index_comments_on_commentable_id"
@@ -87,8 +87,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.integer  "amount"
     t.integer  "project_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.string   "status",         :default => "none"
     t.integer  "retry_count"
     t.string   "transaction_id"
@@ -105,8 +105,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -120,8 +120,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.string   "long_description"
   end
 
@@ -136,16 +136,16 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.integer  "list_id"
     t.integer  "item_id"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.string   "type",       :default => "ProjectListing"
   end
 
   create_table "lists", :force => true do |t|
     t.integer  "listable_id",                                             :null => false
     t.string   "listable_type",  :limit => 20,                            :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "title",                        :default => ""
     t.boolean  "show_active",                  :default => true
     t.boolean  "show_funded",                  :default => false
@@ -158,30 +158,30 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
 
   create_table "log_cancel_requests", :force => true do |t|
     t.string   "TokenId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "log_cancel_responses", :force => true do |t|
     t.integer  "log_cancel_request_id"
     t.string   "RequestId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "log_errors", :force => true do |t|
     t.integer  "log_request_id"
     t.string   "Code"
     t.string   "Message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "RequestId"
   end
 
   create_table "log_get_transaction_requests", :force => true do |t|
     t.string   "TransactionId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "log_get_transaction_responses", :force => true do |t|
@@ -190,8 +190,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.string   "CallerReference"
     t.string   "StatusCode"
     t.string   "StatusMessage"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "log_get_transaction_request_id"
     t.string   "RequestId"
   end
@@ -201,8 +201,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.string   "recipientTokenList"
     t.integer  "globalAmountLimit"
     t.string   "paymentReason"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "log_multi_token_responses", :force => true do |t|
@@ -211,8 +211,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.string   "errorMessage"
     t.string   "warningCode"
     t.string   "warningMessage"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.integer  "log_multi_token_request_id"
   end
 
@@ -220,16 +220,16 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.string   "CallerReference"
     t.string   "RecipientTokenId"
     t.string   "SenderTokenId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "log_pay_responses", :force => true do |t|
     t.string   "TransactionId"
     t.string   "TransactionStatus"
     t.string   "RequestId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.integer  "log_pay_request_id"
   end
 
@@ -239,8 +239,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.string   "status"
     t.string   "callerReference"
     t.string   "errorMessage"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "projects", :force => true do |t|
@@ -251,8 +251,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.date     "end_date"
     t.integer  "category_id"
     t.boolean  "active"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
@@ -265,8 +265,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
 
   create_table "updates", :force => true do |t|
     t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "user_id"
     t.integer  "project_id"
     t.boolean  "email_sent"
@@ -293,15 +293,14 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.boolean  "admin",                  :default => false
     t.boolean  "starred"
-    t.datetime "blocked_at"
     t.boolean  "blocked",                :default => false
   end
 
@@ -316,8 +315,8 @@ ActiveRecord::Schema.define(:version => 20130216183011) do
     t.string   "description"
     t.string   "yt_video_id"
     t.boolean  "is_complete", :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "project_id"
   end
 
