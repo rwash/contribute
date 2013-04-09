@@ -29,51 +29,39 @@ class ContributionsController < ApplicationController
       #E.g. memcached, writing to the DB and marking record incomplete
 
       if !@contribution.save
-        flash[:alert] = "An error occured while submitting your contribution. Please try again."
-        return redirect_to @contribution.project
+        return redirect_to @contribution.project, alert: "An error occured while submitting your contribution. Please try again."
       end
       session[:contribution_id] = @contribution.id
       request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @contribution.project.payment_account_id, @contribution.amount, @contribution.project.name)
 
       redirect_to request.url
     else
-      flash[:alert] = "Sorry, this project is no longer taking contributions."
-      render action: :new
+      render action: :new, alert: "Sorry, this project is no longer taking contributions."
     end
   end
 
   #Return URL from payment gateway
   def save
     if session[:contribution_id].nil?
-      flash[:alert] = ERROR_STRING
-      return redirect_to root_path
+      return redirect_to root_path, alert: ERROR_STRING
     end
     @contribution = Contribution.find(session[:contribution_id])
 
     Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
     if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(save_contribution_url, session, params)
-      flash[:alert] = ERROR_STRING
-      return redirect_to @contribution.project
+      return redirect_to @contribution.project, alert: ERROR_STRING
     end
 
     session[:contribution_id] = nil
     @contribution.payment_key = params[:tokenID]
     @contribution.confirmed = true
     if !@contribution.save
-      flash[:alert] = ERROR_STRING
-      return redirect_to @contribution.project
+      return redirect_to @contribution.project, alert: ERROR_STRING
     else
       successful_save
 
-      flash[:alert] = "Contribution submitted. Thank you for your support!"
-      return redirect_to @contribution.project
+      return redirect_to @contribution.project, alert: "Contribution submitted. Thank you for your support!"
     end
-  end
-
-  # Routing for edit and update doesn't work unless route for show exists
-  # TODO look into the routing. This method shouldn't have to exist
-  def show
-    raise ActionController::RoutingError.new('Not Found')
   end
 
   def edit
@@ -95,8 +83,7 @@ class ContributionsController < ApplicationController
     @contribution.project_id = @project.id
 
     if @project.end_date < Date.today
-      flash[:error] = "You cannot edit your contribution because this project is no longer taking contributions."
-      return redirect_to @project
+      return redirect_to @project, error: "You cannot edit your contribution because this project is no longer taking contributions."
     end
 
     if !@contribution.valid?
@@ -122,15 +109,13 @@ class ContributionsController < ApplicationController
 
   def update_save
     if session[:contribution].nil? or session[:editing_contribution_id].nil?
-      flash[:alert] = ERROR_STRING
-      return redirect_to root_path
+      return redirect_to root_path, alert: ERROR_STRING
     end
     @contribution = session[:contribution]
 
     Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
     if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(update_save_contribution_url, session, params)
-      flash[:alert] = ERROR_STRING
-      return redirect_to @contribution.project
+      return redirect_to @contribution.project, alert: ERROR_STRING
     end
 
     session[:contribution] = nil
@@ -140,19 +125,16 @@ class ContributionsController < ApplicationController
     @contribution.payment_key = params[:tokenID]
 
     if !@contribution.save
-      flash[:alert] = ERROR_STRING
-      return redirect_to @contribution.project
+      return redirect_to @contribution.project, alert: ERROR_STRING
     end
 
     if !@editing_contribution.cancel
       @contribution.cancel
-      flash[:alert] = ERROR_STRING
-      return redirect_to @contribution.project
+      return redirect_to @contribution.project, alert: ERROR_STRING
     else
       successful_update
 
-      flash[:alert] = "Contribution successfully updated. Thank you for your support!"
-      return redirect_to @contribution.project
+      return redirect_to @contribution.project, alert: "Contribution successfully updated. Thank you for your support!"
     end
   end
 
@@ -160,8 +142,7 @@ class ContributionsController < ApplicationController
   # TODO move to CanCan
   def validate_project(project)
     if !project.state.active?
-      flash[:alert] = ERROR_STRING
-      redirect_to root_path
+      redirect_to root_path, alert: ERROR_STRING
     end
   end
 
@@ -173,8 +154,7 @@ class ContributionsController < ApplicationController
     validate_project @project
 
   rescue ActiveRecord::RecordNotFound
-    flash[:alert] = ERROR_STRING
-    redirect_to root_url
+    redirect_to root_url, alert: ERROR_STRING
   end
 
   # TODO get rid of this
@@ -184,16 +164,12 @@ class ContributionsController < ApplicationController
     #Setup contribution parameters that aren't specified by user...
     #TODO this can be a default value in the database
     contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
-    if(user_signed_in?)
-      contribution.user_id = current_user.id
-    end
+    contribution.user_id = current_user.id if user_signed_in?
     return contribution
   end
 
   def successful_save
-    if user_signed_in?
-      EmailManager.contribute_to_project(@contribution).deliver
-    end
+    EmailManager.contribute_to_project(@contribution).deliver if user_signed_in?
   end
 
   def successful_update
