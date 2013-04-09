@@ -37,16 +37,19 @@ class Video < ActiveRecord::Base
   def published= (published)
     list = published ? 'allowed' : 'denied'
 
-    Video.yt_session.video_update(video.yt_video_id,
-                                  title: video.title,
-                                  description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}",
-                                  category: 'Tech',
-                                  keywords: YT_TAGS,
-                                  list: list)
+    update(title: title,
+           description: "Contribute to this project: #{project_url(project)}\n\n#{description}\n\nFind more projects from MSU:#{root_url}",
+           category: 'Tech',
+           keywords: YT_TAGS,
+           list: list)
+  end
+
+  def update(params)
+    Video.yt_session.video_update(yt_video_id, params)
   end
 
   def self.yt_session
-    @yt_session ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)    
+    @yt_session ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)
   end
 
   def delete_yt_video
@@ -69,6 +72,7 @@ class Video < ActiveRecord::Base
   end
 
   private
+
   def self.video_options(title, description)
     opts = {title: title,
             description: description,
@@ -76,5 +80,4 @@ class Video < ActiveRecord::Base
             keywords: ["test"]}
     #params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
   end
-
 end
