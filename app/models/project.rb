@@ -169,16 +169,11 @@ class Project < ActiveRecord::Base
   def update_project_video
     return if video.nil?
 
+    # TODO move this to config/environments/...
     default_url_options[:host] = "orithena.cas.msu.edu"
-    tags = YT_TAGS
-    description = "Contribute to this project: #{project_url(self)}\n\n#{video.description}\n\nFind more projects from MSU:\n#{root_url}\n"
+    description = video.youtube_description
 
-    self.groups.each do |g|
-      tags << g.name
-      description += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
-    end
-
-    video.update(title: video.title, description: description, category: 'Tech', keywords: tags, list: "allowed")
+    video.update(title: video.title, description: description, category: 'Tech', keywords: video.tags, list: "allowed")
   end
 
   def confirmation_approver?
