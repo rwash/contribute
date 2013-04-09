@@ -34,6 +34,17 @@ class Video < ActiveRecord::Base
   end
   handle_asynchronously :upload_video
 
+  def published= (published)
+    list = published ? 'allowed' : 'denied'
+
+    Video.yt_session.video_update(video.yt_video_id,
+                                  title: video.title,
+                                  description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}",
+                                  category: 'Tech',
+                                  keywords: YT_TAGS,
+                                  list: list)
+  end
+
   def self.yt_session
     @yt_session ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)    
   end

@@ -89,8 +89,9 @@ class ProjectsController < InheritedResources::Base
     video = project.video
 
     project.state = :active
+
     #make video public
-    Video.yt_session.video_update(video.yt_video_id, title: video.title, description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "allowed") unless video.nil?
+    video.public = true unless video.nil?
 
     #send out emails for any group requests
     project.approvals.each do |approval|
@@ -108,8 +109,9 @@ class ProjectsController < InheritedResources::Base
     video = project.video
 
     project.state = :blocked
+
     #make video non-public
-    Video.yt_session.video_update(video.yt_video_id, title: video.title, description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "denied") unless video.nil?
+    video.public = false unless video.nil?
 
     #TODO send out email to project owner
     #TODO send out emails to any contributors
