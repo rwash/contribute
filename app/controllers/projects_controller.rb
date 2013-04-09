@@ -30,7 +30,7 @@ class ProjectsController < InheritedResources::Base
 
     if @project.save
       unless params[:project][:video].nil?
-        @project.video = Video.create(title: @project.name, description: "Contribute to this project: #{project_url(@project)}\n\n#{@project.short_description}\n\nFind more projects from MSU:#{root_url}", project_id: @project.id)
+        @project.video = Video.create(title: @project.name, project_id: @project.id)
         @project.video.delay.upload_video(params[:project][:video].path)
         @project.save # Save the ID of the video
       end
@@ -59,7 +59,12 @@ class ProjectsController < InheritedResources::Base
       project.save!
       video.save!
 
-      result = Video.yt_session.video_upload(params[:project][:video].tempfile, title: video.title, description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}", category: 'Tech', keywords: YT_TAGS, list: "denied")
+      result = Video.yt_session.video_upload(params[:project][:video].tempfile,
+                                             title: video.title,
+                                             description: video.youtube_description,
+                                             category: 'Tech',
+                                             keywords: video.tags,
+                                             list: "denied")
 
       if result
         video.update_attributes(yt_video_id: result.unique_id, is_complete: true)
@@ -182,7 +187,7 @@ class ProjectsController < InheritedResources::Base
       #project will not be deleted but will be CANCELLED and only visible to user
       project.state = :cancelled
       project.save!
-      Video.yt_session.video_update(video.yt_video_id, title: video.title, description: "Contribute to this project: #{project_url(project)}\n\n#{video.description}\n\nFind more projects from MSU:#{root_url}", category: 'People',keywords: YT_TAGS, list: "denied") if video
+      video.published = false
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
     else
       flash[:alert] = "You can not cancel or delete this project."

@@ -25,7 +25,7 @@ class Video < ActiveRecord::Base
   def upload_video(path)
     puts "Uploading video at #{path}"
     tempfile = File.open path
-    response = Video.yt_session.video_upload(tempfile, title: self.title, description: self.description, category: 'Tech',keywords: YT_TAGS, list: "denied")
+    response = Video.yt_session.video_upload(tempfile, title: self.title, description: self.description, category: 'Tech',keywords: self.tags, list: "denied")
 
     unless response.nil?
       self.update_attributes(yt_video_id: response.unique_id, is_complete: true)
@@ -38,10 +38,26 @@ class Video < ActiveRecord::Base
     list = published ? 'allowed' : 'denied'
 
     update(title: title,
-           description: "Contribute to this project: #{project_url(project)}\n\n#{description}\n\nFind more projects from MSU:#{root_url}",
+           description: youtube_description,
            category: 'Tech',
-           keywords: YT_TAGS,
+           keywords: tags,
            list: list)
+  end
+
+  def youtube_description
+    yt_desc = ["Contribute to this project: #{project_url(project)}",
+     "#{description}",
+     "Find more projects from MSU: #{root_url}"].join('\n\n')
+
+    project.groups.each do |g|
+      yt_desc += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
+    end
+
+    yt_desc
+  end
+
+  def tags
+    YT_TAGS + project.groups.map(&:name)
   end
 
   def update(params)
