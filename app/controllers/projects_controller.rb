@@ -50,7 +50,7 @@ class ProjectsController < InheritedResources::Base
         @project.video.destroy
       end
 
-      @project.video = Video.create(title: @project.name, description: @project.short_description)
+      @project.video = Video.create
 
       result = Video.yt_session.video_upload(params[:project][:video].tempfile,
                                              title: @project.video.title,
