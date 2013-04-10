@@ -201,15 +201,7 @@ class ProjectsController < InheritedResources::Base
   def show
     load_project_from_params
     authorize! :show, @project
-    @project = ProjectDecorator.decorate @project if @project
-    #somthing was up with this page and permissions so i moved them here
-    return redirect_to root_path if @project.nil?
-
-    @video = @project.video
-    #for some reason youtube returns the most recent upload if the video token is nil
-    if @video && @video.yt_video_id.nil?
-      @video = nil
-    end
+    @project = ProjectDecorator.decorate @project
 
     # Existing comments
     @rootComments = @project.root_comments
@@ -226,7 +218,6 @@ class ProjectsController < InheritedResources::Base
   def edit
     load_project_from_params
     authorize! :edit, @project
-    @video = @project.video
   end
 
   protected
@@ -236,6 +227,6 @@ class ProjectsController < InheritedResources::Base
   end
 
   def load_project_from_params
-    @project = Project.find_by_name params[:id].gsub(/-/, ' ')
+    @project = Project.find_by_name! params[:id].gsub(/-/, ' ')
   end
 end
