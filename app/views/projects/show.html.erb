@@ -90,7 +90,7 @@ $(document).ready(function(){
       <ul class="projectUpdates">
         <h4><%= "There are no updates for this project." if @updates.empty? %></h4>
 
-        <%= render :partial => 'updates/update', :object => @update, :collection => @updates %>
+        <%= render :partial => 'updates/update', :collection => @updates %>
 
       </ul>
       <p>&nbsp;</p>
