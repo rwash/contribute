@@ -32,12 +32,7 @@ class Video < ActiveRecord::Base
   def upload_video(path)
     puts "Uploading video at #{path}"
     tempfile = File.open path
-    response = Video.yt_session.video_upload(tempfile,
-                                             title: self.title,
-                                             description: self.youtube_description,
-                                             category: 'Tech',
-                                             keywords: self.tags,
-                                             list: "denied")
+    response = Video.yt_session.video_upload(tempfile, options_hash)
 
     unless response.nil?
       self.update_attributes(yt_video_id: response.unique_id, is_complete: true)
@@ -46,33 +41,8 @@ class Video < ActiveRecord::Base
   end
   handle_asynchronously :upload_video
 
-  def list
-    published ? 'allowed' : 'denied'
-  end
-
-  def youtube_description
-    yt_desc = ["Contribute to this project: #{project_url(project)}",
-     "#{description}",
-     "Find more projects from MSU: #{root_url}"].join('\n\n')
-
-    project.groups.each do |g|
-      yt_desc += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
-    end
-
-    yt_desc
-  end
-
-  def tags
-    YT_TAGS + project.groups.map(&:name)
-  end
-
   def update
-    Video.yt_session.video_update(yt_video_id,
-                                  title: title,
-                                  description: youtube_description,
-                                  category: 'Tech',
-                                  keywords: tags,
-                                  list: list)
+    Video.yt_session.video_update(yt_video_id, options_hash)
   end
 
   def self.yt_session
@@ -96,4 +66,37 @@ class Video < ActiveRecord::Base
   def self.delete_incomplete_videos
     self.incompletes.map{|r| r.destroy}
   end
+
+  protected
+
+  def options_hash
+    {
+      title: title,
+      description: youtube_description,
+      category: 'Tech',
+      keywords: tags,
+      list: list
+    }
+  end
+
+  def youtube_description
+    yt_desc = ["Contribute to this project: #{project_url(project)}",
+     "#{description}",
+     "Find more projects from MSU: #{root_url}"].join('\n\n')
+
+    project.groups.each do |g|
+      yt_desc += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
+    end
+
+    yt_desc
+  end
+
+  def tags
+    YT_TAGS + project.groups.map(&:name)
+  end
+
+  def list
+    published ? 'allowed' : 'denied'
+  end
+
 end

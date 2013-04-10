@@ -46,18 +46,10 @@ class ProjectsController < InheritedResources::Base
     authorize! :update, @project
 
     if params[:project] && params[:project][:video]
-      if @project.video
-        @project.video.destroy
-      end
+      @project.video.destroy if @project.video
 
       @project.video = Video.create
-
-      result = Video.yt_session.video_upload(params[:project][:video].tempfile,
-                                             title: @project.video.title,
-                                             description: @project.video.youtube_description,
-                                             category: 'Tech',
-                                             keywords: @project.video.tags,
-                                             list: "denied")
+      @project.video.delay.upload_video(params[:project][:video].path)
 
       if result
         @project.video.update_attributes(yt_video_id: result.unique_id, is_complete: true)
