@@ -2,6 +2,7 @@
 #
 # * *yt_video_id* (+string+)
 # * *is_complete* (+boolean+)
+# * *published* (+boolean+)
 # * *created_at* (+datetime+)
 # * *updated_at* (+datetime+)
 # * *project_id* (+integer+)
