@@ -48,29 +48,22 @@ class ProjectsController < InheritedResources::Base
     if params[:project] && params[:project][:video]
       if @project.video
         @project.video.destroy
-        @project.video = nil
       end
 
-      video = Video.create(title: @project.name, description: @project.short_description)
-      @project.video = video
-      video.project = @project
-      @project.save!
-      video.save!
+      @project.video = Video.create(title: @project.name, description: @project.short_description)
 
       result = Video.yt_session.video_upload(params[:project][:video].tempfile,
-                                             title: video.title,
-                                             description: video.youtube_description,
+                                             title: @project.video.title,
+                                             description: @project.video.youtube_description,
                                              category: 'Tech',
-                                             keywords: video.tags,
+                                             keywords: @project.video.tags,
                                              list: "denied")
 
       if result
-        video.update_attributes(yt_video_id: result.unique_id, is_complete: true)
-        video.save!
+        @project.video.update_attributes(yt_video_id: result.unique_id, is_complete: true)
         Video.delete_incomplete_videos
       else
         @project.video.destroy
-        @project.video = nil
       end
     end
 
