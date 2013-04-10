@@ -17,12 +17,7 @@ describe ProjectsController do
   let!(:project) { create :project }
 
   context "GET index" do
-    before do
-      @ability.stub!(:can?) { |arg1, arg2|
-        arg1.should eq :index
-        true
-      }
-    end
+    before { @ability.stub!(:can?).with(:index, Project).and_return(true) }
     before { get :index }
 
     it { should respond_with :success }
