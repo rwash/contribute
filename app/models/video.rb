@@ -1,9 +1,8 @@
 # === Attributes
 #
-# * *title* (+string+)
-# * *description* (+string+)
 # * *yt_video_id* (+string+)
 # * *is_complete* (+boolean+)
+# * *published* (+boolean+)
 # * *created_at* (+datetime+)
 # * *updated_at* (+datetime+)
 # * *project_id* (+integer+)
@@ -25,7 +24,7 @@ class Video < ActiveRecord::Base
   def upload_video(path)
     puts "Uploading video at #{path}"
     tempfile = File.open path
-    response = Video.yt_session.video_upload(tempfile, title: self.title, description: self.description, category: 'Tech',keywords: self.tags, list: "denied")
+    response = Video.yt_session.video_upload(tempfile, options_hash)
 
     unless response.nil?
       self.update_attributes(yt_video_id: response.unique_id, is_complete: true)
@@ -34,19 +33,42 @@ class Video < ActiveRecord::Base
   end
   handle_asynchronously :upload_video
 
-  def published= (published)
-    list = published ? 'allowed' : 'denied'
+  def update
+    Video.yt_session.video_update(yt_video_id, options_hash)
+  end
 
-    update(title: title,
-           description: youtube_description,
-           category: 'Tech',
-           keywords: tags,
-           list: list)
+  def self.yt_session
+    @yt_session ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)
+  end
+
+  def delete_yt_video
+    yt_session.video_delete(yt_video_id)
+  rescue
+  end
+
+  def self.token_form(title, description, nexturl)
+    yt_session.upload_token(video_options, nexturl)
+  end
+
+  def self.delete_incomplete_videos
+    self.incompletes.map{|r| r.destroy}
+  end
+
+  protected
+
+  def options_hash
+    {
+      title: project.name,
+      description: youtube_description,
+      category: 'Tech',
+      keywords: tags,
+      list: list
+    }
   end
 
   def youtube_description
     yt_desc = ["Contribute to this project: #{project_url(project)}",
-     "#{description}",
+     "#{project.short_description}",
      "Find more projects from MSU: #{root_url}"].join('\n\n')
 
     project.groups.each do |g|
@@ -60,40 +82,8 @@ class Video < ActiveRecord::Base
     YT_TAGS + project.groups.map(&:name)
   end
 
-  def update(params)
-    Video.yt_session.video_update(yt_video_id, params)
+  def list
+    published ? 'allowed' : 'denied'
   end
 
-  def self.yt_session
-    @yt_session ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)
-  end
-
-  def delete_yt_video
-    yt_session.video_delete(yt_video_id)
-  rescue
-  end
-
-  def self.update_video(video, params)
-    # may want to add a :dev_tab => "contribute", also may want to make the videos private ( but I like keeping them public.)
-    yt_session.video_update(video.yt_video_id, video_options(params[:title], params[:description]))
-    video.update_attributes(params)
-  end
-
-  def self.token_form(title, description, nexturl)
-    yt_session.upload_token(video_options(title, description), nexturl)
-  end
-
-  def self.delete_incomplete_videos
-    self.incompletes.map{|r| r.destroy}
-  end
-
-  private
-
-  def self.video_options(title, description)
-    opts = {title: title,
-            description: description,
-            category: "People",
-            keywords: ["test"]}
-    #params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
-  end
 end
