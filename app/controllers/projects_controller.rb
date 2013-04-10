@@ -90,12 +90,11 @@ class ProjectsController < InheritedResources::Base
   def activate
     load_project_from_params
     authorize! :activate, @project
-    video = @project.video
 
     @project.state = :active
 
     #make video public
-    video.public = true unless video.nil?
+    @project.video.public = true if @project.video
 
     #send out emails for any group requests
     @project.approvals.each do |approval|
@@ -111,12 +110,11 @@ class ProjectsController < InheritedResources::Base
   def block
     load_project_from_params
     authorize! :block, @project
-    video = @project.video
 
     @project.state = :blocked
 
     #make video non-public
-    video.public = false unless video.nil?
+    @project.video.public = false if @project.video
 
     #TODO send out email to project owner
     #TODO send out emails to any contributors
@@ -174,7 +172,6 @@ class ProjectsController < InheritedResources::Base
   def destroy
     load_project_from_params
     authorize! :destroy, @project
-    video = @project.video
 
     # TODO this should change to use CanCan
     if @project.state.unconfirmed? || @project.state.inactive?
@@ -190,7 +187,7 @@ class ProjectsController < InheritedResources::Base
       #project will not be deleted but will be CANCELLED and only visible to user
       @project.state = :cancelled
       @project.save!
-      video.published = false
+      @project.video.published = false
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
     else
       flash[:alert] = "You can not cancel or delete this project."
@@ -201,7 +198,7 @@ class ProjectsController < InheritedResources::Base
   def show
     load_project_from_params
     authorize! :show, @project
-    @project = ProjectDecorator.decorate @project
+    @project = @project.decorate
 
     # Existing comments
     @rootComments = @project.root_comments
