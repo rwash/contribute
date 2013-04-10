@@ -90,12 +90,11 @@ class ProjectsController < InheritedResources::Base
   def activate
     load_project_from_params
     authorize! :activate, @project
-    video = @project.video
 
     @project.state = :active
 
     #make video public
-    video.public = true unless video.nil?
+    @project.video.public = true if @project.video
 
     #send out emails for any group requests
     @project.approvals.each do |approval|
@@ -111,12 +110,11 @@ class ProjectsController < InheritedResources::Base
   def block
     load_project_from_params
     authorize! :block, @project
-    video = @project.video
 
     @project.state = :blocked
 
     #make video non-public
-    video.public = false unless video.nil?
+    @project.video.public = false if @project.video
 
     #TODO send out email to project owner
     #TODO send out emails to any contributors
@@ -174,7 +172,6 @@ class ProjectsController < InheritedResources::Base
   def destroy
     load_project_from_params
     authorize! :destroy, @project
-    video = @project.video
 
     # TODO this should change to use CanCan
     if @project.state.unconfirmed? || @project.state.inactive?
@@ -190,7 +187,7 @@ class ProjectsController < InheritedResources::Base
       #project will not be deleted but will be CANCELLED and only visible to user
       @project.state = :cancelled
       @project.save!
-      video.published = false
+      @project.video.published = false
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
     else
       flash[:alert] = "You can not cancel or delete this project."
@@ -201,29 +198,23 @@ class ProjectsController < InheritedResources::Base
   def show
     load_project_from_params
     authorize! :show, @project
-    @project = ProjectDecorator.decorate @project if @project
-    #somthing was up with this page and permissions so i moved them here
-    return redirect_to root_path if @project.nil?
+    @project = @project.decorate
 
-    @video = @project.video
-    #for some reason youtube returns the most recent upload if the video token is nil
-    if @video && @video.yt_video_id.nil?
-      @video = nil
-    end
-
+    # Existing comments
     @rootComments = @project.root_comments
-    @comment = Comment.new(params[:comment])
-    @comment.commentable_id = @project.id
     @comment_depth = 0
+    # For new comments
+    @comment = @project.comments.new params[:comment]
 
-    @update = Update.new(params[:update])
+    # Existing updates
     @updates = @project.updates
+    # For new updates
+    @update = @project.updates.new params[:update]
   end
 
   def edit
     load_project_from_params
     authorize! :edit, @project
-    @video = @project.video
   end
 
   protected
@@ -233,6 +224,6 @@ class ProjectsController < InheritedResources::Base
   end
 
   def load_project_from_params
-    @project = Project.find_by_name params[:id].gsub(/-/, ' ')
+    @project = Project.find_by_name! params[:id].gsub(/-/, ' ')
   end
 end
