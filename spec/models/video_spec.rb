@@ -36,33 +36,13 @@ describe Video do
   describe 'update' do
     it 'forwards request to yt_session' do
       video = build_stubbed :video
-      hash = {a: :b}
-      Video.yt_session.should_receive(:video_update).with(video.yt_video_id, hash)
-      video.update(hash)
-    end
-  end
-
-  describe 'published=' do
-    let(:video) { build :video }
-
-    context 'true' do
-      it "should update with list: 'allowed'" do
-        video.should_receive(:update).with do |*args|
-          args.pop[:list].should == 'allowed'
-          true
-        end
-        video.published = true
+      Video.yt_session.should_receive(:video_update) do |video_id, attributes|
+        video_id.should eq video.yt_video_id
+        attributes[:title].should eq video.title
+        attributes[:description].should eq video.youtube_description
+        attributes[:list].should eq 'denied'
       end
-    end
-
-    context 'false' do
-      it "should update with list: 'denied'" do
-        video.should_receive(:update).with do |*args|
-          args.pop[:list].should == 'denied'
-          true
-        end
-        video.published = false
-      end
+      video.update
     end
   end
 

@@ -181,6 +181,7 @@ class ProjectsController < InheritedResources::Base
       @project.state = :cancelled
       @project.save!
       @project.video.published = false
+      @project.video.update
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
     else
       flash[:alert] = "You can not cancel or delete this project."
