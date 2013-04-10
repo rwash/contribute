@@ -21,14 +21,6 @@ class Video < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-  def title
-    project.name
-  end
-
-  def description
-    project.short_description
-  end
-
   def upload_video(path)
     puts "Uploading video at #{path}"
     tempfile = File.open path
@@ -66,7 +58,7 @@ class Video < ActiveRecord::Base
 
   def options_hash
     {
-      title: title,
+      title: project.name,
       description: youtube_description,
       category: 'Tech',
       keywords: tags,
@@ -76,7 +68,7 @@ class Video < ActiveRecord::Base
 
   def youtube_description
     yt_desc = ["Contribute to this project: #{project_url(project)}",
-     "#{description}",
+     "#{project.short_description}",
      "Find more projects from MSU: #{root_url}"].join('\n\n')
 
     project.groups.each do |g|
