@@ -45,6 +45,7 @@ class Video < ActiveRecord::Base
   end
   handle_asynchronously :upload_video
 
+  # TODO store this in a DB column
   def published= (published)
     list = published ? 'allowed' : 'denied'
 
@@ -86,12 +87,12 @@ class Video < ActiveRecord::Base
 
   def self.update_video(video, params)
     # may want to add a :dev_tab => "contribute", also may want to make the videos private ( but I like keeping them public.)
-    yt_session.video_update(video.yt_video_id, video_options(params[:title], params[:description]))
+    yt_session.video_update(video.yt_video_id, video_options)
     video.update_attributes(params)
   end
 
   def self.token_form(title, description, nexturl)
-    yt_session.upload_token(video_options(title, description), nexturl)
+    yt_session.upload_token(video_options, nexturl)
   end
 
   def self.delete_incomplete_videos
@@ -100,7 +101,7 @@ class Video < ActiveRecord::Base
 
   private
 
-  def self.video_options(title, description)
+  def self.video_options
     opts = {title: title,
             description: description,
             category: "People",
