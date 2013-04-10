@@ -21,17 +21,22 @@ class Video < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   def title
-    @project.name
+    project.name
   end
 
   def description
-    @project.short_description
+    project.short_description
   end
 
   def upload_video(path)
     puts "Uploading video at #{path}"
     tempfile = File.open path
-    response = Video.yt_session.video_upload(tempfile, title: self.title, description: self.description, category: 'Tech',keywords: self.tags, list: "denied")
+    response = Video.yt_session.video_upload(tempfile,
+                                             title: self.title,
+                                             description: self.youtube_description,
+                                             category: 'Tech',
+                                             keywords: self.tags,
+                                             list: "denied")
 
     unless response.nil?
       self.update_attributes(yt_video_id: response.unique_id, is_complete: true)
