@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
   has_many :contributions, conditions: ["status not in (:retry_cancel, :fail, :cancelled)", {retry_cancel: ContributionStatus::RetryCancel, fail: ContributionStatus::Failure, cancelled: ContributionStatus::Cancelled}]
   acts_as_commentable
   has_and_belongs_to_many :groups
-  has_many :comments
+  has_many :comments, as: :commentable
   has_many :updates
   belongs_to :category
   has_one :video
