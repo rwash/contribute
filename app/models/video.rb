@@ -46,15 +46,8 @@ class Video < ActiveRecord::Base
   end
   handle_asynchronously :upload_video
 
-  # TODO store this in a DB column
-  def published= (published)
-    list = published ? 'allowed' : 'denied'
-
-    update(title: title,
-           description: youtube_description,
-           category: 'Tech',
-           keywords: tags,
-           list: list)
+  def list
+    published ? 'allowed' : 'denied'
   end
 
   def youtube_description
@@ -73,8 +66,13 @@ class Video < ActiveRecord::Base
     YT_TAGS + project.groups.map(&:name)
   end
 
-  def update(params)
-    Video.yt_session.video_update(yt_video_id, params)
+  def update
+    Video.yt_session.video_update(yt_video_id,
+                                  title: title,
+                                  description: youtube_description,
+                                  category: 'Tech',
+                                  keywords: tags,
+                                  list: list)
   end
 
   def self.yt_session
@@ -87,9 +85,8 @@ class Video < ActiveRecord::Base
   end
 
   def self.update_video(video, params)
-    # may want to add a :dev_tab => "contribute", also may want to make the videos private ( but I like keeping them public.)
-    yt_session.video_update(video.yt_video_id, video_options)
     video.update_attributes(params)
+    video.update
   end
 
   def self.token_form(title, description, nexturl)
@@ -98,15 +95,5 @@ class Video < ActiveRecord::Base
 
   def self.delete_incomplete_videos
     self.incompletes.map{|r| r.destroy}
-  end
-
-  private
-
-  def self.video_options
-    opts = {title: title,
-            description: description,
-            category: "People",
-            keywords: ["test"]}
-    #params[:is_unpublished] == "1" ? opts.merge(:private => "true") : opts
   end
 end
