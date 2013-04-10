@@ -54,11 +54,6 @@ class Video < ActiveRecord::Base
   rescue
   end
 
-  def self.update_video(video, params)
-    video.update_attributes(params)
-    video.update
-  end
-
   def self.token_form(title, description, nexturl)
     yt_session.upload_token(video_options, nexturl)
   end
