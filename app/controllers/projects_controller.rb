@@ -12,7 +12,7 @@ class ProjectsController < InheritedResources::Base
 
   def index
     @projects = Project.where(state: :active).order("end_date ASC").page(params[:page]).per(8)
-    authorize! :index, @projects
+    authorize! :index, Project
     @lists = User.find_by_id(1) ? User.find(1).lists : []
     index!
   end

@@ -16,6 +16,7 @@ class Ability
   # even when they aren't signed in
   def define_global_privileges
     can :read, Project, public_can_view?: true
+    can :index, Project
     can :read, Group
     can :read, List
   end
