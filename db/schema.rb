@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211191703) do
+ActiveRecord::Schema.define(:version => 20130410150556) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -303,8 +303,6 @@ ActiveRecord::Schema.define(:version => 20130211191703) do
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 
   create_table "videos", :force => true do |t|
-    t.string   "title"
-    t.string   "description"
     t.string   "yt_video_id"
     t.boolean  "is_complete", :default => false
     t.datetime "created_at",                     :null => false
