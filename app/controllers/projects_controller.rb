@@ -46,31 +46,16 @@ class ProjectsController < InheritedResources::Base
     authorize! :update, @project
 
     if params[:project] && params[:project][:video]
-      if @project.video
-        @project.video.destroy
-        @project.video = nil
-      end
+      @project.video.destroy if @project.video
 
-      video = Video.create(title: @project.name, description: @project.short_description)
-      @project.video = video
-      video.project = @project
-      @project.save!
-      video.save!
-
-      result = Video.yt_session.video_upload(params[:project][:video].tempfile,
-                                             title: video.title,
-                                             description: video.youtube_description,
-                                             category: 'Tech',
-                                             keywords: video.tags,
-                                             list: "denied")
+      @project.video = Video.create
+      @project.video.delay.upload_video(params[:project][:video].path)
 
       if result
-        video.update_attributes(yt_video_id: result.unique_id, is_complete: true)
-        video.save!
+        @project.video.update_attributes(yt_video_id: result.unique_id, is_complete: true)
         Video.delete_incomplete_videos
       else
         @project.video.destroy
-        @project.video = nil
       end
     end
 
@@ -188,6 +173,7 @@ class ProjectsController < InheritedResources::Base
       @project.state = :cancelled
       @project.save!
       @project.video.published = false
+      @project.video.update
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
     else
       flash[:alert] = "You can not cancel or delete this project."

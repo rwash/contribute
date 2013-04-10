@@ -171,9 +171,8 @@ class Project < ActiveRecord::Base
 
     # TODO move this to config/environments/...
     default_url_options[:host] = "orithena.cas.msu.edu"
-    description = video.youtube_description
 
-    video.update(title: video.title, description: description, category: 'Tech', keywords: video.tags, list: "allowed")
+    video.update
   end
 
   def confirmation_approver?
