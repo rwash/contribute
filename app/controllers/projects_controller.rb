@@ -211,13 +211,16 @@ class ProjectsController < InheritedResources::Base
       @video = nil
     end
 
+    # Existing comments
     @rootComments = @project.root_comments
-    @comment = Comment.new(params[:comment])
-    @comment.commentable_id = @project.id
     @comment_depth = 0
+    # For new comments
+    @comment = @project.comments.new params[:comment]
 
-    @update = Update.new(params[:update])
+    # Existing updates
     @updates = @project.updates
+    # For new updates
+    @update = @project.updates.new params[:update]
   end
 
   def edit
