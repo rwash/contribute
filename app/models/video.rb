@@ -1,7 +1,5 @@
 # === Attributes
 #
-# * *title* (+string+)
-# * *description* (+string+)
 # * *yt_video_id* (+string+)
 # * *is_complete* (+boolean+)
 # * *created_at* (+datetime+)
@@ -21,6 +19,14 @@ class Video < ActiveRecord::Base
   before_destroy :delete_yt_video
 
   include Rails.application.routes.url_helpers
+
+  def title
+    @project.name
+  end
+
+  def description
+    @project.short_description
+  end
 
   def upload_video(path)
     puts "Uploading video at #{path}"
