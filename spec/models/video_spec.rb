@@ -38,8 +38,8 @@ describe Video do
       video = build_stubbed :video
       Video.yt_session.should_receive(:video_update) do |video_id, attributes|
         video_id.should eq video.yt_video_id
-        attributes[:title].should eq video.title
-        attributes[:description].should eq video.youtube_description
+        attributes[:title].should eq video.project.name
+        attributes[:description].should include video.project.short_description
         attributes[:list].should eq 'denied'
       end
       video.update
