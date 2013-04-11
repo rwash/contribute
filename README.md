@@ -1,8 +1,8 @@
+[![Code Quality](https://codeclimate.com/github/rwash/contribute.png)](https://codeclimate.com/github/rwash/contribute)
+
 # Contribute
 
 A [Bitlab] project
-
-[![Code Quality](https://codeclimate.com/github/rwash/contribute.png)](https://codeclimate.com/github/rwash/contribute)
 
 - - -
 
