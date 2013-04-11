@@ -30,8 +30,8 @@ class ProjectListsController < InheritedResources::Base
 
   def add_listing
     list = List.find(params[:id])
-    project = Project.find_by_name(params[:project])
-    list.listings << Listing.create(project_id: project.id)
+    project = Project.find(params[:project][:id])
+    list.listings.create item: project
 
     redirect_to :back
   end
