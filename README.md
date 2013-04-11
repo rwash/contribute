@@ -1,5 +1,8 @@
 # Contribute
+
 A [Bitlab][http://bitlab.cas.msu.edu] project
+
+[![Code Quality](https://codeclimate.com/github/rwash/contribute.png)](https://codeclimate.com/github/rwash/contribute)
 - - -
 
 ## What is Contribute?
