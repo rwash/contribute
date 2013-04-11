@@ -23,6 +23,12 @@ class ProjectListsController < InheritedResources::Base
 
   def edit
     @list = List.find(params[:id])
+    # An array of all of the users projects that are
+    # not currently in this list
+    @addable_projects = current_user.projects.select {|p|
+      not @list.listings.map(&:item).include? p
+    }.collect { |p| [p.name, p.id] }
+
     return redirect_to @list.listable if @list.permanent?
 
     @ordered_listings = @list.listings.order("position")
