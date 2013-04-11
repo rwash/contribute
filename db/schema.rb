@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130410152807) do
+ActiveRecord::Schema.define(:version => 20130411092501) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -33,11 +33,13 @@ ActiveRecord::Schema.define(:version => 20130410152807) do
     t.string   "reason"
   end
 
-  create_table "categories", :force => true do |t|
-    t.string   "short_description"
-    t.text     "long_description"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+  create_table "blocks", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "blocked_id"
+    t.string   "blocked_type"
+    t.text     "reason"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "ckeditor_assets", :force => true do |t|
@@ -240,7 +242,6 @@ ActiveRecord::Schema.define(:version => 20130410152807) do
     t.text     "long_description"
     t.integer  "funding_goal"
     t.date     "end_date"
-    t.integer  "category_id"
     t.boolean  "active"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false

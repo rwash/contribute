@@ -1,15 +1,4 @@
-Category.delete_all
-
-Category.create(short_description: 'Music',
-                long_description: 'This category is dedicated for written compositions',
-                created_at: '1/25/2012',
-                updated_at: '1/26/2012')
-
-Category.create(short_description: 'Movie',
-                long_description: 'This category is dedicated for film productions',
-                created_at: '1/25/2012',
-                updated_at: '1/26/2012')
-
+# TODO ...wow. This is horrible.
 AmazonError.delete_all
 
 AmazonError.create(error: 'AccessFailure',

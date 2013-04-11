@@ -110,7 +110,6 @@ $(document).ready(function(){
 
   <ul id='project-info'>
     <li>End Date: <%= @project.end_date %></li><br>
-    <li>Category: <%= @project.category.short_description %></li><br>
     <li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li><br>
     <li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
   </ul>
