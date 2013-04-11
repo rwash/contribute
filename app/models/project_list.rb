@@ -24,7 +24,7 @@ class ProjectList < List
 
     projects = listings.map(&:item)
     unless options[:as_owner]
-      projects.select! { |p| [:active, :funded, :nonfunded].includes? p.state }
+      projects.select! { |p| p.state.active? or p.state.funded? or p.state.nonfunded? }
     end
 
     projects.slice(0,limit)
