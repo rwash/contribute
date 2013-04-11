@@ -164,7 +164,6 @@ describe Project do
   end
 
   it { should validate_presence_of :user }
-  it { should validate_presence_of :category_id }
   it { should validate_presence_of :payment_account_id }
 
   it 'parses time string correctly' do

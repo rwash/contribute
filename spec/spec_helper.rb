@@ -105,7 +105,6 @@ Spork.each_run do
   # TODO: Change this to run the Rake task 'db:test:prepare',
   # which isn't dependent on the models we have defined in the
   # database.
-  Category.delete_all
   Group.delete_all
   List.delete_all
   Approval.delete_all

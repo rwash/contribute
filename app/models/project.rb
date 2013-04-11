@@ -5,7 +5,6 @@
 # * *long_description* (+text+)
 # * *funding_goal* (+integer+)
 # * *end_date* (+date+)
-# * *category_id* (+integer+)
 # * *active* (+boolean+)
 # * *created_at* (+datetime+)
 # * *updated_at* (+datetime+)
@@ -33,7 +32,6 @@ class Project < ActiveRecord::Base
   has_and_belongs_to_many :groups
   has_many :comments, as: :commentable
   has_many :updates
-  belongs_to :category
   has_one :video
   mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
   has_many :approvals
@@ -45,7 +43,6 @@ class Project < ActiveRecord::Base
                   :long_description,
                   :funding_goal,
                   :end_date,
-                  :category_id,
                   :picture,
                   :picture_cache
 
@@ -82,7 +79,6 @@ class Project < ActiveRecord::Base
             presence: { message: "must be of form 'MM/DD/YYYY'" }
 
   validates :payment_account_id, presence: true
-  validates :category_id, presence: true
   validates :user, presence: true
 
   # Delegations --------------------------------------------------------------
