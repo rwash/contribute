@@ -105,8 +105,7 @@ class ProjectsController < InheritedResources::Base
     #TODO send out emails to any contributors
 
     @project.save!
-    flash[:notice] = "Successfully blocked project."
-    redirect_to @project
+    redirect_to @project, notice: "Successfully blocked project."
   end
 
   def unblock
@@ -123,8 +122,7 @@ class ProjectsController < InheritedResources::Base
     #TODO send out email to project owner
 
     @project.save!
-    flash[:notice] = "Successfully unblocked project."
-    redirect_to @project
+    redirect_to @project, notice: "Successfully unblocked project."
   end
 
   def save
@@ -146,11 +144,9 @@ class ProjectsController < InheritedResources::Base
       # model. Might be worth doing that for this too.
       successful_save project
 
-      flash[:notice] = "Project saved successfully. Here's to getting funded!"
-      redirect_to project
+      redirect_to project, notice: "Project saved successfully. Here's to getting funded!"
     else
-      flash[:alert] = "An error occurred with your project. Please try again."
-      redirect_to root_path
+      redirect_to root_path, alert: "An error occurred with your project. Please try again."
     end
   end
 
@@ -162,11 +158,9 @@ class ProjectsController < InheritedResources::Base
     if @project.state.unconfirmed? || @project.state.inactive?
       @project.destroy
       if !@project.destroyed?
-        flash[:alert] = "Project could not be deleted. Please try again."
-        return redirect_to @project
+        return redirect_to @project, alert: "Project could not be deleted. Please try again."
       else
-        flash[:notice] = "Project successfully deleted. Sorry to see you go!"
-        return redirect_to root_path
+        return redirect_to root_path, notice: "Project successfully deleted. Sorry to see you go!"
       end
     elsif @project.state.active?
       #project will not be deleted but will be CANCELLED and only visible to user
