@@ -36,6 +36,13 @@ class ProjectListsController < InheritedResources::Base
     redirect_to :back
   end
 
+  def remove_listing
+    list = List.find(params[:id])
+    list.listings.find_by_item_id(params[:project][:id]).destroy
+
+    redirect_to :back
+  end
+
   def show
     @list = ProjectList.find(params[:id])
     @group = @list.listable if @list.listable_type == 'Group'

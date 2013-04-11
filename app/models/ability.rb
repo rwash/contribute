@@ -77,7 +77,7 @@ class Ability
     end
 
     # Lists
-    can [:destroy, :update, :sort, :add_listing], List do |l|
+    can [:destroy, :update, :sort, :add_listing, :remove_listing], List do |l|
       if l.listable_type == "Group"
         l.listable.admin_user == user
       elsif l.listable_type == "User"
@@ -143,7 +143,7 @@ class Ability
       can [:approve, :reject], Approval
 
       #Lists
-      can [:read, :destroy, :update, :sort, :add_listing], List
+      can [:read, :destroy, :update, :sort, :add_listing, :remove_listing], List
 
       # Users
       can [:read, :update, :block, :toggle_admin], User

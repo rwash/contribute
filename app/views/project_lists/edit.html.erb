@@ -17,6 +17,14 @@ Add a project
   <%= submit_tag 'Add Project', class: 'btn' %>
 <% end %>
 
+<% if @list.listings.any? %>
+  Remove a project
+  <%= form_tag remove_listing_path(@list) do %>
+    <%= select 'project', 'id', @list.listings.map(&:item).collect { |p| [p.name, p.id] } %>
+    <%= submit_tag 'Remove Project', class: 'btn' %>
+  <% end %>
+<% end %>
+
 Drag to sort, or sort by an attribute:<br/>
 
 <select id="sort-attribute">
