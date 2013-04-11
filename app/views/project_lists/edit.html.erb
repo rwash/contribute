@@ -11,17 +11,19 @@
 
 <h3>Projects</h3>
 
-Add a project
-<%= form_tag add_listing_path(@list) do %>
-  <%= select 'project', 'id', current_user.projects.collect { |p| [p.name, p.id] } %>
-  <%= submit_tag 'Add Project', class: 'btn' %>
+<% if @addable_projects.any? %>
+  Add a project
+  <%= form_tag add_listing_path(@list) do %>
+    <%= select 'project', 'id', @addable_projects  %>
+    <%= submit_tag 'Add Project', class: 'btn btn-primary' %>
+  <% end %>
 <% end %>
 
 <% if @list.listings.any? %>
   Remove a project
   <%= form_tag remove_listing_path(@list) do %>
     <%= select 'project', 'id', @list.listings.map(&:item).collect { |p| [p.name, p.id] } %>
-    <%= submit_tag 'Remove Project', class: 'btn' %>
+    <%= submit_tag 'Remove Project', class: 'btn btn-primary' %>
   <% end %>
 <% end %>
 
