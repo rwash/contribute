@@ -14,6 +14,7 @@ Contribute::Application.routes.draw do
   match 'lists/:id/edit', :to => "project_lists#edit", :as => :edit_list
   match 'lists/:id/destroy', :to => "project_lists#destroy", :as => :destroy_list
   match 'lists/:id/add-listing', :to => "project_lists#add_listing", :as => :add_listing
+  match 'lists/:id/remove-listing', :to => "project_lists#remove_listing", :as => :remove_listing
   match 'lists/:id', :to => "project_lists#show", :as => :project_list
   match 'lists/:id/update', :to => "project_lists#update", :as => :update_list
 
