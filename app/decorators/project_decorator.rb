@@ -51,7 +51,7 @@ class ProjectDecorator < Draper::Decorator
   end
 
   def media
-    if model.video
+    if model.video and model.video.yt_video_id
       render model.video
     elsif model.picture?
       image_tag model.picture.url(:show), :class => "projectImage"

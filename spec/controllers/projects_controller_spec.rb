@@ -39,7 +39,7 @@ describe ProjectsController do
   describe 'PUT activate' do
     context 'with permission' do
       let(:project) { create :project }
-      before { @ability.stub!(:can?).with(:activate, Project).and_return(true) }
+      before { @ability.stub!(:can?).with(:activate, project).and_return(true) }
       before { put :activate, id: project.to_param }
 
       it 'sets project state to active' do
@@ -49,7 +49,7 @@ describe ProjectsController do
 
     context 'without permission' do
       let(:project) { create :project }
-      before { @ability.stub!(:can?).with(:activate, Project).and_return(false) }
+      before { @ability.stub!(:can?).with(:activate, project).and_return(false) }
       before { put :activate, id: project.to_param }
 
       it 'sets project state to active' do
@@ -70,7 +70,14 @@ describe ProjectsController do
       before { sign_in user }
 
       context 'with permission' do
-        before { @ability.stub!(:can?).with(:new, Project).and_return(true) }
+        before do
+          @ability.should_receive(:can?) { |arg1, arg2|
+            arg1.should eq :new
+            arg2.should be_instance_of Project
+            true
+          }
+        end
+
         it 'can create a project' do
           get :new
           expect(response).to be_success
@@ -128,7 +135,13 @@ describe ProjectsController do
       before { sign_in user }
 
       before { UUIDTools::UUID.stub(:random_create){} }
-      before { @ability.stub!(:can?).with(:create, Project).and_return(true) }
+      before do
+        @ability.stub!(:can?) { |arg1, arg2|
+          arg1.should eq :create
+          arg2.should be_instance_of Project
+          true
+        }
+      end
 
       it "succeeds for valid attributes" do
         p = build(:project).attributes.symbolize_keys
@@ -190,7 +203,7 @@ describe ProjectsController do
   describe 'PUT block' do
     context 'with permission' do
       let(:project) { create :project }
-      before { @ability.stub!(:can?).with(:block, Project).and_return(true) }
+      before { @ability.stub!(:can?).with(:block, project).and_return(true) }
       before { put :block, id: project.to_param }
 
       it 'blocks project' do
@@ -200,7 +213,7 @@ describe ProjectsController do
 
     context 'without permission' do
       let(:project) { create :project }
-      before { @ability.stub!(:can?).with(:block, Project).and_return(false) }
+      before { @ability.stub!(:can?).with(:block, project).and_return(false) }
       before { put :block, id: project.to_param }
 
       it 'does not block project' do
@@ -212,7 +225,7 @@ describe ProjectsController do
   describe 'PUT unblock' do
     context 'with permission' do
       let(:project) { create :project, state: :blocked }
-      before { @ability.stub!(:can?).with(:unblock, Project).and_return(true) }
+      before { @ability.stub!(:can?).with(:unblock, project).and_return(true) }
       before { put :unblock, id: project.to_param }
 
       it 'unblocks project' do
@@ -222,7 +235,7 @@ describe ProjectsController do
 
     context 'without permission' do
       let(:project) { create :project, state: :blocked }
-      before { @ability.stub!(:can?).with(:unblock, Project).and_return(false) }
+      before { @ability.stub!(:can?).with(:unblock, project).and_return(false) }
       before { put :unblock, id: project.to_param }
 
       it 'sets project state to active' do
@@ -238,7 +251,7 @@ describe ProjectsController do
     context "user is signed in" do
       before { sign_in user }
 
-      before { @ability.stub!(:can?).with(:save, Project).and_return(true) }
+      before { @ability.stub!(:can?).with(:save, project).and_return(true) }
 
       before do
         Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}

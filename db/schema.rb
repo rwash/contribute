@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130218201030) do
+ActiveRecord::Schema.define(:version => 20130410152807) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -31,15 +31,6 @@ ActiveRecord::Schema.define(:version => 20130218201030) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "reason"
-  end
-
-  create_table "blocks", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "blocked_id"
-    t.string   "blocked_type"
-    t.text     "reason"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
   end
 
   create_table "categories", :force => true do |t|
@@ -311,13 +302,12 @@ ActiveRecord::Schema.define(:version => 20130218201030) do
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 
   create_table "videos", :force => true do |t|
-    t.string   "title"
-    t.string   "description"
     t.string   "yt_video_id"
     t.boolean  "is_complete", :default => false
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.integer  "project_id"
+    t.boolean  "published",   :default => false
   end
 
 end

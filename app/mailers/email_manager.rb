@@ -4,42 +4,29 @@ class EmailManager < ActionMailer::Base
   @@admin_address = Rails.application.config.admin_address
 
   def add_project(project)
-    @project = project
-    @user = @project.user
-
+    register_project project
     mail(to: @user.email, subject: "#{@project.name} has been created")
   end
 
   def contribute_to_project(contribution)
-    @contribution = contribution
-    @project = @contribution.project
-    @user = @contribution.user
-
+    register_contribution contribution
     mail(to: @user.email, subject: "Your contribution to #{@project.name}")
   end
 
   def edit_contribution(old_contribution, new_contribution)
     @old_contribution = old_contribution
     @new_contribution = new_contribution
-    @project = @old_contribution.project
-    @user = @old_contribution.user
-
+    register_contribution old_contribution
     mail(to: @user.email, subject: "Your edited contribution to #{@project.name}")
   end
 
   def contribution_cancelled(contribution)
-    @contribution = contribution
-    @project = @contribution.project
-    @user = @contribution.user
-
+    register_contribution contribution
     mail(to: @user.email, subject: "Your contribution to #{@project.name} was successfully cancelled")
   end
 
   def contribution_successful(contribution)
-    @contribution = contribution
-    @project = @contribution.project
-    @user = @contribution.user
-
+    register_contribution contribution
     mail(to: @user.email, subject: "Your contribution to #{@project.name} was successfully completed")
   end
 
@@ -50,47 +37,32 @@ class EmailManager < ActionMailer::Base
   end
 
   def project_funded_to_owner(project)
-    @project = project
-    @user = @project.user
-
+    register_project project
     mail(to: @user.email, subject: "Your project #{@project.name} was successfully funded!")
   end
 
   def project_not_funded_to_owner(project)
-    @project = project
-    @user = @project.user
-
+    register_project project
     mail(to: @user.email, subject: "Your project #{@project.name} was did not reach its funding goal")
   end
 
   def project_funded_to_contributor(contribution)
-    @contribution = contribution
-    @project = @contribution.project
-    @user = @contribution.user
-
+    register_contribution contribution
     mail(to: @user.email, subject: "The project #{@project.name} was successfully funded!")
   end
 
   def project_not_funded_to_contributor(contribution)
-    @contribution = contribution
-    @project = @contribution.project
-    @user = @contribution.user
-
+    register_contribution contribution
     mail(to: @user.email, subject: "The project #{@project.name} was did not reach its funding goal")
   end
 
   def project_deleted_to_owner(project)
-    @project = project
-    @user = @project.user
-
+    register_project project
     mail(to: @user.email, subject: "Your project #{@project.name} was successfully deleted")
   end
 
   def project_deleted_to_contributor(contribution)
-    @contribution = contribution
-    @project = @contribution.project
-    @user = @contribution.user
-
+    register_contribution contribution
     mail(to: @user.email, subject: "The project #{@project.name} has been deleted")
   end
 
@@ -102,42 +74,31 @@ class EmailManager < ActionMailer::Base
   end
 
   def unretriable_payment_to_user(error, contribution)
-    @contribution = contribution
-    @project = @contribution.project
-    @user = @contribution.user
+    register_contribution contribution
     @error = error
 
     mail(to: @user.email, subject: "Attention! We need your help to fix your contribution to #{@project.name}!")
   end
 
   def unretriable_payment_to_admin(error, contribution)
-    @contribution = contribution
-    @project = @contribution.project
     @error = error
-
+    register_contribution contribution
     mail(to: @@admin_address, subject: "Contribution id: #{@contribution.id} has failed executing payment")
   end
 
   def cancelled_payment_to_admin(contribution)
-    @contribution = contribution
-    @project = @contribution.project
-
+    register_contribution contribution
     mail(to: @@admin_address, subject: "Contribution id: #{@contribution.id} was cancelled before payment could complete successfully")
   end
 
   def failed_payment_to_user(contribution)
-    @contribution = contribution
-    @project = @contribution.project
-    @user = @contribution.user
-
+    register_contribution contribution
     mail(to: @user.email, subject: "Attention! We need your help to fix your contribution to #{@project.name}!")
   end
 
   def failed_status_to_admin(error, contribution)
-    @contribution = contribution
-    @project = @contribution.project
     @error = error
-
+    register_contribution contribution
     mail(to: @@admin_address, subject: "Contribution id: #{@contribution.id} has failed checking its transaction status")
   end
 
@@ -151,19 +112,32 @@ class EmailManager < ActionMailer::Base
 
   def project_to_group_approval(approval, project, group)
     @group_owner = group.admin_user
-    @project = project
-    @user = project.user
     @group = group
     @approval = approval
+    register_project project
     mail(to: @group_owner.email, subject: "Request to add project #{@project.name} to your group #{@group.name}")
   end
 
   def group_reject_project(approval, project, group)
-    @project = project
-    @user = project.user
     @group = group
     @approval = approval
-
+    register_project project
     mail(to: @user.email, subject: "Your request to add project #{@project.name} to group #{@group.name} has been denied")
   end
+
+private
+
+  # Stores data associated with a contribution in instance variables
+  def register_contribution(contribution)
+    @contribution = contribution
+    @project = contribution.project
+    @user = contribution.user
+  end
+
+  # Stores data associated with a project in instance variables
+  def register_project(project)
+    @project = project
+    @user = project.user
+  end
+
 end

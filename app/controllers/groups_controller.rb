@@ -14,11 +14,9 @@ class GroupsController < InheritedResources::Base
     @group.admin_user = current_user
 
     if @group.save!
-      flash[:notice] = "Successfully created group."
-      redirect_to @group
+      redirect_to @group, notice: "Successfully created group."
     else
-      flash[:error] = "Failed to save group. Please try again."
-      redirect_to new_group_path
+      redirect_to new_group_path, error: "Failed to save group. Please try again."
     end
   end
 
@@ -92,9 +90,7 @@ class GroupsController < InheritedResources::Base
 
   def destroy
     group = Group.find(params[:id])
-    if !group.destroy
-      flash[:error] = "Failed to delete group. Please try again."
-    end
+    flash[:error] = "Failed to delete group. Please try again." unless group.destroy
     redirect_to groups_path
   end
 end
