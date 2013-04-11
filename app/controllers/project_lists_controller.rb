@@ -17,9 +17,7 @@ class ProjectListsController < InheritedResources::Base
 
   def destroy
     list = List.find(params[:id])
-    unless list.destroy
-      flash[:error] = "Failed to delete list. Please try again."
-    end
+    flash[:error] = "Failed to delete list. Please try again." unless list.destroy
     redirect_to list.listable
   end
 

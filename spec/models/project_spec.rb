@@ -179,8 +179,6 @@ describe Project do
 
   #Begin Methods	
   describe 'contributions' do
-    #These are instance variables so they can be accessed outside of the before. If they're not
-    # in a before, they appear to like a before(:each) by default and cause duplicate errors
     let(:project) { create :project, state: 'active' }
     let(:contributions) do
       3.times.map { create :contribution, project: project }

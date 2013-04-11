@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
   has_many :contributions, conditions: ["status not in (:retry_cancel, :fail, :cancelled)", {retry_cancel: ContributionStatus::RetryCancel, fail: ContributionStatus::Failure, cancelled: ContributionStatus::Cancelled}]
   acts_as_commentable
   has_and_belongs_to_many :groups
-  has_many :comments
+  has_many :comments, as: :commentable
   has_many :updates
   belongs_to :category
   has_one :video
@@ -169,16 +169,10 @@ class Project < ActiveRecord::Base
   def update_project_video
     return if video.nil?
 
+    # TODO move this to config/environments/...
     default_url_options[:host] = "orithena.cas.msu.edu"
-    tags = YT_TAGS
-    description = "Contribute to this project: #{project_url(self)}\n\n#{video.description}\n\nFind more projects from MSU:\n#{root_url}\n"
 
-    self.groups.each do |g|
-      tags << g.name
-      description += "\nFind more projects from #{g.name}:\n #{group_url(g)}"
-    end
-
-    Video.yt_session.video_update(video.yt_video_id, title: video.title, description: description, category: 'Tech', keywords: tags, list: "allowed")
+    video.update
   end
 
   def confirmation_approver?

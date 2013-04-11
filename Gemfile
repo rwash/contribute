@@ -42,6 +42,8 @@ group :test, :mysql_test do
   # Allows integration tests to be run on machiness
   # without a monitor
   gem 'headless'
+  # Open page for examination during a test - used for debugging failing tests.
+  gem 'launchy'
   # Code coverage!
   gem 'simplecov', require: false
 
@@ -100,7 +102,6 @@ gem 'carrierwave'
 # Resizing in Carrierwave
 # Dependency Carrierwave has to be able to resize pictures to more
 # useful sizes
-gem 'rmagick'
 gem 'mini_magick'
 
 # REST interaction

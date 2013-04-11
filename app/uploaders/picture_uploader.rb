@@ -1,6 +1,6 @@
 class PictureUploader < CarrierWave::Uploader::Base
   include CarrierWave::Compatibility::Paperclip
-  include CarrierWave::RMagick
+  include CarrierWave::MiniMagick
 
   def extension_white_list
     %w(jpg jpeg gif png)
