@@ -47,3 +47,6 @@
 /spec/coverage
 /spec/lib/coverage
 /spec/controllers/coverage
+
+# Database connection information
+/config/database.yml
