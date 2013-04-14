@@ -30,5 +30,7 @@ describe Approval do
 
   it { should validate_presence_of :group }
   it { should validate_presence_of :project }
+  it { should validate_presence_of :status }
+  it { should ensure_inclusion_of(:status).in_array [:pending, :approved, :rejected] }
 
 end
