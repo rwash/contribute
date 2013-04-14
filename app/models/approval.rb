@@ -12,7 +12,6 @@ class Approval < ActiveRecord::Base
 
   validates_presence_of :project
   validates_presence_of :group
-  validates_presence_of :status
 
   classy_enum_attr :status, enum: 'ApprovalStatus', default: :pending
 end
