@@ -31,11 +31,11 @@ class Group < ActiveRecord::Base
 
   def approve_all
     if self.open
-      for approval in self.approvals.where(approved: nil)
+      for approval in self.approvals.where(status: :pending)
         group = approval.group
         project = approval.project
 
-        approval.approved = true
+        approval.status = :approved
         approval.save
 
         group.projects << project unless group.projects.include?(project)

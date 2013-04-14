@@ -5,8 +5,8 @@ class ApprovalsController < InheritedResources::Base
 
     authorize! :approve, approval
 
-    if approval.approved.nil?
-      approval.approved = true
+    if approval.status.pending?
+      approval.status = :approved
       approval.save!
 
       project = approval.project
@@ -14,7 +14,7 @@ class ApprovalsController < InheritedResources::Base
       project.update_project_video
     else
       # TODO move approval state to an enumeration
-      flash[:error] = "This project has already been #{(approval.approved)? 'approved' : 'denied'}."
+      flash[:error] = "This project has already been #{approval.status}."
     end
 
     redirect_to group_admin_path(group)
@@ -27,14 +27,14 @@ class ApprovalsController < InheritedResources::Base
 
     authorize! :reject, approval
 
-    if approval.approved.nil?
+    if approval.status.pending?
       approval.reason = params[:reason]
-      approval.approved = false
+      approval.status = :rejected
       approval.save!
 
       EmailManager.group_reject_project(approval, project, group).deliver
     else
-      flash[:error] = "This project has already been #{(approval.approved)? 'approved' : 'denied'}."
+      flash[:error] = "This project has already been #{approval.status}."
     end
 
     redirect_to group_admin_path(group)

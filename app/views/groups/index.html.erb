@@ -35,7 +35,7 @@
     <% for group in @admin_groups %>
       <%= link_to group.name, group, class: 'sidebar-group' %><br>
       <span class="sidebar-needs-approval">
-        <%= link_to "- #{pluralize(group.approvals.where(approved: nil).count, "project")} needs your approval", group_admin_path(group) %>
+        <%= link_to "- #{pluralize(group.approvals.where(status: :approved).count, "project")} needs your approval", group_admin_path(group) %>
       </span><br>
     <% end %>
   <% end %>

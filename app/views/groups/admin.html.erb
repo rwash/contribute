@@ -12,7 +12,7 @@
 
 <div class="row">
 <ul class="thumbnails-small">
-  <% @group.approvals.where(:approved => nil).each do |approval| %>
+  <% @group.approvals.where(status: :approved).each do |approval| %>
   <% @project = approval.project %>
     <li class="project-span">
     <div class="thumbnail-small">

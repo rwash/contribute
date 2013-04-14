@@ -25,7 +25,7 @@ describe ApprovalsController do
       before { post 'approve', group_id: group.id, id: approval.id }
 
       it "updates approval status" do
-        expect(approval.reload.approved).to be_true
+        expect(approval.reload.status).to eq :approved
       end
 
       it { should redirect_to group_admin_path(group) }
@@ -37,7 +37,7 @@ describe ApprovalsController do
       before { post 'approve', group_id: group.id, id: approval.id }
 
       it "does not update approval status", :broken do
-        expect(approval.reload.approved).to be_nil
+        expect(approval.reload.status).to eq :pending
       end
 
       it { should redirect_to root_url }
@@ -51,7 +51,7 @@ describe ApprovalsController do
       before { post 'reject', group_id: group.id, id: approval.id, reason: "I dont know" }
 
       it "updates approval status" do
-        expect(approval.reload.approved).to be_false
+        expect(approval.reload.status).to eq :rejected
       end
 
       it { should redirect_to group_admin_path(group) }
@@ -63,7 +63,7 @@ describe ApprovalsController do
       before { post 'reject', group_id: group.id, id: approval.id, reason: "I dont know" }
 
       it "does not update approval status", :broken do
-        expect { post 'reject', group_id: group.id, id: approval.id }.to_not change {approval.reload.approved}
+        expect { post 'reject', group_id: group.id, id: approval.id }.to_not change {approval.reload.status}
       end
 
       it { should redirect_to root_url }
