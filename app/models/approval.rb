@@ -9,4 +9,7 @@
 class Approval < ActiveRecord::Base
   belongs_to :group
   belongs_to :project
+
+  validates_presence_of :project
+  validates_presence_of :group
 end
