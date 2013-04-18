@@ -54,6 +54,10 @@ class Video < ActiveRecord::Base
     self.incompletes.map{|r| r.destroy}
   end
 
+  def complete?
+    yt_video_id ? true : false
+  end
+
   protected
 
   def options_hash
@@ -86,4 +90,18 @@ class Video < ActiveRecord::Base
     published ? 'allowed' : 'denied'
   end
 
+end
+
+class NullVideo
+  # ActiveRecord Accessors
+  def public=(value); end
+  def public; false end
+
+  # Other Methods
+  def nil?; true end
+  def upload_video(*args) end
+  def update; end
+  def delete_yt_video; end
+  def destroy; end
+  def complete?; false end
 end

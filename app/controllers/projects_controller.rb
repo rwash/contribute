@@ -78,7 +78,7 @@ class ProjectsController < InheritedResources::Base
     @project.state = :active
 
     #make video public
-    @project.video.public = true if @project.video
+    @project.video.public = true
 
     #send out emails for any group requests
     @project.approvals.each do |approval|
