@@ -153,13 +153,15 @@ class Project < ActiveRecord::Base
     self.save
   end
 
+  def video
+    super || NullVideo.new
+  end
+
   # Destroys video connected to the project.
   # This method is executed before destroying each project.
   def destroy_video
-    unless video.nil?
-      video.destroy
-      self.save
-    end
+    video.destroy
+    self.save
   end
 
   def update_project_video

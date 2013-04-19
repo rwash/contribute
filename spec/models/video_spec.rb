@@ -54,3 +54,12 @@ describe Video do
     end
   end
 end
+
+describe NullVideo do
+  its(:nil?) { should be_true }
+  its(:upload_video) { should be_nil }
+  its(:update) { should be_nil }
+  its(:delete_yt_video) { should be_nil }
+  its(:destroy) { should be_nil }
+  its(:complete?) { should be_false }
+end

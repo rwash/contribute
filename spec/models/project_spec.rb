@@ -228,6 +228,11 @@ describe Project do
       p.destroy_video
       expect(p.reload.video).to be_nil
     end
+
+    it 'should not break when video is nil' do
+      p = build :project
+      p.destroy_video
+    end
   end
 
   describe 'update_project_video' do
