@@ -14,7 +14,6 @@
 class Group < ActiveRecord::Base
   has_and_belongs_to_many :projects
   has_many :approvals
-  has_many :lists, as:  :listable
 
   belongs_to :admin_user, class_name: "User"
 
@@ -26,7 +25,6 @@ class Group < ActiveRecord::Base
 
   mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
 
-  after_create :add_first_list
   after_save :approve_all
 
   def approve_all
@@ -42,9 +40,5 @@ class Group < ActiveRecord::Base
         project.update_project_video
       end
     end
-  end
-
-  def add_first_list
-    self.lists << List.create(title: "Recent Projects", permanent: true, show_funded: true, show_nonfunded: true, show_active: true)
   end
 end

@@ -3,8 +3,8 @@
 <%= image_tag @group.picture.url(:show), class: "groupImage" if @group.picture? %>
 &nbsp;
 
-<% for list in @group.lists %>
-  <%= render :partial => 'project_lists/list', :locals => {:list => list, :partial => "shared/project-small", :limit => 5} %>
+<% @group.projects.each do |project| %>
+  <%= render partial: 'shared/project-small', locals: { project: project} %>
 <% end %>
 
 <% content_for :sidebar do %>

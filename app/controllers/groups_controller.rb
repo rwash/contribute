@@ -81,13 +81,6 @@ class GroupsController < InheritedResources::Base
     end
   end
 
-  def add_list
-    group = Group.find(params[:id])
-    group.lists << List.create(listable_id: group.id, listable_type: group.class.name)
-
-    redirect_to :back
-  end
-
   def destroy
     group = Group.find(params[:id])
     flash[:error] = "Failed to delete group. Please try again." unless group.destroy
