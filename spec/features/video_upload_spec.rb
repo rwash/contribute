@@ -1,16 +1,15 @@
 require 'spec_helper'
 require 'integration_helper'
 
-class VideoUploadTesting
-  describe 'upload video' do
-    before :all do
-      Capybara.default_driver = :selenium
+feature 'upload video', :focus do
+  before :all do
+    Capybara.default_driver = :selenium
 
-      @headless = Headless.new
-      @headless.start
-    end
+    @headless = Headless.new
+    @headless.start
+  end
 
-    it "can upload video"
+  scenario "can upload video"
 =begin
         project = build(:project)
 
@@ -73,5 +72,4 @@ class VideoUploadTesting
         expect(response.listed?).to be_true
     end
 =end
-  end
 end

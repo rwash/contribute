@@ -1,7 +1,14 @@
 require 'spec_helper'
 require 'integration_helper'
 
-describe 'Projects' do
+feature 'Projects', :focus do
+
+  let(:projects) { 4.times.map { create :project, state: :active } }
+
+  scenario 'index' do
+    visit projects_path
+    expect(page).to have_content projects.first.name
+  end
 
   describe 'blocking process' do
     let(:admin) { create :user, admin: true }
@@ -19,7 +26,7 @@ describe 'Projects' do
     context 'starting with unconfirmed project' do
       let(:project) { create :project, payment_account_id: Project::UNDEFINED_PAYMENT_ACCOUNT_ID, state: :unconfirmed }
 
-      it "should set the project state to 'unconfirmed'" do
+      scenario "should set the project state to 'unconfirmed'" do
         expect(project.reload.state).to eq :unconfirmed
       end
     end
@@ -31,7 +38,7 @@ describe 'Projects' do
       # TODO Move this into a factory, perhaps with a helper method to generate a random string of the same format.
       let(:project) { create :project, payment_account_id: 'I4TRNV21A5A6BNEZGJI43QUP2X2CX3D7ID5RQMM8UK6DKJLZDSDXKDRE5BD3QXBL', state: :inactive }
 
-      it "should set the project state to 'unconfirmed'" do
+      scenario "should set the project state to 'unconfirmed'" do
         expect(project.reload.state).to eq :inactive
       end
     end
@@ -39,7 +46,7 @@ describe 'Projects' do
     context 'starting with active project' do
       let(:project) { create :project, payment_account_id: 'I4TRNV21A5A6BNEZGJI43QUP2X2CX3D7ID5RQMM8UK6DKJLZDSDXKDRE5BD3QXBL', state: :active }
 
-      it "should set the project state to 'unconfirmed'" do
+      scenario "should set the project state to 'unconfirmed'" do
         expect(project.reload.state).to eq :inactive
       end
     end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-describe 'Sign in' do
+feature 'Sign in', :focus do
   before :all do
     Capybara.default_driver = :selenium
 
@@ -12,7 +12,7 @@ describe 'Sign in' do
   context 'with regular user' do
     let(:user) { create :user }
 
-    it 'signs in successfully' do
+    scenario 'signs in successfully' do
       visit new_user_session_path
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password
@@ -26,7 +26,7 @@ describe 'Sign in' do
   context 'with blocked user' do
     let(:user) { create :user, blocked: true }
 
-    it 'prevents sign in' do
+    scenario 'prevents sign in' do
       visit new_user_session_path
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password

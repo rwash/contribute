@@ -1,12 +1,12 @@
 require 'spec_helper'
 require 'integration_helper'
 
-describe 'Groups' do
+feature 'Groups', :focus do
 
   describe 'index page' do
     # TODO use let() to reduce the number of records we're creating here
     describe 'group sidebar' do
-      it 'does not display project groups when user has none' do
+      scenario 'does not display project groups when user has none' do
         user = create :user
         group = create :group, admin_user: user
         # project is not in the group we created
@@ -18,7 +18,7 @@ describe 'Groups' do
         expect(page).to_not have_content 'You have projects in'
       end
 
-      it 'does not display admin groups when user has none' do
+      scenario 'does not display admin groups when user has none' do
         user = create :user
         group = create :group
         project = create :project, user: user
@@ -30,7 +30,7 @@ describe 'Groups' do
         expect(page).to_not have_content 'Groups you own'
       end
 
-      it 'displays project groups when user has some' do
+      scenario 'displays project groups when user has some' do
         user = create :user
         group = create :group
         project = create :project, user: user
@@ -42,7 +42,7 @@ describe 'Groups' do
         expect(page).to have_content 'You have projects in'
       end
 
-      it 'displays admin groups when user has some' do
+      scenario 'displays admin groups when user has some' do
         user = create :user
         group = create :group, admin_user: user
         # Other user's project
@@ -55,7 +55,7 @@ describe 'Groups' do
         expect(page).to have_content 'Groups you own'
       end
 
-      it 'does not display group twice when user has two projects in a group' do
+      scenario 'does not display group twice when user has two projects in a group' do
         user = create :user
         group = create :group
         projects = 2.times.map do
