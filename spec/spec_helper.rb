@@ -106,11 +106,9 @@ Spork.each_run do
   # which isn't dependent on the models we have defined in the
   # database.
   Group.delete_all
-  List.delete_all
   Approval.delete_all
   Comment.delete_all
   Contribution.delete_all
-  Listing.delete_all
   Update.delete_all
   Video.delete_all
   Project.delete_all
