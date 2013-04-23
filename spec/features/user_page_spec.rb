@@ -58,7 +58,7 @@ feature 'user page' do
   describe "redirect tests" do
 
     scenario "redirects to edit profile page after creating user" do
-      user = build :user
+      user = build_stubbed :user
 
       visit new_user_registration_path
       fill_in 'user_name', :with => user.name
@@ -72,7 +72,7 @@ feature 'user page' do
     end
 
     scenario "should create user successfully and redirect to project page" do
-      user = build(:user)
+      user = build_stubbed(:user)
 
       project = create(:project, state: :active)
       visit project_path(project)
