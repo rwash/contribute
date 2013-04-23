@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature 'amazon process', :focus do
+feature 'amazon process' do
   before :all do
     Capybara.default_driver = :selenium
 

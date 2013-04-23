@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature 'Sign in', :focus do
+feature 'Sign in' do
   before :all do
     Capybara.default_driver = :selenium
 

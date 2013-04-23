@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature "fps requests should", :focus do
+feature "fps requests should" do
   let(:project) { create(:project, state: :active) }
 
   before :all do

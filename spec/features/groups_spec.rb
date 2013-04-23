@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature 'Groups', :focus do
+feature 'Groups' do
 
   describe 'index page' do
     # TODO use let() to reduce the number of records we're creating here

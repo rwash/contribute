@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature 'Projects', :focus do
+feature 'Projects' do
 
   let(:projects) { 4.times.map { create :project, state: :active } }
 
