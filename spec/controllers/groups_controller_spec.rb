@@ -229,12 +229,6 @@ describe GroupsController do
     it { should redirect_to group_path(group) }
   end
 
-  describe 'POST add_list' do
-    before { post :add_list, id: create(:group).id }
-
-    it { should respond_with :redirect }
-  end
-
   describe 'POST destroy' do
     context 'when not signed in' do
       it "does not allow group deletion" do

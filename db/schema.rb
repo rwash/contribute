@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130413234853) do
+ActiveRecord::Schema.define(:version => 20130423093101) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -115,30 +115,6 @@ ActiveRecord::Schema.define(:version => 20130413234853) do
   end
 
   add_index "groups_projects", ["group_id", "project_id"], :name => "index_groups_projects_on_group_id_and_project_id", :unique => true
-
-  create_table "listings", :force => true do |t|
-    t.integer  "list_id"
-    t.integer  "item_id"
-    t.integer  "position"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
-    t.string   "type",       :default => "ProjectListing"
-  end
-
-  create_table "lists", :force => true do |t|
-    t.integer  "listable_id",                                             :null => false
-    t.string   "listable_type",  :limit => 20,                            :null => false
-    t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at",                                              :null => false
-    t.string   "title",                        :default => ""
-    t.boolean  "show_active",                  :default => true
-    t.boolean  "show_funded",                  :default => false
-    t.boolean  "show_nonfunded",               :default => false
-    t.boolean  "permanent",                    :default => false
-    t.string   "type",                         :default => "ProjectList"
-  end
-
-  add_index "lists", ["listable_id", "listable_type"], :name => "index_lists_on_listable_id_and_listable_type"
 
   create_table "log_cancel_requests", :force => true do |t|
     t.string   "TokenId"

@@ -18,7 +18,6 @@ class Ability
     can :read, Project, public_can_view?: true
     can :index, Project
     can :read, Group
-    can :read, List
   end
 
   # If the user is signed in, they get additional privileges
@@ -69,25 +68,11 @@ class Ability
     can [:create, :new_add, :submit_add], Group
     can :remove_project, Group # had to move check for admin or project owner to controller
 
-    can [:update, :admin, :add_list, :destroy], Group, admin_user: user
+    can [:update, :admin, :destroy], Group, admin_user: user
 
     #Aprovals
     can [:approve, :reject], Approval do |approval|
       approval.group.admin_user == user
-    end
-
-    # Lists
-    can [:destroy, :update, :sort, :add_listing, :remove_listing], List do |l|
-      if l.listable_type == "Group"
-        l.listable.admin_user == user
-      elsif l.listable_type == "User"
-        l.listable.id == user.id
-      else
-        false
-      end
-    end
-    can :sort, Listing do |l|
-      can? :update, l.list
     end
 
     can :read, User, id: user.id
@@ -137,13 +122,10 @@ class Ability
 
       # Groups
       can [:read, :create, :new_add, :submit_add, :remove_project], Group # had to move check for admin or project owner to controller
-      can [:update, :admin, :add_list, :destroy], Group
+      can [:update, :admin, :destroy], Group
 
       #Aprovals
       can [:approve, :reject], Approval
-
-      #Lists
-      can [:read, :destroy, :update, :sort, :add_listing, :remove_listing], List
 
       # Users
       can [:read, :update, :block, :toggle_admin], User

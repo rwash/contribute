@@ -3,13 +3,6 @@ class RegistrationsController < Devise::RegistrationsController
     @user = User.find(params[:id])
   end
 
-  def add_list
-    user = current_user
-    user.lists << List.create(listable_id: user.id, listable_type: user.class.name)
-
-    redirect_to :back
-  end
-
   protected
   def after_update_path_for(resource)
     user_path(resource)
