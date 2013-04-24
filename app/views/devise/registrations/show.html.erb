@@ -28,13 +28,13 @@
   <div class="section-header">
     <h3><%= @user.name %>'s Projects</h3>
   </div>
-  <h3><%= link_to "No Projects yet. Click here to get going!", new_project_url %></h3>
+  <h3>No projects yet. <%= link_to "Click here to get going!", new_project_url %></h3>
 <% else %>
-  <% for list in @user.lists %>
-    <%= render :partial => 'project_lists/list', :locals => {:list => list, :partial => "shared/project", :limit => 4} %>
+  <% @user.projects.each do |project| %>
+    <%= render partial: 'shared/project', locals: {project: project} %>
   <% end %>
 <% end %>
-<h3><%= link_to "+ Add a List", add_list_to_user_path(@user) %></h3>
+
 <p>&nbsp;</p>
 <div id="tabs">
     <ul class="nav nav-tabs">

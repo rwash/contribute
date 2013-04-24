@@ -27,6 +27,7 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
   require 'rspec/autorun'
+  require 'capybara/rails'
   require 'capybara/rspec'
   require 'cancan/matchers'
 
@@ -55,7 +56,7 @@ Spork.prefork do
     # rspec-rails.
     config.infer_base_class_for_anonymous_controllers = false
 
-    Capybara.server_port = 3999
+    config.include Capybara::DSL
 
     config.include(MailerMacros)
     config.before(:each) do
@@ -63,9 +64,6 @@ Spork.prefork do
       Timecop.return
       Warden.test_reset! if Warden.respond_to? :test_reset!
     end
-
-    # Capybara uses a DSL to allow test cases to interact with web pages
-    config.include Capybara::DSL
 
     # Allows the use of FactoryGirl methods without the namespace
     # old:
@@ -106,11 +104,9 @@ Spork.each_run do
   # which isn't dependent on the models we have defined in the
   # database.
   Group.delete_all
-  List.delete_all
   Approval.delete_all
   Comment.delete_all
   Contribution.delete_all
-  Listing.delete_all
   Update.delete_all
   Video.delete_all
   Project.delete_all

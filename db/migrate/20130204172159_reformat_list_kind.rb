@@ -1,4 +1,7 @@
 class ReformatListKind < ActiveRecord::Migration
+  class List < ActiveRecord::Base
+  end
+
   def up
     List.all.each do |list|
       list.kind = list.kind.to_s.gsub('-','_')

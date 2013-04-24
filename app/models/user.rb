@@ -43,11 +43,8 @@ class User < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :contributions, conditions: ["status not in (:retry_cancel, :fail, :cancelled)", {retry_cancel: ContributionStatus::RetryCancel, fail: ContributionStatus::Failure, cancelled: ContributionStatus::Cancelled}]
   has_many :owned_groups, class_name: "Group", foreign_key: "admin_user_id"
-  has_many :lists, as:  :listable
 
   validates :name, presence: true
-
-  after_create :add_first_list
 
   # Override the default devise filter for active users
   # so that we can guard against blocked users
@@ -63,9 +60,5 @@ class User < ActiveRecord::Base
     else
       super
     end
-  end
-
-  def add_first_list
-    self.lists << List.create(title: "#{self.name}'s Projects", permanent: true, show_funded: true, show_nonfunded: true, show_active: true)
   end
 end
