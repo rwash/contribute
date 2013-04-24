@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/rwash/contribute.png?branch=master)](https://travis-ci.org/rwash/contribute)
 [![Code Quality](https://codeclimate.com/github/rwash/contribute.png)](https://codeclimate.com/github/rwash/contribute)
 
 # Contribute
