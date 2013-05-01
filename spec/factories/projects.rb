@@ -8,9 +8,13 @@ FactoryGirl.define do
     sequence(:end_date) { |n| Date.today + n }
     # Random amount between 100 and 3000, in steps of 100
     sequence(:funding_goal) { (Random.rand(30)+1) * 100 }
-    payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
     user
-    confirmed true
     state :unconfirmed
+
+    factory :active_project do
+      payment_account_id '636NI81VD2XQKQTN3Z566GCSMHJACXCQITC83N89SVIZSMJRDS7UUKCX2DUARGVI'
+      state :active
+    end
+
   end
 end

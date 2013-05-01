@@ -74,7 +74,7 @@ describe Group do
   it { should validate_presence_of :admin_user }
 
   describe 'approvals' do
-    let(:project) { create :project, state: 'active' }
+    let(:project) { create :active_project }
     let(:approval) { create :approval, project: project }
     let(:group) { approval.group }
 

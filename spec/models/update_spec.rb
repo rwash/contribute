@@ -22,20 +22,20 @@ describe Update do
       let(:user) { create :user }
 
       context 'when user owns the project' do
-        let(:project) { create :project, user: user, state: :active }
+        let(:project) { create :active_project, user: user }
 
         it { should be_able_to(:create, project.updates.new) }
       end
 
       context 'when user does not own the project' do
-        let(:project) { create :project, state: :active }
+        let(:project) { create :active_project }
 
         it { should_not be_able_to(:create, project.updates.new) }
       end
 
       context 'when signed in as admin' do
         let(:user) { create :user, admin: true }
-        let(:project) { create :project, state: :active }
+        let(:project) { create :active_project }
 
         it { should be_able_to(:create, project.updates.new) }
       end

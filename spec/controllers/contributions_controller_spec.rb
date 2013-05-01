@@ -14,7 +14,7 @@ describe ContributionsController do
   end
 
   let(:user) { create :user }
-  let!(:project) { create :project, state: :active }
+  let!(:project) { create :active_project }
 
   describe 'GET new' do
     context 'when user is not signed in' do

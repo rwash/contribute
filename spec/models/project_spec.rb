@@ -163,8 +163,19 @@ describe Project do
     it { should_not allow_value(Date.yesterday).for :end_date }
   end
 
+  describe 'project state validations' do
+    it "should not allow the creation of an active project" do
+      expect { create :project, state: :active }.to raise_error
+    end
+
+    it "should not allow the activation of a project without a payment account id" do
+      project = build :project
+      project.state = :active
+      project.save.should be_false
+    end
+  end
+
   it { should validate_presence_of :user }
-  it { should validate_presence_of :payment_account_id }
 
   it 'parses time string correctly' do
     project = build(:project, end_date: '03/12/2020')#4
@@ -176,9 +187,9 @@ describe Project do
 
   #TODO: pictures
 
-  #Begin Methods	
+  #Begin Methods
   describe 'contributions' do
-    let(:project) { create :project, state: 'active' }
+    let(:project) { create :active_project }
     let(:contributions) do
       3.times.map { create :contribution, project: project }
     end

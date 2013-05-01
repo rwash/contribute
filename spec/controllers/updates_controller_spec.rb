@@ -16,7 +16,7 @@ describe UpdatesController do
   let(:user) { create :user }
 
   describe 'POST create' do
-    let(:project) { create :project, state: :active }
+    let(:project) { create :active_project }
 
     context "when user is signed in" do
       before { sign_in user }
