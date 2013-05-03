@@ -56,7 +56,7 @@ describe ProjectState do
   end
 
   context "is active" do
-    let(:project_state) { :active }
+    let(:project) { create :active_project }
 
     it 'responds appropriately' do
       project.state = :active

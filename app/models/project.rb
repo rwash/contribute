@@ -186,8 +186,9 @@ class Project < ActiveRecord::Base
   end
 
   # Validation
-  # Returns false if project state is active and project has no payment_account_id
+  # Creates an error if project state is active and project has no payment_account_id
   def has_payment_account_if_active?
     errors.add(:state, "can't be active without a payment account id") if state.active? and payment_account_id.nil?
+  rescue
   end
 end
