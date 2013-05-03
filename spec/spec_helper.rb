@@ -35,6 +35,9 @@ Spork.prefork do
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+  # Require lib files
+  Dir[Rails.root.join("lib/**/*.rb")].each {|f| require f}
+
   RSpec.configure do |config|
     # ## Mock Framework
     #
@@ -56,14 +59,19 @@ Spork.prefork do
     # rspec-rails.
     config.infer_base_class_for_anonymous_controllers = false
 
-    config.include Capybara::DSL
-
     config.include(MailerMacros)
     config.before(:each) do
       reset_email
       Timecop.return
       Warden.test_reset! if Warden.respond_to? :test_reset!
     end
+
+    # Capybara uses a DSL to allow test cases to interact with web pages
+    config.include Capybara::DSL
+
+    # Use capybara-webkit gem to run Javascript tests through the
+    # Capybara interface
+    Capybara.javascript_driver = :webkit
 
     # Allows the use of FactoryGirl methods without the namespace
     # old:

@@ -1,13 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature 'upload video' do
-  before :all do
-    Capybara.default_driver = :selenium
-
-    @headless = Headless.new
-    @headless.start
-  end
+feature 'upload video', :js do
 
   scenario "can upload video"
 =begin

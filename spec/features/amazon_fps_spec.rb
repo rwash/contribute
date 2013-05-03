@@ -1,15 +1,8 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature "fps requests should" do
+feature "fps requests should", :js do
   let(:project) { create(:project, state: :active) }
-
-  before :all do
-    Capybara.default_driver = :selenium
-
-    @headless = Headless.new
-    @headless.start
-  end
 
   let(:user) { create :user }
 
