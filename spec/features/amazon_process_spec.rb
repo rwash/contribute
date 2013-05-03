@@ -52,7 +52,7 @@ feature 'amazon process' do
   end
 
   describe 'creating contribution' do
-    let(:project) { create(:project, state: :active) }
+    let(:project) { create(:active_project) }
 
     scenario "fails with invalid amount" do
       login_as user
@@ -86,7 +86,7 @@ feature 'amazon process' do
   end
 
   describe 'editing contribution' do
-    let(:project) { create :project, state: :active }
+    let(:project) { create :active_project }
 
     before(:each) do
       generate_contribution(

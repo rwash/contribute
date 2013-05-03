@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'integration_helper'
 
 feature "fps requests should" do
-  let(:project) { create(:project, state: :active) }
+  let(:project) { create(:active_project) }
 
   before :all do
     Capybara.default_driver = :selenium
