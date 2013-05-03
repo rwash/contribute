@@ -63,6 +63,9 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 1.0.0)
+    capybara-webkit (0.14.2)
+      capybara (~> 2.0, >= 2.0.2)
+      json
     carrierwave (0.8.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -125,7 +128,6 @@ GEM
       guard (>= 1.1)
       spork (>= 0.8.4)
     has_scope (0.5.1)
-    headless (1.0.0)
     high_voltage (1.2.1)
     highline (1.6.15)
     hike (1.2.1)
@@ -328,6 +330,7 @@ DEPENDENCIES
   cancan
   capistrano
   capybara
+  capybara-webkit
   carrierwave
   ckeditor
   classy_enum
@@ -340,7 +343,6 @@ DEPENDENCIES
   factory_girl_rails
   guard-rspec
   guard-spork
-  headless
   high_voltage
   httparty
   inherited_resources
@@ -358,7 +360,6 @@ DEPENDENCIES
   rspec-rails
   rvm-capistrano
   sass-rails
-  selenium-webdriver
   shoulda-matchers
   simplecov
   spork-rails

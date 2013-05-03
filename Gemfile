@@ -37,11 +37,8 @@ group :test, :mysql_test do
   # Capybara is used for integration testing, the stuff you
   # find in the spec/requests folder
   gem 'capybara'
-  # Driver for Capybara
-  gem 'selenium-webdriver'
-  # Allows integration tests to be run on machiness
-  # without a monitor
-  gem 'headless'
+  # Driver for testing Javascript with Capybara
+  gem 'capybara-webkit'
   # Open page for examination during a test - used for debugging failing tests.
   gem 'launchy'
   # Code coverage!

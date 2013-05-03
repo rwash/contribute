@@ -1,13 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature 'Sign in' do
-  before :all do
-    Capybara.default_driver = :selenium
-
-    @headless = Headless.new
-    @headless.start
-  end
+feature 'Sign in', :js do
 
   context 'with regular user' do
     let(:user) { create :user }

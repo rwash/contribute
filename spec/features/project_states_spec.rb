@@ -1,13 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
 
-feature 'amazon process' do
-  before :all do
-    Capybara.default_driver = :selenium
-
-    @headless = Headless.new
-    @headless.start
-  end
+feature 'amazon process', :js do
 
   describe 'project' do
     scenario "create successfully" do
