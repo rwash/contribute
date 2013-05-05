@@ -77,7 +77,7 @@ describe Project do
 
       it { should be_able_to :destroy, build(:project, user: user, state: :unconfirmed) }
       it { should be_able_to :destroy, build(:project, user: user, state: :inactive) }
-      it { should_not be_able_to :destroy, build(:project, user: user, state: :active) }
+      it { should be_able_to :destroy, build(:project, user: user, state: :active) }
       it { should_not be_able_to :destroy, build(:project, user: user, state: :nonfunded) }
       it { should_not be_able_to :destroy, build(:project, user: user, state: :funded) }
       it { should_not be_able_to :destroy, build(:project, user: user, state: :cancelled) }
@@ -115,7 +115,7 @@ describe Project do
 
       it { should be_able_to :destroy, build(:project, user: user, state: :unconfirmed) }
       it { should be_able_to :destroy, build(:project, user: user, state: :inactive) }
-      it { should_not be_able_to :destroy, build(:project, user: user, state: :active) }
+      it { should be_able_to :destroy, build(:project, user: user, state: :active) }
       it { should_not be_able_to :destroy, build(:project, user: user, state: :nonfunded) }
       it { should_not be_able_to :destroy, build(:project, user: user, state: :funded) }
       it { should_not be_able_to :destroy, build(:project, user: user, state: :cancelled) }

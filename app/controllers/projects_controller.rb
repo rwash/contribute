@@ -75,8 +75,8 @@ class ProjectsController < InheritedResources::Base
 
     @project.state = :active
 
-    #make video public
-    @project.video.public = true
+    # publish video
+    @project.video.published = true
 
     #send out emails for any group requests
     @project.approvals.each do |approval|
@@ -95,8 +95,8 @@ class ProjectsController < InheritedResources::Base
 
     @project.state = :blocked
 
-    #make video non-public
-    @project.video.public = false if @project.video
+    #make video non-published
+    @project.video.published = false if @project.video
 
     #TODO send out email to project owner
     #TODO send out emails to any contributors
@@ -163,6 +163,7 @@ class ProjectsController < InheritedResources::Base
       #project will not be deleted but will be CANCELLED and only visible to user
       @project.state = :cancelled
       @project.save!
+      # TODO law of demeter violation
       @project.video.published = false
       @project.video.update
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
