@@ -5,11 +5,6 @@ feature 'Projects' do
 
   let!(:projects) { 4.times.map { create :active_project } }
 
-  scenario 'index' do
-    visit projects_path
-    expect(page).to have_content projects.first.name
-  end
-
   describe 'blocking process' do
     let(:admin) { create :user, admin: true }
     before { login_as admin }
