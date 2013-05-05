@@ -3,7 +3,7 @@ require 'integration_helper'
 
 feature 'Projects' do
 
-  let(:projects) { 4.times.map { create :project, state: :active } }
+  let!(:projects) { 4.times.map { create :active_project } }
 
   scenario 'index' do
     visit projects_path
