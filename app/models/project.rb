@@ -155,6 +155,21 @@ class Project < ActiveRecord::Base
     self.save
   end
 
+  def activate!
+    self.state = :active
+
+    # publish video
+    self.video.published = true
+
+    #send out emails for any group requests
+    self.approvals.each do |approval|
+      group = approval.group
+      EmailManager.project_to_group_approval(approval, @project, group).deliver
+    end
+
+    self.save!
+  end
+
   # TODO unneccesary
   def update_project_video
     return if video.nil?

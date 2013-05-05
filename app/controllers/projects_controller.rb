@@ -73,18 +73,9 @@ class ProjectsController < InheritedResources::Base
     load_project_from_params
     authorize! :activate, @project
 
-    @project.state = :active
+    # TODO this will return true if save fails -- this is a very real possibility
+    @project.activate!
 
-    # publish video
-    @project.video.published = true
-
-    #send out emails for any group requests
-    @project.approvals.each do |approval|
-      group = approval.group
-      EmailManager.project_to_group_approval(approval, @project, group).deliver
-    end
-
-    @project.save!
     flash[:notice] = "Successfully activated project."
     respond_with(@project)
   end

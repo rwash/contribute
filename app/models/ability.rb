@@ -84,6 +84,7 @@ class Ability
     if user and user.admin?
       # Projects
       can [:read, :create, :save, :activate, :block], Project
+      # TODO change this to 'cancel'
       can :destroy, Project, user: user, state: :active
       can :destroy, Project, state: :inactive
       can :destroy, Project, state: :unconfirmed
