@@ -13,6 +13,10 @@ describe UpdatesController do
     controller.stub!(:current_ability).and_return(@ability)
   end
 
+  after(:all) do
+    Update.delete_all
+  end
+
   let(:user) { create :user }
 
   describe 'POST create' do
