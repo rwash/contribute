@@ -23,6 +23,7 @@ feature 'amazon process', :js do
       fill_in_ckeditor 'project_long_description', with: project.long_description
 
       click_button 'Create Project'
+      expect(page).to have_content 'Sign in with your Amazon account'
       get_and_assert_project(project.name)
 
       login_amazon('spartanfan10@hotmail.com', 'testing')
