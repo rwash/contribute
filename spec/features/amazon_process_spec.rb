@@ -91,30 +91,10 @@ feature 'amazon process', :js do
         100) #the amount
     end
 
-    scenario "fails with smaller contribution amount" do
+    scenario "redirects when amount is not valid" do
       contribution = get_and_assert_contribution(project.id)
       visit edit_contribution_path(contribution)
       fill_in 'contribution_amount', with: contribution.amount - 5
-      click_button 'Update Contribution'
-
-      expect(page).to have_content('Edit contribution to')
-      expect(page).to have_content('prevented this contribution from being saved')
-    end
-
-    scenario "fails with invalid contribution amount" do
-      contribution = get_and_assert_contribution(project.id)
-      visit edit_contribution_path(contribution)
-      fill_in 'contribution_amount', with: "invalid amount"
-      click_button 'Update Contribution'
-
-      expect(page).to have_content('Edit contribution to')
-      expect(page).to have_content('prevented this contribution from being saved')
-    end
-
-    scenario "fails with same amount" do
-      contribution = get_and_assert_contribution(project.id)
-      visit edit_contribution_path(contribution)
-      fill_in 'contribution_amount', with: contribution.amount
       click_button 'Update Contribution'
 
       expect(page).to have_content('Edit contribution to')
