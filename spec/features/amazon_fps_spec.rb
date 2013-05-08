@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'integration_helper'
 
 feature "fps requests should", :js do
-  let(:project) { create(:project, state: :active) }
+  let(:project) { create(:active_project) }
 
   let(:user) { create :user }
 

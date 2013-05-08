@@ -30,7 +30,7 @@ feature 'user page', :js do
     end
 
     scenario "should show active projects" do
-      project = create :project, state: :active, user: user
+      project = create :active_project, user: user
 
       visit user_path(user)
       expect(page).to have_content(project.name)
@@ -68,7 +68,7 @@ feature 'user page', :js do
     scenario "should create user successfully and redirect to project page" do
       user = build_stubbed(:user)
 
-      project = create(:project, state: :active)
+      project = create(:active_project)
       visit project_path(project)
 
       click_button 'Contribute to this project'

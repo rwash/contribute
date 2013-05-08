@@ -27,6 +27,7 @@ class Ability
     can [:read, :save, :activate], Project, user: user
     can :read, Project, confirmation_approver?: true
 
+    can :destroy, Project, user: user, state: :active
     can :destroy, Project, user: user, state: :inactive
     can :destroy, Project, user: user, state: :unconfirmed
 
@@ -83,6 +84,8 @@ class Ability
     if user and user.admin?
       # Projects
       can [:read, :create, :save, :activate, :block], Project
+      # TODO change this to 'cancel'
+      can :destroy, Project, user: user, state: :active
       can :destroy, Project, state: :inactive
       can :destroy, Project, state: :unconfirmed
 
