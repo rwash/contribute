@@ -10,9 +10,9 @@ feature 'amazon process', :js do
     expect(page).to have_content('Sign in with your Amazon account')
   end
 
-  #if you receive a not well formed :[recipientTokenList] update the project factor
+  #if you receive a not well formed :[recipientTokenList] update the project factory
   scenario "multi token request should direct to amazon login" do
-    @project = create(:project)
+    @project = create(:active_project)
     @contribution = create(:contribution)
 
     session = {}
