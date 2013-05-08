@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe ProjectState do
+  # TODO change to build_stubbed
   let(:project) { create :project, state: project_state }
 
   context "is unconfirmed" do
@@ -55,7 +56,7 @@ describe ProjectState do
   end
 
   context "is active" do
-    let(:project_state) { :active }
+    let(:project) { create :active_project }
 
     it 'responds appropriately' do
       project.state = :active
@@ -195,5 +196,6 @@ describe ProjectState do
     expect(project.valid?).to be_false
     expect(project.save).to be_false
   end
+
 end
 

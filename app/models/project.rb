@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
   MAX_SHORT_DESC_LENGTH = 200
   MAX_LONG_DESC_LENGTH = 50000
   # TODO change this to nil
-  UNDEFINED_PAYMENT_ACCOUNT_ID = 'TEMP'
+  UNDEFINED_PAYMENT_ACCOUNT_ID = nil
 
   # TODO this shouldn't be here.
   include Rails.application.routes.url_helpers
@@ -51,6 +51,7 @@ class Project < ActiveRecord::Base
   # Validations --------------------------------------------------------------
 
   validate :end_date_in_future?, on: :create
+  validate :has_payment_account_if_active?
 
   before_destroy :destroy_prep
   before_destroy :destroy_video
@@ -78,7 +79,6 @@ class Project < ActiveRecord::Base
   validates :end_date,
             presence: { message: "must be of form 'MM/DD/YYYY'" }
 
-  validates :payment_account_id, presence: true
   validates :user, presence: true
 
   # Delegations --------------------------------------------------------------
@@ -102,15 +102,6 @@ class Project < ActiveRecord::Base
   # Sets the funding goal to a given amount
   def funding_goal=(val)
     write_attribute(:funding_goal, val.to_s.gsub(/,/, ''))
-  end
-
-  # Returns true if the end date exists and is in the future
-  def end_date_in_future?
-    if !end_date
-      return
-    elsif end_date < Date.today + 1
-      errors.add(:end_date, "has to be in the future")
-    end
   end
 
   # Returns the total amount of funding that has been received so far
@@ -143,7 +134,7 @@ class Project < ActiveRecord::Base
   # Sends email to project owner and all contributors, and destroys all contributions.
   # This method is executed before destroying each project.
   def destroy_prep
-    EmailManager.project_deleted_to_owner(self).deliver  
+    EmailManager.project_deleted_to_owner(self).deliver
 
     self.contributions.each do |contribution|
       EmailManager.project_deleted_to_contributor(contribution).deliver
@@ -164,6 +155,22 @@ class Project < ActiveRecord::Base
     self.save
   end
 
+  def activate!
+    self.state = :active
+
+    # publish video
+    self.video.published = true
+
+    #send out emails for any group requests
+    self.approvals.each do |approval|
+      group = approval.group
+      EmailManager.project_to_group_approval(approval, @project, group).deliver
+    end
+
+    self.save!
+  end
+
+  # TODO unneccesary
   def update_project_video
     return if video.nil?
 
@@ -173,10 +180,30 @@ class Project < ActiveRecord::Base
     video.update
   end
 
+  # TODO badly formed method
   def confirmation_approver?
     approvals.each do |approval|
       return true if approval.group.admin_user == current_user
     end
     return false
+  end
+
+  protected
+
+  # Validation
+  # Returns true if the end date exists and is in the future
+  def end_date_in_future?
+    if !end_date
+      return
+    elsif end_date < Date.today + 1
+      errors.add(:end_date, "has to be in the future")
+    end
+  end
+
+  # Validation
+  # Creates an error if project state is active and project has no payment_account_id
+  def has_payment_account_if_active?
+    errors.add(:state, "can't be active without a payment account id") if state.active? and payment_account_id.nil?
+  rescue
   end
 end

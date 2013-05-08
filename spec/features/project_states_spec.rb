@@ -40,13 +40,13 @@ feature 'amazon process', :js do
       #project is no inactive
 
       click_button('Activate')
-      page.driver.browser.switch_to.alert.accept
+      page.driver.accept_js_prompts!
       expect(page).to have_content 'Successfully activated project.'
       #project is now active
 
       visit(project_path(project))
       click_button 'Cancel Project'
-      page.driver.browser.switch_to.alert.accept
+      page.driver.accept_js_prompts!
       expect(page).to have_content 'Project successfully cancelled.'
       #project is now cancelled
 

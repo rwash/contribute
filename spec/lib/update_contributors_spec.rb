@@ -5,7 +5,7 @@ describe UpdateContributors do
   describe "integration tests" do
     it "run works" do
 
-      project = create :project, state: :active, end_date: 1.week.from_now
+      project = create :active_project, end_date: 1.week.from_now
       update = create :update, email_sent: false, project: project
 
       Contribution.any_instance.stub(:execute_payment) {}

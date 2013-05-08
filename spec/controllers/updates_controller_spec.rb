@@ -13,10 +13,14 @@ describe UpdatesController do
     controller.stub!(:current_ability).and_return(@ability)
   end
 
+  after(:all) do
+    Update.delete_all
+  end
+
   let(:user) { create :user }
 
   describe 'POST create' do
-    let(:project) { create :project, state: :active }
+    let(:project) { create :active_project }
 
     context "when user is signed in" do
       before { sign_in user }

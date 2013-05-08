@@ -40,10 +40,18 @@ describe ProjectsController do
     context 'with permission' do
       let(:project) { create :project }
       before { @ability.stub!(:can?).with(:activate, project).and_return(true) }
-      before { put :activate, id: project.to_param }
 
-      it 'sets project state to active' do
+      it 'sets project state to active if project has payment_account_id' do
+        # TODO extract this into a fake Amazon API
+        project.payment_account_id = 'ABCD'
+        project.save
+        put :activate, id: project.to_param
         expect(project.reload.state).to eq :active
+      end
+
+      it "doesn't activate project without a payment_account_id" do
+        expect { put :activate, id: project.to_param }.to raise_error
+        expect(project.reload.state).to_not eq :active
       end
     end
 

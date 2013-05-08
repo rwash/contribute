@@ -73,18 +73,9 @@ class ProjectsController < InheritedResources::Base
     load_project_from_params
     authorize! :activate, @project
 
-    @project.state = :active
+    # TODO this will return true if save fails -- this is a very real possibility
+    @project.activate!
 
-    #make video public
-    @project.video.public = true
-
-    #send out emails for any group requests
-    @project.approvals.each do |approval|
-      group = approval.group
-      EmailManager.project_to_group_approval(approval, @project, group).deliver
-    end
-
-    @project.save!
     flash[:notice] = "Successfully activated project."
     respond_with(@project)
   end
@@ -95,8 +86,8 @@ class ProjectsController < InheritedResources::Base
 
     @project.state = :blocked
 
-    #make video non-public
-    @project.video.public = false if @project.video
+    #make video non-published
+    @project.video.published = false if @project.video
 
     #TODO send out email to project owner
     #TODO send out emails to any contributors
@@ -163,6 +154,7 @@ class ProjectsController < InheritedResources::Base
       #project will not be deleted but will be CANCELLED and only visible to user
       @project.state = :cancelled
       @project.save!
+      # TODO law of demeter violation
       @project.video.published = false
       @project.video.update
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."

@@ -14,7 +14,7 @@ describe ContributionsController do
   end
 
   let(:user) { create :user }
-  let!(:project) { create :project, state: :active }
+  let!(:project) { create :active_project }
 
   describe 'GET new' do
     context 'when user is not signed in' do
@@ -129,7 +129,7 @@ describe ContributionsController do
 
     it "handles invalid contribution" do
       sign_in user
-      get :edit, {id: 1 }
+      get :edit, { id: 0 }
       expect(response).to redirect_to(root_path)
       expect(flash[:alert]).to include "error"
     end

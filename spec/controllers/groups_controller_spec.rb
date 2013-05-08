@@ -89,7 +89,7 @@ describe GroupsController do
         end
 
         it 'allows adding of active project to group' do
-          project = create(:project, state: 'active', user: user)
+          project = create(:active_project, user: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
 
@@ -125,7 +125,7 @@ describe GroupsController do
         end
 
         it 'does not allow multiple additions of the same project to a group' do
-          project = create(:project, state: 'active', user: user)
+          project = create(:active_project, user: user)
           group.projects << project
           expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.projects.count}
 
@@ -159,7 +159,7 @@ describe GroupsController do
         end
 
         it 'allows adding of active project to group' do
-          project = create(:project, state: 'active', user: user)
+          project = create(:active_project, user: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
 
@@ -198,7 +198,7 @@ describe GroupsController do
         end
 
         it 'does not allow multiple additions of the same project to a group' do
-          project = create(:project, state: 'active', user: user)
+          project = create(:active_project, user: user)
           group.projects << project
           expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.approvals.count}
 

@@ -22,6 +22,7 @@ class Video < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   def upload_video(path)
+    # TODO send this to the logs
     puts "Uploading video at #{path}"
     tempfile = File.open path
     response = Video.yt_session.video_upload(tempfile, options_hash)
@@ -94,8 +95,8 @@ end
 
 class NullVideo
   # ActiveRecord Accessors
-  def public=(value); end
-  def public; false end
+  def published=(value); end
+  def published; false end
 
   # Other Methods
   def nil?; true end

@@ -3,12 +3,7 @@ require 'integration_helper'
 
 feature 'Projects' do
 
-  let(:projects) { 4.times.map { create :project, state: :active } }
-
-  scenario 'index' do
-    visit projects_path
-    expect(page).to have_content projects.first.name
-  end
+  let!(:projects) { 4.times.map { create :active_project } }
 
   describe 'blocking process' do
     let(:admin) { create :user, admin: true }
