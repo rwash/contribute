@@ -15,12 +15,11 @@ module Amazon
       attr_reader :parameters, :http_method, :url_end_point
 
       validate :parameters_are_enumerable
-      validates_presence_of :signature
-      validates_presence_of :signature_version
-      validates :signature_version, inclusion: { in: [SIGNATURE_VERSION_2] }
-      validates_presence_of :signature_method
-      validates_presence_of :signature_algorithm, message: "'signatureMethod' present in parameters is invalid. Valid values are: RSA-SHA1"
-      validates_presence_of :certificate_url
+      validates :signature, presence: true
+      validates :signature_version, presence: true, inclusion: { in: [SIGNATURE_VERSION_2] }
+      validates :signature_method, presence: true
+      validates :signature_algorithm, presence: true
+      validates :certificate_url, presence: true
 
       def validate
         raise "Invalid" unless self.valid?
