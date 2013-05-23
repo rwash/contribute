@@ -56,7 +56,7 @@ class SignatureUtilsForOutbound
   end
 
   def validate_signature_v1(args)
-    signature = OutboundSignatureV1.new(args)
+    signature = OutboundSignatureV1.new(args[:parameters])
     signature.validate
   end
 

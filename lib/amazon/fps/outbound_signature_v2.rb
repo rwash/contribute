@@ -22,7 +22,7 @@ module Amazon
       validates :certificate_url, presence: true
 
       def validate
-        raise "Invalid" unless self.valid?
+        raise "Invalid outbound signature" unless self.valid?
 
         # Construct VerifySignatureAPI request
         if(SignatureUtilsForOutbound::starts_with(certificate_url, FPS_SANDBOX_ENDPOINT) == true) then
