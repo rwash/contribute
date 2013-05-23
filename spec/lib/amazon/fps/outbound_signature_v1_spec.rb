@@ -6,7 +6,7 @@ describe Amazon::FPS::OutboundSignatureV1 do
     context 'with a signature keyname' do
       it 'does not raises exception' do
         signature = Amazon::FPS::OutboundSignatureV1.new({parameters: {"signature" => "foo"}})
-        expect {signature.validate}.to_not raise_exception
+        expect {signature.send(:signature)}.to_not raise_exception "Signature is missing from parameters"
       end
     end
 
