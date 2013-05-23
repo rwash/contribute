@@ -4,34 +4,26 @@ require 'openssl'
 module Amazon
   module FPS
     class OutboundSignatureV2
-      def initialize(args)
-        @args = args
+      include ActiveModel::Validations
+
+      def initialize(parameters, http_method, url_end_point)
+        @parameters = parameters
+        @http_method = http_method
+        @url_end_point = url_end_point
       end
 
+      attr_reader :parameters, :http_method, :url_end_point
+
+      validate :parameters_are_enumerable
+      validates_presence_of :signature
+      validates_presence_of :signature_version
+      validates :signature_version, inclusion: { in: [SIGNATURE_VERSION_2] }
+      validates_presence_of :signature_method
+      validates_presence_of :signature_algorithm, message: "'signatureMethod' present in parameters is invalid. Valid values are: RSA-SHA1"
+      validates_presence_of :certificate_url
+
       def validate
-        [:parameters, :http_method, :url_end_point].each do |arg|
-          raise "#{arg.inspect} is missing from the arguments." unless @args[arg]
-        end
-
-        url_end_point = @args[:url_end_point]
-
-        parameters = @args[:parameters]
-        raise ":parameters must be enumerable" unless @args[:parameters].kind_of? Enumerable
-
-        signature = parameters[SIGNATURE_KEYNAME];
-        raise "'signature' is missing from the parameters." if (signature.nil? or signature.empty?)
-
-        signature_version = parameters[SIGNATURE_VERSION_KEYNAME];
-        raise "'signatureVersion' is missing from the parameters." if (signature_version.nil? or signature_version.empty?)
-        raise "'signatureVersion' present in parameters is invalid. Valid values are: 2" if (signature_version != SIGNATURE_VERSION_2)
-
-        signature_method = parameters[SIGNATURE_METHOD_KEYNAME]
-        raise "'signatureMethod' is missing from the parameters." if (signature_method.nil? or signature_method.empty?)
-        signature_algorithm = SignatureUtilsForOutbound::get_algorithm(signature_method)
-        raise "'signatureMethod' present in parameters is invalid. Valid values are: RSA-SHA1" if (signature_algorithm.nil?)
-
-        certificate_url = parameters[CERTIFICATE_URL_KEYNAME]
-        raise "'certificate_url' is missing from the parameters." if (certificate_url.nil? or certificate_url.empty?)
+        raise "Invalid" unless self.valid?
 
         # Construct VerifySignatureAPI request
         if(SignatureUtilsForOutbound::starts_with(certificate_url, FPS_SANDBOX_ENDPOINT) == true) then
@@ -59,6 +51,32 @@ module Amazon
       end
 
       private
+
+      def signature
+        @signature ||= parameters[SIGNATURE_KEYNAME]
+      end
+
+      def signature_version
+        @signature_version ||= parameters[SIGNATURE_VERSION_KEYNAME]
+      end
+
+      def signature_method
+        @signature_method ||= parameters[SIGNATURE_METHOD_KEYNAME]
+      end
+
+      def signature_algorithm
+        @signature_algorithm ||= SignatureUtilsForOutbound::get_algorithm(signature_method)
+      end
+
+      def certificate_url
+        @certificate_url ||= parameters[CERTIFICATE_URL_KEYNAME]
+      end
+
+      def parameters_are_enumerable
+        unless parameters.kind_of? Enumerable
+          errors.add :parameters, "must be enumerable"
+        end
+      end
     end
   end
 end

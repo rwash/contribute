@@ -4,7 +4,7 @@ require "lib_helper"
 describe Amazon::FPS::OutboundSignatureV1 do
   describe '.validate' do
     context 'with a signature keyname' do
-      it 'does not raises exception' do
+      it 'does not raise exception' do
         signature = Amazon::FPS::OutboundSignatureV1.new({parameters: {"signature" => "foo"}})
         expect {signature.send(:signature)}.to_not raise_exception "Signature is missing from parameters"
       end
