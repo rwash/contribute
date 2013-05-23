@@ -48,9 +48,11 @@ class SignatureUtilsForOutbound
   end
 
   def validate_request(args)
-    parameters = args[:parameters]
-    return validate_signature_v2(args) if (parameters[SIGNATURE_VERSION_KEYNAME] == SIGNATURE_VERSION_2)
-    return validate_signature_v1(args)
+    if version_number(args[:parameters]) == 2
+      return validate_signature_v2(args)
+    else
+      return validate_signature_v1(args)
+    end
   end
 
   def validate_signature_v1(args)
@@ -170,6 +172,12 @@ class SignatureUtilsForOutbound
      params.map do |(k, v)|
         urlencode(k) + "=" + urlencode(v)
      end.join("&")
+  end
+
+  private
+
+  def version_number(parameters)
+    parameters[SIGNATURE_VERSION_KEYNAME].to_i
   end
 
 end
