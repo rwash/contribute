@@ -1,0 +1,20 @@
+require 'spec_helper'
+require "lib_helper"
+
+describe Amazon::FPS::OutboundSignatureV1 do
+  describe '.validate' do
+    context 'with a signature keyname' do
+      it 'does not raises exception' do
+        signature = Amazon::FPS::OutboundSignatureV1.new({parameters: {"signature" => "foo"}})
+        expect {signature.validate}.to_not raise_exception
+      end
+    end
+
+    context 'without a signature keyname' do
+      it 'raises exception' do
+        signature = Amazon::FPS::OutboundSignatureV1.new({parameters: {}})
+        expect {signature.validate}.to raise_exception
+      end
+    end
+  end
+end

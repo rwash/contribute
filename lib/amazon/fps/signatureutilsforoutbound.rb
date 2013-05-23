@@ -19,9 +19,6 @@ require 'rexml/document'
 module Amazon
 module FPS
 
-
-class SignatureUtilsForOutbound
-
   SIGNATURE_KEYNAME = "signature"
   SIGNATURE_METHOD_KEYNAME = "signatureMethod"
   SIGNATURE_VERSION_KEYNAME = "signatureVersion"
@@ -41,6 +38,9 @@ class SignatureUtilsForOutbound
   SIGNATURE_VERSION_1 = "1"
   SIGNATURE_VERSION_2 = "2"
   RSA_SHA1_ALGORITHM = "RSA-SHA1"
+
+
+class SignatureUtilsForOutbound
 
   def initialize(aws_access_key, aws_secret_key)
     @aws_secret_key = aws_secret_key
