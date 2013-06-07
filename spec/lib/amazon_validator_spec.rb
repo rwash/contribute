@@ -24,8 +24,8 @@ describe Amazon::FPS::AmazonValidator do
       run_valid_multi_token_test(false)
     end
 
-    it "should fail with a bad signature" do
-      @params["signature"] = "poop butt"
+    it "should fail with an invalid signature" do
+      @params["signature"] = "invalid signature"
       run_valid_multi_token_test(false)
     end
   end
@@ -57,8 +57,8 @@ describe Amazon::FPS::AmazonValidator do
       run_valid_recipient_test(false)
     end
 
-    it "should fail without a valid signature" do
-      @params["signature"] = "poop butt"
+    it "should fail with an invalid signature" do
+      @params["signature"] = "invalid signature"
       run_valid_recipient_test(false)
     end
   end

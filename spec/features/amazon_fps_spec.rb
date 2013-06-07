@@ -50,29 +50,29 @@ feature "fps requests should", :js do
     expect(Logging::LogCancelResponse.find_by_log_cancel_request_id(log_cancel_request.id)).to_not be_nil
   end
 
-  scenario "handle bad pay request" do
-    request = Amazon::FPS::PayRequest.new('poop', 'poop', 50)
+  scenario "handle invalid pay request" do
+    request = Amazon::FPS::PayRequest.new('invalid', 'invalid', 50)
     request.send()
 
-    log_pay_request = Logging::LogPayRequest.find_by_SenderTokenId('poop')
+    log_pay_request = Logging::LogPayRequest.find_by_SenderTokenId('invalid')
     expect(log_pay_request).to_not be_nil
     assert_amazon_error(log_pay_request.id)
   end
 
-  scenario "handle bad get transaction status request" do
-    request = Amazon::FPS::GetTransactionStatusRequest.new('poop')
+  scenario "handle invalid get_transaction_status request" do
+    request = Amazon::FPS::GetTransactionStatusRequest.new('invalid')
     request.send()
 
-    log_get_transaction_request = Logging::LogGetTransactionRequest.find_by_TransactionId('poop')
+    log_get_transaction_request = Logging::LogGetTransactionRequest.find_by_TransactionId('invalid')
     expect(log_get_transaction_request).to_not be_nil
     assert_amazon_error(log_get_transaction_request.id)
   end
 
-  scenario "handle bad cancel token request" do
-    request = Amazon::FPS::CancelTokenRequest.new('poop')
+  scenario "handle invalid cancel_token request" do
+    request = Amazon::FPS::CancelTokenRequest.new('invalid')
     request.send()
 
-    log_cancel_request = Logging::LogCancelRequest.find_by_TokenId('poop')
+    log_cancel_request = Logging::LogCancelRequest.find_by_TokenId('invalid')
     expect(log_cancel_request).to_not be_nil
     assert_amazon_error(log_cancel_request.id)
   end

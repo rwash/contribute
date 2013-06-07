@@ -22,8 +22,8 @@ class CommentsController < InheritedResources::Base
     end
   end
 
-  # TODO: change action name to 'destroy'
-  def delete
+  # TODO: Set a flag in the model? Possibly use the acts_as_paranoid gem
+  def destroy
     comment = Comment.find(params[:id])
 
     authorize! :destroy, comment, message: "You cannot delete comments you don't own."

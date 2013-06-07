@@ -47,9 +47,6 @@ Spork.prefork do
     # config.mock_with :flexmock
     # config.mock_with :rr
 
-    # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-    config.fixture_path = "#{::Rails.root}/spec/fixtures"
-
     # Ran into trouble with the default transactions. Since we're not using fixtures
     # anyway, we can just turn them off.
     config.use_transactional_fixtures = false
