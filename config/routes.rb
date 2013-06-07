@@ -3,10 +3,7 @@ Contribute::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
 
   #Comments
-  resources :comments do
-    #TODO change this to the default destroy action
-    delete :delete, :on => :member
-  end
+  resources :comments
 
   #Updates
   resources :updates, :only => [:create]

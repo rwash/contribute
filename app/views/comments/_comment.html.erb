@@ -27,7 +27,7 @@
   <br>
   <% end %>
   <% if can? :destroy, comment %>
-      <%= link_to 'delete', delete_comment_path(comment), :method => :delete %>
+      <%= link_to 'delete', comment, :method => :delete %>
   <% end %>
   </p>
     <div id="reply_<%= comment.id %>">
