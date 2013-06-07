@@ -40,20 +40,20 @@ describe CommentsController do
     end
   end
 
-  describe 'DELETE delete' do
+  describe 'DELETE destroy' do
     context 'with permission' do
       before { sign_in user }
       let(:comment) { create :comment, user: user }
 
       before { @ability.stub!(:can?).with(:destroy, comment).and_return(true) }
-      before { delete :delete, id: comment.id }
+      before { delete :destroy, id: comment.id }
       it { should set_the_flash.to(/successfully deleted/) }
     end
 
     context 'when user is not signed in' do
       let(:comment) { create :comment }
 
-      before { delete :delete, id: comment.id }
+      before { delete :destroy, id: comment.id }
       it { should set_the_flash.to(/sign in/) }
       it { should redirect_to new_user_session_path }
     end
@@ -63,7 +63,7 @@ describe CommentsController do
       let(:comment) { create :comment }
 
       before { @ability.stub!(:can?).with(:destroy, comment).and_return(false) }
-      before { delete :delete, id: comment.id }
+      before { delete :destroy, id: comment.id }
       it { should set_the_flash.to(/cannot delete comments you don't own/) }
       it { should redirect_to :root }
     end

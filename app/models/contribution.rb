@@ -35,15 +35,6 @@ class Contribution < ActiveRecord::Base
 
   classy_enum_attr :status, enum: 'ContributionStatus'
 
-  # Overrides the default initializer,
-  # sets the status to none and retry count to zero.
-  #---
-  # TODO: Move the default value into the database schema file.
-  def initialize(attributes = nil, options = {})
-    super
-    self.retry_count = 0
-  end
-
   # Overwrides default setter
   # Accepts input as a string of numbers with commas.
   def amount=(val)
