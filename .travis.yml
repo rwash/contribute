@@ -1,7 +1,7 @@
 language: ruby
 bundler_args: --without development
 rvm:
-  - "2.0.0-p0"
+  - "1.9.3"
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
