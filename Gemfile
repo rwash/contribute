@@ -37,6 +37,8 @@ group :test, :mysql_test do
   gem 'fuubar', '~> 1.2.1'
   # Rails pre-loading for tests
   gem 'spring', '~> 0.0.10'
+  # Clean database between each test example
+  gem 'database_cleaner', '~> 1.1.1'
 end
 
 # Find and squish bugs easier with better_errors
