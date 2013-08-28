@@ -5,21 +5,21 @@
 #   git config --global core.excludesfile ~/.gitignore_global
 
 # Ignore bundler config
-/.bundle
+.bundle
 
 # Ignore the default SQLite database.
-/db/*.sqlite3
+db/*.sqlite3
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
-/tmp
+log/*.log
+tmp
 
 # Ignore pictures for Carrierwave
-/public/uploads
+public/uploads
 # And Paperclip while it's still used...
-/public/system/pictures
+public/system/pictures
 # Precompiled Assets
-/public/assets
+public/assets
 
 # Ignore a couple hidden files
 .viminfo
@@ -33,20 +33,20 @@
 .DS_Store
 
 # Ignore code coverage files
-/coverage
-/public/coverage
+coverage
+public/coverage
 
 # Ignore Rspec output
-/public/specification.html
+public/specification.html
 
 #doc files
-/doc
+doc
 
 #Integration coverage
-/spec/integration/coverage
-/spec/coverage
-/spec/lib/coverage
-/spec/controllers/coverage
+spec/integration/coverage
+spec/coverage
+spec/lib/coverage
+spec/controllers/coverage
 
 # Database connection information
-/config/database.yml
+config/database.yml
