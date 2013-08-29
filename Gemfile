@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 3.1'
 
+gem 'mysql2', '~> 0.3.11'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -13,10 +15,10 @@ end
 gem 'jquery-rails', '~> 2.2.1'
 
 # RSpec is our testing framework, at the heart of our tests
-gem 'rspec-rails', group: [:test, :mysql_test, :mysql_development, :development]
+gem 'rspec-rails', group: [:test, :development]
 
 # Testing gems!
-group :test, :mysql_test do
+group :test do
   # Factory Girl is used in place of fixtures
   # to make test objects for our tests to use
   gem 'factory_girl_rails', '~> 4.0'
@@ -47,16 +49,9 @@ group :development do
   gem 'binding_of_caller', '~> 0.6.8'
 end
 
-
 # Deploy with Capistrano
 gem 'capistrano', '~> 2.14.2'
 gem 'rvm-capistrano', '~> 1.2.7'
-
-# Use MySQL for production and development and testing on orithena
-gem 'mysql2', '~> 0.3.11', group: [:production, :mysql_development, :mysql_test]
-
-# Use SQLite for easy development and test when not on Orithena
-gem 'sqlite3', '~> 1.3.7', group: [:development, :test]
 
 gem 'json'
 

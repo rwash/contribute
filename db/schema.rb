@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20130607101124) do
     t.integer  "commentable_id",   :default => 0
     t.string   "commentable_type", :default => ""
     t.string   "title",            :default => ""
-    t.text     "body",             :default => ""
+    t.text     "body"
     t.string   "subject",          :default => ""
     t.integer  "user_id",          :default => 0,  :null => false
     t.integer  "parent_id"
@@ -218,8 +218,8 @@ ActiveRecord::Schema.define(:version => 20130607101124) do
     t.datetime "picture_updated_at"
     t.integer  "user_id"
     t.string   "payment_account_id"
-    t.string   "state"
     t.boolean  "confirmed"
+    t.string   "state"
   end
 
   create_table "updates", :force => true do |t|
