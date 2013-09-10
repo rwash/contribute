@@ -3,8 +3,7 @@ require 'integration_helper'
 
 feature 'upload video', :js do
 
-  scenario "can upload video"
-=begin
+  scenario "can upload video" do
         project = build(:project)
 
         #login with our project creator
@@ -12,7 +11,7 @@ feature 'upload video', :js do
 
         #create a project
         visit(new_project_path)
-        expect(current_path).to == new_project_path
+        current_path.should eq new_project_path
 
         #fill in form
         attach_file 'video', "#{Rails.root}/test/test.mov"
@@ -22,6 +21,7 @@ feature 'upload video', :js do
         fill_in 'project_short_description', :with => project.short_description
         fill_in_ckeditor 'project_long_description', :with => 'This is my message!'
 
+        pending "amazon sends a strange response"
         click_button 'Create Project'
 
         expect(page).to have_content('Sign in with your Amazon account')
@@ -64,6 +64,5 @@ feature 'upload video', :js do
 
         response = client.video_by(video.yt_video_id)
         expect(response.listed?).to be_true
-    end
-=end
+  end
 end
