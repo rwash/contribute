@@ -23,7 +23,7 @@ feature 'amazon process', :js do
       fill_in_ckeditor 'project_long_description', with: project.long_description
 
       click_button 'Create Project'
-      expect(page).to have_content 'Sign in with your Amazon account'
+      expect(page).to have_content I18n.t(:amazon_sign_in)
       get_and_assert_project(project.name)
 
       login_amazon('spartanfan10@hotmail.com', 'testing')
@@ -37,13 +37,13 @@ feature 'amazon process', :js do
 
       #Now we should be back at contribute
       expect(current_path).to eq project_path(project)
-      expect(page).to have_content('Project saved successfully')
+      expect(page).to have_content I18n.t('projects.saved')
 
       get_and_assert_project(project.name)
 
       expect(last_email.to).to eq([user.email])
       expect(last_email.subject).to match(project.name)
-      expect(last_email.subject).to match('has been created')
+      expect(last_email.subject).to match I18n.t('projects.create.email.subject')
     end
   end
 
@@ -63,8 +63,8 @@ feature 'amazon process', :js do
       fill_in 'contribution_amount', with: 'you_fail_me'
       click_button 'Make Contribution'
 
-      expect(page).to have_content('Contribute to')
-      expect(page).to have_content('prevented this contribution from being saved')
+      expect(page).to have_content I18n.t('contributions.new.title')
+      expect(page).to have_content I18n.t(:form_error_message)
     end
 
     scenario "succeeds with valid amount" do
@@ -77,7 +77,7 @@ feature 'amazon process', :js do
 
         expect(last_email.to).to eq([user.email])
         expect(last_email.subject).to match(project.name)
-        expect(last_email.subject).to match('Your contribution to')
+        expect(last_email.subject).to match I18n.t('contribution.create.email.subject')
     end
   end
 
@@ -99,8 +99,8 @@ feature 'amazon process', :js do
       fill_in 'contribution_amount', with: contribution.amount - 5
       click_button 'Update Contribution'
 
-      expect(page).to have_content('Edit contribution to')
-      expect(page).to have_content('prevented this contribution from being saved')
+      expect(page).to have_content I18n.t('contributions.edit.title')
+      expect(page).to have_content I18n.t(:form_error_message)
     end
 
     scenario "succeeds with valid amount" do
@@ -111,7 +111,7 @@ feature 'amazon process', :js do
 
       make_amazon_payment('contribute_testing@hotmail.com', 'testing')
 
-      expect(page).to have_content('Contribution successfully updated.')
+      expect(page).to have_content I18n.t('contributions.updated')
 
       cancelled_contribution = project.contributions.where(status: :cancelled)
       new_contribution = project.contributions.where(status: :none)
@@ -121,7 +121,7 @@ feature 'amazon process', :js do
 
       expect(last_email.to).to eq([user.email])
       expect(last_email.subject).to match(project.name)
-      expect(last_email.subject).to match('Your edited contribution to')
+      expect(last_email.subject).to match I18n.t('contribution.update.email.subject')
     end
   end
 end

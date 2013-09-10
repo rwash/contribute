@@ -24,7 +24,7 @@ feature 'upload video', :js do
         pending "amazon sends a strange response"
         click_button 'Create Project'
 
-        expect(page).to have_content('Sign in with your Amazon account')
+        expect(page).to have_content I18n.t(:amazon_sign_in)
 
         visit(project_path(project))
         project = get_and_assert_project(project.name)
@@ -45,14 +45,14 @@ feature 'upload video', :js do
 
         visit(project_path(project))
         click_button('Edit Project')
-        expect(page).to have_content('Amazon Payments')
+        expect(page).to have_content I18n.t(:amazon_payments)
 
         click_button('Update Project')
-        expect(page).to have_content('Sign in with your Amazon account')
+        expect(page).to have_content I18n.t(:amazon_sign_in)
         login_amazon('spartanfan10@hotmail.com', 'testing')
         click_amazon_continue
         find('a').click
-        expect(page).to have_content('Project saved successfully')
+        expect(page).to have_content I18n.t('projects.saved')
         #project is no inactive
 
         visit(project_path(project))
@@ -60,7 +60,7 @@ feature 'upload video', :js do
 
         click_button('Activate Project')
         page.driver.browser.switch_to.alert.accept
-        expect(page).to have_content('Successfully activated project.')
+        expect(page).to have_content I18n('projects.activated')
 
         response = client.video_by(video.yt_video_id)
         expect(response.listed?).to be_true

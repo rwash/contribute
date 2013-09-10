@@ -15,7 +15,7 @@ feature 'Groups' do
         login_as user
 
         visit groups_index_path
-        expect(page).to_not have_content 'You have projects in'
+        expect(page).to_not have_content I18n.t('groups.index.belong_to')
       end
 
       scenario 'does not display admin groups when user has none' do
@@ -27,7 +27,7 @@ feature 'Groups' do
         login_as user
 
         visit groups_index_path
-        expect(page).to_not have_content 'Groups you own'
+        expect(page).to_not have_content I18n.t('groups.index.owned')
       end
 
       scenario 'displays project groups when user has some' do
@@ -39,7 +39,7 @@ feature 'Groups' do
         login_as user
 
         visit groups_index_path
-        expect(page).to have_content 'You have projects in'
+        expect(page).to have_content I18n.t('groups.index.belong_to')
       end
 
       scenario 'displays admin groups when user has some' do
@@ -52,7 +52,7 @@ feature 'Groups' do
         login_as user
 
         visit groups_index_path
-        expect(page).to have_content 'Groups you own'
+        expect(page).to have_content I18n.t('groups.index.owned')
       end
 
       scenario 'does not display group twice when user has two projects in a group' do

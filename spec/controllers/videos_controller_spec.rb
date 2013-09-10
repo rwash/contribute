@@ -25,7 +25,7 @@ describe VideosController do
 
         before { delete :destroy, id: video.id }
 
-        it { should set_the_flash.to(/Successfully Deleted/) }
+        it { should set_the_flash.to I18n.t('videos.destroy.success.flash') }
         it { should redirect_to project_path(video.project) }
       end
 
@@ -34,7 +34,7 @@ describe VideosController do
         let(:video) { create :video }
         before { delete :destroy, id: video.id }
 
-        it { should set_the_flash.to(/not authorized/) }
+        it { should set_the_flash.to I18n.t('unauthorized.manage.all') }
         it { should redirect_to :root }
       end
     end
@@ -43,7 +43,7 @@ describe VideosController do
       let(:video) { create :video }
       before { delete :destroy, id: video.id }
 
-      it { should set_the_flash.to(/sign in/) }
+      it { should set_the_flash.to I18n.t('devise.failure.unauthenticated') }
       it { should redirect_to new_user_session_path }
     end
   end

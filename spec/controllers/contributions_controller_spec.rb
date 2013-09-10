@@ -21,7 +21,7 @@ describe ContributionsController do
       before { get :new, project: project.id }
 
       it { should redirect_to(new_user_session_path) }
-      it { should set_the_flash.to(/sign in/) }
+      it { should set_the_flash.to I18n.t('devise.failure.unauthenticated') }
     end
 
     context 'when user is signed in' do
@@ -32,7 +32,7 @@ describe ContributionsController do
         before { get :new, project: project.name }
 
         it { should redirect_to project_path(project) }
-        it { should set_the_flash.to(/may not contribute/) }
+        it { should set_the_flash.to I18n.t('unauthorized.create.contribution') }
       end
 
       context 'with permission' do
@@ -124,7 +124,7 @@ describe ContributionsController do
       before { get :edit, id: contribution.id }
 
       it { should redirect_to project_path(project) }
-      it { should set_the_flash.to(/may not edit this contribution/) }
+      it { should set_the_flash.to I18n.t('unauthorized.update.contribution') }
     end
 
     it "handles invalid contribution" do

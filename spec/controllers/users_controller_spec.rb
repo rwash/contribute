@@ -29,7 +29,7 @@ describe UsersController do
       before { get :show, id: user.id }
 
       it { should redirect_to :root }
-      it { should set_the_flash.to(/not authorized/) }
+      it { should set_the_flash.to I18n.t('unauthorized.manage.all') }
     end
   end
 
@@ -48,7 +48,7 @@ describe UsersController do
       before { get :edit, id: user.id }
 
       it { should redirect_to :root }
-      it { should set_the_flash.to(/not authorized/) }
+      it { should set_the_flash.to I18n.t('unauthorized.manage.all') }
     end
   end
 
@@ -67,7 +67,7 @@ describe UsersController do
       before { get :index }
 
       it { should redirect_to :root }
-      it { should set_the_flash.to(/not authorized/) }
+      it { should set_the_flash.to I18n.t('unauthorized.manage.all') }
     end
   end
 
@@ -81,7 +81,7 @@ describe UsersController do
         before { post :block, id: user.id, blocked: true }
 
         it { should redirect_to user_path(user) }
-        it { should set_the_flash.to(/successfully updated/) }
+        it { should set_the_flash.to I18n.t('users.block.success.flash', username: user.name) }
         it 'should set blocked to true' do
           expect(user.reload.blocked?).to be_true
         end
@@ -91,7 +91,7 @@ describe UsersController do
         before { post :block, id: user.id, blocked: false }
 
         it { should redirect_to user_path(user) }
-        it { should set_the_flash.to(/successfully updated/) }
+        it { should set_the_flash.to I18n.t('users.block.success.flash', username: user.name) }
         it 'should set blocked to false' do
           expect(user.reload.blocked?).to be_false
         end
@@ -103,7 +103,7 @@ describe UsersController do
       before { post :block, id: user.id, blocked: true }
 
       it { should redirect_to :root }
-      it { should set_the_flash.to(/not authorized/) }
+      it { should set_the_flash.to I18n.t('unauthorized.manage.all') }
     end
   end
 
@@ -117,7 +117,7 @@ describe UsersController do
         before { post :toggle_admin, id: user.id, admin: true }
 
         it { should respond_with :redirect }
-        it { should set_the_flash.to(/successfully updated/) }
+        it { should set_the_flash.to I18n.t('users.toggle_admin.success.flash', username: user.name) }
         it 'should toggle admin status' do
           expect(user.reload.admin?).to be_true
         end
@@ -127,7 +127,7 @@ describe UsersController do
         before { post :toggle_admin, id: user.id, admin: false }
 
         it { should respond_with :redirect }
-        it { should set_the_flash.to(/successfully updated/) }
+        it { should set_the_flash.to I18n.t('users.toggle_admin.success.flash', username: user.name) }
         it 'should toggle admin status' do
           expect(user.reload.admin?).to be_false
         end
@@ -139,7 +139,7 @@ describe UsersController do
       before { post :toggle_admin, id: user.id, admin: true }
 
       it { should redirect_to :root }
-      it { should set_the_flash.to(/not authorized/) }
+      it { should set_the_flash.to I18n.t('unauthorized.manage.all') }
     end
   end
 end

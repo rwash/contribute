@@ -13,7 +13,7 @@ feature 'Sign in', :js do
       click_button 'Sign in'
 
       expect(current_path).to eq root_path
-      expect(page).to have_content 'Signed in successfully'
+      expect(page).to have_content I18n.t(:signed_in)
     end
   end
 
@@ -26,7 +26,7 @@ feature 'Sign in', :js do
       fill_in 'Password', with: user.password
       click_button 'Sign in'
 
-      expect(page).to have_content 'Your account has been blocked'
+      expect(page).to have_content I18n.t(:account_blocked)
       expect(current_path).to eq new_user_session_path
     end
   end

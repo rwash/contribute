@@ -7,7 +7,7 @@ feature 'amazon process', :js do
     request = Amazon::FPS::RecipientRequest.new(save_project_url)
     visit(request.url)
 
-    expect(page).to have_content('Sign in with your Amazon account')
+    expect(page).to have_content I18n.t(:amazon_sign_in)
   end
 
   #if you receive a not well formed :[recipientTokenList] update the project factory
@@ -21,6 +21,6 @@ feature 'amazon process', :js do
     request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 
     visit request.url
-    expect(page).to have_content('Sign in with your Amazon account')
+    expect(page).to have_content I18n.t(:amazon_sign_in)
   end
 end

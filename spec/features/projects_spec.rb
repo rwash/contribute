@@ -12,10 +12,10 @@ feature 'Projects' do
     before do
       visit project_path(project)
       click_button 'Block Project'
-      expect(page).to have_content 'Successfully blocked'
+      expect(page).to have_content I18n.t('projects.blocked')
       expect(current_path).to eq project_path(project)
       click_button 'Unblock Project'
-      expect(page).to have_content 'Successfully unblocked'
+      expect(page).to have_content I18n.t('projects.unblocked')
     end
 
     context 'starting with unconfirmed project' do

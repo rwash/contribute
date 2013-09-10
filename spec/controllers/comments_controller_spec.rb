@@ -36,7 +36,7 @@ describe CommentsController do
       before { post :create, comment: attributes_for(:comment), projectid: project.id }
 
       it { should redirect_to new_user_session_path }
-      it { should set_the_flash.to(/sign in/) }
+      it { should set_the_flash.to I18n.t('devise.failure.unauthenticated') }
     end
   end
 
@@ -47,14 +47,14 @@ describe CommentsController do
 
       before { @ability.stub!(:can?).with(:destroy, comment).and_return(true) }
       before { delete :destroy, id: comment.id }
-      it { should set_the_flash.to(/successfully deleted/) }
+      it { should set_the_flash.to I18n.t('comments.destroy.success.flash') }
     end
 
     context 'when user is not signed in' do
       let(:comment) { create :comment }
 
       before { delete :destroy, id: comment.id }
-      it { should set_the_flash.to(/sign in/) }
+      it { should set_the_flash.to I18n.t('devise.failure.unauthenticated') }
       it { should redirect_to new_user_session_path }
     end
 
@@ -64,7 +64,7 @@ describe CommentsController do
 
       before { @ability.stub!(:can?).with(:destroy, comment).and_return(false) }
       before { delete :destroy, id: comment.id }
-      it { should set_the_flash.to(/cannot delete comments you don't own/) }
+      it { should set_the_flash.to I18n.t('unauthorized.destroy.comment') }
       it { should redirect_to :root }
     end
   end

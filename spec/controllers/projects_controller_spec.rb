@@ -32,7 +32,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:update, project).and_return(true) }
       before { post :update, id: project.name, project: attributes_for(:project) }
 
-      it { should set_the_flash.to(/Successfully updated project/) }
+      it { should set_the_flash.to I18n.t("projects.update.success.flash") }
     end
   end
 

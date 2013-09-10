@@ -2,7 +2,7 @@ include Warden::Test::Helpers
 Warden.test_mode!
 
 def login_amazon(email, password)
-  expect(page).to have_content('Sign in with your Amazon account')
+  expect(page).to have_content I18n.t(:amazon_sign_in)
 
   #Now we're in amazon's sign in
   fill_in 'ap_email', with: email
@@ -58,7 +58,7 @@ def generate_contribution(user, amazon_user, amazon_password, project,amount)
   make_amazon_payment(amazon_user, amazon_password)
 
   #Calling find first, so capybara will wait until it appears
-  expect(page).to have_content('Contribution submitted')
+  expect(page).to have_content I18n.t('contributions.submitted')
   expect(current_path).to eq project_path(project)
 
   contribution = Contribution.last

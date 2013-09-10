@@ -16,6 +16,14 @@ en:
       project: "This project is not active."
     update:
       project: "This project is not active or you do not own it."
+      contribution: "You may not edit this contribution."
+    create:
+      update: "You cannot update this project."
+      contribution: 'You may not contribute to this project. The contribution period has ended.'
+    destroy:
+      comment: "You cannot delete comments you don't own."
+    manage:
+      all: "You are not authorized to access this page."
   views:
     pagination:
       previous: "&lt; Previous"
@@ -23,3 +31,60 @@ en:
       first: "&lt; First"
       last: "Last &gt;"
       truncate: "..."
+  comments:
+    add: 'Add a comment'
+    deleted: "[comment deleted]"
+    destroy:
+      success:
+        flash: 'Comment successfully deleted.'
+  projects:
+    saved: 'Project saved successfully'
+    activated: 'Successfully activated project.'
+    cancelled: 'Project successfully cancelled.'
+    blocked: 'Successfully blocked'
+    unblocked: 'Successfully unblocked'
+    create:
+      email:
+        subject: 'has been created'
+    update:
+      success:
+        flash: 'Successfully updated project.'
+  groups:
+    index:
+      belong_to: 'You have projects in'
+      owned: 'Groups you own'
+  contributions:
+    submitted: 'Contribution submitted'
+    new:
+      title: 'Contribute to'
+    edit:
+      title: 'Edit contribution to'
+    updated: 'Contribution successfully updated.'
+    create:
+      email:
+        subject: 'Your contribution to'
+    update:
+      email:
+        subject: 'Your edited contribution to'
+  videos:
+    destroy:
+      success:
+        flash: 'Video Successfully Deleted'
+  users:
+    toggle_admin:
+      success:
+        flash: "%{username}'s privileges were successfully updated"
+    block:
+      success:
+        flash: "%{username}'s privileges were successfully updated."
+  updates:
+    create:
+      success:
+        flash: "Update saved successfully."
+      failure:
+        flash: "Update failed to save. Please try again."
+  signed_in: 'Signed in successfully'
+  account_blocked: 'Your account has been blocked'
+  form_error_message: 'prevented this contribution from being saved'
+  amazon_sign_in: 'Sign in with your Amazon account'
+  amazon_payments: 'Amazon Payments'

@@ -29,28 +29,26 @@ feature 'amazon process', :js do
       #project is now unconfirmed
 
       click_button 'Edit Project'
-      expect(page).to have_content 'Amazon Payments'
+      expect(page).to have_content I18n.t(:amazon_payments)
 
       click_button 'Update Project'
-      expect(page).to have_content 'Sign in with your Amazon account'
+      expect(page).to have_content I18n.t(:amazon_sign_in)
       login_amazon 'spartanfan10@hotmail.com', 'testing'
       click_amazon_continue
       pending 'amazon is giving us an SSLError'
       find('a').click
-      expect(page).to have_content 'Project saved successfully'
+      expect(page).to have_content I18n.t('projects.saved')
       #project is no inactive
 
       click_button('Activate')
       page.driver.accept_js_prompts!
-      expect(page).to have_content 'Successfully activated project.'
+      expect(page).to have_content I18n.t('projects.activated')
       #project is now active
 
       visit(project_path(project))
       click_button 'Cancel Project'
       page.driver.accept_js_prompts!
-      expect(page).to have_content 'Project successfully cancelled.'
-      #project is now cancelled
-
+      expect(page).to have_content I18n.t('projects.cancelled')
     end
 
   end

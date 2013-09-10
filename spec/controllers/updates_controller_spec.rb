@@ -38,7 +38,7 @@ describe UpdatesController do
           end
 
           it { should redirect_to project_path(project) }
-          it { should set_the_flash.to "Update saved successfully." }
+          it { should set_the_flash.to I18n.t('updates.create.success.flash') }
 
           it 'does not immediately send an email' do
             expect(Update.last.email_sent).to eq false
@@ -54,7 +54,7 @@ describe UpdatesController do
           end
 
           it { should redirect_to project_path(project) }
-          it { should set_the_flash.to(/Update failed to save/) }
+          it { should set_the_flash.to I18n.t('updates.create.failure.flash') }
         end
       end
 
@@ -67,7 +67,7 @@ describe UpdatesController do
         end
 
         it { should redirect_to :root }
-        it { should set_the_flash.to(/cannot update/) }
+        it { should set_the_flash.to I18n.t('unauthorized.create.update') }
       end
     end
 
@@ -75,7 +75,7 @@ describe UpdatesController do
       before { post :create, project_id: project.id, update: attributes_for(:update) }
 
       it { should redirect_to new_user_session_path }
-      it { should set_the_flash.to(/sign in/) }
+      it { should set_the_flash.to I18n.t('devise.failure.unauthenticated') }
 
       it 'does not create an update' do
         expect{ post 'create', project_id: project.id, update: attributes_for(:update)}.to_not change { Update.count }

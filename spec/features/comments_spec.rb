@@ -47,9 +47,9 @@ feature 'comments', :js do
 
     click_on 'delete'
     click_on 'Comments'
-    page.should have_content 'Add a comment'
+    page.should have_content I18n.t('comments.add')
     page.should_not have_content comment.body
-    page.should_not have_content "[comment deleted]"
+    page.should_not have_content I18n.t('comments.deleted')
   end
 
   scenario 'User destroys a root-level comment with replies' do
@@ -64,9 +64,9 @@ feature 'comments', :js do
 
     click_on 'delete'
     click_on 'Comments'
-    page.should have_content 'Add a comment'
+    page.should have_content I18n.t('comments.add')
     page.should_not have_content root_comment.body
-    page.should have_content "[comment deleted]"
+    page.should have_content I18n.t('comments.deleted')
   end
 
   scenario 'User destroys a nested comment' do
@@ -81,8 +81,8 @@ feature 'comments', :js do
 
     click_on 'delete'
     click_on 'Comments'
-    page.should have_content 'Add a comment'
+    page.should have_content I18n.t('comments.add')
     page.should_not have_content nested_comment.body
-    page.should_not have_content "[comment deleted]"
+    page.should_not have_content I18n.t('comments.deleted')
   end
 end
