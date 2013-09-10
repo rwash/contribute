@@ -4,7 +4,7 @@ class UpdatesController < InheritedResources::Base
   def create
     project = Project.find(params[:project_id])
     update = project.updates.new(params[:update])
-    authorize! :create, update, message: "You cannot update this project."
+    authorize! :create, update
     update.project = project
     update.email_sent = false
 

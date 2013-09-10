@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     logger.warn "Unauthorized access: trying to #{exception.action} #{exception.subject}"
     if exception.action == :create and exception.subject.instance_of? Contribution
-      redirect_to exception.subject.project, alert: "You may not contribute to this project. The contribution period has ended."
+      redirect_to exception.subject.project, alert: exception.message
     elsif exception.action == :edit and exception.subject.instance_of? Contribution
-      redirect_to exception.subject.project, alert: "You may not edit this contribution."
+      redirect_to exception.subject.project, alert: exception.message
     else
       redirect_to root_url, alert: exception.message
     end

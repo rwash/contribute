@@ -26,7 +26,7 @@ class CommentsController < InheritedResources::Base
   def destroy
     comment = Comment.find(params[:id])
 
-    authorize! :destroy, comment, message: "You cannot delete comments you don't own."
+    authorize! :destroy, comment
 
     if(comment.children.any?)
       comment.body = "[comment deleted]"
