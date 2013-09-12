@@ -14,7 +14,7 @@ class ApprovalsController < InheritedResources::Base
       project.update_project_video
     else
       # TODO move approval state to an enumeration
-      flash[:error] = "This project has already been #{approval.status}."
+      flash[:error] = t('approvals.approve.failure', status: approval.status)
     end
 
     redirect_to group_admin_path(group)
@@ -34,7 +34,7 @@ class ApprovalsController < InheritedResources::Base
 
       EmailManager.group_reject_project(approval, project, group).deliver
     else
-      flash[:error] = "This project has already been #{approval.status}."
+      flash[:error] = t('approvals.approve.failure', status: approval.status)
     end
 
     redirect_to group_admin_path(group)

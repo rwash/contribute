@@ -14,9 +14,9 @@ class GroupsController < InheritedResources::Base
     @group.admin_user = current_user
 
     if @group.save!
-      redirect_to @group, notice: "Successfully created group."
+      redirect_to @group, notice: t('groups.create.success.flash')
     else
-      redirect_to new_group_path, error: "Failed to save group. Please try again."
+      redirect_to new_group_path, error: t('groups.create.failure.flash')
     end
   end
 
@@ -35,23 +35,23 @@ class GroupsController < InheritedResources::Base
     if project.nil?
       #Do Nothing
     elsif project.state.cancelled?
-      flash[:error] = "You cannot add a cancelled project."
+      flash[:error] = t('groups.submit_add.failure.cancelled_project.flash')
     elsif group.projects.include?(project)
-      flash[:error] = "Your project is already in this group."
+      flash[:error] = t('groups.submit_add.failure.already_included.flash')
     elsif group.open?
       group.projects << project
       video = project.video
       project.update_project_video unless video.nil?
 
-      flash[:notice] = "Your project has been added to the group."
+      flash[:notice] = t('groups.submit_add.success.flash')
     elsif project.approvals.where(group_id: group.id, status: :pending).any?
-      flash[:error] = "You have already submitted this project. Please wait for the admin to approve or reject your request."
+      flash[:error] = t('groups.submit_add.already_requested.flash')
     elsif group.admin_user == current_user
       group.projects << project
-      flash[:notice] = "Your project has been added."
+      flash[:notice] = t('groups.submit_add.success.flash')
     else
       approval = Approval.create(group: group, project: project)
-      flash[:notice] = "Your project has been submitted to the group admin for approval."
+      flash[:notice] = t('groups.submit_add.pending.flash')
       EmailManager.project_to_group_approval(approval, project, group).deliver
     end
 
@@ -69,9 +69,9 @@ class GroupsController < InheritedResources::Base
     if group.admin_user == current_user or project.user == current_user
       group.projects.delete(project)
       project.update_project_video
-      flash[:notice] = "#{project.name} removed from group #{group.name}."
+      flash[:notice] = t('groups.remove_project.success.flash', project_name: project.name, group_name: group.name)
     else
-      flash[:error] = "You do not have permission to remove this project."
+      flash[:error] = t('groups.remove_project.unauthorized.flash')
     end
 
     begin
@@ -83,7 +83,7 @@ class GroupsController < InheritedResources::Base
 
   def destroy
     group = Group.find(params[:id])
-    flash[:error] = "Failed to delete group. Please try again." unless group.destroy
+    flash[:error] = t('groups.destroy.failure.flash') unless group.destroy
     redirect_to groups_path
   end
 end

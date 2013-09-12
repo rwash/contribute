@@ -57,7 +57,7 @@ class ProjectsController < InheritedResources::Base
     end
 
     if @project.update_attributes(params[:project])
-      flash[:notice] = "Successfully updated project."
+      flash[:notice] = t('projects.update.success.flash')
     end
 
     if @project.state.unconfirmed?
@@ -76,7 +76,7 @@ class ProjectsController < InheritedResources::Base
     # TODO this will return true if save fails -- this is a very real possibility
     @project.activate!
 
-    flash[:notice] = "Successfully activated project."
+    flash[:notice] = t('projects.activated')
     respond_with(@project)
   end
 
@@ -93,7 +93,7 @@ class ProjectsController < InheritedResources::Base
     #TODO send out emails to any contributors
 
     @project.save!
-    redirect_to @project, notice: "Successfully blocked project."
+    redirect_to @project, notice: t('projects.blocked')
   end
 
   def unblock
@@ -110,7 +110,7 @@ class ProjectsController < InheritedResources::Base
     #TODO send out email to project owner
 
     @project.save!
-    redirect_to @project, notice: "Successfully unblocked project."
+    redirect_to @project, notice: t('projects.unblocked')
   end
 
   def save
@@ -119,7 +119,7 @@ class ProjectsController < InheritedResources::Base
     authorize! :save, project
 
     if !Amazon::FPS::AmazonValidator::valid_recipient_response?(save_project_url, session, params)
-      return redirect_to root_path, alert: 'An error occured with your project. Please try again.'
+      return redirect_to root_path, alert: t('projects.save.failure.flash')
     end
 
     project.state = :inactive
@@ -132,9 +132,9 @@ class ProjectsController < InheritedResources::Base
       # model. Might be worth doing that for this too.
       successful_save project
 
-      redirect_to project, notice: "Project saved successfully. Here's to getting funded!"
+      redirect_to project, notice: t('projects.save.success.flash')
     else
-      redirect_to root_path, alert: "An error occurred with your project. Please try again."
+      redirect_to root_path, alert: t('projects.save.failure.flash')
     end
   end
 
@@ -146,9 +146,9 @@ class ProjectsController < InheritedResources::Base
     if @project.state.unconfirmed? || @project.state.inactive?
       @project.destroy
       if !@project.destroyed?
-        return redirect_to @project, alert: "Project could not be deleted. Please try again."
+        return redirect_to @project, alert: t('projects.destroy.unconfirmed_or_inactive.failure.flash')
       else
-        return redirect_to root_path, notice: "Project successfully deleted. Sorry to see you go!"
+        return redirect_to root_path, notice: t('projects.destroy.unconfirmed_or_inactive.success.flash')
       end
     elsif @project.state.active?
       #project will not be deleted but will be CANCELLED and only visible to user
@@ -157,9 +157,9 @@ class ProjectsController < InheritedResources::Base
       # TODO law of demeter violation
       @project.video.published = false
       @project.video.update
-      flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
+      flash[:notice] = t('projects.destroy.active.success.flash')
     else
-      flash[:alert] = "You can not cancel or delete this project."
+      flash[:alert] = t('projects.destroy.other.failure.flash')
     end
     redirect_to root_path
   end

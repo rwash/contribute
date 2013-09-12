@@ -67,5 +67,16 @@ describe CommentsController do
       it { should set_the_flash.to I18n.t('unauthorized.destroy.comment') }
       it { should redirect_to :root }
     end
+
+    context 'when destroying fails' do
+      before { sign_in user }
+      let(:comment) { create :comment }
+
+      before { @ability.stub!(:can?).with(:destroy, comment).and_return(true) }
+      before { Comment.any_instance.stub(:delete).and_return(false) }
+      before { delete :destroy, id: comment.id }
+      it { should set_the_flash.to I18n.t('comments.destroy.failure.flash') }
+      it { should redirect_to :root }
+    end
   end
 end

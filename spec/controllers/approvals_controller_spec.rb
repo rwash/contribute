@@ -32,6 +32,28 @@ describe ApprovalsController do
       it { should_not set_the_flash }
     end
 
+    context 'when already approved' do
+      before do
+        @ability.stub!(:can?).with(:approve, approval).and_return(true)
+        approval.update_attributes status: 'approved'
+        post 'approve', group_id: group.id, id: approval.id
+      end
+
+      it { should set_the_flash.to I18n.t('approvals.approve.failure', status: approval.status) }
+      it { should redirect_to group_admin_path(group) }
+    end
+
+    context 'when already rejected' do
+      before do
+        @ability.stub!(:can?).with(:approve, approval).and_return(true)
+        approval.update_attributes status: 'rejected'
+        post 'approve', group_id: group.id, id: approval.id
+      end
+
+      it { should set_the_flash.to I18n.t('approvals.approve.failure', status: approval.status) }
+      it { should redirect_to group_admin_path(group) }
+    end
+
     context 'without permission' do
       before { @ability.stub!(:can?).with(:approve, approval).and_return(false) }
       before { post 'approve', group_id: group.id, id: approval.id }
@@ -56,6 +78,28 @@ describe ApprovalsController do
 
       it { should redirect_to group_admin_path(group) }
       it { should_not set_the_flash }
+    end
+
+    context 'when already approved' do
+      before do
+        @ability.stub!(:can?).with(:reject, approval).and_return(true)
+        approval.update_attributes status: 'approved'
+        post 'reject', group_id: group.id, id: approval.id
+      end
+
+      it { should set_the_flash.to I18n.t('approvals.approve.failure', status: approval.status) }
+      it { should redirect_to group_admin_path(group) }
+    end
+
+    context 'when already rejected' do
+      before do
+        @ability.stub!(:can?).with(:reject, approval).and_return(true)
+        approval.update_attributes status: 'rejected'
+        post 'reject', group_id: group.id, id: approval.id
+      end
+
+      it { should set_the_flash.to I18n.t('approvals.approve.failure', status: approval.status) }
+      it { should redirect_to group_admin_path(group) }
     end
 
     context 'without permission' do

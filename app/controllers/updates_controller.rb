@@ -10,9 +10,9 @@ class UpdatesController < InheritedResources::Base
 
     update.user = current_user
     if update.save
-      flash[:notice] = "Update saved successfully."
+      flash[:notice] = t('updates.create.success.flash')
     else
-      flash[:alert] = "Update failed to save. Please try again."
+      flash[:alert] = t('updates.create.failure.flash')
     end
     redirect_to project
   end

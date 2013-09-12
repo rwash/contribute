@@ -37,23 +37,68 @@ en:
     destroy:
       success:
         flash: 'Comment successfully deleted.'
+      failure:
+        flash: "Comment could not be deleted."
   projects:
     saved: 'Project saved successfully'
     activated: 'Successfully activated project.'
     cancelled: 'Project successfully cancelled.'
-    blocked: 'Successfully blocked'
-    unblocked: 'Successfully unblocked'
+    blocked: 'Successfully blocked project.'
+    unblocked: "Successfully unblocked project."
     create:
       email:
         subject: 'has been created'
     update:
       success:
         flash: 'Successfully updated project.'
+    save:
+      failure:
+        flash: 'An error occured with your project. Please try again.'
+      success:
+        flash: "Project saved successfully. Here's to getting funded!"
+    destroy:
+      unconfirmed_or_inactive:
+        failure:
+          flash: "Project could not be deleted. Please try again."
+        success:
+          flash: "Project successfully deleted. Sorry to see you go!"
+      active:
+        success:
+          flash: "Project successfully cancelled. This project is now only visible to you."
+      other:
+        failure:
+          flash: "You can not cancel or delete this project."
   groups:
     index:
       belong_to: 'You have projects in'
       owned: 'Groups you own'
+    create:
+      success:
+        flash: "Successfully created group."
+      failure:
+        flash: "Failed to save group. Please try again."
+    submit_add:
+      success:
+        flash: "Your project has been added to the group."
+      pending:
+        flash: "Your project has been submitted to the group admin for approval."
+      failure:
+        cancelled_project:
+          flash: "You cannot add a cancelled project."
+        already_included:
+          flash: "Your project is already in this group."
+        already_requested:
+          flash: "You have already submitted this project. Please wait for the admin to approve or reject your request."
+    remove_project:
+      success:
+        flash: "%{project_name} removed from group %{group_name}."
+      unauthorized:
+        flash: "You do not have permission to remove this project."
+    destroy:
+      failure:
+        flash: "Failed to delete group. Please try again."
   contributions:
+    error: "An error occurred with your contribution. Please try again."
     submitted: 'Contribution submitted'
     new:
       title: 'Contribute to'
@@ -61,28 +106,48 @@ en:
       title: 'Edit contribution to'
     updated: 'Contribution successfully updated.'
     create:
+      failure:
+        project_expired:
+          flash: "Sorry, this project is no longer taking contributions."
       email:
         subject: 'Your contribution to'
+    save:
+      success:
+        flash: "Contribution submitted. Thank you for your support!"
     update:
+      failure:
+        project_expired:
+          flash: "You cannot edit your contribution because this project is no longer taking contributions."
+        decreased_amount:
+          error: "can't be less than the original amount"
+        same_amount:
+          error: "No changes were made to your contribution"
       email:
         subject: 'Your edited contribution to'
+    update_save:
+      success:
+        flash: "Contribution successfully updated. Thank you for your support!"
   videos:
     destroy:
       success:
         flash: 'Video Successfully Deleted'
+      failure:
+        flash: "Failed to Delete Video"
   users:
-    toggle_admin:
-      success:
-        flash: "%{username}'s privileges were successfully updated"
-    block:
+    modify_privileges:
       success:
         flash: "%{username}'s privileges were successfully updated."
+      failure:
+        flash: "Failed to save changes to %{username}'s account"
   updates:
     create:
       success:
         flash: "Update saved successfully."
       failure:
         flash: "Update failed to save. Please try again."
+  approvals:
+    approve:
+      failure: "This project has already been %{status}."
   signed_in: 'Signed in successfully'
   account_blocked: 'Your account has been blocked'
   form_error_message: 'prevented this contribution from being saved'

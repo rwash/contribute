@@ -29,13 +29,13 @@ class CommentsController < InheritedResources::Base
     authorize! :destroy, comment
 
     if(comment.children.any?)
-      comment.body = "[comment deleted]"
+      comment.body = t('comments.deleted')
       comment.save
     else
-      if !comment.delete
-        flash[:alert] = "Comment could not be deleted."
+      if comment.delete
+        flash[:alert] = t('comments.destroy.success.flash')
       else
-        flash[:alert] = "Comment successfully deleted."
+        flash[:alert] = t('comments.destroy.failure.flash')
       end
     end
 

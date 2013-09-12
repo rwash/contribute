@@ -24,9 +24,9 @@ class UsersController < ApplicationController
     user.blocked = params[:blocked]
 
     if user.save
-      redirect_to :back, notice: "#{user.name}'s privileges were successfully updated."
+      redirect_to :back, notice: t('users.modify_privileges.success.flash', username: user.name)
     else
-      redirect_to :back, notice: "Failed to save changes to #{user.name}'s account"
+      redirect_to :back, notice: t('users.modify_privileges.failure.flash', username: user.name)
     end
   end
 
@@ -38,9 +38,9 @@ class UsersController < ApplicationController
     user.admin = params[:admin]
 
     if user.save
-      redirect_to :back, notice: "#{user.name}'s privileges were successfully updated"
+      redirect_to :back, notice: t('users.modify_privileges.success.flash', username: user.name)
     else
-      redirect_to :back, notice: "Failed to save changes to #{user.name}'s account"
+      redirect_to :back, notice: t('users.modify_privileges.failure.flash', username: user.name)
     end
   end
 

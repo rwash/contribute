@@ -7,9 +7,9 @@ class VideosController < InheritedResources::Base
     project = video.project
 
     if video.destroy
-      flash[:notice] = "Video Successfully Deleted"
+      flash[:notice] = t('videos.destroy.success.flash')
     else
-      flash[:error] = "Failed to Delete Video"
+      flash[:error] = t('videos.destroy.failure.flash')
     end
 
     begin

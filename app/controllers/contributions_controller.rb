@@ -2,8 +2,6 @@ require 'amazon/fps/multi_token_request'
 require 'amazon/fps/amazon_logger'
 require 'amazon/fps/amazon_validator'
 
-ERROR_STRING = "An error occurred with your contribution. Please try again."
-
 class ContributionsController < ApplicationController
   before_filter :authenticate_user!, only: [ :new, :create, :save, :edit, :update, :update_save, :destroy ]
 
@@ -29,38 +27,38 @@ class ContributionsController < ApplicationController
       #E.g. memcached, writing to the DB and marking record incomplete
 
       if !@contribution.save
-        return redirect_to @contribution.project, alert: "An error occured while submitting your contribution. Please try again."
+        return redirect_to @contribution.project, alert: t('contributions.error')
       end
       session[:contribution_id] = @contribution.id
       request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @contribution.project.payment_account_id, @contribution.amount, @contribution.project.name)
 
       redirect_to request.url
     else
-      render action: :new, alert: "Sorry, this project is no longer taking contributions."
+      render action: :new, alert: t('contributions.create.failure.project_expired.flash')
     end
   end
 
   #Return URL from payment gateway
   def save
     if session[:contribution_id].nil?
-      return redirect_to root_path, alert: ERROR_STRING
+      return redirect_to root_path, alert: t('contributions.error')
     end
     @contribution = Contribution.find(session[:contribution_id])
 
     Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
     if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(save_contribution_url, session, params)
-      return redirect_to @contribution.project, alert: ERROR_STRING
+      return redirect_to @contribution.project, alert: t('contributions.error')
     end
 
     session[:contribution_id] = nil
     @contribution.payment_key = params[:tokenID]
     @contribution.confirmed = true
     if !@contribution.save
-      return redirect_to @contribution.project, alert: ERROR_STRING
+      return redirect_to @contribution.project, alert: t('contributions.error')
     else
       successful_save
 
-      return redirect_to @contribution.project, alert: "Contribution submitted. Thank you for your support!"
+      return redirect_to @contribution.project, alert: t('contributions.save.success.flash')
     end
   end
 
@@ -83,7 +81,7 @@ class ContributionsController < ApplicationController
     @contribution.project_id = @project.id
 
     if @project.end_date < Date.today
-      return redirect_to @project, error: "You cannot edit your contribution because this project is no longer taking contributions."
+      return redirect_to @project, error: t('contributions.update.failure.project_expired.flash')
     end
 
     if !@contribution.valid?
@@ -91,12 +89,12 @@ class ContributionsController < ApplicationController
     end
 
     if @contribution.amount < @editing_contribution.amount
-      @contribution.errors.add(:amount, "can't be less than the original amount")
+      @contribution.errors.add(:amount, t('contributions.update.failure.decreased_amount.error'))
       return render action: :edit
     end
 
     if @contribution.amount == @editing_contribution.amount
-      @contribution.errors.add(:amount, "No changes were made to your contribution")
+      @contribution.errors.add(:amount, t('contributions.update.failure.same_amount.error'))
       return render action: :edit
     end
 
@@ -109,13 +107,13 @@ class ContributionsController < ApplicationController
 
   def update_save
     if session[:contribution].nil? or session[:editing_contribution_id].nil?
-      return redirect_to root_path, alert: ERROR_STRING
+      return redirect_to root_path, alert: t('contributions.error')
     end
     @contribution = session[:contribution]
 
     Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
     if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(update_save_contribution_url, session, params)
-      return redirect_to @contribution.project, alert: ERROR_STRING
+      return redirect_to @contribution.project, alert: t('contributions.error')
     end
 
     session[:contribution] = nil
@@ -125,16 +123,16 @@ class ContributionsController < ApplicationController
     @contribution.payment_key = params[:tokenID]
 
     if !@contribution.save
-      return redirect_to @contribution.project, alert: ERROR_STRING
+      return redirect_to @contribution.project, alert: t('contributions.error')
     end
 
     if !@editing_contribution.cancel
       @contribution.cancel
-      return redirect_to @contribution.project, alert: ERROR_STRING
+      return redirect_to @contribution.project, alert: t('contributions.error')
     else
       successful_update
 
-      return redirect_to @contribution.project, alert: "Contribution successfully updated. Thank you for your support!"
+      return redirect_to @contribution.project, alert: t('contributions.update_save.success.flash')
     end
   end
 
@@ -142,7 +140,7 @@ class ContributionsController < ApplicationController
   # TODO move to CanCan
   def validate_project(project)
     if !project.state.active?
-      redirect_to root_path, alert: ERROR_STRING
+      redirect_to root_path, alert: t('contributions.error')
     end
   end
 
@@ -154,7 +152,7 @@ class ContributionsController < ApplicationController
     validate_project @project
 
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_url, alert: ERROR_STRING
+    redirect_to root_url, alert: t('contributions.error')
   end
 
   # TODO get rid of this
