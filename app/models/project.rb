@@ -60,8 +60,7 @@ class Project < ActiveRecord::Base
             presence: true,
             uniqueness: { case_sensitive: false },
             length: {maximum: MAX_NAME_LENGTH},
-            format: { with: /\A[a-zA-Z0-9\s]+\z/,
-            message: "can contatin only letters, numbers, and spaces." }
+            format: { with: /\A[a-zA-Z0-9\s]+\z/ }
 
   validates :short_description,
             presence: true,
@@ -73,11 +72,10 @@ class Project < ActiveRecord::Base
 
   validates :funding_goal,
             numericality: { greater_than_or_equal_to: 5,
-                            only_integer: true,
-                            message: "must be at least $5, and a whole dollar amount (no cents please)"}
+                            only_integer: true }
 
   validates :end_date,
-            presence: { message: "must be of form 'MM/DD/YYYY'" }
+            presence: true
 
   validates :user, presence: true
 

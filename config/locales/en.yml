@@ -5,6 +5,24 @@ en:
     attributes:
       project:
         picture_content_type: "Picture file type"
+    errors:
+      messages:
+        not_an_integer: "must be a whole dollar amount (no cents please)"
+      models:
+        project:
+          attributes:
+            end_date:
+              blank: "must be of form 'MM/DD/YYYY'"
+            funding_goal:
+              not_a_number: "must be at least $5, and a whole dollar amount (no cents please)"
+              greater_than_or_equal_to: "must be at least $5, and a whole dollar amount (no cents please)"
+            name:
+              invalid: "can contatin only letters, numbers, and spaces."
+        contribution:
+          attributes:
+            amount:
+              not_a_number: "must be at least $1"
+              greater_than_or_equal_to: "must be at least $1"
   errors:
     messages:
       #Carrierwave

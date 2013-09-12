@@ -49,7 +49,7 @@ class Ability
     # Comments
     can :create, Comment if user.id
     can :destroy, Comment do |comment|
-      comment.user == user and comment.body != "comment deleted"
+      comment.user == user and comment.body != I18n.t('comments.deleted')
     end
 
     # Contributions
@@ -107,7 +107,7 @@ class Ability
       # Comments
       can :create, Comment if user.id
       can :destroy, Comment do |comment|
-        comment.body != "comment deleted"
+        comment.body != I18n.t('comments.deleted')
       end
 
       # Contributions

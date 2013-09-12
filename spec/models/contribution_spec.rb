@@ -23,10 +23,10 @@ describe Contribution do
 
   it { should validate_presence_of :payment_key }
 
-  it { should validate_presence_of(:amount) }
-  it { should validate_numericality_of(:amount).only_integer.with_message(/whole dollar amount/) }
+  it { should validate_presence_of(:amount).with_message(/must be at least \$1/) }
+  it { should_not allow_value(0).for(:amount).with_message(/must be at least \$1/) }
+  it { should_not allow_value(10.5).for(:amount).with_message(/whole dollar amount/) }
   it { should allow_value(1).for :amount }
-  it { should_not allow_value(0).for :amount }
   it { should allow_value('9,999,999').for :amount }
 
   it { should validate_presence_of :project_id }
