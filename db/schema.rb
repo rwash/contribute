@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130607101124) do
+ActiveRecord::Schema.define(:version => 20130917191658) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -22,6 +22,13 @@ ActiveRecord::Schema.define(:version => 20130607101124) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "error"
+  end
+
+  create_table "amazon_payment_accounts", :force => true do |t|
+    t.integer  "project_id"
+    t.string   "token"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "approvals", :force => true do |t|
@@ -217,7 +224,6 @@ ActiveRecord::Schema.define(:version => 20130607101124) do
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.integer  "user_id"
-    t.string   "payment_account_id"
     t.boolean  "confirmed"
     t.string   "state"
   end

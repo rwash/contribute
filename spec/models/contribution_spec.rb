@@ -176,7 +176,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :success }
       EmailManager.stub_chain(:contribution_successful, deliver: true)
       contribution = create(:contribution)
-      contribution.project = mock_model(Project)
+      contribution.project = build(:project)
 
       EmailManager.should_receive(:contribution_successful).with(contribution).once
 
@@ -191,7 +191,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :pending }
 
       contribution = create(:contribution)
-      contribution.project = mock_model(Project)
+      contribution.project = build(:project)
       contribution.execute_payment
 
       expect(contribution.status).to eq :pending
@@ -203,7 +203,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_pay_status) { :cancelled }
       EmailManager.stub_chain(:cancelled_payment_to_admin, deliver: true)
       contribution = create(:contribution)
-      contribution.project = mock_model(Project)
+      contribution.project = build(:project)
 
       EmailManager.should_receive(:cancelled_payment_to_admin).with(contribution).once
 
@@ -217,7 +217,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_error) { create('retriable') }
 
       contribution = create(:contribution, retry_count: 2)
-      contribution.project = mock_model(Project)
+      contribution.project = build(:project)
       contribution.execute_payment
 
       expect(contribution.status).to eq :retry_pay
@@ -229,7 +229,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_error) { create('email_user') }
       EmailManager.stub_chain(:unretriable_payment_to_user, deliver: true)
       contribution = create(:contribution)
-      contribution.project = mock_model(Project)
+      contribution.project = build(:project)
 
       EmailManager.should_receive(:unretriable_payment_to_user).with(instance_of(AmazonError), contribution).once
 
@@ -243,7 +243,7 @@ describe Contribution do
       Amazon::FPS::AmazonValidator.stub(:get_error) { create('email_admin') }
       EmailManager.stub_chain(:unretriable_payment_to_admin, deliver: true)
       contribution = create(:contribution)
-      contribution.project = mock_model(Project)
+      contribution.project = build(:project)
 
       EmailManager.should_receive(:unretriable_payment_to_admin).with(instance_of(AmazonError), contribution).once
 
@@ -258,7 +258,7 @@ describe Contribution do
       EmailManager.stub_chain(:unretriable_payment_to_admin, deliver: true)
       EmailManager.stub_chain(:unretriable_payment_to_user, deliver: true)
       contribution = create(:contribution)
-      contribution.project = mock_model(Project)
+      contribution.project = build(:project)
 
       EmailManager.should_receive(:unretriable_payment_to_admin).with(instance_of(AmazonError), contribution).once
       EmailManager.should_receive(:unretriable_payment_to_user).with(instance_of(AmazonError), contribution).once

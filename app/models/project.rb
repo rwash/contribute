@@ -33,6 +33,7 @@ class Project < ActiveRecord::Base
   has_many :comments, as: :commentable
   has_many :updates
   has_one :video
+  has_one :amazon_payment_account
   mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
   has_many :approvals
 
@@ -93,6 +94,17 @@ class Project < ActiveRecord::Base
   delegate :can_comment?, to: :state
 
   # Methods --------------------------------------------------------------
+
+  def payment_account_id
+    amazon_payment_account.token
+  rescue
+    nil
+  end
+
+  def payment_account_id=(value)
+    account = AmazonPaymentAccount.find_or_create_by_project_id id
+    account.update_attributes token: value
+  end
 
   # Sets end date from a string in the format "mm/dd/yyyy"
   def end_date=(val)
