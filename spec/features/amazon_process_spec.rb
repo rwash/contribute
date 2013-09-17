@@ -32,7 +32,6 @@ feature 'amazon process', :js do
       click_amazon_continue
 
       #Confirm, yes thank you for letting me take people's money
-      pending 'amazon is giving us SSL issues...'
       find('a').click
 
       #Now we should be back at contribute

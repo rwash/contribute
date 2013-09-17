@@ -54,7 +54,6 @@ def generate_contribution(user, amazon_user, amazon_password, project,amount)
   fill_in 'contribution_amount', with: amount
   click_button 'Make Contribution'
 
-  pending 'Amazon is returning an SSLError'
   make_amazon_payment(amazon_user, amazon_password)
 
   #Calling find first, so capybara will wait until it appears

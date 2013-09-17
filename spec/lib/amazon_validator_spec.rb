@@ -5,30 +5,54 @@ describe Amazon::FPS::AmazonValidator do
 #Begin Properties
   describe "valid_multi_token_response?" do
     before :each do
-      @url = 'http://127.0.0.1:3999/contributions/save'
-      @session = {}
-      @params = {"signature"=>"oqf/HV3gxQpVi1nwDGdYaSzNO5XvikEypZi82M5/Z0mQaj5KNH7v6XB3XtNatXEZYdYiTbjCjZu2\n4X8W6BZ6mEvQXEgAsgr/q6vpm+kfdk1wFiV4Ho2lAkAzF93tBbLg12GIVQpETuQ8h6aTWUIy9Y01\n1P+fPYDznVrapsdmy8s=", "expiry"=>"10/2017", "signatureVersion"=>"2", "signatureMethod"=>"RSA-SHA1", "certificateUrl"=>"https://fps.sandbox.amazonaws.com/certs/090911/PKICert.pem?requestId=bjzj0tpgedksa8xv8c5jns5i4d7ugwehryvxtzspigd3omooy0j", "tokenID"=>"I7TRIVD1A1ABBN6Z5JIP3MUP6XLCXADCIDER9MMKUM6DTJ4ZD2DUKDSEHBDFQNBH", "status"=>"SC", "callerReference"=>"c5b2c519-2b55-4fdd-83e1-2fff1238f51a", "controller"=>"contributions", "action"=>"save"}
     end
 
     it "should succeed with valid input" do
-      pending 'getting an SSLError from Amazon.'
-      run_valid_multi_token_test(true)
+      valid = Amazon::FPS::AmazonValidator.valid_multi_token_response?(url, session, parameters)
+      valid.should eq true
     end
 
     it "should fail without tokenID" do
-      @params.delete("tokenID")
-      run_valid_multi_token_test(false)
+      params = parameters.delete("tokenID")
+      valid = Amazon::FPS::AmazonValidator.valid_multi_token_response?(url, session, params)
+      valid.should eq false
     end
 
     it "should fail with invalid status" do
-      @params["status"] = "NP"
-      run_valid_multi_token_test(false)
+      params = parameters
+      params["status"] = "NP"
+      valid = Amazon::FPS::AmazonValidator.valid_multi_token_response?(url, session, params)
+      valid.should eq false
     end
 
     it "should fail with an invalid signature" do
-      pending 'getting an SSLError from Amazon.'
-      @params["signature"] = "invalid signature"
-      run_valid_multi_token_test(false)
+      params = parameters
+      params["signature"] = "invalid signature"
+      valid = Amazon::FPS::AmazonValidator.valid_multi_token_response?(url, session, params)
+      valid.should eq false
+    end
+
+    def url
+      'http://127.0.0.1:3999/contributions/save'
+    end
+
+    def session
+      {}
+    end
+
+    def parameters
+      {
+        "signature"=>"oqf/HV3gxQpVi1nwDGdYaSzNO5XvikEypZi82M5/Z0mQaj5KNH7v6XB3XtNatXEZYdYiTbjCjZu2\n4X8W6BZ6mEvQXEgAsgr/q6vpm+kfdk1wFiV4Ho2lAkAzF93tBbLg12GIVQpETuQ8h6aTWUIy9Y01\n1P+fPYDznVrapsdmy8s=",
+        "expiry"=>"10/2017",
+        "signatureVersion"=>"2",
+        "signatureMethod"=>"RSA-SHA1",
+        "certificateUrl"=>"https://fps.sandbox.amazonaws.com/certs/090911/PKICert.pem?requestId=bjzj0tpgedksa8xv8c5jns5i4d7ugwehryvxtzspigd3omooy0j",
+        "tokenID"=>"I7TRIVD1A1ABBN6Z5JIP3MUP6XLCXADCIDER9MMKUM6DTJ4ZD2DUKDSEHBDFQNBH",
+        "status"=>"SC",
+        "callerReference"=>"c5b2c519-2b55-4fdd-83e1-2fff1238f51a",
+        "controller"=>"contributions",
+        "action"=>"save"
+      }
     end
   end
 
@@ -41,12 +65,10 @@ describe Amazon::FPS::AmazonValidator do
     end
 
     it "should succeed with valid input" do
-      pending 'getting an SSLError from Amazon.'
       run_valid_recipient_test(true)
     end
 
     it "should failed without a project" do
-      pending 'getting an SSLError from Amazon.'
       @params["project_id"] = nil
       run_valid_recipient_test(false)
     end
@@ -62,7 +84,6 @@ describe Amazon::FPS::AmazonValidator do
     end
 
     it "should fail with an invalid signature" do
-      pending 'getting an SSLError from Amazon.'
       @params["signature"] = "invalid signature"
       run_valid_recipient_test(false)
     end

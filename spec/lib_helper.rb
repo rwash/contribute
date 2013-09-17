@@ -1,9 +1,3 @@
-def run_valid_multi_token_test(expected)
-  result = Amazon::FPS::AmazonValidator.valid_multi_token_response?(@url, @session, @params)
-
-  result.should eq expected
-end
-
 def run_valid_recipient_test(expected)
   result = Amazon::FPS::AmazonValidator.valid_recipient_response?(@url, @session, @params)
 
