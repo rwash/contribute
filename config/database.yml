@@ -26,8 +26,7 @@ test:
   reconnect: false
   database: contribute_test
   pool: 5
-  username: contribute_dev
-  password: contribute_dev
+  username: travis
 
 production:
   adapter: mysql2
