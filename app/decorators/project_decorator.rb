@@ -20,6 +20,12 @@ class ProjectDecorator < Draper::Decorator
     content_tag :span, "Project State: #{model.state.display_string}", class: "label label-#{model.state.color_class}"
   end
 
+  def connect_amazon_button
+    session[:project_id] = id
+    request = Amazon::FPS::RecipientRequest.new(save_project_url)
+    button_to "Connect an Amazon account", request.url
+  end
+
   # Generates a button linking to the edit page for the project
   def edit_button
     button_to "Edit Project", edit_project_path(model), method: 'get', class: 'btn btn-info btn-large'

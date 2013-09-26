@@ -18,7 +18,6 @@ class ProjectsController < InheritedResources::Base
   def create
     @project = Project.new(params[:project])
     @project.user = current_user
-    @project.payment_account_id = Project::UNDEFINED_PAYMENT_ACCOUNT_ID #To pass validation at valid?
     @project.state = :unconfirmed
     authorize! :create, @project
 
@@ -28,11 +27,7 @@ class ProjectsController < InheritedResources::Base
         @project.video.delay.upload_video(params[:project][:video].path)
         @project.save # Save the ID of the video
       end
-
-      session[:project_id] = @project.id
-
-      request = Amazon::FPS::RecipientRequest.new(save_project_url)
-      redirect_to request.url
+      redirect_to project_path(@project)
     else
       render action: :new
     end

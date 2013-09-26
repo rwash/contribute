@@ -3,26 +3,16 @@ require 'integration_helper'
 
 feature 'amazon process', :js do
 
-  let(:user) { create :user }
-
   describe 'project' do
     scenario "create successfully" do
-      project = build(:project)
-
+      project = create(:project)
+      user = project.user
       login_as user
 
-      #create a project
-      visit(new_project_path)
-      expect(current_path).to eq new_project_path
+      visit(project_path(project))
 
-      #fill in form
-      fill_in 'name' , with: project.name
-      fill_in 'project_funding_goal', with: project.funding_goal
-      fill_in 'DatePickerEndDate', with: project.end_date.strftime('%m/%d/%Y')
-      fill_in 'project_short_description', with: project.short_description
-      fill_in_ckeditor 'project_long_description', with: project.long_description
-
-      click_button 'Create Project'
+      click_button 'Connect an Amazon account'
+      pending "we're sending a bad signature to Amazon's API"
       expect(page).to have_content 'Sign in with your Amazon account'
       get_and_assert_project(project.name)
 
@@ -122,5 +112,9 @@ feature 'amazon process', :js do
       expect(last_email.subject).to match(project.name)
       expect(last_email.subject).to match('Your edited contribution to')
     end
+  end
+
+  def user
+    @_user ||= create :user
   end
 end

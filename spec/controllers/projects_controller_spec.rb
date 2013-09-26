@@ -155,8 +155,7 @@ describe ProjectsController do
         p = build(:project).attributes.symbolize_keys
         expect{ post :create, project: p }.to change{ Project.count }.by 1
 
-        request = Amazon::FPS::RecipientRequest.new(save_project_url)
-        expect(response).to redirect_to(request.url)
+        expect(response).to redirect_to(Project.last)
       end
 
       it "handles errors for invalid attributes" do
