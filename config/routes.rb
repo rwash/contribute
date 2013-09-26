@@ -29,7 +29,6 @@ Contribute::Application.routes.draw do
 
   #The :id being passed through the routes is really the name of the project
   match 'projects/save' => 'projects#save', :as => :save_project
-  match 'projects/:id/create_amazon_payment_account' => 'projects#create_amazon_payment_account', as: :create_amazon_payment_account
   match 'projects/:id/edit/upload' => 'projects#upload', :as => :upload_project_video
   resources :projects, :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
     put 'activate', on: :member
@@ -37,7 +36,7 @@ Contribute::Application.routes.draw do
     put 'unblock', on: :member
   end
 
-  resources :amazon_payment_accounts
+  resources :amazon_payment_accounts, except: [:index, :show]
 
   #Videos
   match 'videos/:id/destroy' => 'videos#destroy', :as => :destroy_video

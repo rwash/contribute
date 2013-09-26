@@ -35,33 +35,30 @@ describe AmazonPaymentAccountsController do
   end
 
   describe "GET index" do
-    it "assigns all amazon_payment_accounts as @amazon_payment_accounts" do
-      amazon_payment_account = create :amazon_payment_account
-      get :index, {}, valid_session
-      assigns(:amazon_payment_accounts).should eq([amazon_payment_account])
+    it 'should not respond' do
+      expect { get :index }.to raise_error ActionController::RoutingError
     end
   end
 
   describe "GET show" do
-    it "assigns the requested amazon_payment_account as @amazon_payment_account" do
+    it 'should not respond' do
       amazon_payment_account = create :amazon_payment_account
-      get :show, {:id => amazon_payment_account.to_param}, valid_session
-      assigns(:amazon_payment_account).should eq(amazon_payment_account)
+      expect {
+        get :show, {:id => amazon_payment_account.to_param}, valid_session
+      }.to raise_error ActionController::RoutingError
     end
   end
 
   describe "GET new" do
-    it "assigns a new amazon_payment_account as @amazon_payment_account" do
-      get :new, {}, valid_session
-      assigns(:amazon_payment_account).should be_a_new(AmazonPaymentAccount)
-    end
+    before { get :new, {}, valid_session }
+    it { should respond_with :redirect }
   end
 
   describe "GET edit" do
-    it "assigns the requested amazon_payment_account as @amazon_payment_account" do
+    it "redirects to Amazon's CBUI interface" do
       amazon_payment_account = create :amazon_payment_account
       get :edit, {:id => amazon_payment_account.to_param}, valid_session
-      assigns(:amazon_payment_account).should eq(amazon_payment_account)
+      subject.should respond_with :redirect
     end
   end
 
@@ -73,17 +70,12 @@ describe AmazonPaymentAccountsController do
         }.to change(AmazonPaymentAccount, :count).by(1)
       end
 
-      it "assigns a newly created amazon_payment_account as @amazon_payment_account" do
+      it "redirects to the associated project" do
         post :create, {:amazon_payment_account => creation_attributes}, valid_session
-        assigns(:amazon_payment_account).should be_a(AmazonPaymentAccount)
-        assigns(:amazon_payment_account).should be_persisted
+        response.should redirect_to(AmazonPaymentAccount.last.project)
       end
 
-      it "redirects to the created amazon_payment_account" do
-        post :create, {:amazon_payment_account => creation_attributes}, valid_session
-        response.should redirect_to(AmazonPaymentAccount.last)
-      end
-
+      private
       def creation_attributes
         attributes_for(:amazon_payment_account, project_id: project.id)
       end
@@ -101,12 +93,14 @@ describe AmazonPaymentAccountsController do
         assigns(:amazon_payment_account).should be_a_new(AmazonPaymentAccount)
       end
 
-      it "re-renders the 'new' template" do
+      it "redirects to the project new page" do
         # Trigger the behavior that occurs when invalid params are submitted
         AmazonPaymentAccount.any_instance.stub(:save).and_return(false)
         post :create, {:amazon_payment_account => {  }}, valid_session
-        response.should render_template("new")
+        response.should redirect_to AmazonPaymentAccount.last.project
       end
+
+      it "sets the flash to an error message"
     end
   end
 
@@ -154,6 +148,7 @@ describe AmazonPaymentAccountsController do
     end
   end
 
+  # TODO What do we do here?
   describe "DELETE destroy" do
     it "destroys the requested amazon_payment_account" do
       amazon_payment_account = create :amazon_payment_account
