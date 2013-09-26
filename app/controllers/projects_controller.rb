@@ -9,6 +9,7 @@ class ProjectsController < InheritedResources::Base
   # Authorize the :new action through cancan, since we aren't explicitly defining the method
   # in this class.
   load_and_authorize_resource only: :new
+  skip_authorization_check only: :new_amazon_payment_account
 
   def index
     @projects = Project.where(state: :active).order("end_date ASC").page(params[:page]).per(8)
@@ -157,6 +158,14 @@ class ProjectsController < InheritedResources::Base
       flash[:alert] = "You can not cancel or delete this project."
     end
     redirect_to root_path
+  end
+
+  def new_amazon_payment_account
+    load_project_from_params
+    session[:project_id] = @project.id
+
+    request = Amazon::FPS::RecipientRequest.new(save_project_url)
+    redirect_to request.url
   end
 
   def show

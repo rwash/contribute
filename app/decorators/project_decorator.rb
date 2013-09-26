@@ -21,9 +21,7 @@ class ProjectDecorator < Draper::Decorator
   end
 
   def connect_amazon_button
-    session[:project_id] = id
-    request = Amazon::FPS::RecipientRequest.new(save_project_url)
-    button_to "Connect an Amazon account", request.url
+    button_to "Connect an Amazon account", new_amazon_payment_account_path(model)
   end
 
   # Generates a button linking to the edit page for the project

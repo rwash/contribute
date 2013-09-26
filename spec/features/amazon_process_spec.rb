@@ -12,7 +12,6 @@ feature 'amazon process', :js do
       visit(project_path(project))
 
       click_button 'Connect an Amazon account'
-      pending "we're sending a bad signature to Amazon's API"
       expect(page).to have_content 'Sign in with your Amazon account'
       get_and_assert_project(project.name)
 
