@@ -21,7 +21,7 @@ class ProjectDecorator < Draper::Decorator
   end
 
   def connect_amazon_button
-    button_to "Connect an Amazon account", new_amazon_payment_account_path(model)
+    button_to "Connect an Amazon account", create_amazon_payment_account_path(model)
   end
 
   # Generates a button linking to the edit page for the project

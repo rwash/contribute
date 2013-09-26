@@ -9,7 +9,7 @@ class ProjectsController < InheritedResources::Base
   # Authorize the :new action through cancan, since we aren't explicitly defining the method
   # in this class.
   load_and_authorize_resource only: :new
-  skip_authorization_check only: :new_amazon_payment_account
+  skip_authorization_check only: :create_amazon_payment_account
 
   def index
     @projects = Project.where(state: :active).order("end_date ASC").page(params[:page]).per(8)
@@ -160,7 +160,7 @@ class ProjectsController < InheritedResources::Base
     redirect_to root_path
   end
 
-  def new_amazon_payment_account
+  def create_amazon_payment_account
     load_project_from_params
     session[:project_id] = @project.id
 
