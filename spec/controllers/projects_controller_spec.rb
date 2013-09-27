@@ -265,14 +265,14 @@ describe ProjectsController do
       end
 
       it "should succeed with valid input" do
-        session[:project_id] = project.id
+        session[:project_id] = project.to_param
         get :save, params
         expect(response).to redirect_to(project)
         expect(flash[:notice]).to include "saved successfully"
       end
 
       it "should handle unsuccessful input" do
-        session[:project_id] = project.id
+        session[:project_id] = project.to_param
         params["status"] = "NP"
 
         get :save, params
@@ -282,7 +282,7 @@ describe ProjectsController do
 
       it "should handle unsuccessful input case: 2" do
         Project.any_instance.stub(:save){false}
-        session[:project_id] = project.id
+        session[:project_id] = project.to_param
 
         get :save, params
         expect(response).to redirect_to(root_path)

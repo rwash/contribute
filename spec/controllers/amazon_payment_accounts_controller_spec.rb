@@ -29,12 +29,12 @@ describe AmazonPaymentAccountsController do
     describe "with valid params" do
       it "creates a new AmazonPaymentAccount" do
         expect {
-          post :create, {:amazon_payment_account => creation_attributes}, valid_session
+          post :create, {project_id: project.id, :amazon_payment_account => creation_attributes}, valid_session
         }.to change(AmazonPaymentAccount, :count).by(1)
       end
 
       it "redirects to the associated project" do
-        post :create, {:amazon_payment_account => creation_attributes}, {project_id: project.id}
+        post :create, {project_id: project.id, :amazon_payment_account => creation_attributes}, {project_id: project.id}
         response.should redirect_to(AmazonPaymentAccount.last.project)
       end
 
@@ -52,7 +52,7 @@ describe AmazonPaymentAccountsController do
       it "redirects to the project show page" do
         project = create :project
         AmazonPaymentAccount.any_instance.stub(:save).and_return(false)
-        post :create, {:amazon_payment_account => {  }}, {project_id: project.id}
+        post :create, {project_id: project.id, :amazon_payment_account => {  }}, {project_id: project.id}
         response.should redirect_to project
       end
 
@@ -63,7 +63,7 @@ describe AmazonPaymentAccountsController do
       before do
         project = create :project
         AmazonPaymentAccount.any_instance.stub(:save).and_return(false)
-        post :create, {:amazon_payment_account => {  }}, {}
+        post :create, {project_id: project.id, :amazon_payment_account => {  }}, {}
       end
       it { should redirect_to :root }
       it { should set_the_flash.to(/Something went wrong/) }
@@ -74,7 +74,7 @@ describe AmazonPaymentAccountsController do
     it "destroys the requested amazon_payment_account" do
       amazon_payment_account = create :amazon_payment_account
       expect {
-        delete :destroy, {:id => amazon_payment_account.to_param}, valid_session
+        delete :destroy, {project_id: project.id, :id => amazon_payment_account.to_param}, valid_session
       }.to change(AmazonPaymentAccount, :count).by(-1)
     end
 
@@ -82,7 +82,7 @@ describe AmazonPaymentAccountsController do
 
     it "redirects to the associated project" do
       amazon_payment_account = create :amazon_payment_account, project_id: project.id
-      delete :destroy, {:id => amazon_payment_account.to_param}, valid_session
+      delete :destroy, {project_id: project.id, :id => amazon_payment_account.to_param}, valid_session
       response.should redirect_to project
     end
 

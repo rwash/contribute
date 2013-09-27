@@ -31,12 +31,11 @@ Contribute::Application.routes.draw do
   match 'projects/save' => 'projects#save', :as => :save_project
   match 'projects/:id/edit/upload' => 'projects#upload', :as => :upload_project_video
   resources :projects, :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
+    resources :amazon_payment_accounts, only: [:new, :create, :destroy]
     put 'activate', on: :member
     put 'block', on: :member
     put 'unblock', on: :member
   end
-
-  resources :amazon_payment_accounts, only: [:new, :create, :destroy]
 
   #Videos
   match 'videos/:id/destroy' => 'videos#destroy', :as => :destroy_video

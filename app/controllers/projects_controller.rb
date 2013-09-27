@@ -56,7 +56,7 @@ class ProjectsController < InheritedResources::Base
     end
 
     if @project.state.unconfirmed?
-      session[:project_id] = @project.id
+      session[:project_id] = @project.to_param
       request = Amazon::FPS::RecipientRequest.new(save_project_url)
       return redirect_to request.url
     else
@@ -109,8 +109,8 @@ class ProjectsController < InheritedResources::Base
   end
 
   def save
+    project = load_project_from_session
     Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
-    project = Project.find(session[:project_id])
     authorize! :save, project
 
     if !Amazon::FPS::AmazonValidator::valid_recipient_response?(save_project_url, session, params)
@@ -123,8 +123,6 @@ class ProjectsController < InheritedResources::Base
     session[:project_id] = nil
 
     if project.save
-      #TODO: This is inconsistent. All the other project and contribution e-mails go through the
-      # model. Might be worth doing that for this too.
       successful_save project
 
       redirect_to project, notice: "Project saved successfully. Here's to getting funded!"
@@ -185,6 +183,10 @@ class ProjectsController < InheritedResources::Base
   # TODO rename this method -- and all of the email methods while we're at it
   def successful_save(project)
     EmailManager.add_project(project).deliver
+  end
+
+  def load_project_from_session
+    @project = Project.find_by_name! session[:project_id].gsub(/-/, ' ')
   end
 
   def load_project_from_params
