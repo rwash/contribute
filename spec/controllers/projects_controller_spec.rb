@@ -250,44 +250,4 @@ describe ProjectsController do
       end
     end
   end
-
-  context "save action" do
-    let(:project) { create(:project, state: 'unconfirmed') }
-    let(:params) { {"tokenID"=>"C5Q3L4H4UL4U18BA1IE12MXSDDAGCEBV1A56A5T243XF8QTDJQZ1JD9RFQW5CCWG", "status"=>"SR"} }
-
-    context "user is signed in" do
-      before { sign_in user }
-
-      before { @ability.stub!(:can?).with(:save, project).and_return(true) }
-
-      before do
-        Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
-      end
-
-      it "should succeed with valid input" do
-        session[:project_id] = project.to_param
-        get :save, params
-        expect(response).to redirect_to(project)
-        expect(flash[:notice]).to include "saved successfully"
-      end
-
-      it "should handle unsuccessful input" do
-        session[:project_id] = project.to_param
-        params["status"] = "NP"
-
-        get :save, params
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to include "error"
-      end
-
-      it "should handle unsuccessful input case: 2" do
-        Project.any_instance.stub(:save){false}
-        session[:project_id] = project.to_param
-
-        get :save, params
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to include "error"
-      end
-    end
-  end
 end

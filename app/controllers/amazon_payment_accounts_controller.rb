@@ -2,8 +2,6 @@ class AmazonPaymentAccountsController < ApplicationController
   # TODO get rid of this
   skip_authorization_check
 
-  # GET /amazon_payment_accounts/new
-  # GET /amazon_payment_accounts/new.json
   def new
     session[:project_id] = params[:project_id]
 
@@ -11,26 +9,38 @@ class AmazonPaymentAccountsController < ApplicationController
     redirect_to request.url
   end
 
-  # POST /amazon_payment_accounts
-  # POST /amazon_payment_accounts.json
   def create
     @amazon_payment_account = AmazonPaymentAccount.new(params[:amazon_payment_account])
+    project = Project.find_by_slug! params[:project_id]
 
-    @amazon_payment_account.save
-    redirect_to Project.find session[:project_id]
-  rescue
-    redirect_to :root, alert: "Something went wrong, and we couldn't save your changes. Please try again, or get in touch if the problem continues."
+    @amazon_payment_account.project = project
+
+    error_message = "Something went wrong, and we couldn't save your changes."
+
+    url = project_amazon_payment_accounts_url(project, method: :post)
+    unless Amazon::FPS::AmazonValidator::valid_recipient_response?(url, session, params[:amazon_payment_account])
+      return redirect_to project, alert: error_message
+    end
+    if @amazon_payment_account.save
+      project.state = :inactive
+      project.save
+
+      redirect_to project, notice: "Project saved successfully"
+    else
+      redirect_to project, alert: error_message
+    end
   end
 
-  # DELETE /amazon_payment_accounts/1
-  # DELETE /amazon_payment_accounts/1.json
+  def save
+    Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
+    authorize! :save, project
+  end
+
+
   def destroy
     @amazon_payment_account = AmazonPaymentAccount.find(params[:id])
     @amazon_payment_account.destroy
 
-    respond_to do |format|
-      format.html { redirect_to @amazon_payment_account.project }
-      format.json { head :no_content }
-    end
+    redirect_to @amazon_payment_account.project
   end
 end

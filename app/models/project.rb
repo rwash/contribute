@@ -218,4 +218,12 @@ class Project < ActiveRecord::Base
     errors.add(:state, "can't be active without a payment account id") if state.active? and payment_account_id.nil?
   rescue
   end
+
+  def self.find_by_slug(slug)
+    find_by_name slug.gsub(/-/, ' ')
+  end
+
+  def self.find_by_slug!(slug)
+    find_by_name! slug.gsub(/-/, ' ')
+  end
 end

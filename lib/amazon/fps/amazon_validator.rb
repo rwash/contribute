@@ -10,10 +10,15 @@ class AmazonValidator
 		return (!params["tokenID"].nil? and valid_multi_token_status?(params["status"]) and valid_cbui_response?(params, url))
 	end
 
-	#if the project in the session controller is not available, there is no tokenID return, the status code is not a successful one, or the signature could not be verified
-	def self.valid_recipient_response?(url, session, params)
-		return (!session["project_id"].nil? and !params["tokenID"].nil? and params["status"] == "SR" and valid_cbui_response?(params, url))
-	end
+  #if the project in the session controller is not available, there is no tokenID return, the status code is not a successful one, or the signature could not be verified
+  def self.valid_recipient_response?(url, session, params)
+    project = params[:project_id]
+    token = params[:token]
+    correct_status = params[:status] == "SR"
+
+    result = project and token and correct_status and valid_cbui_response?(params, url)
+    return result
+  end
 
 	def self.valid_transaction_status_response?(response)
 		return (response['Errors'].nil? and !response['GetTransactionStatusResult'].nil? and !response['GetTransactionStatusResult']['TransactionStatus'].nil?)

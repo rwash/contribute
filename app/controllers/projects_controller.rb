@@ -108,29 +108,6 @@ class ProjectsController < InheritedResources::Base
     redirect_to @project, notice: "Successfully unblocked project."
   end
 
-  def save
-    project = load_project_from_session
-    Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
-    authorize! :save, project
-
-    if !Amazon::FPS::AmazonValidator::valid_recipient_response?(save_project_url, session, params)
-      return redirect_to root_path, alert: 'An error occured with your project. Please try again.'
-    end
-
-    project.state = :inactive
-    project.payment_account_id = params[:tokenID]
-
-    session[:project_id] = nil
-
-    if project.save
-      successful_save project
-
-      redirect_to project, notice: "Project saved successfully. Here's to getting funded!"
-    else
-      redirect_to root_path, alert: "An error occurred with your project. Please try again."
-    end
-  end
-
   def destroy
     load_project_from_params
     authorize! :destroy, @project
@@ -180,16 +157,11 @@ class ProjectsController < InheritedResources::Base
   end
 
   protected
-  # TODO rename this method -- and all of the email methods while we're at it
-  def successful_save(project)
-    EmailManager.add_project(project).deliver
-  end
-
   def load_project_from_session
-    @project = Project.find_by_name! session[:project_id].gsub(/-/, ' ')
+    @project = Project.find_by_slug! session[:project_id]
   end
 
   def load_project_from_params
-    @project = Project.find_by_name! params[:id].gsub(/-/, ' ')
+    @project = Project.find_by_slug! params[:id]
   end
 end
