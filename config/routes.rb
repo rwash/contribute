@@ -36,7 +36,7 @@ Contribute::Application.routes.draw do
     put 'unblock', on: :member
   end
 
-  resources :amazon_payment_accounts, except: [:index, :show]
+  resources :amazon_payment_accounts, only: [:new, :create, :destroy]
 
   #Videos
   match 'videos/:id/destroy' => 'videos#destroy', :as => :destroy_video
