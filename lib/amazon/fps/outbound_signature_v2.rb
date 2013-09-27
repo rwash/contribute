@@ -25,9 +25,9 @@ module Amazon
         raise "Invalid outbound signature" unless self.valid?
 
         # Construct VerifySignatureAPI request
-        if(SignatureUtilsForOutbound::starts_with(certificate_url, FPS_SANDBOX_ENDPOINT) == true) then
+        if SignatureUtilsForOutbound::starts_with(certificate_url, FPS_SANDBOX_ENDPOINT) then
           verify_signature_request = FPS_SANDBOX_ENDPOINT
-        elsif(SignatureUtilsForOutbound::starts_with(certificate_url, FPS_PROD_ENDPOINT) == true) then
+        elsif SignatureUtilsForOutbound::starts_with(certificate_url, FPS_PROD_ENDPOINT) then
           verify_signature_request = FPS_PROD_ENDPOINT
         else
           raise "'certificateUrl' received is not valid. Valid certificate urls start with " <<

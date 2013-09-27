@@ -16,10 +16,10 @@ class BaseCbuiRequest
 
 		@access_key = Rails.application.config.aws_access_key
 		@secret_key = Rails.application.config.aws_secret_key
-		@params = get_default_params()
+		@params = default_params()
 	end
 
-	def get_default_params()
+	def default_params()
 		params = {}
 		params["callerKey"] = @access_key
 		params["version"] = @cbui_version

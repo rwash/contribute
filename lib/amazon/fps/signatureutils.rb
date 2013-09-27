@@ -125,8 +125,11 @@ class SignatureUtils
   end
 
   def self.get_algorithm(signature_method) 
-    return 'sha256' if (signature_method == HMAC_SHA256_ALGORITHM);
-    return 'sha1'
+    if signature_method == HMAC_SHA256_ALGORITHM
+      'sha256'
+    else
+      'sha1'
+    end
   end
 
   def self.compute_signature(canonical, aws_secret_key, algorithm = 'sha1')
