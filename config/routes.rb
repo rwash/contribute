@@ -35,6 +35,7 @@ Contribute::Application.routes.draw do
     put 'block', on: :member
     put 'unblock', on: :member
   end
+  get 'projects/:project_id/amazon_payment_accounts' => 'amazon_payment_accounts#create'
 
   #Videos
   match 'videos/:id/destroy' => 'videos#destroy', :as => :destroy_video

@@ -7,13 +7,13 @@ describe AmazonPaymentAccountsController do
   end
 
   describe "GET new" do
-    before { get :new, {project_id: project_id} }
+    before { get :new, {project_id: project.to_param} }
 
     it { should respond_with :redirect }
 
     private
-    def project_id
-      2
+    def project
+      @_project ||= create :project
     end
   end
 
@@ -30,9 +30,10 @@ describe AmazonPaymentAccountsController do
       end
 
       it "should handle unsuccessful input" do
-        params["status"] = "NP"
+        p = params
+        p["status"] = "NP"
 
-        get :create, params
+        get :create, p
         expect(response).to redirect_to(project)
         expect(flash[:alert]).to include "Something went wrong"
       end
@@ -49,12 +50,9 @@ describe AmazonPaymentAccountsController do
       let(:project) { create :project }
       let(:params) do
         {project_id: project.to_param,
-         amazon_payment_account: {"token" => token}
+         'tokenID' => token,
+         status: "SR",
         }
-      end
-
-      def token
-        "C5Q3L4H4UL4U18BA1IE12MXSDDAGCEBV1A56A5T243XF8QTDJQZ1JD9RFQW5CCWG"
       end
 
       it "creates a new AmazonPaymentAccount" do
@@ -80,11 +78,11 @@ describe AmazonPaymentAccountsController do
 
       private
       def post_create
-        post :create, {project_id: project.to_param, :amazon_payment_account => creation_attributes}
+        post :create, {project_id: project.to_param, "tokenID" => token, status: "SR"}
       end
 
-      def creation_attributes
-        attributes_for(:amazon_payment_account, project_id: project.to_param, token: token)
+      def token
+        "C5Q3L4H4UL4U18BA1IE12MXSDDAGCEBV1A56A5T243XF8QTDJQZ1JD9RFQW5CCWG"
       end
 
       def project

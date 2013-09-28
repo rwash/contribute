@@ -100,28 +100,16 @@ class SignatureUtils
     verb = args[:verb]
     host = args[:host].downcase
 
+    canonical_header = "#{verb}\n#{host}\n#{uri}\n"
 
-    # exclude any existing Signature parameter from the canonical string
-    sorted = (parameters.reject { |k, v| k == SIGNATURE_KEYNAME }).sort
-    
-    canonical = "#{verb}\n#{host}\n#{uri}\n"
-    isFirst = true
+    acceptable_params = parameters.reject { |k, v| k == SIGNATURE_KEYNAME }
+    sorted_params = acceptable_params.sort
 
-    sorted.each { |v|
-      if(isFirst) then
-        isFirst = false
-      else
-        canonical << '&'
-      end
+    canonical_params = sorted_params.map do |assignment|
+      assignment.map {|element| urlencode(element)}.join '='
+    end.join '&'
 
-      canonical << urlencode(v[0])
-      unless(v[1].nil?) then
-        canonical << '='
-        canonical << urlencode(v[1])
-      end
-    }
-
-    return canonical
+    canonical_header + canonical_params
   end
 
   def self.get_algorithm(signature_method) 

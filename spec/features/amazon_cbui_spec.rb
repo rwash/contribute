@@ -4,7 +4,8 @@ require 'integration_helper'
 feature 'amazon process', :js do
 
   scenario "recipient request should direct to amazon login" do
-    request = Amazon::FPS::RecipientRequest.new(save_project_url)
+    return_url = project_amazon_payment_accounts_url(project, method: :get)
+    request = Amazon::FPS::RecipientRequest.new(return_url)
     visit(request.url)
 
     expect(page).to have_content('Sign in with your Amazon account')
@@ -22,5 +23,10 @@ feature 'amazon process', :js do
 
     visit request.url
     expect(page).to have_content('Sign in with your Amazon account')
+  end
+
+  private
+  def project
+    @_project ||= create :project
   end
 end

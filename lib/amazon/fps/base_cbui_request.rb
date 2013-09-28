@@ -2,10 +2,10 @@ require 'uri'
 require 'amazon/fps/signatureutils'
 
 module Amazon
-module FPS
+  module FPS
 
-#These calls redirect the user to amazon's web page in order to sign in and accept or make payments.  http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/CHAP_IntroductionUIPipeline.html
-class BaseCbuiRequest
+    #These calls redirect the user to amazon's web page in order to sign in and accept or make payments.  http://docs.amazonwebservices.com/AmazonFPS/latest/FPSAdvancedGuide/CHAP_IntroductionUIPipeline.html
+    class BaseCbuiRequest
 
 	#common parameters are filled in for the derived classes
 	def initialize
@@ -30,41 +30,31 @@ class BaseCbuiRequest
 		return params
 	end
 
-	#creates the signature from the incoming endpoint, and parameters.  Then returns the formatted url from get_url()
-	def url()
-			uri = URI.parse(@service_end_point)
-			signature = Amazon::FPS::SignatureUtils.sign_parameters({parameters: @params, 
-																							aws_secret_key: @secret_key,
-																							host: uri.host,
-																							verb: @http_method,
-																							uri:  uri.path })
-			@params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+      #creates the signature from the incoming endpoint, and parameters.  Then returns the formatted url from get_url()
+      def url()
+          uri = URI.parse(@service_end_point)
+          signature = Amazon::FPS::SignatureUtils.sign_parameters({parameters: @params,
+                                                                   aws_secret_key: @secret_key,
+                                                                   host: uri.host,
+                                                                   verb: @http_method,
+                                                                   uri:  uri.path })
+          @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
 
-			return get_url(@service_end_point, @params)
-	end
+          return get_url(@service_end_point, @params)
+      end
 
-	#formats the incoming parameters into a nice query string that is appended to the endpoint.  we redirect the user to the returned url
-	def get_url(service_end_point, params)
-		url = service_end_point + "?"
+      #formats the incoming parameters into a nice query string that is appended to the endpoint.  we redirect the user to the returned url
+      def get_url(service_end_point, params)
+        url = service_end_point + "?"
 
-		isFirst = true
-		params.each { |k,v|
-			if(isFirst) then
-				isFirst = false
-			else
-				url << '&'
-			end
+        param_string = params.map do |key,value|
+          [key,value].map { |string| Amazon::FPS::SignatureUtils.urlencode(string) }.join '='
+        end.join '&'
 
-			url << Amazon::FPS::SignatureUtils.urlencode(k)
-			unless(v.nil?) then
-				url << '='
-				url << Amazon::FPS::SignatureUtils.urlencode(v)
-			end
-			}
-		return url
-  end 
-end
+        url + param_string
+      end
+    end
 
-end
+  end
 end
 

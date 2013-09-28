@@ -55,13 +55,7 @@ class ProjectsController < InheritedResources::Base
       flash[:notice] = "Successfully updated project."
     end
 
-    if @project.state.unconfirmed?
-      session[:project_id] = @project.to_param
-      request = Amazon::FPS::RecipientRequest.new(save_project_url)
-      return redirect_to request.url
-    else
-      respond_with(@project)
-    end
+    respond_with(@project)
   end
 
   def activate
@@ -128,6 +122,7 @@ class ProjectsController < InheritedResources::Base
       @project.video.published = false
       @project.video.update
       flash[:notice] = "Project successfully cancelled. This project is now only visible to you."
+      return redirect_to @project
     else
       flash[:alert] = "You can not cancel or delete this project."
     end
@@ -157,10 +152,6 @@ class ProjectsController < InheritedResources::Base
   end
 
   protected
-  def load_project_from_session
-    @project = Project.find_by_slug! session[:project_id]
-  end
-
   def load_project_from_params
     @project = Project.find_by_slug! params[:id]
   end

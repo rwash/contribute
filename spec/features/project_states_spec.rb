@@ -26,30 +26,26 @@ feature 'amazon process', :js do
 
       visit(project_path(project))
       get_and_assert_project(project.name)
-      #project is now unconfirmed
+      page.should have_content "Unconfirmed"
 
-      click_button 'Edit Project'
-      expect(page).to have_content 'Amazon Payments'
-
-      click_button 'Update Project'
+      click_button 'Connect an Amazon account'
       expect(page).to have_content 'Sign in with your Amazon account'
       login_amazon 'spartanfan10@hotmail.com', 'testing'
       click_amazon_continue
       find('a').click
       expect(page).to have_content 'Project saved successfully'
-      #project is no inactive
+      expect(page).to have_content 'Inactive'
 
       click_button('Activate')
       page.driver.accept_js_prompts!
       expect(page).to have_content 'Successfully activated project.'
-      #project is now active
+      expect(page).to have_content 'Active'
 
       visit(project_path(project))
       click_button 'Cancel Project'
       page.driver.accept_js_prompts!
       expect(page).to have_content 'Project successfully cancelled.'
-      #project is now cancelled
-
+      expect(page).to have_content 'Cancelled'
     end
 
   end

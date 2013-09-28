@@ -46,7 +46,8 @@ module Amazon
         document = REXML::Document.new(verify_signature_response)
 
         status_el = document.elements['VerifySignatureResponse/VerifySignatureResult/VerificationStatus']
-        return (!status_el.nil? && status_el.text == "Success")
+
+        return (status_el && status_el.text == "Success")
       end
 
       private
