@@ -137,7 +137,7 @@ private
   # Stores data associated with a project in instance variables
   def register_project(project)
     @project = project
-    @user = project.user
+    @user = project.owner
   end
 
 end

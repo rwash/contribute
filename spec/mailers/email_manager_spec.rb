@@ -9,7 +9,7 @@ describe EmailManager do
 
   it "add project" do
     user = create(:user)
-    project = create(:project, user: user)
+    project = create(:project, owner: user)
 
     EmailManager.add_project(project).deliver
 
@@ -81,7 +81,7 @@ describe EmailManager do
 
   it "project funded to owner" do
     user = create(:user)
-    project = create(:project, user: user)
+    project = create(:project, owner: user)
 
     EmailManager.project_funded_to_owner(project).deliver
 
@@ -92,7 +92,7 @@ describe EmailManager do
 
   it "project not funded to owner" do
     user = create(:user)
-    project = create(:project, user: user)
+    project = create(:project, owner: user)
 
     EmailManager.project_not_funded_to_owner(project).deliver
 
@@ -127,7 +127,7 @@ describe EmailManager do
 
   it "project deleted to owner" do
     user = create(:user)
-    project = create(:project, user: user)
+    project = create(:project, owner: user)
 
     EmailManager.project_deleted_to_owner(project).deliver
 
@@ -249,7 +249,7 @@ describe EmailManager do
   it "project_to_group_approval" do # approval, project, group, project owner, group owner,
     proj_user = create(:user)
     group_user = create(:user)
-    project = create(:project, user: proj_user)
+    project = create(:project, owner: proj_user)
     group = create(:group, admin_user: group_user, open: false)
     approval = create(:approval, project: project, group: group)
 
@@ -264,7 +264,7 @@ describe EmailManager do
   it "group_reject_project" do # approval project group, project owner
     proj_user = create(:user)
     group_user = create(:user)
-    project = create(:project, user: proj_user)
+    project = create(:project, owner: proj_user)
     group = create(:group, admin_user: group_user, open: false)
     approval = create(:approval, project: project, group: group, reason: "I hate you.")
 

@@ -26,7 +26,7 @@ class Project < ActiveRecord::Base
   # TODO this shouldn't be here.
   include Rails.application.routes.url_helpers
 
-  belongs_to :user
+  belongs_to :owner, class_name: 'User', foreign_key: 'user_id'
   has_many :contributions, conditions: ["status not in (:retry_cancel, :fail, :cancelled)", {retry_cancel: ContributionStatus::RetryCancel, fail: ContributionStatus::Failure, cancelled: ContributionStatus::Cancelled}]
   acts_as_commentable
   has_and_belongs_to_many :groups
@@ -80,7 +80,7 @@ class Project < ActiveRecord::Base
   validates :end_date,
             presence: { message: "must be of form 'MM/DD/YYYY'" }
 
-  validates :user, presence: true
+  validates :owner, presence: true
 
   # Delegations --------------------------------------------------------------
 

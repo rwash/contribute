@@ -14,8 +14,8 @@ $(document).ready(function(){
 <div class="well">
   <div id="projectHead" align="center">
     <h1><%= @project.name %></h1>
-    <h2><%= @project.user.location %></h2>
-    <h3>By: <%= link_to @project.user.name, @project.user %> </h3>
+    <h2><%= @project.owner.location %></h2>
+    <h3>By: <%= link_to @project.owner.name, @project.owner %> </h3>
     <div class="add_show">
       <div class="star_up"></div>
       <div class="star_on"></div>
@@ -101,7 +101,7 @@ $(document).ready(function(){
 </div>
 
 <% content_for :sidebar do %>
-  <% if @project.user == current_user %>
+  <% if @project.owner == current_user %>
     <p><%= @project.colored_state_description %></p><br/>
   <% end %>
 

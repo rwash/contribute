@@ -24,7 +24,7 @@
         <% end %>
       <% end %>
         <h4 class="ellipsisName"><%= link_to @project.name, @project %></h4>
-        <p class="byline">by <%= link_to @project.user.name, @project.user %></p>
+        <p class="byline">by <%= link_to @project.owner.name, @project.owner %></p>
         <%= link_to 'Approve', approve_approval_path(@group, approval), :class => "btn btn-primary btn-mini" %>
         <%= link_to 'Reject', '#', :class => "btn btn-danger btn-mini", :onclick => "$(\"#myModal-#{approval.id}\").modal('show')" %>
       </div>

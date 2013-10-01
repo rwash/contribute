@@ -66,7 +66,7 @@ class GroupsController < InheritedResources::Base
   def remove_project
     group = Group.find(params[:id])
     project = Project.find(params[:project_id].gsub(/-/, ' '))
-    if group.admin_user == current_user or project.user == current_user
+    if group.admin_user == current_user or project.owner == current_user
       group.projects.delete(project)
       project.update_project_video
       flash[:notice] = "#{project.name} removed from group #{group.name}."

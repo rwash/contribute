@@ -7,7 +7,7 @@ FactoryGirl.define do
     password 'testme'
   end
 
-  factory :user, parent: :unconfirmed_user, aliases: [:admin_user] do
+  factory :user, parent: :unconfirmed_user, aliases: [:admin_user, :owner] do
     after(:build) do |obj|
       obj.confirm!
     end

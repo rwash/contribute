@@ -2,7 +2,7 @@ class AmazonPaymentAccountsController < ApplicationController
   skip_authorization_check
 
   def new
-    if current_user == project.user
+    if current_user == project.owner
       amazon_service = Amazon::FPS::RecipientRequest.new return_url
       redirect_to amazon_service.url
     else
@@ -11,7 +11,7 @@ class AmazonPaymentAccountsController < ApplicationController
   end
 
   def create
-    if current_user == project.user
+    if current_user == project.owner
       @amazon_payment_account = AmazonPaymentAccount.new
       @amazon_payment_account.token = params["tokenID"]
       @amazon_payment_account.project = project
@@ -34,7 +34,7 @@ class AmazonPaymentAccountsController < ApplicationController
   end
 
   def destroy
-    if current_user == project.user
+    if current_user == project.owner
       @amazon_payment_account = AmazonPaymentAccount.find(params[:id])
       @amazon_payment_account.destroy
 

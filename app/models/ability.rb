@@ -24,24 +24,24 @@ class Ability
   def define_user_privileges(user)
     # Projects
     can :create, Project
-    can [:read, :save, :activate], Project, user: user
+    can [:read, :save, :activate], Project, owner: user
     can :read, Project, confirmation_approver?: true
 
-    can :destroy, Project, user: user, state: :active
-    can :destroy, Project, user: user, state: :inactive
-    can :destroy, Project, user: user, state: :unconfirmed
+    can :destroy, Project, owner: user, state: :active
+    can :destroy, Project, owner: user, state: :inactive
+    can :destroy, Project, owner: user, state: :unconfirmed
 
     # Note: this 'update' refers to the Update and Edit actions of ProjectsController,
     # not the ability to create Update objects associated with a project
-    can :update, Project, user: user, can_edit?: true
+    can :update, Project, owner: user, can_edit?: true
 
     can :create, Update do |update|
       update.project.can_update? and
-        update.project.user == user
+        update.project.owner == user
     end
 
     can :destroy, Video do |video|
-      video.project.user = user
+      video.project.owner = user
     end
 
     can :create, Comment if user.id
@@ -50,7 +50,7 @@ class Ability
     end
 
     can :create, Contribution do |contribution|
-      contribution.project.user != user and
+      contribution.project.owner != user and
         contribution.project.contributions.find_by_user_id(user.id).nil? and
         contribution.project.end_date >= Time.zone.today
     end
@@ -80,7 +80,7 @@ class Ability
       # Projects
       can [:read, :create, :save, :activate, :block], Project
       # TODO change this to 'cancel'
-      can :destroy, Project, user: user, state: :active
+      can :destroy, Project, owner: user, state: :active
       can :destroy, Project, state: :inactive
       can :destroy, Project, state: :unconfirmed
 

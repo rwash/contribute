@@ -71,7 +71,7 @@ describe GroupsController do
         let(:group) { create :group, open: true }
 
         it 'allows adding of unconfirmed project to group' do
-          project = create(:project, state: 'unconfirmed', user: user)
+          project = create(:project, state: 'unconfirmed', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
 
@@ -80,7 +80,7 @@ describe GroupsController do
         end
 
         it 'allows adding of inactive project to group' do
-          project = create(:project, state: 'inactive', user: user)
+          project = create(:project, state: 'inactive', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
 
@@ -89,7 +89,7 @@ describe GroupsController do
         end
 
         it 'allows adding of active project to group' do
-          project = create(:active_project, user: user)
+          project = create(:active_project, owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
 
@@ -98,7 +98,7 @@ describe GroupsController do
         end
 
         it 'allows adding of funded project to group' do
-          project = create(:project, state: 'funded', user: user)
+          project = create(:project, state: 'funded', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
 
@@ -107,7 +107,7 @@ describe GroupsController do
         end
 
         it 'allows adding of nonfunded project to group' do
-          project = create(:project, state: 'nonfunded', user: user)
+          project = create(:project, state: 'nonfunded', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
 
@@ -116,7 +116,7 @@ describe GroupsController do
         end
 
         it 'does not allow adding of cancelled project to group' do
-          project = create(:project, state: 'cancelled', user: user)
+          project = create(:project, state: 'cancelled', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.projects.count}
 
@@ -125,7 +125,7 @@ describe GroupsController do
         end
 
         it 'does not allow multiple additions of the same project to a group' do
-          project = create(:active_project, user: user)
+          project = create(:active_project, owner: user)
           group.projects << project
           expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.projects.count}
 
@@ -139,7 +139,7 @@ describe GroupsController do
         let(:group) { create :group, open: false, admin_user: admin }
 
         it 'allows adding of unconfirmed project to group' do
-          project = create(:project, state: 'unconfirmed', user: user)
+          project = create(:project, state: 'unconfirmed', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
 
@@ -149,7 +149,7 @@ describe GroupsController do
         end
 
         it 'allows adding of inactive project to group' do
-          project = create(:project, state: 'inactive', user: user)
+          project = create(:project, state: 'inactive', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
 
@@ -159,7 +159,7 @@ describe GroupsController do
         end
 
         it 'allows adding of active project to group' do
-          project = create(:active_project, user: user)
+          project = create(:active_project, owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
 
@@ -169,7 +169,7 @@ describe GroupsController do
         end
 
         it 'allows adding of funded project to group' do
-          project = create(:project, state: 'funded', user: user)
+          project = create(:project, state: 'funded', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
 
@@ -179,7 +179,7 @@ describe GroupsController do
         end
 
         it 'allows adding of nonfunded project to group' do
-          project = create(:project, state: 'nonfunded', user: user)
+          project = create(:project, state: 'nonfunded', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
 
@@ -189,7 +189,7 @@ describe GroupsController do
         end
 
         it 'does not allow adding of cancelled project to group' do
-          project = create(:project, state: 'cancelled', user: user)
+          project = create(:project, state: 'cancelled', owner: user)
 
           expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.approvals.count}
 
@@ -198,7 +198,7 @@ describe GroupsController do
         end
 
         it 'does not allow multiple additions of the same project to a group' do
-          project = create(:active_project, user: user)
+          project = create(:active_project, owner: user)
           group.projects << project
           expect {post 'submit_add', id: group.id, project_id: project.id}.to_not change {group.approvals.count}
 

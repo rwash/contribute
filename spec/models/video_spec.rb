@@ -19,7 +19,7 @@ describe Video do
     end
 
     context 'when user owns project' do
-      let(:user) { video.project.user }
+      let(:user) { video.project.owner }
 
     end
 

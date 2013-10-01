@@ -53,7 +53,7 @@ describe Project do
     end
 
     context 'when user owns project' do
-      let(:user) { project.user }
+      let(:user) { project.owner }
 
       context 'when project is not publicly viewable' do
         before { project.stub!(:public_can_view?).and_return(false) }
@@ -62,12 +62,12 @@ describe Project do
 
       context 'when project is editable' do
         before { project.stub!(:can_edit?).and_return(true) }
-        it { should be_able_to :update, build(:project, user: user, state: :inactive) }
+        it { should be_able_to :update, build(:project, owner: user, state: :inactive) }
       end
 
       context 'when project is not editable' do
         before { project.stub!(:can_edit?).and_return(false) }
-        it { should_not be_able_to :update, build(:project, user: user, state: :active) }
+        it { should_not be_able_to :update, build(:project, owner: user, state: :active) }
       end
 
       it { should be_able_to :save, project }
@@ -75,12 +75,12 @@ describe Project do
       it { should_not be_able_to :block, project }
       it { should_not be_able_to :unblock, project }
 
-      it { should be_able_to :destroy, build(:project, user: user, state: :unconfirmed) }
-      it { should be_able_to :destroy, build(:project, user: user, state: :inactive) }
-      it { should be_able_to :destroy, build(:project, user: user, state: :active) }
-      it { should_not be_able_to :destroy, build(:project, user: user, state: :nonfunded) }
-      it { should_not be_able_to :destroy, build(:project, user: user, state: :funded) }
-      it { should_not be_able_to :destroy, build(:project, user: user, state: :cancelled) }
+      it { should be_able_to :destroy, build(:project, owner: user, state: :unconfirmed) }
+      it { should be_able_to :destroy, build(:project, owner: user, state: :inactive) }
+      it { should be_able_to :destroy, build(:project, owner: user, state: :active) }
+      it { should_not be_able_to :destroy, build(:project, owner: user, state: :nonfunded) }
+      it { should_not be_able_to :destroy, build(:project, owner: user, state: :funded) }
+      it { should_not be_able_to :destroy, build(:project, owner: user, state: :cancelled) }
     end
 
     context 'when signed in as admin' do
@@ -93,12 +93,12 @@ describe Project do
 
       context 'when project is editable' do
         before { project.stub!(:can_edit?).and_return(true) }
-        it { should be_able_to :update, build(:project, user: user, state: :inactive) }
+        it { should be_able_to :update, build(:project, owner: user, state: :inactive) }
       end
 
       context 'when project is not editable' do
         before { project.stub!(:can_edit?).and_return(false) }
-        it { should_not be_able_to :update, build(:project, user: user, state: :active) }
+        it { should_not be_able_to :update, build(:project, owner: user, state: :active) }
       end
 
       context 'when project is blocked' do
@@ -113,12 +113,12 @@ describe Project do
       it { should be_able_to :block, project }
       it { should_not be_able_to :unblock, project }
 
-      it { should be_able_to :destroy, build(:project, user: user, state: :unconfirmed) }
-      it { should be_able_to :destroy, build(:project, user: user, state: :inactive) }
-      it { should be_able_to :destroy, build(:project, user: user, state: :active) }
-      it { should_not be_able_to :destroy, build(:project, user: user, state: :nonfunded) }
-      it { should_not be_able_to :destroy, build(:project, user: user, state: :funded) }
-      it { should_not be_able_to :destroy, build(:project, user: user, state: :cancelled) }
+      it { should be_able_to :destroy, build(:project, owner: user, state: :unconfirmed) }
+      it { should be_able_to :destroy, build(:project, owner: user, state: :inactive) }
+      it { should be_able_to :destroy, build(:project, owner: user, state: :active) }
+      it { should_not be_able_to :destroy, build(:project, owner: user, state: :nonfunded) }
+      it { should_not be_able_to :destroy, build(:project, owner: user, state: :funded) }
+      it { should_not be_able_to :destroy, build(:project, owner: user, state: :cancelled) }
     end
   end
 
@@ -175,7 +175,7 @@ describe Project do
     end
   end
 
-  it { should validate_presence_of :user }
+  it { should validate_presence_of :owner }
 
   it 'parses time string correctly' do
     project = build(:project, end_date: '03/12/2020')#4

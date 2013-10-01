@@ -8,7 +8,7 @@ describe AmazonPaymentAccountsController do
 
   describe "GET new" do
     context 'while signed in as a project owner' do
-      before { sign_in project.user }
+      before { sign_in project.owner }
       before { get :new, {project_id: project.to_param} }
 
       it { should respond_with :redirect }
@@ -37,7 +37,7 @@ describe AmazonPaymentAccountsController do
 
   describe "POST create" do
     context 'when signed in as project owner' do
-      before { sign_in project.user }
+      before { sign_in project.owner }
 
       describe "with valid params" do
         before do
@@ -140,7 +140,7 @@ describe AmazonPaymentAccountsController do
 
   describe "DELETE destroy" do
     context 'while signed in as a project owner' do
-      before { sign_in project.user }
+      before { sign_in project.owner }
 
       it "destroys the requested amazon_payment_account" do
         amazon_payment_account = create :amazon_payment_account

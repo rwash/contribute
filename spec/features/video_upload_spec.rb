@@ -7,7 +7,7 @@ feature 'upload video', :js do
         project = build(:project)
 
         #login with our project creator
-        login_as project.user
+        login_as project.owner
 
         #create a project
         visit(new_project_path)

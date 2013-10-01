@@ -10,7 +10,7 @@ feature 'Groups' do
         user = create :user
         group = create :group, admin_user: user
         # project is not in the group we created
-        project = create :project, user: user
+        project = create :project, owner: user
 
         login_as user
 
@@ -21,7 +21,7 @@ feature 'Groups' do
       scenario 'does not display admin groups when user has none' do
         user = create :user
         group = create :group
-        project = create :project, user: user
+        project = create :project, owner: user
         project.groups << group
 
         login_as user
@@ -33,7 +33,7 @@ feature 'Groups' do
       scenario 'displays project groups when user has some' do
         user = create :user
         group = create :group
-        project = create :project, user: user
+        project = create :project, owner: user
         project.groups << group
 
         login_as user
@@ -59,7 +59,7 @@ feature 'Groups' do
         user = create :user
         group = create :group
         projects = 2.times.map do
-          project = create :project, user: user
+          project = create :project, owner: user
           project.groups.push group
           project
         end

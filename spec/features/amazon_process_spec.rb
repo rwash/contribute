@@ -6,7 +6,7 @@ feature 'amazon process', :js do
   describe 'project' do
     scenario "create successfully" do
       project = create(:project)
-      user = project.user
+      user = project.owner
       login_as user
 
       visit(project_path(project))

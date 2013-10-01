@@ -73,7 +73,7 @@ describe Contribution do
     end
 
     context 'when user owns project' do
-      let(:user) { contribution.project.user }
+      let(:user) { contribution.project.owner }
 
       it { should_not be_able_to :create, contribution }
       it { should_not be_able_to :edit, contribution }

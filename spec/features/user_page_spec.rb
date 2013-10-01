@@ -16,21 +16,21 @@ feature 'user page', :js do
     end
 
     scenario "should show inactive projects" do
-      project = create :project, state: :inactive, user: user
+      project = create :project, state: :inactive, owner: user
 
       visit user_path(user)
       expect(page).to have_content(project.name)
     end
 
     scenario "should show unconfirmed projects" do
-      project = create :project, state: :unconfirmed, user: user
+      project = create :project, state: :unconfirmed, owner: user
 
       visit user_path(user)
       expect(page).to have_content(project.name)
     end
 
     scenario "should show active projects" do
-      project = create :active_project, user: user
+      project = create :active_project, owner: user
 
       visit user_path(user)
       expect(page).to have_content(project.name)

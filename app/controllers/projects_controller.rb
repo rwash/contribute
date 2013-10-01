@@ -17,7 +17,7 @@ class ProjectsController < InheritedResources::Base
 
   def create
     @project = Project.new(params[:project])
-    @project.user = current_user
+    @project.owner = current_user
     @project.state = :unconfirmed
     authorize! :create, @project
 

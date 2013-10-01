@@ -22,7 +22,7 @@ describe Update do
       let(:user) { create :user }
 
       context 'when user owns the project' do
-        let(:project) { create :active_project, user: user }
+        let(:project) { create :active_project, owner: user }
 
         it { should be_able_to(:create, project.updates.new) }
       end
