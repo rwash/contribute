@@ -35,25 +35,20 @@ class Ability
     # not the ability to create Update objects associated with a project
     can :update, Project, user: user, can_edit?: true
 
-    # Updates
     can :create, Update do |update|
       update.project.can_update? and
         update.project.user == user
     end
 
-    # Videos
     can :destroy, Video do |video|
       video.project.user = user
     end
 
-    # Comments
     can :create, Comment if user.id
     can :destroy, Comment do |comment|
       comment.user == user and comment.body != "comment deleted"
     end
 
-    # Contributions
-    # Make sure the user isn't a project owner and doesn't have a contribution already
     can :create, Contribution do |contribution|
       contribution.project.user != user and
         contribution.project.contributions.find_by_user_id(user.id).nil? and

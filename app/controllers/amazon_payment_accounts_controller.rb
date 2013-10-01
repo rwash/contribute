@@ -1,42 +1,56 @@
 class AmazonPaymentAccountsController < ApplicationController
-  # TODO get rid of this
   skip_authorization_check
 
   def new
-    amazon_service = Amazon::FPS::RecipientRequest.new return_url
-    redirect_to amazon_service.url
+    if current_user == project.user
+      amazon_service = Amazon::FPS::RecipientRequest.new return_url
+      redirect_to amazon_service.url
+    else
+      unauthorized
+    end
   end
 
   def create
-    @amazon_payment_account = AmazonPaymentAccount.new
-    @amazon_payment_account.token = params["tokenID"]
-    @amazon_payment_account.project = project
+    if current_user == project.user
+      @amazon_payment_account = AmazonPaymentAccount.new
+      @amazon_payment_account.token = params["tokenID"]
+      @amazon_payment_account.project = project
 
-    if valid_response? && @amazon_payment_account.save
-      project.state = :inactive
-      project.save
+      if valid_response? && @amazon_payment_account.save
+        project.state = :inactive
+        project.save
 
-      redirect_to project, notice: "Project saved successfully"
+        redirect_to project, notice: "Project saved successfully"
+      else
+        redirect_to project, alert: error_message
+      end
     else
-      return redirect_to project, alert: error_message
+      unauthorized
     end
   end
 
   def save
     Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
-    authorize! :save, project
   end
 
   def destroy
-    @amazon_payment_account = AmazonPaymentAccount.find(params[:id])
-    @amazon_payment_account.destroy
+    if current_user == project.user
+      @amazon_payment_account = AmazonPaymentAccount.find(params[:id])
+      @amazon_payment_account.destroy
 
-    redirect_to @amazon_payment_account.project
+      redirect_to @amazon_payment_account.project
+    else
+      unauthorized
+    end
   end
 
   private
   def project
     @_project ||= Project.find_by_slug! params[:project_id]
+  end
+
+  def unauthorized
+    redirect_to :root, alert: "You are not authorized to access that page."
   end
 
   def error_message
