@@ -5,26 +5,36 @@ describe Approval do
   describe 'Abilities' do
     subject { ability }
     let(:ability) { Ability.new(user) }
-    let(:ability) { build_stubbed :group }
+    let(:group) { build_stubbed :group }
+    let(:project) { build_stubbed :project }
+    let(:approval) { build :approval, project: project, group: group }
 
     context 'when not signed in' do
       let(:user) { nil }
-      # TODO
+
+      it { should_not be_able_to :approve, approval }
+      it { should_not be_able_to :reject, approval }
     end
 
     context 'when signed in' do
       let(:user) { create :user }
-      # TODO
+
+      it { should_not be_able_to :approve, approval }
+      it { should_not be_able_to :reject, approval }
     end
 
     context 'when user owns group' do
       let(:user) { group.admin_user }
-      # TODO
+
+      it { should be_able_to :approve, approval }
+      it { should be_able_to :reject, approval }
     end
 
     context 'when signed in as admin' do
       let(:user) { create :user, admin: true }
-      # TODO
+
+      it { should be_able_to :approve, approval }
+      it { should be_able_to :reject, approval }
     end
   end
 
@@ -35,5 +45,4 @@ describe Approval do
   it "has a default status of 'pending'" do
     Approval.new.status.should eq :pending
   end
-
 end
