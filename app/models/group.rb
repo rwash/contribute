@@ -15,13 +15,13 @@ class Group < ActiveRecord::Base
   has_and_belongs_to_many :projects
   has_many :approvals
 
-  belongs_to :admin_user, class_name: "User"
+  belongs_to :owner, class_name: "User", foreign_key: 'admin_user_id'
 
   validates :name,
             presence: true,
             uniqueness: { case_sensitive: false }
 
-  validates :admin_user, presence: true
+  validates :owner, presence: true
 
   mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
 

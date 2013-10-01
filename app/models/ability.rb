@@ -64,11 +64,11 @@ class Ability
     can [:create, :new_add, :submit_add], Group
     can :remove_project, Group # had to move check for admin or project owner to controller
 
-    can [:update, :admin, :destroy], Group, admin_user: user
+    can [:update, :admin, :destroy], Group, owner: user
 
     #Aprovals
     can [:approve, :reject], Approval do |approval|
-      approval.group.admin_user == user
+      approval.group.owner == user
     end
 
     can :read, User, id: user.id

@@ -111,7 +111,7 @@ class EmailManager < ActionMailer::Base
   end
 
   def project_to_group_approval(approval, project, group)
-    @group_owner = group.admin_user
+    @group_owner = group.owner
     @group = group
     @approval = approval
     register_project project

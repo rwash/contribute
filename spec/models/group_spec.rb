@@ -39,7 +39,7 @@ describe Group do
     end
 
     context 'when user owns group' do
-      let(:user) { group.admin_user }
+      let(:user) { group.owner }
 
       it { should be_able_to :read, group }
       it { should be_able_to :show, group }
@@ -71,7 +71,7 @@ describe Group do
 
   it { should validate_presence_of :name }
   it { should validate_uniqueness_of(:name).case_insensitive }
-  it { should validate_presence_of :admin_user }
+  it { should validate_presence_of :owner }
 
   describe 'approvals' do
     let(:project) { create :active_project }

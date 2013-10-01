@@ -24,7 +24,7 @@ describe Approval do
     end
 
     context 'when user owns group' do
-      let(:user) { group.admin_user }
+      let(:user) { group.owner }
 
       it { should be_able_to :approve, approval }
       it { should be_able_to :reject, approval }

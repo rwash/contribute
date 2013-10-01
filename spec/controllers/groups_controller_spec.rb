@@ -136,7 +136,7 @@ describe GroupsController do
 
       context "when group is closed" do
         let(:admin) { create :user }
-        let(:group) { create :group, open: false, admin_user: admin }
+        let(:group) { create :group, open: false, owner: admin }
 
         it 'allows adding of unconfirmed project to group' do
           project = create(:project, state: 'unconfirmed', owner: user)
@@ -213,7 +213,7 @@ describe GroupsController do
   describe 'GET admin' do
     let(:approval) { create :approval }
     before { get :admin, id: approval.group.id, approval_id: approval.id }
-    before { sign_in approval.group.admin_user }
+    before { sign_in approval.group.owner }
 
     it { should redirect_to :root }
   end
@@ -240,7 +240,7 @@ describe GroupsController do
     context 'with permission' do
       let(:user) { create :user }
       before { sign_in user }
-      let!(:group) { create :group, admin_user: user }
+      let!(:group) { create :group, owner: user }
       before { @ability.stub!(:can?).with(:destroy, group).and_return(true) }
 
       it "allows group deletion" do
@@ -266,7 +266,7 @@ describe GroupsController do
       before(:each) { sign_in user }
 
       context 'with permission' do
-        let!(:group) { create :group, admin_user: user }
+        let!(:group) { create :group, owner: user }
         before { @ability.stub!(:can?).with(:edit, group).and_return(true) }
 
         it "allows group editing" do

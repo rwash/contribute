@@ -8,7 +8,7 @@ feature 'Groups' do
     describe 'group sidebar' do
       scenario 'does not display project groups when user has none' do
         user = create :user
-        group = create :group, admin_user: user
+        group = create :group, owner: user
         # project is not in the group we created
         project = create :project, owner: user
 
@@ -44,7 +44,7 @@ feature 'Groups' do
 
       scenario 'displays admin groups when user has some' do
         user = create :user
-        group = create :group, admin_user: user
+        group = create :group, owner: user
         # Other user's project
         project = create :project
         project.groups << group

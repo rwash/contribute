@@ -1,6 +1,5 @@
 module GroupsHelper
-  def group_admin?(g)
-    return false if current_user.nil?
-    g.admin_user == current_user
+  def group_admin?(group)
+    current_user == group.owner
   end
 end

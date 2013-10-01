@@ -11,7 +11,7 @@ class GroupsController < InheritedResources::Base
 
   def create
     @group = Group.new(params[:group])
-    @group.admin_user = current_user
+    @group.owner = current_user
 
     if @group.save!
       redirect_to @group, notice: "Successfully created group."
@@ -46,7 +46,7 @@ class GroupsController < InheritedResources::Base
       flash[:notice] = "Your project has been added to the group."
     elsif project.approvals.where(group_id: group.id, status: :pending).any?
       flash[:error] = "You have already submitted this project. Please wait for the admin to approve or reject your request."
-    elsif group.admin_user == current_user
+    elsif group.owner == current_user
       group.projects << project
       flash[:notice] = "Your project has been added."
     else
@@ -66,7 +66,7 @@ class GroupsController < InheritedResources::Base
   def remove_project
     group = Group.find(params[:id])
     project = Project.find(params[:project_id].gsub(/-/, ' '))
-    if group.admin_user == current_user or project.owner == current_user
+    if group.owner == current_user or project.owner == current_user
       group.projects.delete(project)
       project.update_project_video
       flash[:notice] = "#{project.name} removed from group #{group.name}."

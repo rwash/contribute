@@ -250,7 +250,7 @@ describe EmailManager do
     proj_user = create(:user)
     group_user = create(:user)
     project = create(:project, owner: proj_user)
-    group = create(:group, admin_user: group_user, open: false)
+    group = create(:group, owner: group_user, open: false)
     approval = create(:approval, project: project, group: group)
 
     EmailManager.project_to_group_approval(approval, project, group).deliver
@@ -265,7 +265,7 @@ describe EmailManager do
     proj_user = create(:user)
     group_user = create(:user)
     project = create(:project, owner: proj_user)
-    group = create(:group, admin_user: group_user, open: false)
+    group = create(:group, owner: group_user, open: false)
     approval = create(:approval, project: project, group: group, reason: "I hate you.")
 
     EmailManager.group_reject_project(approval, project, group).deliver
