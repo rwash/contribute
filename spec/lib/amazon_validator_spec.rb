@@ -1,12 +1,7 @@
 require "spec_helper"
-require "lib_helper"
 
 describe Amazon::FPS::AmazonValidator do
-#Begin Properties
   describe "valid_multi_token_response?" do
-    before :each do
-    end
-
     it "should succeed with valid input" do
       valid = Amazon::FPS::AmazonValidator.valid_multi_token_response?(url, session, parameters)
       valid.should be_true
@@ -108,30 +103,36 @@ describe Amazon::FPS::AmazonValidator do
     end
 
     it "should succeed with a valid repsonse" do
-      run_valid_transaction_status_test(true)
+      valid_transaction_status?.should be_true
     end
 
     it  "should fail with an error" do
       @response["Errors"] = "omg I'm an error"
-      run_valid_transaction_status_test(false)
+      valid_transaction_status?.should be_false
     end
 
     it "should fail when amazon changes their schema, case 1" do
       @response["newSchema"] = @response["GetTransactionStatusResult"]
       @response.delete("GetTransactionStatusResult")
 
-      run_valid_transaction_status_test(false)
+      valid_transaction_status?.should be_false
     end
 
     it "should fail when amazon changes their schema case 2" do
       @response["GetTransactionStatusResult"]["newSchema"] = @response["GetTransactionStatusResult"]["TransactionStatus"]
       @response["GetTransactionStatusResult"].delete("TransactionStatus")
 
-      run_valid_transaction_status_test(false)
+      valid_transaction_status?.should be_false
     end
 
     it "should succeed with valid parameters (for get_transaction_status)" do
       expect(Amazon::FPS::AmazonValidator.get_transaction_status(@response)).to eq :success
+    end
+
+    private
+
+    def valid_transaction_status?
+      Amazon::FPS::AmazonValidator.valid_transaction_status_response?(@response)
     end
   end
 
@@ -141,49 +142,70 @@ describe Amazon::FPS::AmazonValidator do
     end
 
     it "should succeed with valid parameters" do
-      run_valid_cancel_status_test(:success)
+      valid_cancel_status?.should eq :success
     end
 
     it "should fail with an error" do
       @response["Errors"] = "omg an error"
-      run_valid_cancel_status_test(:failure)
+      valid_cancel_status?.should eq :failure
+    end
+
+    private
+
+    def valid_cancel_status?
+      Amazon::FPS::AmazonValidator.get_cancel_status(@response)
     end
   end
 
   describe "get_pay_status" do
-    before :each do
-      @failed_response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
-      @successful_response = {"PayResult"=>{"TransactionId"=>"16RHAKMLO3MUTK8Q5PFG3FLFN5UULKVZ2H1", "TransactionStatus"=>"Pending"}, "ResponseMetadata"=>{"RequestId"=>"7e14f1f0-c2f9-4c56-8316-6b06cea3973a:0"}}
-    end
-
     it "should succeed on valid input" do
-      run_get_pay_status_test(@successful_response, :pending)
+      run_get_pay_status_test(successful_response).should eq :pending
     end
 
     it "should fail on invalid input" do
-      run_get_pay_status_test(@failed_response, :failure)
+      run_get_pay_status_test(failed_response).should eq :failure
+    end
+
+    private
+
+    def  run_get_pay_status_test(response)
+      Amazon::FPS::AmazonValidator.get_pay_status(response)
+    end
+
+    def failed_response
+      { "Errors" => { "Error" => { "Code" => "TokenNotActive_Sender",
+                                   "Message"=>"Sender token not active."}},
+        "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
+    end
+
+    def successful_response
+      { "PayResult"=>{ "TransactionId"=>"16RHAKMLO3MUTK8Q5PFG3FLFN5UULKVZ2H1",
+                       "TransactionStatus"=>"Pending"},
+                       "ResponseMetadata"=>{
+                         "RequestId"=>"7e14f1f0-c2f9-4c56-8316-6b06cea3973a:0"
+                       } }
     end
   end
 
   describe "get_error" do
-    it "should return the correct error on valid input" do
-      @response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
+    it "returns the correct error on valid input" do
+      response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
 
       pending "spec relies on a 'TokenNotActive_Sender' AmazonError to be present in the DB"
       expected = AmazonError.find_by_error("TokenNotActive_Sender")
-      expect(expected).to_not be_nil
+      expected.should_not be_nil
 
-      run_get_error_test(expected)
+      errors(response).should eq expected
     end
 
-    it "should return an unknown error on given input" do
-      @response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
+    it "returns an unknown error on given input" do
+      response = {"Errors"=>{"Error"=>{"Code"=>"TokenNotActive_Sender", "Message"=>"Sender token not active."}}, "RequestID"=>"0eb3bc4f-63dc-4d11-9f48-c34cd921f164"}
 
       expected = AmazonError.unknown_error("New_Error")
-      expect(expected).to_not be_nil
+      expected.should_not be_nil
 
-      @response["Errors"]["Error"]["Code"] = "New_Error"
-      run_get_error_test(expected)
+      response["Errors"]["Error"]["Code"] = "New_Error"
+      errors(response).should eq expected
     end
 
     it "should raise exception if errors is nill" do
@@ -191,6 +213,10 @@ describe Amazon::FPS::AmazonValidator do
 
       expect(lambda { Amazon::FPS::AmazonValidator.get_error(response) }).to raise_error
     end
-  end
 
+    private
+    def errors(response)
+      Amazon::FPS::AmazonValidator.get_error(response)
+    end
+  end
 end

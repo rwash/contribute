@@ -1,13 +1,3 @@
-###############################################################################
- #  Copyright 2008-2010 Amazon Technologies, Inc
- #  Licensed under the Apache License, Version 2.0 (the "License");
- #
- #  You may not use this file except in compliance with the License.
- #  You may obtain a copy of the License at: http://aws.amazon.com/apache2.0
- #  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
- #  CONDITIONS OF ANY KIND, either express or implied. See the License for the
- #  specific language governing permissions and limitations under the License.
- ##############################################################################
 require 'base64'
 require 'cgi'
 require 'openssl'
@@ -15,36 +5,7 @@ require 'openssl'
 module Amazon
 module FPS
 
-#
-# Copyright:: Copyright (c) 2009 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
-#
-# RFC 2104-compliant HMAC signature for request parameters
-#  Implements AWS Signature, as per following spec:
-#
-# If Signature Version is 1, it performs the following:
-#
-# Sorts all  parameters (including SignatureVersion and excluding Signature,
-# the value of which is being created), ignoring case.
-#
-# Iterate over the sorted list and append the parameter name (in original case)
-# and then its value. It will not URL-encode the parameter values before
-# constructing this string. There are no separators.
-#
-# If Signature Version is 2, string to sign is based on following:
-#
-#    1. The HTTP Request Method followed by an ASCII newline (%0A)
-#    2. The HTTP Host header in the form of lowercase host, followed by an ASCII newline.
-#    3. The URL encoded HTTP absolute path component of the URI
-#       (up to but not including the query string parameters);
-#       if this is empty use a forward '/'. This parameter is followed by an ASCII newline.
-#    4. The concatenation of all query string components (names and values)
-#       as UTF-8 characters which are URL encoded as per RFC 3986
-#       (hex characters MUST be uppercase), sorted using lexicographic byte ordering.
-#       Parameter names are separated from their values by the '=' character
-#       (ASCII character 61), even if the value is empty.
-#       Pairs of parameter and values are separated by the '&' character (ASCII code 38).
-#
-class SignatureUtils 
+class SignatureUtils
 
   SIGNATURE_KEYNAME = "Signature"
   SIGNATURE_METHOD_KEYNAME = "SignatureMethod"

@@ -1,5 +1,4 @@
 require 'spec_helper'
-require "lib_helper"
 
 describe Amazon::FPS::OutboundSignatureV1 do
   describe '.validate' do

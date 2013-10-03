@@ -18,4 +18,8 @@ class AmazonError < ActiveRecord::Base
                            email_user: 0,
                            email_admin: 1)
   end
+
+  def == other
+    attributes == other.attributes
+  end
 end
