@@ -35,8 +35,6 @@ module FPS
 
   USER_AGENT_STRING = "SigV2_MigrationSampleCode_Ruby-2010-09-13"
 
-  SIGNATURE_VERSION_1 = "1"
-  SIGNATURE_VERSION_2 = "2"
   RSA_SHA1_ALGORITHM = "RSA-SHA1"
 
 
@@ -83,9 +81,9 @@ class SignatureUtilsForOutbound
     http_session.verify_mode = OpenSSL::SSL::VERIFY_PEER
     http_session.verify_depth = 5
 
-    res = http_session.start {|http_session|
+    res = http_session.start {|session|
       req = Net::HTTP::Get.new(url, {"User-Agent" => USER_AGENT_STRING})
-      http_session.request(req)
+      session.request(req)
     }
 
     return res.body

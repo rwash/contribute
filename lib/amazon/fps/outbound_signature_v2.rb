@@ -12,17 +12,22 @@ module Amazon
         @url_end_point = url_end_point
       end
 
+      def self.signature_version
+        "2"
+      end
       attr_reader :parameters, :http_method, :url_end_point
 
       validate :parameters_are_enumerable
       validates :signature, presence: true
-      validates :signature_version, presence: true, inclusion: { in: [SIGNATURE_VERSION_2] }
+      validates :signature_version, presence: true, inclusion: { in: [signature_version] }
       validates :signature_method, presence: true
       validates :signature_algorithm, presence: true
       validates :certificate_url, presence: true
 
       def validate
-        raise "Invalid outbound signature" unless self.valid?
+        unless self.valid?
+          raise errors.inspect
+        end
 
         # Construct VerifySignatureAPI request
         if SignatureUtilsForOutbound::starts_with(certificate_url, FPS_SANDBOX_ENDPOINT) then
