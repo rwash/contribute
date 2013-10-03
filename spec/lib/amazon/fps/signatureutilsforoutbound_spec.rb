@@ -7,7 +7,7 @@ describe Amazon::FPS::SignatureUtilsForOutbound do
       it "should use v1 validator" do
         utils = Amazon::FPS::SignatureUtilsForOutbound.new('access_key', 'secret_key')
 
-        utils.should_receive(:validate_signature_v1)
+        Amazon::FPS::OutboundSignatureV1.any_instance.should_receive(:validate)
 
         utils.validate_request({parameters: {'signatureVersion' => '1'}})
       end
@@ -17,7 +17,7 @@ describe Amazon::FPS::SignatureUtilsForOutbound do
       it "should use v2 validator" do
         utils = Amazon::FPS::SignatureUtilsForOutbound.new('access_key', 'secret_key')
 
-        utils.should_receive(:validate_signature_v2)
+        Amazon::FPS::OutboundSignatureV2.any_instance.should_receive(:validate)
 
         utils.validate_request({parameters: {'signatureVersion' => '2'}})
       end

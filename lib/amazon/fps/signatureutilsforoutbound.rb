@@ -17,7 +17,7 @@ require 'net/https'
 require 'rexml/document'
 
 module Amazon
-module FPS
+  module FPS
 
   SIGNATURE_KEYNAME = "signature"
   SIGNATURE_METHOD_KEYNAME = "signatureMethod"
@@ -47,19 +47,10 @@ class SignatureUtilsForOutbound
 
   def validate_request(args)
     if version_number(args[:parameters]) == 2
-      return validate_signature_v2(args)
+      signature = OutboundSignatureV2.new(args[:parameters], args[:http_method], args[:url_end_point])
     else
-      return validate_signature_v1(args)
+      signature = OutboundSignatureV1.new(args[:parameters])
     end
-  end
-
-  def validate_signature_v1(args)
-    signature = OutboundSignatureV1.new(args[:parameters])
-    signature.validate
-  end
-
-  def validate_signature_v2(args)
-    signature = OutboundSignatureV2.new(args[:parameters], args[:http_method], args[:url_end_point])
     signature.validate
   end
 
@@ -106,8 +97,7 @@ class SignatureUtilsForOutbound
     parameters[SIGNATURE_VERSION_KEYNAME].to_i
   end
 
-end
-
-end
+    end
+  end
 end
 
