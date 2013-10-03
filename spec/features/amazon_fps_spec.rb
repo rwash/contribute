@@ -23,7 +23,7 @@ feature "fps requests should", :js do
     transaction_id = response['PayResult']['TransactionId']
     expect(transaction_id).to_not be_nil
 
-    request = Amazon::FPS::GetTransactionStatusRequest.new(transaction_id)
+    request = Amazon::FPS::TransactionStatusRequest.new(transaction_id)
     response = request.send()
 
     expect(response['Errors']).to be_nil
@@ -60,7 +60,7 @@ feature "fps requests should", :js do
   end
 
   scenario "handle invalid get_transaction_status request" do
-    request = Amazon::FPS::GetTransactionStatusRequest.new('invalid')
+    request = Amazon::FPS::TransactionStatusRequest.new('invalid')
     request.send()
 
     log_get_transaction_request = Logging::LogGetTransactionRequest.find_by_TransactionId('invalid')

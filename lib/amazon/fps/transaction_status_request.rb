@@ -4,7 +4,7 @@ module Amazon
 module FPS
 
 #We use the request to see the transaction result of pending payments
-class GetTransactionStatusRequest < BaseFpsRequest
+class TransactionStatusRequest < BaseFpsRequest
   def initialize(payment_key)
 		super()
 

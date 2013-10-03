@@ -1,4 +1,4 @@
-require 'amazon/fps/get_transaction_status_request'
+require 'amazon/fps/transaction_status_request'
 require 'amazon/fps/cancel_token_request'
 require 'amazon/fps/amazon_validator'
 require 'amazon/fps/pay_request'
@@ -112,7 +112,7 @@ class Contribution < ActiveRecord::Base
 
   # Assumption is that we only use this on Pay calls that are pending
   def update_status
-    request = Amazon::FPS::GetTransactionStatusRequest.new(self.transaction_id)
+    request = Amazon::FPS::TransactionStatusRequest.new(self.transaction_id)
     response = request.send
 
     if !Amazon::FPS::AmazonValidator.valid_transaction_status_response?(response)

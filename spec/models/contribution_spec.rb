@@ -1,6 +1,6 @@
 require "spec_helper"
 require 'amazon/fps/pay_request'
-require 'amazon/fps/get_transaction_status_request'
+require 'amazon/fps/transaction_status_request'
 require 'amazon/fps/cancel_token_request'
 require 'amazon/fps/amazon_validator'
 
@@ -272,7 +272,7 @@ describe Contribution do
 
   describe "update_status" do
     before do
-      Amazon::FPS::GetTransactionStatusRequest.any_instance.stub(:send) {}
+      Amazon::FPS::TransactionStatusRequest.any_instance.stub(:send) {}
     end
 
     it 'on invalid response, e-mails admin error' do
