@@ -34,7 +34,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def update
-    load_project_from_params
+    @project = project_from_params
     authorize! :update, @project
 
     if params[:project] && params[:project][:video]
@@ -59,7 +59,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def activate
-    load_project_from_params
+    @project = project_from_params
     authorize! :activate, @project
 
     # TODO this will return true if save fails -- this is a very real possibility
@@ -70,7 +70,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def block
-    load_project_from_params
+    @project = project_from_params
     authorize! :block, @project
 
     @project.state = :blocked
@@ -86,7 +86,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def unblock
-    load_project_from_params
+    @project = project_from_params
     authorize! :unblock, @project
 
     # TODO reset project state to unconfirmed or inactive
@@ -103,7 +103,7 @@ class ProjectsController < InheritedResources::Base
   end
 
   def destroy
-    load_project_from_params
+    @project = project_from_params
     authorize! :destroy, @project
 
     # TODO this should change to use CanCan
@@ -130,13 +130,12 @@ class ProjectsController < InheritedResources::Base
   end
 
   def show
-    load_project_from_params
+    @project = project_from_params
     authorize! :show, @project
     @project = @project.decorate
 
     # Existing comments
     @rootComments = @project.root_comments
-    @comment_depth = 0
     # For new comments
     @comment = @project.comments.new params[:comment]
 
@@ -147,12 +146,12 @@ class ProjectsController < InheritedResources::Base
   end
 
   def edit
-    load_project_from_params
+    @project = project_from_params
     authorize! :edit, @project
   end
 
   protected
-  def load_project_from_params
-    @project = Project.find_by_slug! params[:id]
+  def project_from_params
+    Project.find_by_slug! params[:id]
   end
 end
