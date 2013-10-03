@@ -35,7 +35,7 @@ module Amazon
 
       #formats the incoming parameters into a nice query string that is appended to the endpoint.  we redirect the user to the returned url
       def url()
-        @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+        set_signature
 
         url = service_end_point + "?"
 

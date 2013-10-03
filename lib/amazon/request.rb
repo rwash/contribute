@@ -27,6 +27,10 @@ module Amazon
       @_caller_reference ||= UUIDTools::UUID.random_create.to_s
     end
 
+    def set_signature
+      @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+    end
+
     def signature
       @_signature ||= begin
                         uri = URI.parse(service_end_point)

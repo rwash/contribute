@@ -47,7 +47,7 @@ module Amazon
       # The request and response are logged within this function.
       # The signature is also created before being sent
       def send()
-        @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+        set_signature
 
         request = log_request(@params)
         response = self.class.get(service_end_point, query: @params)
