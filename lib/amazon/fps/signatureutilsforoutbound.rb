@@ -38,32 +38,44 @@ module Amazon
   RSA_SHA1_ALGORITHM = "RSA-SHA1"
 
 
-class SignatureUtilsForOutbound
+    class SignatureUtilsForOutbound
 
   def initialize(aws_access_key, aws_secret_key)
     @aws_secret_key = aws_secret_key
     @aws_access_key = aws_access_key
   end
 
-  def validate_request(args)
-    if version_number(args[:parameters]) == 2
-      signature = OutboundSignatureV2.new(args[:parameters], args[:http_method], args[:url_end_point])
-    else
-      signature = OutboundSignatureV1.new(args[:parameters])
-    end
-    signature.validate
-  end
+      def validate_request(args)
+        @args = args
+        signature.validate
+      end
 
+      private
+
+      attr_reader :args
+
+      def signature
+        if version_number(args[:parameters]) == 2
+          OutboundSignatureV2.new(args[:parameters], args[:http_method], args[:url_end_point])
+        else
+          OutboundSignatureV1.new(args[:parameters])
+        end
+      end
+
+  public
   def self.get_algorithm(signature_method) 
-    return OpenSSL::Digest::SHA1.new if (signature_method == RSA_SHA1_ALGORITHM)
-    return nil
+    if (signature_method == "RSA-SHA1")
+      OpenSSL::Digest::SHA1.new
+    else
+      nil
+    end
   end
 
   # Convert a string into URL encoded form.
   def self.urlencode(plaintext)
     CGI.escape(plaintext.to_s).gsub("+", "%20").gsub("%7E", "~")
   end
-   
+
   def self.get_http_data(url)
     #2. fetch certificate if not found in cache
     uri = URI.parse(url)
@@ -84,7 +96,7 @@ class SignatureUtilsForOutbound
     prefix = prefix.to_s
     string[0, prefix.length] == prefix
   end
-  
+
   def self.get_http_params(params)
      params.map do |(k, v)|
         urlencode(k) + "=" + urlencode(v)
