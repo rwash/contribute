@@ -67,9 +67,8 @@ module Amazon
     end
   end
 
-  # Convert a string into URL encoded form.
   def self.urlencode(plaintext)
-    CGI.escape(plaintext.to_s).gsub("+", "%20").gsub("%7E", "~")
+    Amazon::FPS::SignatureUtils.urlencode(plaintext)
   end
 
   def self.get_http_data(url)

@@ -51,11 +51,26 @@ module Amazon
       end
 
       def verify_signature_request
-        verify_signature_endpoint + "?Action=VerifySignature" +
-          "&UrlEndPoint=#{SignatureUtilsForOutbound::urlencode(url_end_point)}" +
-          "&Version=2008-09-17" +
-          "&HttpParameters=" +
-          SignatureUtilsForOutbound::urlencode(SignatureUtilsForOutbound::get_http_params(parameters))
+        prefix = verify_signature_endpoint + '?'
+        prefix + encoded_parameter_strings.join('&')
+      end
+
+      def encoded_parameter_strings
+        [].tap do |encoded_parameter_strings|
+          verify_signature_params.each_pair do |key, value|
+            encoded_value = SignatureUtilsForOutbound::urlencode(value)
+            encoded_parameter_strings << "#{key}=#{encoded_value}"
+          end
+        end
+      end
+
+      def verify_signature_params
+        {
+          'Action' => 'VerifySignature',
+          'UrlEndPoint' => url_end_point,
+          'Version' => '2008-09-17',
+          'HttpParameters' => SignatureUtilsForOutbound::get_http_params(parameters),
+        }
       end
 
       def verify_signature_endpoint
