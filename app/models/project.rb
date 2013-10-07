@@ -204,6 +204,14 @@ class Project < ActiveRecord::Base
     return false
   end
 
+  def self.search(terms = nil)
+    if terms.nil?
+      all
+    else
+      Project.find_all_by_name(terms) + Project.find_all_by_short_description(terms)
+    end
+  end
+
   protected
 
   # Validation
