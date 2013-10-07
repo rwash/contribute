@@ -28,10 +28,6 @@ module Amazon
 
   FPS_PROD_ENDPOINT = CERTIFICATE_URL_ROOT
   FPS_SANDBOX_ENDPOINT = CERTIFICATE_URL_ROOT_SANDBOX
-  ACTION_PARAM = "?Action=VerifySignature"
-  END_POINT_PARAM = "&UrlEndPoint="
-  HTTP_PARAMS_PARAM = "&HttpParameters="
-  VERSION_PARAM_VALUE = "&Version=2008-09-17"
 
   USER_AGENT_STRING = "SigV2_MigrationSampleCode_Ruby-2010-09-13"
 
@@ -90,11 +86,6 @@ module Amazon
     }
 
     return res.body
-  end
-
-  def self.starts_with(string, prefix)
-    prefix = prefix.to_s
-    string[0, prefix.length] == prefix
   end
 
   def self.get_http_params(params)

@@ -29,33 +29,50 @@ module Amazon
           raise errors.inspect
         end
 
-        # Construct VerifySignatureAPI request
-        if SignatureUtilsForOutbound::starts_with(certificate_url, FPS_SANDBOX_ENDPOINT) then
-          verify_signature_request = FPS_SANDBOX_ENDPOINT
-        elsif SignatureUtilsForOutbound::starts_with(certificate_url, FPS_PROD_ENDPOINT) then
-          verify_signature_request = FPS_PROD_ENDPOINT
+        verify_signature_status && verify_signature_status.text == "Success"
+      end
+
+      private
+
+      def verify_signature_status
+        verify_signature_response_document.elements[verify_signature_document_path]
+      end
+
+      def verify_signature_document_path
+        'VerifySignatureResponse/VerifySignatureResult/VerificationStatus'
+      end
+
+      def verify_signature_response_document
+        REXML::Document.new(verify_signature_response)
+      end
+
+      def verify_signature_response
+        SignatureUtilsForOutbound::get_http_data(verify_signature_request)
+      end
+
+      def verify_signature_request
+        verify_signature_endpoint + "?Action=VerifySignature" +
+          "&UrlEndPoint=#{SignatureUtilsForOutbound::urlencode(url_end_point)}" +
+          "&Version=2008-09-17" +
+          "&HttpParameters=" +
+          SignatureUtilsForOutbound::urlencode(SignatureUtilsForOutbound::get_http_params(parameters))
+      end
+
+      def verify_signature_endpoint
+        if starts_with(certificate_url, FPS_SANDBOX_ENDPOINT) then
+          FPS_SANDBOX_ENDPOINT
+        elsif starts_with(certificate_url, FPS_PROD_ENDPOINT) then
+          FPS_PROD_ENDPOINT
         else
           raise "'certificateUrl' received is not valid. Valid certificate urls start with " <<
           CERTIFICATE_URL_ROOT << " or " << CERTIFICATE_URL_ROOT_SANDBOX << "."
         end
-
-        verify_signature_request = verify_signature_request + ACTION_PARAM +
-          END_POINT_PARAM +
-          SignatureUtilsForOutbound::urlencode(url_end_point) +
-          VERSION_PARAM_VALUE +
-          HTTP_PARAMS_PARAM +
-          SignatureUtilsForOutbound::urlencode(SignatureUtilsForOutbound::get_http_params(parameters))
-        verify_signature_response = SignatureUtilsForOutbound::get_http_data(verify_signature_request)
-
-        # parse the response
-        document = REXML::Document.new(verify_signature_response)
-
-        status_el = document.elements['VerifySignatureResponse/VerifySignatureResult/VerificationStatus']
-
-        return (status_el && status_el.text == "Success")
       end
 
-      private
+      def starts_with(string, prefix)
+        prefix = prefix.to_s
+        string[0, prefix.length] == prefix
+      end
 
       def signature
         @signature ||= parameters[SIGNATURE_KEYNAME]
