@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'support/searchable_spec'
 
 describe Project do
   # Abilities
@@ -287,7 +286,7 @@ describe Project do
       search_results('unicorn').sort_by(&:id).should eq [projects.first, projects.last].sort_by(&:id)
     end
 
-    pending 'favors name matching over short description matching' do
+    it 'favors name matching over short description matching' do
       projects = [create(:indexed_project, short_description: 'unicorn'),
                   create(:indexed_project),
                   create(:indexed_project, name: 'unicorn')]
@@ -326,7 +325,9 @@ describe Project do
     #end
     def search_results(query)
       Project.search do
-        fulltext query
+        fulltext query do
+          boost_fields name: 3.0
+        end
       end.results
     end
   end
