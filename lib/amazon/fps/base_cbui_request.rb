@@ -36,14 +36,15 @@ module Amazon
       #formats the incoming parameters into a nice query string that is appended to the endpoint.  we redirect the user to the returned url
       def url()
         set_signature
+        service_end_point + "?" + encoded_params
+      end
 
-        url = service_end_point + "?"
+      private
 
-        param_string = @params.map do |key,value|
-          [key,value].map { |string| Amazon::FPS::SignatureUtils.urlencode(string) }.join '='
+      def encoded_params
+        @params.map do |key,value|
+          "#{key}=#{SignatureUtils::urlencode(value)}"
         end.join '&'
-
-        url + param_string
       end
     end
 

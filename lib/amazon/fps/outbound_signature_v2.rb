@@ -22,14 +22,17 @@ module Amazon
       validates :certificate_url, presence: true
 
       def validate
-        unless self.valid?
-          raise errors.inspect
-        end
-
+        handle_failing_validations
         verify_signature_status && verify_signature_status.text == "Success"
       end
 
       private
+
+      def handle_failing_validations
+        unless self.valid?
+          raise errors.inspect
+        end
+      end
 
       def verify_signature_status
         verify_signature_response_document.elements[verify_signature_document_path]
@@ -48,36 +51,37 @@ module Amazon
       end
 
       def verify_signature_request
-        prefix = verify_signature_endpoint + '?'
-        prefix + encoded_parameter_strings.join('&')
+        prefix = endpoint + '?'
+        prefix + encoded_request_parameters
       end
 
-      def verify_signature_endpoint
+      def endpoint
         endpoint = base_url_regex.match(certificate_url).to_a.first
-        unless acceptable_verify_signature_endpoints.include? endpoint
-          raise "'certificateUrl' received is not valid. Should be one of: #{acceptable_verify_signature_endpoints}"
-        end
+        handle_unacceptable_endpoint(endpoint)
         endpoint
+      end
+
+      def handle_unacceptable_endpoint endpoint
+        unless acceptable_endpoints.include? endpoint
+          raise "'certificateUrl' received is not valid. Should be one of: #{acceptable_endpoints}"
+        end
       end
 
       def base_url_regex
         /^http[s]?:\/\/[a-zA-Z\.]*\//
       end
 
-      def acceptable_verify_signature_endpoints
+      def acceptable_endpoints
         [
           "https://fps.sandbox.amazonaws.com/",
           "https://fps.amazonaws.com/"
         ]
       end
 
-      def encoded_parameter_strings
-        [].tap do |encoded_parameter_strings|
-          verify_signature_params.each_pair do |key, value|
-            encoded_value = SignatureUtilsForOutbound::urlencode(value)
-            encoded_parameter_strings << "#{key}=#{encoded_value}"
-          end
-        end
+      def encoded_request_parameters
+        verify_signature_params.map do |key, value|
+          "#{key}=#{urlencode(value)}"
+        end.join '&'
       end
 
       def verify_signature_params
@@ -85,8 +89,16 @@ module Amazon
           'Action' => 'VerifySignature',
           'UrlEndPoint' => url_end_point,
           'Version' => '2008-09-17',
-          'HttpParameters' => SignatureUtilsForOutbound::get_http_params(parameters),
+          'HttpParameters' => encoded_response_parameters
         }
+      end
+
+      delegate :urlencode, to: SignatureUtilsForOutbound
+
+      def encoded_response_parameters
+        parameters.map do |(k, v)|
+          urlencode(k) + "=" + urlencode(v)
+        end.join("&")
       end
 
       def signature

@@ -82,12 +82,6 @@ module Amazon
     return res.body
   end
 
-  def self.get_http_params(params)
-     params.map do |(k, v)|
-        urlencode(k) + "=" + urlencode(v)
-     end.join("&")
-  end
-
   private
 
   def version_number(parameters)
