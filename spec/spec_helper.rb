@@ -42,9 +42,11 @@ RSpec.configure do |config|
   config.include(MailerMacros)
   config.before(:each) do
     reset_email
-    Timecop.return
     Warden.test_reset! if Warden.respond_to? :test_reset!
     DatabaseCleaner.clean
+  end
+  config.after(:each) do
+    Timecop.return
   end
 
   # Capybara uses a DSL to allow test cases to interact with web pages
