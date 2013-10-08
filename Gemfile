@@ -160,3 +160,6 @@ gem 'judge', '~> 1.5.0'
 # RailsCast:
 #   http://railscasts.com/episodes/286-draper
 gem 'draper', '~> 1.1.0'
+
+gem 'sunspot_rails', '~> 2.0.0'
+gem 'sunspot_solr', '~> 2.0.0'

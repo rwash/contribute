@@ -12,6 +12,7 @@ db/*.sqlite3
 
 # Ignore all logfiles and tempfiles.
 log/*.log
+log/*.log.lck
 tmp
 
 # Ignore pictures for Carrierwave
@@ -50,3 +51,6 @@ spec/controllers/coverage
 
 # Database connection information
 config/database.yml
+
+# Search info
+solr

@@ -53,6 +53,10 @@ class Project < ActiveRecord::Base
 
   classy_enum_attr :state, enum: 'ProjectState'
 
+  searchable do
+    text :name, :short_description
+  end
+
   # Validations --------------------------------------------------------------
 
   validate :end_date_in_future?, on: :create
@@ -202,14 +206,6 @@ class Project < ActiveRecord::Base
       return true if approval.group.owner == current_user
     end
     return false
-  end
-
-  def self.search(terms = nil)
-    if terms.nil?
-      all
-    else
-      Project.find_all_by_name(terms) + Project.find_all_by_short_description(terms)
-    end
   end
 
   protected

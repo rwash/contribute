@@ -16,5 +16,10 @@ FactoryGirl.define do
       state :active
     end
 
+    factory :indexed_project do
+      after(:create) do |instance|
+        Sunspot.index! instance
+      end
+    end
   end
 end

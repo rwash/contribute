@@ -263,67 +263,62 @@ describe Project do
   end
 
   describe '#search' do
-    it 'returns all projects if no arguments are given' do
-      3.times { create :project }
-      Project.search().should eq Project.all
-    end
-
     it 'returns an empty array if there are no matching projects' do
-      3.times { create :project }
-      Project.search('unicorn').should eq []
+      3.times { create :indexed_project }
+      search_results('unicorn').should eq []
     end
 
     it 'returns projects with matching names' do
-      projects = [create(:project, name: 'unicorn'),
-                  create(:project)]
-      Project.search('unicorn').should eq [projects.first]
+      projects = [create(:indexed_project, name: 'unicorn'),
+                  create(:indexed_project)]
+      search_results('unicorn').should eq [projects.first]
     end
 
     it 'returns projects with matching short descriptions' do
-      projects = [create(:project, short_description: 'unicorn'),
-                  create(:project)]
-      Project.search('unicorn').should eq [projects.first]
+      projects = [create(:indexed_project, short_description: 'unicorn'),
+                  create(:indexed_project)]
+      search_results('unicorn').should eq [projects.first]
     end
 
     it 'searches the name and short description at the same time' do
-      projects = [create(:project, short_description: 'unicorn'),
-                  create(:project),
-                  create(:project, name: 'unicorn')]
-      Project.search('unicorn').sort_by(&:id).should eq [projects.first, projects.last].sort_by(&:id)
+      projects = [create(:indexed_project, short_description: 'unicorn'),
+                  create(:indexed_project),
+                  create(:indexed_project, name: 'unicorn')]
+      search_results('unicorn').sort_by(&:id).should eq [projects.first, projects.last].sort_by(&:id)
     end
 
-    it 'favors name matching over short description matching' do
-      projects = [create(:project, short_description: 'unicorn'),
-                  create(:project),
-                  create(:project, name: 'unicorn')]
-      Project.search('unicorn').should eq [projects.last, projects.first]
+    pending 'favors name matching over short description matching' do
+      projects = [create(:indexed_project, short_description: 'unicorn'),
+                  create(:indexed_project),
+                  create(:indexed_project, name: 'unicorn')]
+      search_results('unicorn').should eq [projects.last, projects.first]
     end
 
-    pending "returns projects with similar names" do
-      projects = [create(:project, name: 'Unicorn cookies'),
-                  create(:project),
-                  create(:project, name: 'Awesome unicorn joke book')]
-      Project.search('unicorn').should eq [projects.first, projects.last]
+    it "returns projects with similar names" do
+      projects = [create(:indexed_project, name: 'Unicorn cookies'),
+                  create(:indexed_project),
+                  create(:indexed_project, name: 'Awesome unicorn joke book')]
+      search_results('unicorn').should eq [projects.first, projects.last]
     end
 
-    pending "returns projects with similar short descriptions" do
-      projects = [create(:project, short_description: 'Unicorn cookies'),
-                  create(:project),
-                  create(:project, short_description: 'Awesome unicorn joke book')]
-      Project.search('unicorn').should eq [projects.first, projects.last]
+    it "returns projects with similar short descriptions" do
+      projects = [create(:indexed_project, short_description: 'Unicorn cookies'),
+                  create(:indexed_project),
+                  create(:indexed_project, short_description: 'Awesome unicorn joke book')]
+      search_results('unicorn').should eq [projects.first, projects.last]
     end
 
     pending 'matches subsets of the query words' do
-      projects = [create(:project, short_description: 'Unicorn cookies'),
-                  create(:project)]
-      Project.search('unicorn ninja').should eq [projects.first, projects.last]
+      projects = [create(:indexed_project, short_description: 'Unicorn cookies'),
+                  create(:indexed_project)]
+      search_results('unicorn ninja').should eq [projects.first, projects.last]
     end
 
     pending 'favors more complete matches' do
-      projects = [create(:project, short_description: 'Unicorn catapult'),
-                  create(:project, short_description: 'Unicorn cookies'),
-                  create(:project)]
-      Project.search('unicorn cookie').should eq [projects[1], projects.first]
+      projects = [create(:indexed_project, short_description: 'Unicorn catapult'),
+                  create(:indexed_project, short_description: 'Unicorn cookies'),
+                  create(:indexed_project)]
+      search_results('unicorn cookie').should eq [projects[1], projects.first]
     end
 
     #it_behaves_like "a searchable object" do
