@@ -1,5 +1,7 @@
 require 'spec_helper'
 require 'integration_helper'
+include Warden::Test::Helpers
+Warden.test_mode!
 
 feature 'amazon process', :js do
 
@@ -71,14 +73,11 @@ feature 'amazon process', :js do
 
   describe 'editing contribution' do
     let(:project) { create :active_project }
+    let(:user) { create :user }
 
     before(:each) do
-      generate_contribution(
-        user, #contribution login
-        'contribute_testing@hotmail.com', #amazon login
-        'testing',
-        project, #the project to contribute to
-        100) #the amount
+      login_as user
+      create :contribution, user: user, project: project, amount: 100
     end
 
     scenario "redirects when amount is not valid" do
