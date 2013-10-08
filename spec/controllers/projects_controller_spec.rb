@@ -26,48 +26,55 @@ describe ProjectsController do
 
     context 'with a search parameter' do
       it 'returns an empty array if there are no matching projects' do
-        3.times { create :indexed_project }
+        3.times { create :searchable_project }
         search_results.should eq []
       end
 
       it 'returns projects with matching names' do
-        projects = [create(:indexed_project, name: 'unicorn'),
-                    create(:indexed_project)]
+        projects = [create(:searchable_project, name: 'unicorn'),
+                    create(:searchable_project)]
         search_results.should eq [projects.first]
       end
 
       it 'returns projects with matching short descriptions' do
-        projects = [create(:indexed_project, short_description: 'unicorn'),
-                    create(:indexed_project)]
+        projects = [create(:searchable_project, short_description: 'unicorn'),
+                    create(:searchable_project)]
         search_results.should eq [projects.first]
       end
 
       it 'searches the name and short description at the same time' do
-        projects = [create(:indexed_project, short_description: 'unicorn'),
-                    create(:indexed_project),
-                    create(:indexed_project, name: 'unicorn')]
+        projects = [create(:searchable_project, short_description: 'unicorn'),
+                    create(:searchable_project),
+                    create(:searchable_project, name: 'unicorn')]
         search_results.sort_by(&:id).should eq [projects.first, projects.last].sort_by(&:id)
       end
 
       it 'favors name matching over short description matching' do
-        projects = [create(:indexed_project, short_description: 'unicorn'),
-                    create(:indexed_project),
-                    create(:indexed_project, name: 'unicorn')]
+        projects = [create(:searchable_project, short_description: 'unicorn'),
+                    create(:searchable_project),
+                    create(:searchable_project, name: 'unicorn')]
         search_results.should eq [projects.last, projects.first]
       end
 
       it "returns projects with similar names" do
-        projects = [create(:indexed_project, name: 'Unicorn cookies'),
-                    create(:indexed_project),
-                    create(:indexed_project, name: 'Awesome unicorn joke book')]
+        projects = [create(:searchable_project, name: 'Unicorn cookies'),
+                    create(:searchable_project),
+                    create(:searchable_project, name: 'Awesome unicorn joke book')]
         search_results.should eq [projects.first, projects.last]
       end
 
       it "returns projects with similar short descriptions" do
-        projects = [create(:indexed_project, short_description: 'Unicorn cookies'),
-                    create(:indexed_project),
-                    create(:indexed_project, short_description: 'Awesome unicorn joke book')]
+        projects = [create(:searchable_project, short_description: 'Unicorn cookies'),
+                    create(:searchable_project),
+                    create(:searchable_project, short_description: 'Awesome unicorn joke book')]
         search_results.should eq [projects.first, projects.last]
+      end
+
+      it 'only returns active projects' do
+        projects = [create(:project, short_description: 'Unicorn cookies'),
+                    create(:active_project, short_description: 'Unicorn cookies')]
+        Sunspot.index! projects
+        search_results.should eq [projects.last]
       end
 
       private

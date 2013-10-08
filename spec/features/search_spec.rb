@@ -23,6 +23,15 @@ feature 'Search' do
     end
   end
 
+  context 'with a project that is not publicly viewable' do
+    let!(:matching_project) { create :project, name: search_term }
+
+    it 'does not present the matching project' do
+      search_for search_term
+      page.should_not have_content matching_project.short_description
+    end
+  end
+
   private
   def search_for query
     visit projects_path

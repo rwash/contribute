@@ -55,6 +55,9 @@ class Project < ActiveRecord::Base
 
   searchable do
     text :name, :short_description
+    boolean :active do
+      state.active?
+    end
   end
 
   # Validations --------------------------------------------------------------

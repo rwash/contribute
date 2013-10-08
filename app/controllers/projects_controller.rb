@@ -11,7 +11,7 @@ class ProjectsController < InheritedResources::Base
   load_and_authorize_resource only: :new
 
   def index
-    if params[:search]
+    if search_term
       @projects = search_projects
     else
       @projects = Project.where(state: :active).order("end_date ASC").page(params[:page]).per(8)
@@ -161,9 +161,12 @@ class ProjectsController < InheritedResources::Base
 
   def search_projects
     Project.search do
-      fulltext params[:search] do
-        boost_fields name: 3.0
-      end
+      fulltext(search_term) { boost_fields name: 3.0 }
+      with :active, true
     end.results
+  end
+
+  def search_term
+    params[:search]
   end
 end

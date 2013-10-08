@@ -14,11 +14,9 @@ FactoryGirl.define do
     factory :active_project do
       association :amazon_payment_account
       state :active
-    end
 
-    factory :indexed_project do
-      after(:create) do |instance|
-        Sunspot.index! instance
+      factory :searchable_project do
+        after(:create) { |instance| Sunspot.index! instance }
       end
     end
   end
