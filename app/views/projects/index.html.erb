@@ -1,4 +1,13 @@
-<div id="header">Michigan State University's crowd funding platform. Contribute to creativity.</div>
+<div id="header">
+  <span class="byline">Michigan State University's crowd funding platform. Contribute to creativity.</span>
+  <%= render partial: 'shared/search' %>
+</div>
+
+<% if params[:search] && @projects.count == 0 %>
+  <p>
+  Sorry, no projects were found that matched your search terms.
+  </p>
+<% end %>
 
 <% @projects.each do |project| %>
   <%= render partial: 'shared/project', locals: {project: project} %>
