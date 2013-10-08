@@ -55,6 +55,25 @@ module Amazon
         prefix + encoded_parameter_strings.join('&')
       end
 
+      def verify_signature_endpoint
+        endpoint = base_url_regex.match(certificate_url).to_a.first
+        unless acceptable_verify_signature_endpoints.include? endpoint
+          raise "'certificateUrl' received is not valid. Should be one of: #{acceptable_verify_signature_endpoints}"
+        end
+        endpoint
+      end
+
+      def base_url_regex
+        /^http[s]?:\/\/[a-zA-Z\.]*\//
+      end
+
+      def acceptable_verify_signature_endpoints
+        [
+          "https://fps.sandbox.amazonaws.com/",
+          "https://fps.amazonaws.com/"
+        ]
+      end
+
       def encoded_parameter_strings
         [].tap do |encoded_parameter_strings|
           verify_signature_params.each_pair do |key, value|
@@ -71,22 +90,6 @@ module Amazon
           'Version' => '2008-09-17',
           'HttpParameters' => SignatureUtilsForOutbound::get_http_params(parameters),
         }
-      end
-
-      def verify_signature_endpoint
-        if starts_with(certificate_url, FPS_SANDBOX_ENDPOINT) then
-          FPS_SANDBOX_ENDPOINT
-        elsif starts_with(certificate_url, FPS_PROD_ENDPOINT) then
-          FPS_PROD_ENDPOINT
-        else
-          raise "'certificateUrl' received is not valid. Valid certificate urls start with " <<
-          CERTIFICATE_URL_ROOT << " or " << CERTIFICATE_URL_ROOT_SANDBOX << "."
-        end
-      end
-
-      def starts_with(string, prefix)
-        prefix = prefix.to_s
-        string[0, prefix.length] == prefix
       end
 
       def signature
@@ -106,7 +109,7 @@ module Amazon
       end
 
       def certificate_url
-        @certificate_url ||= parameters[CERTIFICATE_URL_KEYNAME]
+        parameters[CERTIFICATE_URL_KEYNAME]
       end
 
       def parameters_are_enumerable

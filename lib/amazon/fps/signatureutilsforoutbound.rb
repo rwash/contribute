@@ -23,11 +23,6 @@ module Amazon
   SIGNATURE_METHOD_KEYNAME = "signatureMethod"
   SIGNATURE_VERSION_KEYNAME = "signatureVersion"
   CERTIFICATE_URL_KEYNAME = "certificateUrl"
-  CERTIFICATE_URL_ROOT = "https://fps.amazonaws.com/"
-  CERTIFICATE_URL_ROOT_SANDBOX = "https://fps.sandbox.amazonaws.com/"
-
-  FPS_PROD_ENDPOINT = CERTIFICATE_URL_ROOT
-  FPS_SANDBOX_ENDPOINT = CERTIFICATE_URL_ROOT_SANDBOX
 
   USER_AGENT_STRING = "SigV2_MigrationSampleCode_Ruby-2010-09-13"
 
