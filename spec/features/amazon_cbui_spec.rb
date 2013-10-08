@@ -3,7 +3,7 @@ require 'integration_helper'
 
 feature 'amazon process', :js do
 
-  scenario "recipient request should direct to amazon login" do
+  scenario "recipient request should direct to amazon login", :slow do
     return_url = project_amazon_payment_accounts_url(project, method: :get)
     request = Amazon::FPS::RecipientRequest.new(return_url)
     visit(request.url)
@@ -12,7 +12,7 @@ feature 'amazon process', :js do
   end
 
   #if you receive a not well formed :[recipientTokenList] update the project factory
-  scenario "multi token request should direct to amazon login" do
+  scenario "multi token request should direct to amazon login", :slow do
     @project = create(:active_project)
     @contribution = create(:contribution)
 

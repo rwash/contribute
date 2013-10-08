@@ -6,7 +6,7 @@ Warden.test_mode!
 feature 'amazon process', :js do
 
   describe 'project' do
-    scenario "create successfully" do
+    scenario "create successfully", :slow do
       project = create(:project)
       user = project.owner
       login_as user
@@ -40,7 +40,7 @@ feature 'amazon process', :js do
   describe 'creating contribution' do
     let(:project) { create(:active_project) }
 
-    scenario "fails with invalid amount" do
+    scenario "fails with invalid amount", :slow do
       login_as user
 
       #go to project page
@@ -57,7 +57,7 @@ feature 'amazon process', :js do
       expect(page).to have_content('prevented this contribution from being saved')
     end
 
-    scenario "succeeds with valid amount" do
+    scenario "succeeds with valid amount", :slow do
       generate_contribution(
         user, #contribution login
         'contribute_testing@hotmail.com', #amazon login
@@ -90,7 +90,7 @@ feature 'amazon process', :js do
       expect(page).to have_content('prevented this contribution from being saved')
     end
 
-    scenario "succeeds with valid amount" do
+    scenario "succeeds with valid amount", :slow do
       contribution = get_and_assert_contribution(project.id)
       visit edit_contribution_path(contribution)
       fill_in 'contribution_amount', with: contribution.amount + 5

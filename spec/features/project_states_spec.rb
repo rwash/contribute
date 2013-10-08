@@ -4,7 +4,7 @@ require 'integration_helper'
 feature 'amazon process', :js do
 
   describe 'project' do
-    scenario "create successfully" do
+    scenario "create successfully", :slow do
       project = build(:project)
       user = create :user
 

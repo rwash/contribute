@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Amazon::FPS::AmazonValidator do
   describe "valid_multi_token_response?" do
-    it "should succeed with valid input" do
+    it "should succeed with valid input", :slow do
       valid = Amazon::FPS::AmazonValidator.valid_multi_token_response?(url, session, parameters)
       valid.should be_true
     end

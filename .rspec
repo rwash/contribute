@@ -2,3 +2,4 @@
 
 --format Fuubar
 --format html -o "public/specification.html"
+--profile

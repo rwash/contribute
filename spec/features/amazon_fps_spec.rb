@@ -6,7 +6,7 @@ feature "fps requests should", :js do
 
   let(:user) { create :user }
 
-  scenario "succeed on pay request and check transaction status" do
+  scenario "succeed on pay request and check transaction status", :slow do
     contribution = generate_contribution(
       user, #contribution login
       'contribute_testing@hotmail.com', #amazon login
@@ -32,7 +32,7 @@ feature "fps requests should", :js do
     expect(Logging::LogGetTransactionResponse.find_by_TransactionId(transaction_id)).to_not be_nil
   end
 
-  scenario "succeed on cancel token request" do
+  scenario "succeed on cancel token request", :slow do
     contribution = generate_contribution(
       user, #contribution login
       'contribute_testing@hotmail.com', #amazon login
