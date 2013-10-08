@@ -307,19 +307,6 @@ describe Project do
       search_results('unicorn').should eq [projects.first, projects.last]
     end
 
-    pending 'matches subsets of the query words' do
-      projects = [create(:indexed_project, short_description: 'Unicorn cookies'),
-                  create(:indexed_project)]
-      search_results('unicorn ninja').should eq [projects.first, projects.last]
-    end
-
-    pending 'favors more complete matches' do
-      projects = [create(:indexed_project, short_description: 'Unicorn catapult'),
-                  create(:indexed_project, short_description: 'Unicorn cookies'),
-                  create(:indexed_project)]
-      search_results('unicorn cookie').should eq [projects[1], projects.first]
-    end
-
     #it_behaves_like "a searchable object" do
       #let(:searchable_attributes) { [:title, :description] }
     #end
