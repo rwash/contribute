@@ -11,7 +11,11 @@ class ProjectsController < InheritedResources::Base
   load_and_authorize_resource only: :new
 
   def index
-    @projects = Project.where(state: :active).order("end_date ASC").page(params[:page]).per(8)
+    if params[:search]
+      @projects = search_projects
+    else
+      @projects = Project.where(state: :active).order("end_date ASC").page(params[:page]).per(8)
+    end
     authorize! :index, Project
   end
 
@@ -153,5 +157,13 @@ class ProjectsController < InheritedResources::Base
   protected
   def project_from_params
     Project.find_by_slug! params[:id]
+  end
+
+  def search_projects
+    Project.search do
+      fulltext params[:search] do
+        boost_fields name: 3.0
+      end
+    end.results
   end
 end

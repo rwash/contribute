@@ -23,6 +23,63 @@ describe ProjectsController do
     it { should respond_with :success }
     it { should render_template :index }
     it { should assign_to :projects }
+
+    context 'with a search parameter' do
+      it 'returns an empty array if there are no matching projects' do
+        3.times { create :indexed_project }
+        search_results.should eq []
+      end
+
+      it 'returns projects with matching names' do
+        projects = [create(:indexed_project, name: 'unicorn'),
+                    create(:indexed_project)]
+        search_results.should eq [projects.first]
+      end
+
+      it 'returns projects with matching short descriptions' do
+        projects = [create(:indexed_project, short_description: 'unicorn'),
+                    create(:indexed_project)]
+        search_results.should eq [projects.first]
+      end
+
+      it 'searches the name and short description at the same time' do
+        projects = [create(:indexed_project, short_description: 'unicorn'),
+                    create(:indexed_project),
+                    create(:indexed_project, name: 'unicorn')]
+        search_results.sort_by(&:id).should eq [projects.first, projects.last].sort_by(&:id)
+      end
+
+      it 'favors name matching over short description matching' do
+        projects = [create(:indexed_project, short_description: 'unicorn'),
+                    create(:indexed_project),
+                    create(:indexed_project, name: 'unicorn')]
+        search_results.should eq [projects.last, projects.first]
+      end
+
+      it "returns projects with similar names" do
+        projects = [create(:indexed_project, name: 'Unicorn cookies'),
+                    create(:indexed_project),
+                    create(:indexed_project, name: 'Awesome unicorn joke book')]
+        search_results.should eq [projects.first, projects.last]
+      end
+
+      it "returns projects with similar short descriptions" do
+        projects = [create(:indexed_project, short_description: 'Unicorn cookies'),
+                    create(:indexed_project),
+                    create(:indexed_project, short_description: 'Awesome unicorn joke book')]
+        search_results.should eq [projects.first, projects.last]
+      end
+
+      private
+      def search_results
+        get :index, search_parameters
+        assigns :projects
+      end
+
+      def search_parameters
+        { search: 'unicorn' }
+      end
+    end
   end
 
   describe 'POST update' do
