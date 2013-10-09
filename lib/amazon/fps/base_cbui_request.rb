@@ -43,7 +43,7 @@ module Amazon
 
       def encoded_params
         @params.map do |key,value|
-          "#{key}=#{SignatureUtils::urlencode(value)}"
+          "#{key}=#{SignatureUtilsForOutbound::urlencode(value)}"
         end.join '&'
       end
     end
