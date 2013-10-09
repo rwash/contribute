@@ -1,5 +1,9 @@
+require 'amazon/web'
+
 module Amazon
   class Request
+    include Amazon::Web
+
     protected
     attr_reader :params
 
@@ -53,10 +57,6 @@ module Amazon
       uri.host.downcase
     end
 
-    def uri_path
-      uri.path
-    end
-
     def validate_correct_signature_version
       unless signature_version == "2"
         raise "Error. Signature version should be 2"
@@ -68,17 +68,22 @@ module Amazon
     end
 
     def string_to_sign
-      uri = uri_path
-      uri = "/" if uri.nil? or uri.empty?
-      uri = urlencode(uri).gsub("%2F", "/")
-
-      canonical_header = "#{http_method}\n#{uri_host}\n#{uri}\n"
-
-      canonical_params = signable_params.map do |assignment|
-        assignment.map {|element| urlencode(element)}.join '='
-      end.join '&'
-
       canonical_header + canonical_params
+    end
+
+    def canonical_header
+      "#{http_method}\n#{uri_host}\n#{uri_path}\n"
+    end
+
+    def canonical_params
+      signable_params.map do |assignment|
+        assignment.map {|element| Web::url_encode(element)}.join '='
+      end.join '&'
+    end
+
+    def uri_path
+      path = uri.path.presence || '/'
+      Web::url_encode(path).gsub("%2F", "/")
     end
 
     def signable_params
@@ -93,10 +98,6 @@ module Amazon
 
     def signature_method
       params[signature_method_keyname]
-    end
-
-    def urlencode(string)
-      Amazon::FPS::SignatureUtilsForOutbound::urlencode(string)
     end
   end
 end

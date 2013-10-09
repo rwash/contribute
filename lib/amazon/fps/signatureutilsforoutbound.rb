@@ -59,10 +59,6 @@ module Amazon
     end
   end
 
-  def self.urlencode(plaintext)
-    CGI.escape(plaintext.to_s).gsub("+", "%20").gsub("%7E", "~")
-  end
-
   def self.get_http_data(url)
     #2. fetch certificate if not found in cache
     uri = URI.parse(url)

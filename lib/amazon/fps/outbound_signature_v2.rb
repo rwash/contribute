@@ -80,7 +80,7 @@ module Amazon
 
       def encoded_request_parameters
         verify_signature_params.map do |key, value|
-          "#{key}=#{urlencode(value)}"
+          "#{key}=#{Web::url_encode(value)}"
         end.join '&'
       end
 
@@ -93,11 +93,9 @@ module Amazon
         }
       end
 
-      delegate :urlencode, to: SignatureUtilsForOutbound
-
       def encoded_response_parameters
         parameters.map do |(k, v)|
-          urlencode(k) + "=" + urlencode(v)
+          Web::url_encode(k) + "=" + Web::url_encode(v)
         end.join("&")
       end
 
