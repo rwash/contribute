@@ -3,7 +3,7 @@ require 'openssl'
 
 module Amazon
   module FPS
-    class OutboundSignatureV2
+    class SignatureVerificationRequest
       include ActiveModel::Validations
 
       CERTIFICATE_URL = "certificateUrl"

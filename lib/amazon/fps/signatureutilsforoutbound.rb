@@ -41,11 +41,9 @@ module Amazon
       attr_reader :args
 
       def signature
-        if version_number(args[:parameters]) == 2
-          OutboundSignatureV2.new(args[:parameters], args[:http_method], args[:url_end_point])
-        else
-          OutboundSignatureV1.new(args[:parameters])
-        end
+        @_signature ||= SignatureVerificationRequest.new(args[:parameters],
+                                                         args[:http_method],
+                                                         args[:url_end_point])
       end
 
   public
