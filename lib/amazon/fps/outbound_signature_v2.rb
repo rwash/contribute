@@ -25,7 +25,7 @@ module Amazon
 
       def validate
         handle_failing_validations
-        verify_signature_status && verify_signature_status.text == "Success"
+        response_status && response_status.text == "Success"
       end
 
       private
@@ -36,23 +36,23 @@ module Amazon
         end
       end
 
-      def verify_signature_status
-        verify_signature_response_document.elements[verify_signature_document_path]
+      def response_status
+        response_document.elements[response_document_path]
       end
 
-      def verify_signature_document_path
+      def response_document_path
         'VerifySignatureResponse/VerifySignatureResult/VerificationStatus'
       end
 
-      def verify_signature_response_document
-        REXML::Document.new(verify_signature_response)
+      def response_document
+        REXML::Document.new(response)
       end
 
-      def verify_signature_response
-        SignatureUtilsForOutbound::get_http_data(verify_signature_request)
+      def response
+        SignatureUtilsForOutbound::get_http_data(request)
       end
 
-      def verify_signature_request
+      def request
         prefix = endpoint + '?'
         prefix + encoded_request_parameters
       end
@@ -81,12 +81,12 @@ module Amazon
       end
 
       def encoded_request_parameters
-        verify_signature_params.map do |key, value|
+        params.map do |key, value|
           "#{key}=#{Web::url_encode(value)}"
         end.join '&'
       end
 
-      def verify_signature_params
+      def params
         {
           'Action' => 'VerifySignature',
           'UrlEndPoint' => url_end_point,
