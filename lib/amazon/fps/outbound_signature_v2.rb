@@ -6,6 +6,8 @@ module Amazon
     class OutboundSignatureV2
       include ActiveModel::Validations
 
+      CERTIFICATE_URL = "certificateUrl"
+
       def initialize(parameters, http_method, url_end_point)
         @parameters = parameters
         @http_method = http_method
@@ -116,7 +118,7 @@ module Amazon
       end
 
       def certificate_url
-        parameters[CERTIFICATE_URL_KEYNAME]
+        parameters[CERTIFICATE_URL]
       end
 
       def parameters_are_enumerable

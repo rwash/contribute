@@ -19,8 +19,6 @@ require 'rexml/document'
 module Amazon
   module FPS
 
-  CERTIFICATE_URL_KEYNAME = "certificateUrl"
-
   USER_AGENT_STRING = "SigV2_MigrationSampleCode_Ruby-2010-09-13"
 
   RSA_SHA1_ALGORITHM = "RSA-SHA1"

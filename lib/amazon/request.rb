@@ -95,9 +95,5 @@ module Amazon
     def algorithm
       'sha256'
     end
-
-    def signature_method
-      params[signature_method_keyname]
-    end
   end
 end
