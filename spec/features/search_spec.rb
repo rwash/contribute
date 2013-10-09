@@ -32,6 +32,46 @@ feature 'Search' do
     end
   end
 
+  context 'with multiple matching projects' do
+    let!(:projects) do
+      [create(:active_project, name: search_term),
+       create(:active_project, short_description: search_term)]
+    end
+
+    it 'presents all matching projects' do
+      search_for search_term
+      projects.each do |project|
+        page.should have_content project.name
+        page.should have_content project.short_description
+      end
+    end
+  end
+
+  context 'with some non-matching projects' do
+    it 'only presents matching projects'
+    let!(:matching_projects) do
+      [create(:active_project, name: search_term),
+       create(:active_project, short_description: search_term)]
+    end
+    let!(:other_projects) { 2.times.map { create :active_project } }
+
+    before { search_for search_term }
+
+    it 'presents all matching projects' do
+      other_projects.each do |project|
+        page.should_not have_content project.name
+        page.should_not have_content project.short_description
+      end
+    end
+
+    it 'does not present other projects' do
+      matching_projects.each do |project|
+        page.should have_content project.name
+        page.should have_content project.short_description
+      end
+    end
+  end
+
   private
   def search_for query
     visit projects_path
