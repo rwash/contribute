@@ -102,15 +102,15 @@ module Amazon
       end
 
       def signature
-        @signature ||= parameters[SIGNATURE_KEYNAME]
+        @signature ||= parameters["signature"]
       end
 
       def signature_version
-        @signature_version ||= parameters[SIGNATURE_VERSION_KEYNAME]
+        parameters['signatureVersion']
       end
 
       def signature_method
-        @signature_method ||= parameters[SIGNATURE_METHOD_KEYNAME]
+        @signature_method ||= parameters['signatureMethod']
       end
 
       def signature_algorithm

@@ -19,9 +19,6 @@ require 'rexml/document'
 module Amazon
   module FPS
 
-  SIGNATURE_KEYNAME = "signature"
-  SIGNATURE_METHOD_KEYNAME = "signatureMethod"
-  SIGNATURE_VERSION_KEYNAME = "signatureVersion"
   CERTIFICATE_URL_KEYNAME = "certificateUrl"
 
   USER_AGENT_STRING = "SigV2_MigrationSampleCode_Ruby-2010-09-13"
@@ -85,7 +82,7 @@ module Amazon
   private
 
   def version_number(parameters)
-    parameters[SIGNATURE_VERSION_KEYNAME].to_i
+    parameters["signatureVersion"].to_i
   end
 
     end

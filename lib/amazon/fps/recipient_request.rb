@@ -1,5 +1,4 @@
 require 'uri'
-require 'amazon/fps/signatureutils'
 require 'amazon/fps/base_cbui_request'
 
 module Amazon

@@ -1,10 +1,11 @@
 module Amazon
   class Request
-    def initialize
-    end
-
     protected
     attr_reader :params
+
+    SIGNATURE_VERSION = 'SignatureVersion'
+    SIGNATURE_METHOD = 'SignatureMethod'
+    SIGNATURE = 'Signature'
 
     def http_method
       "GET"
@@ -20,13 +21,9 @@ module Amazon
 
     def default_params
       {
-        Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME => "2",
-        Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME => default_signature_method,
+        SIGNATURE_VERSION => "2",
+        SIGNATURE_METHOD => "HmacSHA256",
       }
-    end
-
-    def default_signature_method
-      "HmacSHA256"
     end
 
     def caller_reference
@@ -34,11 +31,18 @@ module Amazon
     end
 
     def set_signature
-      @params[Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME] = signature
+      @params[SIGNATURE] = signature
     end
 
     def signature
-      @_signature ||= sign_parameters
+      @_signature ||= begin
+                        validate_correct_signature_version
+                        Base64.encode64(OpenSSL::HMAC.digest(digest, secret_key, string_to_sign)).chomp
+                      end
+    end
+
+    def digest
+      OpenSSL::Digest::Digest.new(algorithm)
     end
 
     def uri
@@ -46,48 +50,29 @@ module Amazon
     end
 
     def uri_host
-      uri.host
+      uri.host.downcase
     end
 
     def uri_path
       uri.path
     end
 
-    def sign_parameters
-      signature_version = params[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME]
-      string_to_sign = "";
-      algorithm = 'sha1';
-      if (signature_version == '1') then
-        string_to_sign = calculate_string_to_sign_v1
-      elsif (signature_version == '2') then
-        algorithm = get_algorithm(params[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME])
-        string_to_sign = calculate_string_to_sign_v2
-      else
-        raise "Invalid Signature Version specified"
+    def validate_correct_signature_version
+      unless signature_version == "2"
+        raise "Error. Signature version should be 2"
       end
-      return compute_signature(string_to_sign, algorithm)
     end
 
-    def calculate_string_to_sign_v1
-      # exclude any existing Signature parameter from the canonical string
-      canonical = ''
-      signable_params.each do |v|
-        canonical << v[0]
-        canonical << v[1] unless(v[1].nil?)
-      end
-
-      return canonical
+    def signature_version
+      params[SIGNATURE_VERSION]
     end
 
-    def calculate_string_to_sign_v2
+    def string_to_sign
       uri = uri_path
       uri = "/" if uri.nil? or uri.empty?
       uri = urlencode(uri).gsub("%2F", "/")
 
-      verb = http_method
-      host = uri_host.downcase
-
-      canonical_header = "#{verb}\n#{host}\n#{uri}\n"
+      canonical_header = "#{http_method}\n#{uri_host}\n#{uri}\n"
 
       canonical_params = signable_params.map do |assignment|
         assignment.map {|element| urlencode(element)}.join '='
@@ -98,21 +83,16 @@ module Amazon
 
     def signable_params
       params.reject do |k, v|
-        k == Amazon::FPS::SignatureUtils::SIGNATURE_KEYNAME
+        k == SIGNATURE
       end.sort
     end
 
-    def get_algorithm(signature_method)
-      if signature_method == default_signature_method
-        'sha256'
-      else
-        'sha1'
-      end
+    def algorithm
+      'sha256'
     end
 
-    def compute_signature(canonical, algorithm = 'sha1')
-      digest = OpenSSL::Digest::Digest.new(algorithm)
-      return Base64.encode64(OpenSSL::HMAC.digest(digest, secret_key, canonical)).chomp
+    def signature_method
+      params[signature_method_keyname]
     end
 
     def urlencode(string)
