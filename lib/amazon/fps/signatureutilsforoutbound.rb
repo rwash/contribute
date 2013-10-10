@@ -20,16 +20,9 @@ module Amazon
   module FPS
 
   USER_AGENT_STRING = "SigV2_MigrationSampleCode_Ruby-2010-09-13"
-
   RSA_SHA1_ALGORITHM = "RSA-SHA1"
 
-
     class SignatureUtilsForOutbound
-
-  def initialize(aws_access_key, aws_secret_key)
-    @aws_secret_key = aws_secret_key
-    @aws_access_key = aws_access_key
-  end
 
       def validate_request(args)
         @args = args
@@ -37,7 +30,6 @@ module Amazon
       end
 
       private
-
       attr_reader :args
 
       def signature

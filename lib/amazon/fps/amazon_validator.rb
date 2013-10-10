@@ -57,9 +57,7 @@ module Amazon
       protected
       #this verifies that the signature returned came from amazon
       def self.valid_cbui_response?(params, url_end_point)
-        access_key = Rails.application.config.aws_access_key
-        secret_key = Rails.application.config.aws_secret_key
-        utils = Amazon::FPS::SignatureUtilsForOutbound.new(access_key, secret_key)
+        utils = Amazon::FPS::SignatureUtilsForOutbound.new
 
         #This is rails garbage we don't need to send to amazon
         params.delete("controller")
