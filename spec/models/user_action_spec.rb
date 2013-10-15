@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe UserAction do
-  it 'can assign projects as an object' do
-    action.object = project
+  it 'can assign projects as a subject' do
+    action.subject = project
     action.save.should be_true
-    action.object.should eq project
+    action.subject.should eq project
   end
 
-  it 'can assign contributions as an object' do
-    action.object = contribution
+  it 'can assign contributions as a subject' do
+    action.subject = contribution
     action.save.should be_true
-    action.object.should eq contribution
+    action.subject.should eq contribution
   end
 
   private
