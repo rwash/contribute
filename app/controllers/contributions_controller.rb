@@ -34,6 +34,7 @@ class ContributionsController < ApplicationController
       session[:contribution_id] = @contribution.id
       request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @contribution.project.payment_account_id, @contribution.amount, @contribution.project.name)
 
+      log_user_action :create
       redirect_to request.url
     else
       render action: :new, alert: "Sorry, this project is no longer taking contributions."
@@ -58,8 +59,9 @@ class ContributionsController < ApplicationController
     if !@contribution.save
       return redirect_to @contribution.project, alert: ERROR_STRING
     else
-      successful_save
+      EmailManager.contribute_to_project(@contribution).deliver if user_signed_in?
 
+      log_user_action :save
       return redirect_to @contribution.project, alert: "Contribution submitted. Thank you for your support!"
     end
   end
@@ -90,13 +92,8 @@ class ContributionsController < ApplicationController
       return render action: :edit
     end
 
-    if @contribution.amount < @editing_contribution.amount
-      @contribution.errors.add(:amount, "can't be less than the original amount")
-      return render action: :edit
-    end
-
-    if @contribution.amount == @editing_contribution.amount
-      @contribution.errors.add(:amount, "No changes were made to your contribution")
+    if @contribution.amount <= @editing_contribution.amount
+      @contribution.errors.add(:amount, "must be more than the original amount")
       return render action: :edit
     end
 
@@ -104,6 +101,7 @@ class ContributionsController < ApplicationController
     session[:editing_contribution_id] = @editing_contribution.id
     request = Amazon::FPS::MultiTokenRequest.new(session, update_save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 
+    log_user_action :update
     return redirect_to request.url
   end
 
@@ -131,9 +129,10 @@ class ContributionsController < ApplicationController
     if !@editing_contribution.cancel
       @contribution.cancel
       return redirect_to @contribution.project, alert: ERROR_STRING
-    else
-      successful_update
+    else # success
+      EmailManager.edit_contribution(@editing_contribution, @contribution).deliver
 
+      log_user_action :update_save
       return redirect_to @contribution.project, alert: "Contribution successfully updated. Thank you for your support!"
     end
   end
@@ -168,11 +167,10 @@ class ContributionsController < ApplicationController
     return contribution
   end
 
-  def successful_save
-    EmailManager.contribute_to_project(@contribution).deliver if user_signed_in?
-  end
-
-  def successful_update
-    EmailManager.edit_contribution(@editing_contribution, @contribution).deliver
+  def log_user_action event
+    UserAction.create(user: current_user,
+                      subject: @contribution,
+                      event: event,
+                      message: "amount: #{@contribution.amount}")
   end
 end

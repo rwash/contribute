@@ -45,9 +45,16 @@ describe ContributionsController do
   end
 
   describe 'POST create' do
-    before { post :create, contribution: attributes_for(:contribution) }
+    before { sign_in user }
+    before { @ability.stub!(:can?).and_return(true) }
+    before { post :create, contribution: attributes }
+    let(:attributes) { attributes_for(:contribution, project_id: project.id) }
 
     it { should respond_with :redirect }
+    it { should log_user_action user, :create, Contribution.last }
+    it 'logs the contribution amount' do
+      UserAction.last.message.should match attributes[:amount].to_s
+    end
   end
 
   describe 'POST save' do
@@ -59,10 +66,9 @@ describe ContributionsController do
       sign_in user
       Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
     end
+    before { session[:contribution_id] = contribution.id }
 
     it "succeeds for valid input" do
-      session[:contribution_id] = contribution.id
-
       get :save, params
       expect(response).to redirect_to(contribution.project)
       expect(flash[:alert]).to include "submitted"
@@ -77,7 +83,6 @@ describe ContributionsController do
     end
 
     it "handles invalid parameters" do
-      session[:contribution_id] = contribution.id
       params["tokenID"] = nil
 
       get :save, params
@@ -88,11 +93,19 @@ describe ContributionsController do
     it "shows an error if contribution doesn't save" do
       Contribution.any_instance.stub(:save){false}
 
-      session[:contribution_id] = contribution.id
-
       get :save, params
       expect(response).to redirect_to(contribution.project)
       expect(flash[:alert]).to include "error"
+    end
+
+    it 'logs the user action' do
+      get :save, params
+      should log_user_action user, :save, Contribution.last
+    end
+
+    it 'logs the contribution amount' do
+      get :save, params
+      UserAction.last.message.should match contribution.amount.to_s
     end
   end
 
@@ -135,11 +148,21 @@ describe ContributionsController do
   end
 
   describe 'POST update' do
-    let(:contribution) { create :contribution }
+    let(:contribution) { create :contribution, project: project }
+    before { sign_in user }
     before { @ability.stub!(:can?).and_return(true) }
-    before { post :update, id: contribution.id, contribution: contribution.attributes.symbolize_keys }
+    let(:new_attributes) do
+      new_attributes = contribution.attributes
+      new_attributes['amount'] = contribution.amount + 10
+      new_attributes
+    end
+    before { post :update, {id: contribution.id, contribution: new_attributes} }
 
     it { should respond_with :redirect }
+    it { should log_user_action user, :update, Contribution.last }
+    it 'logs the contribution amount' do
+      UserAction.last.message.should match new_attributes['amount'].to_s
+    end
   end
 
   describe 'POST update_save' do
@@ -148,6 +171,9 @@ describe ContributionsController do
     let(:params) { {"tokenID"=>"I4TRCVA1ATAFBN1ZJJI634UP4XQCX9DDIDNR1MM7UF6DDJ6ZDDD7KD9E4BDVQIBF",
                     "status"=>"SC"} }
 
+    before { session[:contribution] = contribution }
+    before { session[:editing_contribution_id] = editing_contribution.id }
+
     before(:each) do
       sign_in user
       Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
@@ -155,11 +181,19 @@ describe ContributionsController do
     end
 
     it "succeeds with valid input" do
-      session[:contribution] = contribution #new contribution
-      session[:editing_contribution_id] = editing_contribution.id #old contribution
       get :update_save, params
       expect(response).to redirect_to(contribution.project)
       expect(flash[:alert]).to include "successfully updated"
+    end
+
+    it 'logs the user action' do
+      get :update_save, params
+      should log_user_action user, :update_save, contribution
+    end
+
+    it 'logs the contribution amount' do
+      get :update_save, params
+      UserAction.last.message.should match contribution.amount.to_s
     end
 
     it "fails if there is no contribution in session" do
@@ -205,7 +239,7 @@ describe ContributionsController do
     end
   end
 
-  describe "method validate_project" do
+  describe "#validate_project" do
     let(:project_1) { create :project, active: 0 }
     let(:project_2) { create :project, confirmed: 0 }
 
