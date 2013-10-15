@@ -161,7 +161,7 @@ class ProjectsController < InheritedResources::Base
 
   def search_projects
     Project.search do
-      fulltext(search_term) { boost_fields name: 3.0 }
+      fulltext(search_term) { boost_fields name: 3.0, owner_name: 2.0 }
       with :active, true
     end.results
   end
