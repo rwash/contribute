@@ -1,13 +1,11 @@
 class ApprovalsController < InheritedResources::Base	
   def approve
-    approval = Approval.find(params[:id])
-    group = Group.find(params[:group_id])
-
     authorize! :approve, approval
 
     if approval.status.pending?
       approval.status = :approved
       approval.save!
+      log_user_action :approve
 
       project = approval.project
       group.projects << project unless group.projects.include?(project)
@@ -21,8 +19,6 @@ class ApprovalsController < InheritedResources::Base
   end
 
   def reject
-    approval = Approval.find(params[:id])
-    group = Group.find(params[:group_id])
     project = Project.find(approval.project_id)
 
     authorize! :reject, approval
@@ -31,6 +27,7 @@ class ApprovalsController < InheritedResources::Base
       approval.reason = params[:reason]
       approval.status = :rejected
       approval.save!
+      log_user_action :reject
 
       EmailManager.group_reject_project(approval, project, group).deliver
     else
@@ -38,5 +35,18 @@ class ApprovalsController < InheritedResources::Base
     end
 
     redirect_to group_admin_path(group)
+  end
+
+  private
+  def log_user_action event
+    UserAction.create user: current_user, subject: approval, event: event
+  end
+
+  def approval
+    @_approval ||= Approval.find(params[:id])
+  end
+
+  def group
+    @_group ||= Group.find(params[:group_id])
   end
 end
