@@ -11,6 +11,7 @@ class UpdatesController < InheritedResources::Base
     update.user = current_user
     if update.save
       flash[:notice] = "Update saved successfully."
+      UserAction.create user: current_user, event: :create, subject: update
     else
       flash[:alert] = "Update failed to save. Please try again."
     end

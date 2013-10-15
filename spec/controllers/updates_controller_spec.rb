@@ -39,6 +39,7 @@ describe UpdatesController do
 
           it { should redirect_to project_path(project) }
           it { should set_the_flash.to "Update saved successfully." }
+          it { should log_user_action user, :create, Update.last }
 
           it 'does not immediately send an email' do
             expect(Update.last.email_sent).to eq false
