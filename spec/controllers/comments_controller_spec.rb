@@ -30,6 +30,7 @@ describe CommentsController do
 
       it { should redirect_to project_path(project) }
       it { should_not set_the_flash }
+      it { should log_user_action user, :create, Comment.last }
     end
 
     context 'when user is not signed in' do
@@ -48,6 +49,10 @@ describe CommentsController do
       before { @ability.stub!(:can?).with(:destroy, comment).and_return(true) }
       before { delete :destroy, id: comment.id }
       it { should set_the_flash.to(/successfully deleted/) }
+      it do
+        pending 'we can not destroy the comment if we want to log it';
+        should log_user_action user, :destroy, comment
+      end
     end
 
     context 'when user is not signed in' do

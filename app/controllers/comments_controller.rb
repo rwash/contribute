@@ -10,6 +10,7 @@ class CommentsController < InheritedResources::Base
 
     if comment.valid?
       comment.save
+      log_user_action :create, comment
       redirect_to project
 
       if(params[:parentCommentId] != nil)
@@ -32,10 +33,10 @@ class CommentsController < InheritedResources::Base
       comment.body = "[comment deleted]"
       comment.save
     else
-      if !comment.delete
-        flash[:alert] = "Comment could not be deleted."
-      else
+      if comment.delete
         flash[:alert] = "Comment successfully deleted."
+      else
+        flash[:alert] = "Comment could not be deleted."
       end
     end
 
@@ -46,4 +47,8 @@ class CommentsController < InheritedResources::Base
     end
   end
 
+  private
+  def log_user_action event, comment
+    UserAction.create user: current_user, subject: comment, event: event
+  end
 end
