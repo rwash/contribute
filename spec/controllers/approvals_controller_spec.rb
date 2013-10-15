@@ -29,6 +29,7 @@ describe ApprovalsController do
 
       it { should redirect_to group_admin_path(group) }
       it { should_not set_the_flash }
+      it { should log_user_action user, :approve, approval }
     end
 
     context 'without permission' do
@@ -55,6 +56,7 @@ describe ApprovalsController do
 
       it { should redirect_to group_admin_path(group) }
       it { should_not set_the_flash }
+      it { should log_user_action user, :reject, approval }
     end
 
     context 'without permission' do
