@@ -156,8 +156,7 @@ describe Project do
 
   describe 'end date validations' do
     it { should validate_presence_of(:end_date).with_message(/must be of form/) }
-    it { should allow_value('03/12/2020').for :end_date }
-    it { should_not allow_value('03-12-2020').for :end_date }
+    it { should allow_value('2020-03-14').for :end_date }
     it { should allow_value(Date.tomorrow).for :end_date }
     it { should_not allow_value(Date.today).for :end_date }
     it { should_not allow_value(Date.yesterday).for :end_date }
@@ -176,14 +175,6 @@ describe Project do
   end
 
   it { should validate_presence_of :owner }
-
-  it 'parses time string correctly' do
-    project = build(:project, end_date: '03/12/2020')#4
-    expect(project.save).to be_true
-    expect(project.end_date.month).to eq 3
-    expect(project.end_date.day).to eq 12
-    expect(project.end_date.year).to eq 2020
-  end
 
   #TODO: pictures
 

@@ -1,5 +1,6 @@
 $(function (){
 	$('#DatePickerEndDate').datepicker();
+	$('#DatePickerEndDate').datepicker("option", "dateFormat", "yy-mm-dd");
 
 	// Parse the value inside the div tag. Set the value of the progress bar equal to that.
 	// Expand the width so it fills width-wise, set the height so it's like a vertical bar

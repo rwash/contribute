@@ -6,7 +6,7 @@ FactoryGirl.define do
     sequence(:short_description) { |n| "This is test project #{n}" }
     sequence(:long_description) { |n| "This is project #{n}, of which the purpose is testing" }
     # TODO track down bug that occurs in other time zones, when end date is tomorrow.
-    sequence(:end_date) { |n| Date.today + n + 1 }
+    sequence(:end_date) { |n| (Date.today + n + 1).to_s(:db) }
     sequence(:funding_goal) { (Random.rand(30)+1) * 100 }
     owner
     state :unconfirmed

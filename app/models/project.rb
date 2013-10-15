@@ -92,7 +92,7 @@ class Project < ActiveRecord::Base
                             message: "must be at least $5, and a whole dollar amount (no cents please)"}
 
   validates :end_date,
-            presence: { message: "must be of form 'MM/DD/YYYY'" }
+            presence: { message: "must be of form 'YYYY-MM-DD'" }
 
   validates :owner, presence: true
 
@@ -118,11 +118,6 @@ class Project < ActiveRecord::Base
   def payment_account_id=(value)
     account = AmazonPaymentAccount.find_or_create_by_project_id id
     account.update_attributes token: value
-  end
-
-  # Sets end date from a string in the format "mm/dd/yyyy"
-  def end_date=(val)
-    write_attribute(:end_date, Timeliness.parse(val, format: "mm/dd/yyyy"))
   end
 
   # Sets the funding goal to a given amount
