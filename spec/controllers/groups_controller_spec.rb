@@ -43,18 +43,27 @@ describe GroupsController do
         expect {post 'create', group: attributes_for(:group)}.to change {Group.count}.by 1
         expect(flash[:notice]).to include "Successfully created group."
       end
+
+      it 'logs the user action' do
+        post 'create', group: attributes_for(:group)
+        group = Group.last
+        should log_user_action user, :create, group
+        UserAction.last.message.should match group.name
+      end
     end
   end
 
   describe 'POST new_add' do
     let(:group) { create :group }
-    before { sign_in create :user }
+    let(:user) { create :user }
+    before { sign_in user }
     before { @ability.stub!(:can?).and_return(true) }
     before { post :new_add, id: group.id }
 
     it { should respond_with :success }
     it { should assign_to :group }
     it { should render_template :new_add }
+    it { should log_user_action user, :new_add, group }
   end
 
   describe 'POST submit_add' do
@@ -68,6 +77,12 @@ describe GroupsController do
       context "when the group is open and user is not the admin" do
 
         let(:group) { create :group, open: true }
+
+        it 'logs the user action' do
+          project = create(:project, state: 'unconfirmed', owner: user)
+          post 'submit_add', id: group.id, project_id: project.id
+          should log_user_action user, :submit_add, group
+        end
 
         it 'allows adding of unconfirmed project to group' do
           project = create(:project, state: 'unconfirmed', owner: user)
@@ -220,12 +235,22 @@ describe GroupsController do
   describe 'POST remove_project' do
     let(:group) { create :group }
     let(:project) { create :project }
-    before { group.projects << project }
-    before { @ability.stub!(:can?).and_return(true) }
-    before { post :remove_project, id: group.id, project_id: project.id }
+    let(:user) { group.owner }
 
-    it { should set_the_flash }
+    before do
+      group.projects << project
+      @ability.stub!(:can?).and_return(true)
+      sign_in user
+      post :remove_project, id: group.id, project_id: project.id
+    end
+
+    it { should set_the_flash.to(/removed from group/) }
     it { should redirect_to group_path(group) }
+    it { should log_user_action user, :remove_project, group }
+    it 'logs the project id' do
+      UserAction.last.message.should match 'project_id'
+      UserAction.last.message.should match project.id.to_s
+    end
   end
 
   describe 'POST destroy' do
@@ -245,6 +270,15 @@ describe GroupsController do
       it "allows group deletion" do
         expect {get 'destroy', id: group.id}.to change {Group.count}.by(-1)
         expect(response).to redirect_to(groups_path)
+      end
+
+      it 'logs the user action' do
+        get 'destroy', id: group.id
+        action = UserAction.last
+        action.user.should eq user
+        action.event.should eq :destroy.to_s
+        UserAction.last.subject_type.should eq 'Group'
+        UserAction.last.subject_id.should eq group.id
       end
     end
 
@@ -285,5 +319,4 @@ describe GroupsController do
       end
     end
   end
-
 end
