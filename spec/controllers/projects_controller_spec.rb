@@ -97,6 +97,7 @@ describe ProjectsController do
       before { post :update, id: project.name, project: attributes_for(:project) }
 
       it { should set_the_flash.to(/Successfully updated project/) }
+      it { should log_user_action(user, :update, project) }
     end
   end
 
@@ -104,6 +105,12 @@ describe ProjectsController do
     context 'with permission' do
       let(:project) { create :project }
       before { @ability.stub!(:can?).with(:activate, project).and_return(true) }
+      let(:user) { project.owner }
+      before { sign_in user }
+
+      context 'when not signed in' do
+        pending 'does not activate project'
+      end
 
       it 'sets project state to active if project has payment_account_id' do
         # TODO extract this into a fake Amazon API
@@ -111,6 +118,13 @@ describe ProjectsController do
         project.save
         put :activate, id: project.to_param
         expect(project.reload.state).to eq :active
+      end
+
+      it 'logs the activate event' do
+        project.payment_account_id = 'ABCD'
+        project.save
+        put :activate, id: project.to_param
+        should log_user_action user, :activate, project
       end
 
       it "doesn't activate project without a payment_account_id" do
@@ -230,6 +244,20 @@ describe ProjectsController do
         expect(response.body.inspect).to include("error")
         expect(Project.find_by_name(invalid_attributes[:name])).to be_nil
       end
+
+      it 'logs the create action' do
+        attributes = attributes_for(:project)
+        post :create, {project: attributes}
+        should log_user_action user, :create, Project.last
+      end
+
+      it 'logs the params' do
+        attributes = attributes_for(:project)
+        post :create, {project: attributes}
+        [:name, :short_description, :long_description, :end_date, :funding_goal, :state].each do |attr|
+          UserAction.last.message.should match attributes[attr].to_s
+        end
+      end
     end
   end
 
@@ -242,6 +270,10 @@ describe ProjectsController do
         expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
         expect(flash[:notice]).to include "successfully deleted"
         expect(response).to redirect_to(root_path)
+      end
+
+      pending 'logs the user action' do
+        should log_user_action user, :destroy, Project.last
       end
 
       it "should succeed destroy" do

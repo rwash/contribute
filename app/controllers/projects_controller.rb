@@ -26,6 +26,7 @@ class ProjectsController < InheritedResources::Base
     authorize! :create, @project
 
     if @project.save
+      log_user_action :create, params[:project]
       unless params[:project][:video].nil?
         @project.video = Video.create(title: @project.name, project_id: @project.id)
         @project.video.delay.upload_video(params[:project][:video].path)
@@ -56,6 +57,7 @@ class ProjectsController < InheritedResources::Base
     end
 
     if @project.update_attributes(params[:project])
+      log_user_action :update
       flash[:notice] = "Successfully updated project."
     end
 
@@ -68,6 +70,7 @@ class ProjectsController < InheritedResources::Base
 
     # TODO this will return true if save fails -- this is a very real possibility
     @project.activate!
+    log_user_action :activate
 
     flash[:notice] = "Successfully activated project."
     respond_with(@project)
@@ -168,5 +171,9 @@ class ProjectsController < InheritedResources::Base
 
   def search_term
     params[:search]
+  end
+
+  def log_user_action event, message = nil
+    UserAction.create user: current_user, subject: @project.reload, event: event, message: message.to_json
   end
 end
