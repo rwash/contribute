@@ -56,7 +56,7 @@ class Project < ActiveRecord::Base
   searchable do
     text :name, :short_description
     text :owner_name do
-      owner.name
+      owner.name rescue nil
     end
     boolean :active do
       state.active?
