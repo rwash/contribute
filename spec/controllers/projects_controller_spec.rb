@@ -93,10 +93,17 @@ describe ProjectsController do
       let(:project) { create :project }
       before { sign_in user }
       before { @ability.stub!(:can?).with(:update, project).and_return(true) }
-      before { post :update, id: project.name, project: attributes_for(:project) }
+      before { post :update, id: project.name, project: attributes }
+      let(:attributes) { attributes_for :project }
 
       it { should set_the_flash.to(/Successfully updated project/) }
       it { should log_user_action(user, :update, project) }
+
+      it 'logs the params' do
+        attributes.keys.each do |attr|
+          UserAction.last.message.should match attributes[attr].to_s
+        end
+      end
     end
   end
 
@@ -253,7 +260,7 @@ describe ProjectsController do
       it 'logs the params' do
         attributes = attributes_for(:project)
         post :create, {project: attributes}
-        [:name, :short_description, :long_description, :end_date, :funding_goal, :state].each do |attr|
+        attributes.keys.each do |attr|
           UserAction.last.message.should match attributes[attr].to_s
         end
       end

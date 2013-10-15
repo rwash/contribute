@@ -57,7 +57,7 @@ class ProjectsController < InheritedResources::Base
     end
 
     if @project.update_attributes(params[:project])
-      log_user_action :update
+      log_user_action :update, params[:project]
       flash[:notice] = "Successfully updated project."
     end
 
