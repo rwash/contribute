@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130917191658) do
+ActiveRecord::Schema.define(:version => 20131015154545) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -236,6 +236,16 @@ ActiveRecord::Schema.define(:version => 20130917191658) do
     t.integer  "project_id"
     t.boolean  "email_sent"
     t.string   "title"
+  end
+
+  create_table "user_actions", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "object_type"
+    t.integer  "object_id"
+    t.string   "event"
+    t.text     "message"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
