@@ -18,7 +18,7 @@ feature 'amazon process', :js do
       #fill in form
       fill_in 'name' , with: project.name
       fill_in 'project_funding_goal', with: project.funding_goal
-      fill_in 'DatePickerEndDate', with: project.end_date.strftime('%m/%d/%Y')
+      fill_in 'DatePickerEndDate', with: project.end_date.to_s(:db)
       fill_in 'project_short_description', with: project.short_description
       fill_in_ckeditor 'project_long_description', with: 'This is my message!'
 

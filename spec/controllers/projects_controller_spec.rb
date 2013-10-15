@@ -216,8 +216,8 @@ describe ProjectsController do
       end
 
       it "succeeds for valid attributes" do
-        p = build(:project).attributes.symbolize_keys
-        expect{ post :create, project: p }.to change{ Project.count }.by 1
+        attributes = attributes_for :project
+        expect{ post :create, project: attributes }.to change(Project, :count).by 1
 
         expect(response).to redirect_to(Project.last)
       end
