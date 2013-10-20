@@ -4,6 +4,22 @@ describe ProjectsController do
   include Devise::TestHelpers
   render_views
 
+  [:index, :show].each do |page|
+    it "records page views for #{page}" do
+      get page, test_params
+      should log_page_view nil, :projects, page, test_params
+    end
+
+    private
+    def test_params
+      {a: :b, "string_key" => 10, id: project.to_param}
+    end
+
+    def project
+      @_project ||= create :project
+    end
+  end
+
   # For stubbing abilities
   # See https://github.com/ryanb/cancan/wiki/Testing-Abilities
   before do

@@ -17,10 +17,16 @@ describe UsersController do
   describe "GET 'show'" do
     context 'with permission' do
       before { @ability.stub!(:can?).with(:read, user).and_return(true) }
-      before { get :show, id: user.id }
+      before { get :show, params }
 
       it { should respond_with :success }
       it { should_not set_the_flash }
+      it { should log_page_view nil, :users, :show, params }
+
+      private
+      def params
+        {id: user.id}
+      end
     end
 
     context 'without permission' do
