@@ -1,5 +1,15 @@
 require 'spec_helper'
 
 describe PageView do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'has a user attribute' do
+    pv = PageView.new
+    pv.user = user
+    pv.save
+    pv.user.should eq user
+  end
+
+  private
+  def user
+    @_user ||= create :user
+  end
 end
