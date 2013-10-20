@@ -5,18 +5,20 @@ describe ProjectsController do
   render_views
 
   [:index, :show].each do |page|
-    it "records page views for #{page}" do
-      get page, test_params
-      should log_page_view nil, :projects, page, test_params
-    end
+    context "GET #{page}" do
+      let(:user) { create :user }
+      let(:project) { create :project }
+      before { sign_in user }
 
-    private
-    def test_params
-      {a: :b, "string_key" => 10, id: project.to_param}
-    end
+      it "records page views" do
+        get page, test_params
+        should log_page_view user, :projects, page, test_params
+      end
 
-    def project
-      @_project ||= create :project
+      private
+      def test_params
+        {a: :b, "string_key" => 10, id: project.to_param}
+      end
     end
   end
 

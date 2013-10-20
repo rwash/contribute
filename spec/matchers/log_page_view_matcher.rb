@@ -5,11 +5,8 @@ RSpec::Matchers.define :log_page_view do |user, controller, action, params|
       options[key.to_s] = value.to_s
       options
     end
-    log.user == user &&
-      log.controller.to_s == controller.to_s
-      log.action.to_s == action.to_s &&
-      log.parameters.to_s == filtered_params.to_s &&
-      log.ip == local_ip
+    [log.user, log.controller, log.action, log.parameters, log.ip] ==
+      [user, controller.to_s, action.to_s, filtered_params.to_s, local_ip]
   end
 
   failure_message_for_should do

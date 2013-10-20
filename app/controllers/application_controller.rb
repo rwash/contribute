@@ -25,7 +25,8 @@ class ApplicationController < ActionController::Base
   end
 
   def log_page_view
-    PageView.create(controller: params[:controller],
+    PageView.create(user_id: (current_user.id rescue nil),
+                    controller: params[:controller],
                     action: params[:action],
                     parameters: params.except(:controller, :action).to_s,
                     ip: request.remote_ip)
