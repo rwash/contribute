@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'controller_helper'
 
 describe UsersController do
   include Devise::TestHelpers

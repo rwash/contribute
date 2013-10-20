@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'controller_helper'
 
 describe PagesController do
   include Devise::TestHelpers
