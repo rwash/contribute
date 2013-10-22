@@ -150,9 +150,6 @@ gem 'daemons', '~> 1.1.9'
 # processed by rails, so we can use embedded ruby.
 gem 'high_voltage', '~> 1.2.1'
 
-#judge is a gem used for client side validation.
-gem 'judge', '~> 1.5.0'
-
 # draper implements the presenter (decorator) pattern
 # to help remove logic from views and view code from models.
 # Github:

@@ -9,20 +9,8 @@
 <div class="form">
   <h2>Welcome to your new project.</h2>
   <p>&nbsp;</p>
-  <script type="text/javascript">
-    var watcher = new judge.Watcher(document.getElementById('name'));
-    watcher.validate(function(valid, messages, element) {
-    if (!valid) {
-      element.style.border = '1px solid red';
-    }
-  });
-    
-  </script>
 
-
-
-
-  <%= form_for(@project, :builder => Judge::FormBuilder, :html => {:multipart => true}) do |f| %>
+  <%= form_for(@project, :html => {:multipart => true}) do |f| %>
 
     <% if @project.errors.any? %>
       <div id="error_explanation">
@@ -40,7 +28,7 @@
       <%= f.label :name, "Project Name: ", :class => 'pull-right bold' %>
     </div>
     <div class="span4">
-      <%= f.text_field :name, :validate => true, :id => 'name', :class => 'span3' %>
+      <%= f.text_field :name, :id => 'name', :class => 'span3' %>
     </div>
   </div>
       
