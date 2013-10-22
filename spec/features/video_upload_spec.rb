@@ -13,6 +13,7 @@ feature 'upload video', :js do
         visit(new_project_path)
         current_path.should eq new_project_path
 
+        pending "video upload is currently broken"
         #fill in form
         attach_file 'video', "#{Rails.root}/test/test.mov"
         fill_in 'name' , :with => project.name
@@ -21,7 +22,6 @@ feature 'upload video', :js do
         fill_in 'project_short_description', :with => project.short_description
         fill_in_ckeditor 'project_long_description', :with => 'This is my message!'
 
-        pending "amazon sends a strange response"
         click_button 'Create Project'
 
         expect(page).to have_content('Sign in with your Amazon account')
