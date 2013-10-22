@@ -1,8 +1,10 @@
-<div class="row well">
-  <%= f.label :video, "Project Video (optional): ", :class => 'pull-left bold' %> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+<div class="field">
+  <%= f.label :video, "Project Video (optional): " %> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <%= f.file_field :video, :class => 'picture-btn', :id => 'video' %>
   <% unless @video.nil? %>
-    <div class="pull-right"><%= render :partial => 'videos/small', :object => @video %></div>
+    <div class="movie-preview">
+      <%= render :partial => 'videos/small', :object => @video %>
+    </div>
     <div class="pull-left">
       <div class="span4">
         <%= link_to "Remove and Delete Project Video", destroy_video_path(@video), :class => 'btn btn-danger' %>

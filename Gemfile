@@ -117,6 +117,7 @@ gem 'whenever', '~> 0.8.2'
 # Bootstrap
 # CSS framework used to make the site all nice and purty
 gem 'twitter-bootstrap-rails', '~> 2.2.1'
+gem 'neat'
 
 # Less-Rails is a dependency for Bootstrap, which is written
 # with the LESS stylesheet language instead of Rails' default SCSS

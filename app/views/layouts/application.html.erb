@@ -11,20 +11,18 @@
   <%= render 'application/flash', flash: flash%>
 
   <div class="container">
-    <div class="row">
-      <% if content_for? :sidebar %>
+    <% if content_for? :sidebar %>
+      <div class="row">
         <div class="span7 offset1">
           <%= yield %>
         </div>
         <div id="sidebar" class="span3 well">
           <%= yield :sidebar %>
         </div>
-      <% else %>
-        <div class="span10 offset1">
-          <%= yield %>
-        </div>
-      <% end %>
-    </div>
+      </div>
+    <% else %>
+      <%= yield %>
+    <% end %>
   </div>
 
   <%= render 'application/footer' %>

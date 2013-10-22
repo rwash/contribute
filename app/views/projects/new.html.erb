@@ -6,12 +6,9 @@
   </script>
 <% end %>
 
-<div class="form">
-  <h2>Welcome to your new project.</h2>
-  <p>&nbsp;</p>
+<h2 id='new-project-header'>Tell us a bit about your project...</h2>
 
-  <%= form_for(@project, :html => {:multipart => true}) do |f| %>
-
+<%= form_for(@project, html: {multipart: true}) do |f| %>
     <% if @project.errors.any? %>
       <div id="error_explanation">
       <h2><%= pluralize(@project.errors.count, "error") %> prevented this project from being saved:</h2>
@@ -22,73 +19,38 @@
       </ul>
       </div>
     <% end %>
-      
-  <div class="row well">
-    <div class="span1-5">
-      <%= f.label :name, "Project Name: ", :class => 'pull-right bold' %>
-    </div>
-    <div class="span4">
-      <%= f.text_field :name, :id => 'name', :class => 'span3' %>
-    </div>
-  </div>
-      
-  <p><%= render :partial => "picture", :locals => {:f => f} %></p>
-  <p><%= render :partial => "videos/form", :locals => {:f => f} %></p>
 
-  <div class="row well">
-    <div class="span1-5">
-      <%= f.label :funding_goal, "Funding Goal: $", :class => 'pull-right bold' %>
-    </div>
-    <div class="span4">
-      <%= f.text_field :funding_goal, :class => 'span3', :placeholder => '0.00' %>
-    </div>
+  <div class="field">
+    <%= f.label :name, "Project Name: " %>
+    <%= f.text_field :name, :id => 'name' %>
   </div>
 
-  <div class="row well">
-    <div class="span1-5">
-      <%= f.label :end_date, "End Date: ", :class => 'pull-right bold' %>
-    </div>
-    <div class="span4">
-      <%= f.text_field :end_date, :class => 'span3', :id => "DatePickerEndDate", :value => @project.end_date.blank? ? '' : format_date(@project.end_date) %>
-    </div>
+  <%= render :partial => "picture", :locals => {:f => f} %>
+  <%# TODO fix video %>
+  <%#= render :partial => "videos/form", :locals => {:f => f} %>
+
+  <div class="field">
+    <%= f.label :funding_goal, "Funding Goal: $" %>
+    <%= f.text_field :funding_goal, :placeholder => '0.00' %>
   </div>
 
-  <div class="row well">
-    <div class="span1-5">
-      <%= f.label :short_description, "Short Description:", :class => 'pull-right bold' %>
-    </div>
-    <div class="span4">
-      <%= f.text_area :short_description, :rows => 4, :class => 'span3' %>
-    </div>
-      <span class="help-block">This is used to describe your project when featured on the homepage or when the project is embedded on another website.</span>
+  <div class="field">
+    <%= f.label :end_date, "End Date: " %>
+    <%= f.text_field :end_date, :id => "DatePickerEndDate", :value => @project.end_date.blank? ? '' : format_date(@project.end_date) %>
   </div>
 
-  <div class="row well">
-    <div class="span1-5">
-      <%= f.label :long_description, "Long Description: ", :class => 'pull-right bold' %>
-    </div>
-    <div class="span8">
-      <%= f.cktext_area :long_description, :cols => 20, :rows => 40 %>
-    </div>
+  <div class="field">
+    <%= f.label :short_description, "Short Description:" %>
+    <%= f.text_area :short_description, :rows => 4 %>
+    <span class="help-block">This is used to describe your project when featured on the homepage or when the project is embedded on another website.</span>
   </div>
 
-  <div class="row well">
-    <%= f.submit :class => 'btn btn-success btn-large pull-right submit-form' %>
+  <div class="field">
+    <%= f.label :long_description, "Long Description: " %>
+    <%= f.cktext_area :long_description %>
   </div>
+
+  <div class="submit">
+    <%= f.submit :class => 'btn btn-success btn-large submit-form' %>
   </div>
-  <% end %>
-
-
-  <script>
-    $(".submit-form").click(function () {
-      $(".loading").show(0);
-      $(".submit-form").hide(0);
-    });
-  </script>
-
-  <style>
-    .loading {
-      display: none;
-    }
-  </style>
-</div>
+<% end %>

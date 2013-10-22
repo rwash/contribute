@@ -1,0 +1,45 @@
+@import 'bourbon';
+@import 'neat';
+
+/* ------- New Project Form ------- */
+
+#new-project-header {
+  text-align: center;
+  margin-bottom: $gutter;
+}
+
+.field {
+  margin-top: $gutter;
+  @include row;
+  label {
+    text-align: right;
+    @include span-columns(4 of 12);
+  }
+  input:not([type=submit]):not([type=file]), textarea {
+    @include span-columns(4 of 12);
+    padding: $gutter;
+  }
+  .help-block {
+    @include span-columns(2 of 12);
+  }
+
+  .field_with_errors {
+    @include span-columns(4 of 12);
+    label, input:not([type=submit]):not([type=file]), textarea {
+      @include span-columns(4 of 4);
+    }
+  }
+  /* TODO figure out an elegant way to do this... */
+  div.cke {
+    @include span-columns(6 of 12);
+  }
+}
+
+div.submit {
+  margin: $gutter;
+  @include span-columns(4 of 12);
+  @include shift(4);
+  input {
+    @include fill-parent;
+  }
+}
