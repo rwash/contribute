@@ -9,6 +9,8 @@
   </p>
 <% end %>
 
+<div class="projects">
 <% @projects.each do |project| %>
   <%= render partial: 'shared/project', locals: {project: project} %>
 <% end %>
+</div>
