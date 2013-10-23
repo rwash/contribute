@@ -1,8 +1,6 @@
 @import 'bourbon';
 @import 'neat';
 
-/* ------- Index ------- */
-
 .project-card {
   background-color: #FFF;
   padding: $gutter;
@@ -15,59 +13,46 @@
   .progress {
     overflow: hidden;
     height: 12px;
-    margin-bottom: 18px;
     @include linear-gradient(top, #c5c5c5, #c9c9c9);
     border-radius: 6px;
     .bar {
-      width: 0%;
-      height: 18px;
-      color: #ffffff;
-      font-size: 12px;
-      text-align: center;
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
       @include linear-gradient(top, #2b5862, #6b9199);
       @include transition(width 0.6s ease);
     }
   }
 }
 
-/* ------- New Project Form ------- */
-
 .form-header {
   text-align: center;
   margin-bottom: $gutter;
 }
-.field {
-  margin-top: $gutter;
-  @include row;
-  label {
-    text-align: right;
-    @include span-columns(4 of 12);
-  }
-  input:not([type=submit]):not([type=file]), textarea {
-    @include span-columns(4 of 12);
-    padding: $gutter;
-  }
-  .help-block {
-    @include span-columns(2 of 12);
-  }
-
-  .field_with_errors {
-    @include span-columns(4 of 12);
-    label, input:not([type=submit]):not([type=file]), textarea {
-      @include span-columns(4 of 4);
+.form {
+  .field {
+    margin-top: $gutter;
+    @include row;
+    label {
+      text-align: right;
+      @include span-columns(4 of 12);
     }
+    input:not([type=submit]):not([type=file]), textarea {
+      @include span-columns(4 of 12);
+      padding: $gutter;
+    }
+    .help-block { @include span-columns(2 of 12); }
+
+    .field_with_errors {
+      @include span-columns(4 of 12);
+      label, input:not([type=submit]):not([type=file]), textarea {
+        @include span-columns(4 of 4);
+      }
+    }
+    /* TODO figure out an elegant way to display this... */
+    div.cke { @include span-columns(6 of 12); }
   }
-  /* TODO figure out an elegant way to do this... */
-  div.cke {
-    @include span-columns(6 of 12);
-  }
-}
-div.submit {
-  margin: $gutter;
-  @include span-columns(4 of 12);
-  @include shift(4);
-  input {
-    @include fill-parent;
+  div.submit {
+    margin: $gutter;
+    @include span-columns(4 of 12);
+    @include shift(4);
+    input { @include fill-parent; }
   }
 }
