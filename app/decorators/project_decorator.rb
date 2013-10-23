@@ -63,4 +63,20 @@ class ProjectDecorator < Draper::Decorator
       image_tag "BlockSShow.png", :class => "projectImage"
     end
   end
+
+  def thumbnail_tag
+    if picture?
+      image_tag picture.url(:thumb), :width => '213'
+    else
+      image_tag "BlockSThumb.png", :width => '213'
+    end
+  end
+
+  def progress_bar_percentage
+    if contributions_percentage >= 1
+      contributions_percentage
+    else
+      1
+    end
+  end
 end

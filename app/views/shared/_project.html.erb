@@ -1,54 +1,42 @@
 <% project = ProjectDecorator.decorate project %>
-    <div class="thumbnail">
-    <% if (@group) and (@group.owner == current_user or project.owner == current_user) %>
-      <span class="delete-x"><%= link_to "x", remove_project_from_group_path(@group, project), :confirm => "Are you sure you want to remove #{project.name} from #{@group.name}?" %></span>
-    <% end %>
-    <%= link_to project do %>
-      <% if project.picture? %>
-      <%= image_tag project.picture.url(:thumb), :width => '213' %>
-    <% else %>
-      <%= image_tag "BlockSThumb.png", :width => '213' %>
-    <% end %>
-  <% end %>
-      <h4 class="ellipsisName"><%= link_to project.name, project %></h4>
-      <p class="byline">by <%= link_to project.owner.name, project.owner %></p>
-      <p class="ellipsisDesc"><%= project.short_description %></p>
-      <hr>
-      <div class="project-footer">
-      <div class="progress">
-        <% if project.contributions_percentage >= 1 %>
-        <div class="bar" style="width: <%= project.contributions_percentage %>%;"></div>
-      <% else %>
-        <div class="bar" style="width: 1%;"></div>
-      <% end %>
-    </div>
-    <div class="money-raised">
-      <span class="bold"><%= number_to_currency(project.contributions_total, :precision => 0) %></span>
-      <span class="italic"> raised</span>
-      <span class="bold">(<%= project.contributions_percentage %>%)</span>
-    </div>
-    <div class="time-left"><span class="bold"><%= project.remaining_time %></span></div>
-    <div class="state">
-      <%= project.colored_state_description if project.state != 'active' %>
-    </div>
-    <div class="add">
-      <%= link_to do %>
+
+<div class="project-card">
+  <%= link_to project.thumbnail_tag, project %>
+  <h4 class="name"><%= link_to project.name, project %></h4>
+  <div class="byline">by <%= link_to project.owner.name, project.owner %></div>
+  <p class="description"><%= project.short_description %></p>
+
+  <div class="progress">
+    <div class="bar" style="width: <%= project.progress_bar_percentage %>%;"></div>
+  </div>
+
+  <div class="money-raised">
+    <span class="bold"><%= number_to_currency(project.contributions_total, :precision => 0) %></span>
+    <span class="italic"> raised</span>
+    <span class="bold">(<%= project.contributions_percentage %>%)</span>
+  </div>
+
+  <div class="time-left"><span class="bold"><%= project.remaining_time %></span></div>
+  <div class="state">
+    <%= project.colored_state_description if project.state != 'active' %>
+  </div>
+  <div class="add">
+    <%= link_to do %>
       <div class="star_up"></div>
       <div class="star_on"></div>
-        <% end %>
-    </div>
-      </div>
-    </div>
+    <% end %>
+  </div>
 
-<script>
-  $(".add").click(function () {
-    $(".star_up").hide(0); 
-    $(".star_on").show(0);
-  });
-</script>
+  <script>
+$(".add").click(function () {
+  $(".star_up").hide(0); 
+  $(".star_on").show(0);
+});
+  </script>
 
-<style>
-  .star_on {
-    display: none;
-  }
-</style>
+  <style>
+.star_on {
+  display: none;
+}
+  </style>
+</div>
