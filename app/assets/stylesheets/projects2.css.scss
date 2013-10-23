@@ -29,29 +29,6 @@
       @include transition(width 0.6s ease);
     }
   }
-  .money-raised {
-    float: left;
-    padding-right: 35px;
-  }
-  .time-left {
-    float: left;
-    padding-right: 15px;
-  }
-  .add {
-    float: right;
-  }
-  .star_up {
-    background-image: url(star_up.png);
-    background-repeat: no-repeat;
-    width: 19px;
-    height: 17px;
-  }
-  .star_on {
-    background-image: url(star_on.png);
-    background-repeat: no-repeat;
-    width: 19px;
-    height: 17px;
-	}
 }
 
 /* ------- New Project Form ------- */
