@@ -1,6 +1,10 @@
 @import 'bourbon';
 @import 'neat';
 
+.container {
+  @include outer-container;
+}
+
 #navigation-inner {
   @include outer-container;
 	height: 70px;
@@ -20,6 +24,17 @@
         color: #e3eff2;
         text-decoration: underline;
       }
+    }
+  }
+
+  .search {
+    padding: $gutter 0;
+    @include span-columns(3 of 12);
+    input {
+      @include span-columns(1 of 3);
+    }
+    input:not([type=submit]) {
+      @include span-columns(2 of 3);
     }
   }
 }
