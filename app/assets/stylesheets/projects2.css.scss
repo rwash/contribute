@@ -45,12 +45,14 @@ form {
     .help-block { @include span-columns(2 of 12); }
 
     .field_with_errors {
-      @include span-columns(4 of 12);
+      &:first-child { @include span-columns(3 of 12); }
+      &:nth-child(2) { @include span-columns(6 of 12); }
       label, input:not([type=submit]):not([type=file]), textarea {
-        @include span-columns(4 of 4);
+        @include fill-parent;
       }
+      .cke_textarea_inline { @include fill-parent; }
     }
-    /* TODO figure out an elegant way to display this... */
+    /* Make the CKEditor div look like a form field */
     div.cke_textarea_inline {
       @include span-columns(8 of 12);
       background-color: #FFF;
