@@ -51,7 +51,13 @@ form {
       }
     }
     /* TODO figure out an elegant way to display this... */
-    div.cke { @include span-columns(8 of 12); }
+    div.cke_textarea_inline {
+      @include span-columns(8 of 12);
+      background-color: #FFF;
+      border: 1px solid rgb(204,204,204);
+      border-radius: 4px;
+      min-height: 16em;
+    }
   }
   div.submit {
     margin: $gutter;

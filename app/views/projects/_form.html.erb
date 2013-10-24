@@ -28,8 +28,14 @@
 
   <div class="field">
     <%= f.label :long_description, "Long Description: " %>
-    <%= f.cktext_area :long_description %>
+    <%= f.text_area :long_description %>
   </div>
+
+  <script type="text/javascript">
+//<![CDATA[
+  if (typeof CKEDITOR != 'undefined') { CKEDITOR.inline('project[long_description]'); }
+  //]]>
+  </script>
 
   <div class="submit">
     <%= f.submit :class => 'btn btn-success btn-large submit-form' %>

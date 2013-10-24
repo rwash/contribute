@@ -74,7 +74,7 @@ GEM
     childprocess (0.3.7)
       ffi (~> 1.0, >= 1.0.6)
     chronic (0.9.0)
-    ckeditor (4.0.2)
+    ckeditor (4.0.6)
       mime-types
       orm_adapter
     classy_enum (3.2.0)
@@ -157,7 +157,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     metaclass (0.0.1)
-    mime-types (1.21)
+    mime-types (1.25)
     mini_magick (3.4)
       subexec (~> 0.2.1)
     mocha (0.10.5)
