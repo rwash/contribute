@@ -30,16 +30,16 @@
   text-align: center;
   margin-bottom: $gutter;
 }
-.form {
+form {
   .field {
     margin-top: $gutter;
     @include row;
     label {
       text-align: right;
-      @include span-columns(4 of 12);
+      @include span-columns(3 of 12);
     }
     input:not([type=submit]):not([type=file]), textarea {
-      @include span-columns(4 of 12);
+      @include span-columns(6 of 12);
       padding: $gutter;
     }
     .help-block { @include span-columns(2 of 12); }
@@ -51,7 +51,7 @@
       }
     }
     /* TODO figure out an elegant way to display this... */
-    div.cke { @include span-columns(6 of 12); }
+    div.cke { @include span-columns(8 of 12); }
   }
   div.submit {
     margin: $gutter;
