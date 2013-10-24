@@ -18,7 +18,7 @@ tmp
 # Ignore pictures for Carrierwave
 public/uploads
 # And Paperclip while it's still used...
-public/system/pictures
+public/system
 # Precompiled Assets
 public/assets
 
