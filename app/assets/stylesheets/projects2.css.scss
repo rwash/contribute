@@ -6,9 +6,10 @@
   padding: $gutter;
   @include span-columns(3 of 12);
   &:nth-child(4n) { @include omega; }
-  .description {
-    max-height: 8em;
+  .metadata {
+    height: 14em;
     overflow: hidden;
+    margin-bottom: $gutter;
   }
   margin-bottom: $gutter;
   box-shadow: 4px 4px 2px #CCC;

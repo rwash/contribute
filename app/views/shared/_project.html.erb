@@ -2,9 +2,11 @@
 
 <div class="project-card">
   <%= link_to project.thumbnail_tag, project %>
-  <h4 class="name"><%= link_to project.name, project %></h4>
-  <div class="byline">by <%= link_to project.owner.name, project.owner %></div>
-  <p class="description"><%= project.short_description %></p>
+  <div class="metadata">
+    <h4 class="name"><%= link_to project.name, project %></h4>
+    <div class="byline">by <%= link_to project.owner.name, project.owner %></div>
+    <p class="description"><%= project.short_description %></p>
+  </div>
 
   <div class="progress">
     <div class="bar" style="width: <%= project.progress_bar_percentage %>%;"></div>
