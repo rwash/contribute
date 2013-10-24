@@ -65,7 +65,7 @@ class ProjectDecorator < Draper::Decorator
   end
 
   def thumbnail_tag
-    if picture?
+    if picture.url
       image_tag picture.url(:thumb), :width => '213'
     else
       image_tag "BlockSThumb.png", :width => '213'
