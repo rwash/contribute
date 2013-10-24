@@ -1,0 +1,25 @@
+@import 'bourbon';
+@import 'neat';
+
+#navigation-inner {
+  @include outer-container;
+	height: 70px;
+
+  #logo {
+    @include span-columns(3 of 12);
+  }
+  .nav-links {
+    @include span-columns(3 of 12);
+    padding: $gutter 0;
+    a {
+      @include span-columns(1.5 of 3);
+      // TODO extract this into global link style
+      color: #96CCD8;
+      font-size: 18px;
+      &:hover {
+        color: #e3eff2;
+        text-decoration: underline;
+      }
+    }
+  }
+}

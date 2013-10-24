@@ -1,10 +1,11 @@
 <div id="navigation">
   <div id="navigation-inner">
     <div id="logo"><%= link_to image_tag("logo-alpha.png"), root_path %></div>
-    <ul>
-      <li><%= link_to "Groups", groups_path %></lit>
-      <li><%= link_to "Create a Project", new_project_url %></li>
-    </ul>
+    <div class="nav-links">
+      <%= link_to "Browse", groups_path %>
+      <%= link_to "Create", new_project_url %>
+    </div>
+    <%= render partial: 'shared/search' %>
     <div id="account-options">
       <% if user_signed_in? %>
         <%= link_to 'Profile', current_user %> |
