@@ -1,3 +1,22 @@
 // Place all the styles related to the Updates controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#update_body a{
+  font-weight: lighter;
+  color: #6e6e6e;
+  font-size: small;
+  font-weight: bold;
+}
+.update_title {
+  font-size: 2em;
+  padding-bottom: 5px;
+  border-bottom: 2px dotted #8d8d8d;
+  margin-bottom: 10px;
+}
+
+#update_form {
+  background-color: #aaa;
+  padding: 20px;
+  margin-top: 30px;
+}

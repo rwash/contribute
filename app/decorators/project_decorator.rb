@@ -58,9 +58,9 @@ class ProjectDecorator < Draper::Decorator
     if model.video.complete?
       render model.video
     elsif model.picture?
-      image_tag model.picture.url(:show), :class => "projectImage"
+      image_tag model.picture.url(:show)
     else
-      image_tag "BlockSShow.png", :class => "projectImage"
+      image_tag "BlockSShow.png"
     end
   end
 

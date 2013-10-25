@@ -9,27 +9,42 @@ $(document).ready(function(){
 });
 </script>
 
-<div class="next-action">
-  <% if @project.owner == current_user %>
-    <p><%= @project.colored_state_description %></p><br/>
-  <% end %>
+<div class="project-header">
+  <h1><%= @project.name %></h1>
+  <div class="metadata">
+    <div class="byline"><%= link_to @project.owner.name, @project.owner %></div>
+    <div class="location"><%= @project.owner.location %></div>
+  </div>
+</div>
 
-  <%= render 'action_links' %>
+<div class="project-info-wrapper">
+  <div class="project-media"><%= @project.media %></div>
 
-  <ul id='project-info'>
-    <li>End Date: <%= @project.end_date %></li><br>
-    <li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li><br>
-    <li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
-  </ul>
+  <div class="next-action">
+    <div class='statistics'>
+      <div class="stat">
+        <span class="number"><%= (@project.end_date.to_date - Date.today).to_i %></span>
+        days left
+      </div>
+      <div class="stat">
+        <span class="number"><%= number_to_currency(@project.contributions_total, precision: 0) %></span>
+        contributed
+      </div>
+      <div class="stat">
+        <span class="number"><%= number_to_currency(@project.funding_goal, precision: 0) %></span>
+        goal
+      </div>
+    </div>
+
+    <% if @project.owner == current_user %>
+      <p><%= @project.colored_state_description %></p><br/>
+    <% end %>
+
+    <%= render 'action_links' %>
+  </div>
 </div>
 
 <div class="project">
-  <div id="projectHead" align="center">
-    <h1><%= @project.name %></h1>
-    <h2><%= @project.owner.location %></h2>
-    <h3>By: <%= link_to @project.owner.name, @project.owner %> </h3>
-  </div>
-
   <div id="tabs">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a></li>
@@ -41,10 +56,6 @@ $(document).ready(function(){
 
   <div class="tab-content">
     <div class="tab-pane active" id="projectContent">
-
-      <%= @project.media %>
-
-      <br/><br/>
       <%= raw(@project.long_description) %><br/>
     </div>
 

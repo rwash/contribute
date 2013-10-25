@@ -1,0 +1,29 @@
+
+.comment {
+  .replyBlock {
+    padding: 0 0 0 15px;
+    margin: 0 0 18px;
+    border-left: 2px solid #eeeeee;
+  }
+  .replyBlock p {
+    margin-bottom: 5px;
+  }
+  .time {
+    font-weight: lighter;
+    color: #6e6e6e;
+    font-size: smaller;
+  }
+  .username {
+    font-weight: bold;
+    font-size: 1.3em;
+    color: #252525;
+  }
+}
+
+#comment_body a{
+  font-weight: lighter;
+  color: #6e6e6e;
+  font-size: small;
+  font-weight: bold;
+}
+
