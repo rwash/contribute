@@ -1,0 +1,9 @@
+@import 'bourbon';
+@import 'neat';
+
+@mixin card {
+  background-color: #FFF;
+  box-shadow: 4px 4px 2px #CCC;
+  padding: $gutter;
+  margin-bottom: $gutter;
+}

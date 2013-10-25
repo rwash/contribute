@@ -1,32 +1,6 @@
 @import 'bourbon';
 @import 'neat';
 
-.project-card {
-  background-color: #FFF;
-  padding: $gutter;
-  @include span-columns(3 of 12);
-  &:nth-child(4n) { @include omega; }
-  .metadata {
-    height: 14em;
-    overflow: hidden;
-    margin-bottom: $gutter;
-  }
-  margin-bottom: $gutter;
-  box-shadow: 4px 4px 2px #CCC;
-
-  .byline { margin: $gutter/2; }
-  .progress {
-    overflow: hidden;
-    height: 12px;
-    @include linear-gradient(top, #c5c5c5, #c9c9c9);
-    border-radius: 6px;
-    .bar {
-      @include linear-gradient(top, #2b5862, #6b9199);
-      @include transition(width 0.6s ease);
-    }
-  }
-}
-
 .form-header {
   text-align: center;
   margin-bottom: $gutter;

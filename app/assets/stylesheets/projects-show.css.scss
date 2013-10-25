@@ -1,0 +1,14 @@
+@import 'bourbon';
+@import 'neat';
+@import 'mixins/card';
+
+.next-action {
+  @include outer-container;
+  @include card;
+}
+
+.project {
+  @include outer-container;
+  @include card;
+}
+

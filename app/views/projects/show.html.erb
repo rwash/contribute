@@ -9,17 +9,25 @@ $(document).ready(function(){
 });
 </script>
 
-<!-- --------------Bootstrap-tabs------------------- -->
+<div class="next-action">
+  <% if @project.owner == current_user %>
+    <p><%= @project.colored_state_description %></p><br/>
+  <% end %>
 
-<div class="well">
+  <%= render 'action_links' %>
+
+  <ul id='project-info'>
+    <li>End Date: <%= @project.end_date %></li><br>
+    <li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li><br>
+    <li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
+  </ul>
+</div>
+
+<div class="project">
   <div id="projectHead" align="center">
     <h1><%= @project.name %></h1>
     <h2><%= @project.owner.location %></h2>
     <h3>By: <%= link_to @project.owner.name, @project.owner %> </h3>
-    <div class="add_show">
-      <div class="star_up"></div>
-      <div class="star_on"></div>
-    </div>
   </div>
 
   <div id="tabs">
@@ -99,30 +107,3 @@ $(document).ready(function(){
     </div>
   </div>
 </div>
-
-<% content_for :sidebar do %>
-  <% if @project.owner == current_user %>
-    <p><%= @project.colored_state_description %></p><br/>
-  <% end %>
-
-  <%= render 'action_links' %>
-
-  <ul id='project-info'>
-    <li>End Date: <%= @project.end_date %></li><br>
-    <li>Contributed: <%= number_to_currency(@project.contributions_total, :precision => 0) %></li><br>
-    <li>Funding Goal: <%= number_to_currency(@project.funding_goal, :precision => 0) %></li>
-  </ul>
-<% end %>
-
-<script>
-$(".add_show").click (function () {
-  $(".star_up").toggle(0);
-  $(".star_on").toggle(0);
-});
-</script>
-
-<style>
-.star_on {
-  display: none;
-}
-</style>
