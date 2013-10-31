@@ -1,13 +1,13 @@
 <h1><%= @group.name %></h1>
-<blockquote><%= @group.description %></blockquote>
+<div class="description"><%= @group.description %></div>
 <%= image_tag @group.picture.url(:show), class: "groupImage" if @group.picture? %>
 &nbsp;
 
-<% @group.projects.each do |project| %>
-  <%= render partial: 'shared/project-small', locals: { project: project} %>
-<% end %>
-
-<% content_for :sidebar do %>
+<div class="group-actions">
   <%= link_to "Submit a project", new_add_path(@group), :class => 'btn btn-large btn-primary' %><br><br>
   <%= link_to "Admin Page", group_admin_path(@group) if group_admin?(@group) %>
+</div>
+
+<% @group.projects.each do |project| %>
+  <%= render partial: 'shared/project', locals: { project: project} %>
 <% end %>
