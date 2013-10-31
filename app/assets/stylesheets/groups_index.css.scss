@@ -1,0 +1,56 @@
+@import 'bourbon';
+@import 'neat';
+@import 'mixins/card';
+
+.groups {
+  @include span-columns(8 of 12);
+}
+
+.groups-actions {
+  @include span-columns(4 of 12);
+  @include omega;
+}
+
+.sidebar-group {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 93%;
+  display: block;
+  margin-bottom: -15px;
+  color: #4a4a4a;
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.group {
+  position: relative;
+  padding: $gutter 0;
+  @include card;
+
+  .info {
+    @include fill-parent;
+    overflow: hidden;
+  }
+  .name {
+    font-size: 1.6em;
+    @include span-columns(6 of 8);
+    padding: .1em;
+  }
+  .num-projects {
+    text-align: right;
+    font-size: 1.6em;
+    @include span-columns(2 of 8);
+    @include omega;
+  }
+  .description {
+    padding-top: $gutter;
+  }
+  .images {
+    img {
+      @include span-columns(1 of 6);
+    }
+    overflow: hidden;
+    padding-top: $gutter;
+  }
+}

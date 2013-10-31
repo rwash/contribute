@@ -1,25 +1,23 @@
+<div class="groups">
 <% @groups.each do |group| %>
-  <%= link_to group do %>
-    <div class="well group-bar">
-      <span class="group-name"><%= group.name %></span>
-      <![if !IE]>
-        <span class="num-projects"><%= pluralize(group.projects.count, 'Project') %></span><br>
-      <![endif]>
-      <span class="group-description"><%= group.description %></span>
+  <div class="group">
+    <div class="info">
+      <span class="name"><%= link_to group.name, group %></span>
+      <span class="num-projects"><%= pluralize(group.projects.count, 'Project') %></span>
+    </div>
+    <div class="description">
+      <%= group.description %>
+    </div>
+    <div class="images">
       <% group.projects.limit(6).each do |p| %>
-        <div class="group-pic">
-          <% if p.picture? %>
-            <%= image_tag p.picture.url(:thumb), width: '60' %><br>
-          <% else %>
-            <%= image_tag "BlockSThumb.png", width: '60' %>
-          <% end %>
-        </div>
+        <%= p.decorate.thumbnail_tag %>
       <% end %>
     </div>
-  <% end %>
+  </div>
 <% end %>
+</div>
 
-<% content_for :sidebar do %>
+<div class="groups-actions">
   <%= link_to "Create a New Group", new_group_path, class: 'btn btn-large btn-primary', id: 'new-group' %>
 
   <% if @user_groups.any? %>
@@ -32,13 +30,8 @@
 
   <% if @admin_groups.any? %>
     <h4>Groups you own:</h4>
-    <% for group in @admin_groups %>
+    <% @admin_groups.each do |group| %>
       <%= link_to group.name, group, class: 'sidebar-group' %><br>
-      <span class="sidebar-needs-approval">
-        <%= link_to "- #{pluralize(group.approvals.where(status: :approved).count, "project")} needs your approval", group_admin_path(group) %>
-      </span><br>
     <% end %>
   <% end %>
-<% end %>
-
-<p>&nbsp;</p>
+</div>
