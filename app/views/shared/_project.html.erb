@@ -8,9 +8,7 @@
     <p class="description"><%= project.short_description %></p>
   </div>
 
-  <div class="progress">
-    <div class="bar" style="width: <%= project.progress_bar_percentage %>%;"></div>
-  </div>
+  <%= render 'projects/progress', project: project %>
 
   <div class="money-raised">
     <span class="bold"><%= number_to_currency(project.contributions_total, :precision => 0) %></span>

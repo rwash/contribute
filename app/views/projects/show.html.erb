@@ -36,6 +36,8 @@ $(document).ready(function(){
       </div>
     </div>
 
+    <%= render 'projects/progress', project: @project %>
+
     <% if @project.owner == current_user %>
       <p><%= @project.colored_state_description %></p><br/>
     <% end %>
