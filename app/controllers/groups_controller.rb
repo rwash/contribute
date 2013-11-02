@@ -13,11 +13,11 @@ class GroupsController < InheritedResources::Base
     @group = Group.new(params[:group])
     @group.owner = current_user
 
-    if @group.save!
+    if @group.save
       log_user_action :create, @group.name
       redirect_to @group, notice: "Successfully created group."
     else
-      redirect_to new_group_path, error: "Failed to save group. Please try again."
+      render action: :new
     end
   end
 

@@ -1,5 +1,5 @@
 <%= form_for(@project, html: {multipart: true}) do |f| %>
-  <%= render 'project_error_messages' %>
+  <%= render 'shared/form_errors', subject: @project %>
 
   <div class="field">
     <%= f.label :name, "Project Name: " %>

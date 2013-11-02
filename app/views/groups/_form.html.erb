@@ -1,63 +1,36 @@
 <%= form_for(@group) do |f| %>
 
-<div id="form">
+  <%= render 'shared/form_errors', subject: @group %>
 
-  <% if @group.errors.any? %>
-    <div id="error_explanation">
-    <h2><%= pluralize(@group.errors.count, "error") %> prevented this project from being saved:</h2>
-    <ul>
-    <% @group.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-    </div>
-  <% end %>
+  <p><%= render :partial => "picture", :locals => {:f => f} %></p>
 
-</div>
+  <div class="field">
+    <%= f.label :name, "Group Name: " %>
+    <%= f.text_field :name %>
+  </div>
 
-<p><%= render :partial => "picture", :locals => {:f => f} %></p>
+  <div class="field">
+    <%= f.label :description, "Short Description: " %>
+    <%= f.text_field :description %>
+  </div>
 
-<div class="row well">
-  <div class="span1-5">
-    <%= f.label :name, "Group Name: ", :class => 'pull-right bold' %>
+  <div class="field">
+    <%= f.label :long_description, "Long Description: " %>
+    <%= f.text_area :long_description %>
   </div>
-  <div class="span4">
-    <%= f.text_field :name, :class => 'span3' %>
-  </div>
-</div>
 
-<div class="row well">
-  <div class="span1-5">
-    <%= f.label :description, "Description:", :class => 'pull-right bold' %>
-  </div>
-  <div class="span4">
-    <%= f.text_area :description, :rows => 6, :class => 'span3' %>
-  </div>
-</div>
-
-<div class="row well">
-  <div class="span1-5">
-    <%= f.label :long_description, "Long Description: ", :class => 'pull-right bold' %>
-  </div>
-  <div class="span8">
-    <%= f.cktext_area :long_description, :cols => 20, :rows => 20, :toolbar => 'Easy' %></p>
-  </div>
-</div>
-
-<div class="row well">
-  <div class="span1-5">
-    <%= f.label :open, "Open: ", :class => 'pull-right bold' %>
-  </div>
-  <div class="span3">
+  <div class="field">
+    <%= f.label :open, "Open: " %>
     <%= f.select :open, options_for_select([ ["Open", true], ["Closed", false] ], @group.open)  %>
   </div>
-     <span class="help-block">An open group allows anyone to submit a project to the group without approval by the groups admin. </span>
-</div>
 
-<div class="row well">
-  <div class="span3">
-    <%= f.submit :class => 'btn btn-success btn-large pull-right' %>
+  <script type="text/javascript">
+//<![CDATA[
+  if (typeof CKEDITOR != 'undefined') { CKEDITOR.inline('group[long_description]'); }
+  //]]>
+  </script>
+
+  <div class="submit">
+    <%= f.submit :class => 'btn btn-success btn-large submit-form' %>
   </div>
-<p>&nbsp;</p>
-</div>
 <% end %>
