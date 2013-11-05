@@ -41,4 +41,8 @@ class Group < ActiveRecord::Base
       end
     end
   end
+
+  def pending_approvals
+    approvals.where status: :pending
+  end
 end

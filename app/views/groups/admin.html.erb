@@ -1,74 +1,13 @@
+<h1><%= @group.name %></h1>
+
 <div class="admin-header">
-<h1>
-  <%= @group.name %> Admin Page
   <%= link_to "Delete group", destroy_group_path(@group), :confirm => "Are you sure? This can not be reversed.", :class => 'btn btn-large btn-danger pull-right' %>
   <%= link_to "Edit group", edit_group_path(@group), :class => 'btn btn-large btn-success pull-right edit-pad' %>
-</h1>
-<br>
-<% if @group.open == false %>
-  <h2>Projects waiting for approval:</h2>
-<% end %>
 </div>
 
-<div class="row">
-<ul class="thumbnails-small">
-  <% @group.approvals.where(status: :approved).each do |approval| %>
-  <% @project = approval.project %>
-    <li class="project-span">
-    <div class="thumbnail-small">
-        <%= link_to @project do %>
-          <% if @project.picture? %>
-          <%= image_tag @project.picture.url(:thumb), :width => '171' %>
-        <% else %>
-          <%= image_tag "BlockSThumb.png", :width => '171' %>
-        <% end %>
-      <% end %>
-        <h4 class="ellipsisName"><%= link_to @project.name, @project %></h4>
-        <p class="byline">by <%= link_to @project.owner.name, @project.owner %></p>
-        <%= link_to 'Approve', approve_approval_path(@group, approval), :class => "btn btn-primary btn-mini" %>
-        <%= link_to 'Reject', '#', :class => "btn btn-danger btn-mini", :onclick => "$(\"#myModal-#{approval.id}\").modal('show')" %>
-      </div>
-    </li>
+<%= render 'approvals' %>
+<%= render 'projects' %>
 
-  <div id=<%= "myModal-#{approval.id}" %> class="modal fade">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h3>Please provide a reason for rejecting this project.</h3>
-    </div>
-    <div class="modal-body">
-      <%= form_tag reject_approval_path(@group, approval) do %>
-        <%= text_area_tag :reason, '', :class => 'field span4', :rows => 6 %>
-
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn" data-dismiss="modal" >Cancel</a>
-      <%= submit_tag "Submit", :class => 'btn btn-primary' %>
-      <% end %>
-    </div>
-  </div>
-<% end %>
-</ul>
-</div>
-
-<div class="admin-projects">
-  <h2>Projects</h2>
-  <% @group.projects.each do |project| %>
-    <%= render :partial => 'shared/project-small', :locals => { :project => project } %><br>
-  <% end %>
-</div>
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <div class="row">
   <h4><%= link_to '< Back to Group Page', @group %></h4>
 </div>
-<p>&nbsp;</p>
-
-<!-- Email Modal -->
-<% unless @approval.nil? %>
-<script>
-   $(document).ready(function () {
-     $("<%= "#myModal-#{@approval.id}" %>").modal('show');
-    });
-</script>
-<% end %>
