@@ -19,6 +19,14 @@ describe ApprovalsController do
     controller.stub!(:current_ability).and_return(@ability)
   end
 
+  describe 'GET index' do
+    let(:approval) { create :approval }
+    before { get :index, group_id: approval.group.id, approval_id: approval.id }
+    before { sign_in approval.group.owner }
+
+    it { should redirect_to :root }
+  end
+
   describe 'POST approve' do
     context 'with permission' do
       before { @ability.stub!(:can?).with(:approve, approval).and_return(true) }
@@ -28,7 +36,7 @@ describe ApprovalsController do
         expect(approval.reload.status).to eq :approved
       end
 
-      it { should redirect_to group_admin_path(group) }
+      it { should redirect_to group_approvals_path(group) }
       it { should_not set_the_flash }
       it { should log_user_action user, :approve, approval }
     end
@@ -55,7 +63,7 @@ describe ApprovalsController do
         expect(approval.reload.status).to eq :rejected
       end
 
-      it { should redirect_to group_admin_path(group) }
+      it { should redirect_to group_approvals_path(group) }
       it { should_not set_the_flash }
       it { should log_user_action user, :reject, approval }
     end

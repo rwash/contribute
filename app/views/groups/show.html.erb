@@ -5,9 +5,7 @@
 
 <div class="group-actions">
   <%= link_to "Submit a project", new_add_path(@group), :class => 'btn btn-large btn-primary' %><br><br>
-  <%= link_to "Admin Page", group_admin_path(@group) if group_admin?(@group) %>
+  <%= link_to "Admin Page", group_approvals_path(@group) if group_admin?(@group) %>
 </div>
 
-<% @group.projects.each do |project| %>
-  <%= render partial: 'shared/project', locals: { project: project} %>
-<% end %>
+<%= render 'projects' %>

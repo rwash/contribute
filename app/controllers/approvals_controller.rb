@@ -1,4 +1,12 @@
 class ApprovalsController < InheritedResources::Base	
+  def index
+    @group = Group.find(params[:group_id])
+    # TODO change this ability name to :read, @approvals
+    authorize! :admin, @group
+    @approvals = @group.approvals
+    @approval = Approval.find_by_id(params[:approval_id])
+  end
+
   def approve
     authorize! :approve, approval
 
@@ -15,7 +23,7 @@ class ApprovalsController < InheritedResources::Base
       flash[:error] = "This project has already been #{approval.status}."
     end
 
-    redirect_to group_admin_path(group)
+    redirect_to group_approvals_path(group)
   end
 
   def reject
@@ -34,7 +42,7 @@ class ApprovalsController < InheritedResources::Base
       flash[:error] = "This project has already been #{approval.status}."
     end
 
-    redirect_to group_admin_path(group)
+    redirect_to group_approvals_path(group)
   end
 
   private

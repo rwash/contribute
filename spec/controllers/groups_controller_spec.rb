@@ -225,14 +225,6 @@ describe GroupsController do
     end
   end
 
-  describe 'GET admin' do
-    let(:approval) { create :approval }
-    before { get :admin, id: approval.group.id, approval_id: approval.id }
-    before { sign_in approval.group.owner }
-
-    it { should redirect_to :root }
-  end
-
   describe 'POST remove_project' do
     let(:group) { create :group }
     let(:project) { create :project }

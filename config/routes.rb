@@ -42,7 +42,6 @@ Contribute::Application.routes.draw do
 
   #Groups
   match 'groups/index' => 'groups#index'
-  match 'groups/:id/admin' => 'groups#admin', :as => :group_admin
   match 'groups/:id/destroy' => 'groups#destroy', :as => :destroy_group
   match 'groups/:id/approvals/:approval_id/reject-form' => 'groups#admin', :as => :reject_approval_form
 
@@ -52,7 +51,9 @@ Contribute::Application.routes.draw do
   match 'groups/:group_id/approvals/:id/approve' => 'approvals#approve', :as => :approve_approval
   match 'groups/:group_id/approvals/:id/reject' => 'approvals#reject', :as => :reject_approval
 
-  resources :groups
+  resources :groups do
+    resources :approvals, only: :index
+  end
 
   # Static pages, through HighVoltage
   match '/pages/*id' => 'pages#show', as: :page, format: false

@@ -62,11 +62,6 @@ class GroupsController < InheritedResources::Base
     redirect_to group
   end
 
-  def admin
-    @group = Group.find(params[:id])
-    @approval = Approval.find_by_id(params[:approval_id])
-  end
-
   def remove_project
     @group = Group.find(params[:id])
     project = Project.find(params[:project_id].gsub(/-/, ' '))
