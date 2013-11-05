@@ -1,10 +1,22 @@
 class ApprovalsController < InheritedResources::Base	
+
+  load_and_authorize_resource
+  before_filter :authenticate_user!, only: [:index, :new]
+
   def index
     @group = Group.find(params[:group_id])
     # TODO change this ability name to :read, @approvals
     authorize! :admin, @group
     @approvals = @group.approvals
     @approval = Approval.find_by_id(params[:approval_id])
+  end
+
+  def new
+    @group = Group.find(params[:group_id])
+    @projects = []
+    for proj in current_user.projects
+      @projects << proj if !@group.projects.include?(proj) && proj.state != 'cancelled'
+    end
   end
 
   def approve

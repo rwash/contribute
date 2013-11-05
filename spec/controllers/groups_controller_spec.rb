@@ -54,19 +54,6 @@ describe GroupsController do
     end
   end
 
-  describe 'POST new_add' do
-    let(:group) { create :group }
-    let(:user) { create :user }
-    before { sign_in user }
-    before { @ability.stub!(:can?).and_return(true) }
-    before { post :new_add, id: group.id }
-
-    it { should respond_with :success }
-    it { should assign_to :group }
-    it { should render_template :new_add }
-    it { should log_user_action user, :new_add, group }
-  end
-
   describe 'POST submit_add' do
 
     context 'when the user is signed in' do

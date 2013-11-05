@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Approval do
-  # Abilities
   describe 'Abilities' do
     subject { ability }
     let(:ability) { Ability.new(user) }
@@ -12,6 +11,7 @@ describe Approval do
     context 'when not signed in' do
       let(:user) { nil }
 
+      it { should_not be_able_to :create, approval }
       it { should_not be_able_to :approve, approval }
       it { should_not be_able_to :reject, approval }
     end
@@ -19,6 +19,7 @@ describe Approval do
     context 'when signed in' do
       let(:user) { create :user }
 
+      it { should be_able_to :create, approval }
       it { should_not be_able_to :approve, approval }
       it { should_not be_able_to :reject, approval }
     end
@@ -26,6 +27,7 @@ describe Approval do
     context 'when user owns group' do
       let(:user) { group.owner }
 
+      it { should be_able_to :create, approval }
       it { should be_able_to :approve, approval }
       it { should be_able_to :reject, approval }
     end
@@ -33,6 +35,7 @@ describe Approval do
     context 'when signed in as admin' do
       let(:user) { create :user, admin: true }
 
+      it { should be_able_to :create, approval }
       it { should be_able_to :approve, approval }
       it { should be_able_to :reject, approval }
     end

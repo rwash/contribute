@@ -61,12 +61,13 @@ class Ability
     end
 
     # Groups
-    can [:create, :new_add, :submit_add], Group
+    can [:create, :submit_add], Group
     can :remove_project, Group # had to move check for admin or project owner to controller
 
     can [:update, :admin, :destroy], Group, owner: user
 
     #Aprovals
+    can :create, Approval
     can [:approve, :reject], Approval do |approval|
       approval.group.owner == user
     end
@@ -119,11 +120,11 @@ class Ability
       end
 
       # Groups
-      can [:read, :create, :new_add, :submit_add, :remove_project], Group # had to move check for admin or project owner to controller
+      can [:read, :create, :submit_add, :remove_project], Group # had to move check for admin or project owner to controller
       can [:update, :admin, :destroy], Group
 
       #Aprovals
-      can [:approve, :reject], Approval
+      can [:create, :approve, :reject], Approval
 
       # Users
       can [:read, :update, :block, :toggle_admin], User

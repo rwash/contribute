@@ -16,7 +16,6 @@ describe Group do
       it { should be_able_to :index, group }
       it { should_not be_able_to :create, group }
       it { should_not be_able_to :submit_add, group }
-      it { should_not be_able_to :new_add, group }
       it { should_not be_able_to :edit, group }
       it { should_not be_able_to :update, group }
       it { should_not be_able_to :admin, group }
@@ -31,7 +30,6 @@ describe Group do
       it { should be_able_to :index, group }
       it { should be_able_to :create, group }
       it { should be_able_to :submit_add, group }
-      it { should be_able_to :new_add, group }
       it { should_not be_able_to :edit, group }
       it { should_not be_able_to :update, group }
       it { should_not be_able_to :admin, group }
@@ -46,7 +44,6 @@ describe Group do
       it { should be_able_to :index, group }
       it { should be_able_to :create, group }
       it { should be_able_to :submit_add, group }
-      it { should be_able_to :new_add, group }
       it { should be_able_to :edit, group }
       it { should be_able_to :update, group }
       it { should be_able_to :admin, group }
@@ -61,7 +58,6 @@ describe Group do
       it { should be_able_to :index, group }
       it { should be_able_to :create, group }
       it { should be_able_to :submit_add, group }
-      it { should be_able_to :new_add, group }
       it { should be_able_to :edit, group }
       it { should be_able_to :update, group }
       it { should be_able_to :admin, group }

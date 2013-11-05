@@ -76,3 +76,5 @@ class ProjectState::Blocked < ProjectState
   def color_class() 'inverse' end
   def can_edit?() true end
 end
+
+# TODO get rid of color_class

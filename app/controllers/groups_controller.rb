@@ -1,6 +1,6 @@
 class GroupsController < InheritedResources::Base
   load_and_authorize_resource
-  before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save, :new_add, :submit_add]
+  before_filter :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy, :save, :submit_add]
 
   def index
     @groups = Group.all
@@ -19,15 +19,6 @@ class GroupsController < InheritedResources::Base
     else
       render action: :new
     end
-  end
-
-  def new_add
-    @group = Group.find(params[:id])
-    @projects = []
-    for proj in current_user.projects
-      @projects << proj if !@group.projects.include?(proj) && proj.state != 'cancelled'
-    end
-    log_user_action :new_add
   end
 
   def submit_add

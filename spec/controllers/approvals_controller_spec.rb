@@ -27,6 +27,18 @@ describe ApprovalsController do
     it { should redirect_to :root }
   end
 
+  describe 'GET new' do
+    let(:group) { create :group }
+    let(:user) { create :user }
+    before { sign_in user }
+    before { @ability.stub!(:can?).and_return(true) }
+    before { get :new, group_id: group.id }
+
+    it { should respond_with :success }
+    it { should assign_to :group }
+    it { should render_template :new }
+  end
+
   describe 'POST approve' do
     context 'with permission' do
       before { @ability.stub!(:can?).with(:approve, approval).and_return(true) }

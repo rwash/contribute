@@ -45,14 +45,13 @@ Contribute::Application.routes.draw do
   match 'groups/:id/destroy' => 'groups#destroy', :as => :destroy_group
   match 'groups/:id/approvals/:approval_id/reject-form' => 'groups#admin', :as => :reject_approval_form
 
-  match 'groups/:id/new-add' => 'groups#new_add', :as => :new_add
   match 'groups/:id/submit-add' => 'groups#submit_add', :as => :submit_add
   match 'groups/:id/projects/:project_id/remove' => 'groups#remove_project', :as => :remove_project_from_group
   match 'groups/:group_id/approvals/:id/approve' => 'approvals#approve', :as => :approve_approval
   match 'groups/:group_id/approvals/:id/reject' => 'approvals#reject', :as => :reject_approval
 
   resources :groups do
-    resources :approvals, only: :index
+    resources :approvals, only: [:index, :new]
   end
 
   # Static pages, through HighVoltage

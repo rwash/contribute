@@ -1,7 +1,8 @@
 RSpec::Matchers.define :log_user_action do |user, event, subject|
   match do
     log = UserAction.last
-    log.user == user &&
+    log &&
+      log.user == user &&
       log.event.to_s == event.to_s &&
       log.subject == subject
   end
