@@ -1,3 +1,37 @@
+@import 'bourbon';
+@import 'neat';
+@import 'mixins/card';
+
+.group-description {
+  font-size: 1.2em;
+  margin: $gutter 0;
+}
+
+ul { margin-left: 0; }
+.group-actions {
+  list-style: none;
+  @include card;
+  @include span-columns(3 of 12);
+  li {
+    margin-bottom: $gutter;
+    &:last-child { margin-bottom: auto; }
+  }
+  a {
+    @include button;
+    font-size: 1.2em;
+    @include fill-parent;
+    &#add {
+      @include button(#4cae4c);
+      font-size: 1.2em;
+    }
+    &#delete {
+      @include button(#d9534f);
+      font-size: 1.2em;
+    }
+  }
+}
+
 .groupImage {
-  margin-bottom: 25px;
+  @include span-columns(9 of 12);
+  @include omega;
 }

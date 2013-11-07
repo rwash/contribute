@@ -1,18 +1,15 @@
 <h1><%= @group.name %></h1>
-<div class="description"><%= @group.description %></div>
+<div class="group-description"><%= @group.description %></div>
+
+<ul class="group-actions">
+  <li><%= link_to "Add a project", new_group_approval_path(@group), id: 'add' %></li>
+  <% if group_admin? @group %>
+    <li><%= link_to "Projects needing approval", group_approvals_path(@group) if group_admin?(@group) %></li>
+    <li><%= link_to "Edit group", edit_group_path(@group), id: 'edit' %></li>
+    <li><%= link_to "Delete group", destroy_group_path(@group), id: "delete", :confirm => "Are you sure? This can not be reversed." %></li>
+  <% end %>
+</ul>
+
 <%= image_tag @group.picture.url(:show), class: "groupImage" if @group.picture? %>
-&nbsp;
-
-<% if group_admin? @group %>
-  <div class="admin-header">
-    <%= link_to "Delete group", destroy_group_path(@group), :confirm => "Are you sure? This can not be reversed." %>
-    <%= link_to "Edit group", edit_group_path(@group) %>
-    <%= link_to "Projects needing approval", group_approvals_path(@group) if group_admin?(@group) %>
-  </div>
-<% end %>
-
-<div class="group-actions">
-  <%= link_to "Add a project", new_group_approval_path(@group), :class => 'btn btn-large btn-primary' %><br><br>
-</div>
 
 <%= render 'projects' %>
