@@ -1,0 +1,40 @@
+@import 'bourbon';
+@import 'neat';
+
+#new-approval-form {
+  .project-add {
+    @include span-columns(3 of 12);
+    &:nth-child(4n) {
+      @include omega;
+    }
+
+    text-align: center;
+    .project-card {
+      text-align: left;
+      @include fill-parent;
+    }
+
+    input { @include button; }
+  }
+}
+
+.modal {
+  form {
+    margin-bottom: 0;
+    textarea { @include fill-parent; }
+  }
+}
+
+.pending-approvals {
+  .pending-approval {
+    @include span-columns(3 of 12);
+    text-align: center;
+
+    &:nth-child(4n) { @include omega; }
+    .project-card {
+      @include fill-parent;
+      text-align: left;
+    }
+    margin-bottom: $gutter;
+  }
+}

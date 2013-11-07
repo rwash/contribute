@@ -3,9 +3,16 @@
 <%= image_tag @group.picture.url(:show), class: "groupImage" if @group.picture? %>
 &nbsp;
 
+<% if group_admin? @group %>
+  <div class="admin-header">
+    <%= link_to "Delete group", destroy_group_path(@group), :confirm => "Are you sure? This can not be reversed." %>
+    <%= link_to "Edit group", edit_group_path(@group) %>
+    <%= link_to "Projects needing approval", group_approvals_path(@group) if group_admin?(@group) %>
+  </div>
+<% end %>
+
 <div class="group-actions">
   <%= link_to "Add a project", new_group_approval_path(@group), :class => 'btn btn-large btn-primary' %><br><br>
-  <%= link_to "Admin Page", group_approvals_path(@group) if group_admin?(@group) %>
 </div>
 
 <%= render 'projects' %>
