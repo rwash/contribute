@@ -1,6 +1,6 @@
 class ApprovalsController < InheritedResources::Base	
 
-  load_and_authorize_resource
+  load_and_authorize_resource except: :index
   before_filter :authenticate_user!, only: [:index, :new, :create]
 
   def index

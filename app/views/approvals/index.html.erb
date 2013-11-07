@@ -5,7 +5,43 @@
   <%= link_to "Edit group", edit_group_path(@group), :class => 'btn btn-large btn-success pull-right edit-pad' %>
 </div>
 
-<%= render 'approvals' %>
+<% if @group.pending_approvals.any? %>
+  <h2>Projects waiting for approval:</h2>
+  <div class="pending-approvals">
+    <% @group.pending_approvals.each do |approval| %>
+      <div class="pending-approval">
+        <%= render 'shared/project', project: approval.project %>
+        <%= link_to 'Approve', approve_group_approval_path(@group, approval), :class => "btn btn-primary" %>
+        <%= link_to 'Reject', '#', :class => "btn btn-danger", :onclick => "$(\"#myModal-#{approval.id}\").modal('show')" %>
+      </div>
+
+      <div id="myModal-<%= approval.id -%>" class="modal fade">
+        <div class="modal-header">
+          <h3>Please provide a reason for rejecting this project.</h3>
+        </div>
+        <%= form_tag reject_group_approval_path(@group, approval) do %>
+          <div class="modal-body">
+            <%= text_area_tag :reason, '', :rows => 6 %>
+          </div>
+
+          <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal" >Cancel</a>
+            <%= submit_tag "Submit", :class => 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<!-- Email Modal -->
+<% unless @approval.nil? %>
+  <script>
+$(document).ready(function () {
+  $("<%= "#myModal-#{@approval.id}" %>").modal('show');
+});
+  </script>
+<% end %>
 
 <div class="row">
   <h4><%= link_to '< Back to Group Page', @group %></h4>
