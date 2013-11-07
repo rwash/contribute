@@ -11,7 +11,7 @@
       <% end %>
         <h4 class="ellipsisName"><%= link_to project.name, project %></h4>
         <p class="byline">by <%= link_to project.owner.name, project.owner %></p>
-        <%= link_to 'Approve', approve_approval_path(@group, approval), :class => "btn btn-primary btn-mini" %>
+        <%= link_to 'Approve', approve_group_approval_path(@group, approval), :class => "btn btn-primary btn-mini" %>
         <%= link_to 'Reject', '#', :class => "btn btn-danger btn-mini", :onclick => "$(\"#myModal-#{approval.id}\").modal('show')" %>
       </div>
     </li>
@@ -22,7 +22,7 @@
       <h3>Please provide a reason for rejecting this project.</h3>
     </div>
     <div class="modal-body">
-      <%= form_tag reject_approval_path(@group, approval) do %>
+      <%= form_tag reject_group_approval_path(@group, approval) do %>
         <%= text_area_tag :reason, '', :class => 'field span4', :rows => 6 %>
 
     </div>
