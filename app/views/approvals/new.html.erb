@@ -1,24 +1,10 @@
-<div class="form">
-  <h2>Submit Project</h2>
-  <p>&nbsp;</p>
+<h2>Submit Project</h2>
 
-
-  <%= form_tag 'create' do %>
-    <div class="row well">
-      <div class="span1-5">
-        <%= label_tag :project_id, "Project: ", :class => 'pull-right bold' %>
-      </div>
-      <div class="span4">
-        <%= select("", "project_id", @projects.collect {|p| [ p.name, p.id ] }, {:prompt => 'Select Project'}) %>
-      </div>
-    </div>
-
-    <div class="row well">
-      <div class="span3">
-        <%= submit_tag "Submit", :class => 'btn btn-success btn-large pull-right' %>
-      </div>
-      <p>&nbsp;</p>
+<div id="new-approval-form">
+  <% @projects.each do |project| %>
+    <div class="project-add">
+      <%= render 'shared/project', project: project %>
+      <%= button_to 'Add to group', controller: :approvals, action: :create, group_id: @group.id, project_id: project.id %>
     </div>
   <% end %>
-
 </div>

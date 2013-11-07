@@ -1,3 +1,5 @@
-<% @group.projects.each do |project| %>
-  <%= render partial: 'shared/project', locals: { project: project} %>
-<% end %>
+<div class="projects">
+  <% @group.projects.each do |project| %>
+    <%= render partial: 'shared/project', locals: { project: project} %>
+  <% end %>
+</div>
