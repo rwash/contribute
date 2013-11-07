@@ -61,7 +61,7 @@ class Ability
     end
 
     # Groups
-    can [:create, :submit_add], Group
+    can [:create], Group
     can :remove_project, Group # had to move check for admin or project owner to controller
 
     can [:update, :admin, :destroy], Group, owner: user
@@ -120,7 +120,7 @@ class Ability
       end
 
       # Groups
-      can [:read, :create, :submit_add, :remove_project], Group # had to move check for admin or project owner to controller
+      can [:read, :create, :remove_project], Group # had to move check for admin or project owner to controller
       can [:update, :admin, :destroy], Group
 
       #Aprovals

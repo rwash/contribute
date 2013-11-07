@@ -39,6 +39,165 @@ describe ApprovalsController do
     it { should render_template :new }
   end
 
+  describe 'POST create' do
+
+    context 'when the user is signed in' do
+      let(:user) { create :user }
+      before { sign_in user }
+
+      before { @ability.stub!(:can?).and_return(true) }
+
+      context "when the group is open and user is not the admin" do
+
+        let(:group) { create :group, open: true }
+
+        it 'logs the user action' do
+          project = create(:project, state: 'unconfirmed', owner: user)
+          post :create, group_id: group.id, project_id: project.id
+          should log_user_action user, :create, Approval.last
+        end
+
+        it 'allows adding of unconfirmed project to group' do
+          project = create(:project, state: 'unconfirmed', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'allows adding of inactive project to group' do
+          project = create(:project, state: 'inactive', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'allows adding of active project to group' do
+          project = create(:active_project, owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'allows adding of funded project to group' do
+          project = create(:project, state: 'funded', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'allows adding of nonfunded project to group' do
+          project = create(:project, state: 'nonfunded', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.projects.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been added to the group."
+        end
+
+        it 'does not allow adding of cancelled project to group' do
+          project = create(:project, state: 'cancelled', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to_not change {group.projects.count}
+
+          expect(response).to redirect_to(group)
+          expect(flash[:error]).to include "You cannot add a cancelled project."
+        end
+
+        it 'does not allow multiple additions of the same project to a group' do
+          project = create(:active_project, owner: user)
+          group.projects << project
+          expect {post :create, group_id: group.id, project_id: project.id}.to_not change {group.projects.count}
+
+          expect(response).to redirect_to(group)
+          expect(flash[:error]).to include "Your project is already in this group."
+        end
+      end
+
+      context "when group is closed" do
+        let(:admin) { create :user }
+        let(:group) { create :group, open: false, owner: admin }
+
+        it 'allows adding of unconfirmed project to group' do
+          project = create(:project, state: 'unconfirmed', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, status: :pending).first).to_not be_nil
+        end
+
+        it 'allows adding of inactive project to group' do
+          project = create(:project, state: 'inactive', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, status: :pending).first).to_not be_nil
+        end
+
+        it 'allows adding of active project to group' do
+          project = create(:active_project, owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, status: :pending).first).to_not be_nil
+        end
+
+        it 'allows adding of funded project to group' do
+          project = create(:project, state: 'funded', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, status: :pending).first).to_not be_nil
+        end
+
+        it 'allows adding of nonfunded project to group' do
+          project = create(:project, state: 'nonfunded', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to change {group.approvals.count}.by 1
+
+          expect(response).to redirect_to(group)
+          expect(flash[:notice]).to include "Your project has been submitted to the group admin for approval."
+          expect(project.approvals.where(group_id: group.id, status: :pending).first).to_not be_nil
+        end
+
+        it 'does not allow adding of cancelled project to group' do
+          project = create(:project, state: 'cancelled', owner: user)
+
+          expect {post :create, group_id: group.id, project_id: project.id}.to_not change {group.approvals.count}
+
+          expect(response).to redirect_to(group)
+          expect(flash[:error]).to include "You cannot add a cancelled project."
+        end
+
+        it 'does not allow multiple additions of the same project to a group' do
+          project = create(:active_project, owner: user)
+          group.projects << project
+          expect {post :create, group_id: group.id, project_id: project.id}.to_not change {group.approvals.count}
+
+          expect(response).to redirect_to(group)
+          expect(flash[:error]).to include "Your project is already in this group."
+        end
+      end
+
+    end
+  end
+
+
   describe 'POST approve' do
     context 'with permission' do
       before { @ability.stub!(:can?).with(:approve, approval).and_return(true) }
