@@ -51,6 +51,8 @@ RSpec.configure do |config|
   # Capybara uses a DSL to allow test cases to interact with web pages
   config.include Capybara::DSL
 
+  config.include Devise::TestHelpers, type: :view
+
   # Use capybara-webkit gem to run Javascript tests through the
   # Capybara interface
   Capybara.javascript_driver = :webkit
