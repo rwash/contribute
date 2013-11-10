@@ -64,6 +64,7 @@ describe Group do
   it { should validate_presence_of :name }
   it { should validate_uniqueness_of(:name).case_insensitive }
   it { should validate_presence_of :owner }
+  it { should validate_presence_of :description }
 
   describe 'approvals' do
     let(:project) { create :active_project }
