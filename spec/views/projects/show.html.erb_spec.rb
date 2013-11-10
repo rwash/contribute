@@ -10,7 +10,7 @@ describe "projects/show" do
   end
   subject { rendered }
 
-  context 'when the user is not logged in' do
+  context 'user is not logged in' do
     before { render }
 
     it 'has the appropriate buttons' do
@@ -28,7 +28,7 @@ describe "projects/show" do
   context 'when signed in' do
     before { sign_in user }
 
-    context 'when user does not own the project' do
+    context 'user does not own project' do
       before do
         project.payment_account_id = "abc"
         project.state = :active
@@ -48,7 +48,7 @@ describe "projects/show" do
       end
     end
 
-    context 'when the user has already contributed' do
+    context 'user has already contributed' do
       before { create :contribution, user: user, project: project }
       before { render }
 
@@ -64,7 +64,7 @@ describe "projects/show" do
       end
     end
 
-    context 'when the project is expired and nonfunded' do
+    context 'project is expired and nonfunded' do
       before do
         project.end_date = 12.days.ago
         project.state = :nonfunded
@@ -85,10 +85,10 @@ describe "projects/show" do
     end
   end
 
-  context 'when user owns the project' do
+  context 'user owns project' do
     before { sign_in project.owner }
 
-    context 'when the project is active' do
+    context 'project is active' do
       before do
         project.payment_account_id = "abc"
         project.state = :active
@@ -108,7 +108,7 @@ describe "projects/show" do
       end
     end
 
-    context 'when project is inactive' do
+    context 'project is inactive' do
       before do
         project.payment_account_id = "abc"
         project.state = :inactive
@@ -128,7 +128,7 @@ describe "projects/show" do
       end
     end
 
-    context 'when project is unconfirmed' do
+    context 'project is unconfirmed' do
       before { render }
 
       it 'has the appropriate buttons' do
@@ -141,6 +141,59 @@ describe "projects/show" do
         should_not have_button 'Activate Project'
         should have_button 'Delete Project'
       end
+    end
+  end
+
+  context 'user is an admin' do
+    before { sign_in admin }
+
+    context 'project is active' do
+      before do
+        project.payment_account_id = "abc"
+        project.state = :active
+        project.save
+      end
+      before { render }
+
+      it 'has the appropriate buttons' do
+        should_not have_button 'Log in to contribute'
+        should have_button 'Contribute to this project'
+        should_not have_button 'Contribute more'
+        should_not have_button "Connect an Amazon account"
+        should_not have_button 'Cancel Project'
+        should_not have_button 'Edit Project'
+        should_not have_button 'Activate Project'
+        should_not have_button 'Delete Project'
+        should have_button 'Block Project'
+        should_not have_button 'Unblock Project'
+      end
+    end
+
+    context 'project is blocked' do
+      before do
+        project.payment_account_id = "abc"
+        project.state = :blocked
+        project.save
+      end
+      before { render }
+
+      it 'has the appropriate buttons' do
+        should_not have_button 'Log in to contribute'
+        should_not have_button 'Contribute to this project'
+        should_not have_button 'Contribute more'
+        should_not have_button "Connect an Amazon account"
+        should_not have_button 'Cancel Project'
+        should_not have_button 'Edit Project'
+        should_not have_button 'Activate Project'
+        should_not have_button 'Delete Project'
+        should_not have_button 'Block Project'
+        should have_button 'Unblock Project'
+      end
+    end
+
+    private
+    def admin
+      @_admin ||= create :user, admin: true
     end
   end
 

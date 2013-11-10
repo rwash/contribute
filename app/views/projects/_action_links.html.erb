@@ -1,32 +1,13 @@
-<%# TODO refactor using Tell, Don't Ask %>
-<% if current_user and current_user.admin? %>
-  <%= @project.edit_button %>
-  <%= @project.activate_button %>
-  <%= @project.delete_button %>
-<% elsif logged_in? and @project.owner == current_user and @project.state.unconfirmed? %>
-  <%= @project.connect_amazon_button %>
-  <%= @project.edit_button %>
-  <%= @project.delete_button %>
-<% elsif logged_in? and @project.owner == current_user and @project.state.inactive? %>
-  <%= @project.edit_button %>
-  <%= @project.activate_button %>
-  <%= @project.delete_button %>
-<% elsif logged_in? and @project.owner == current_user and @project.state.active? %>
-  <%= @project.cancel_button %>
-<% elsif logged_in? and @project.owner == current_user and (@project.state.funded? or @project.state.nonfunded?) %>
-<% end %>
+<%= @project.display_log_in_button %>
 
-<% existing_contribution = @project.contributions.find_by_user_id(current_user.id) rescue nil %>
-<% if existing_contribution and can? :edit, existing_contribution %>
-  <%= button_to "Edit Contribution", edit_contribution_url(existing_contribution),:method => :get,  :class => 'btn btn-primary btn-large' %>
-<% elsif @project.state.cancelled? %>
-<% else %>
-  <%= button_to "Contribute to this project", new_contribution_url(@project), :method=>:get, :class => 'btn btn-success btn-large' %>
-<% end %>
+<%= @project.display_edit_button %>
+<%= @project.display_activate_button %>
+<%= @project.display_delete_button %>
+<%= @project.display_connect_amazon_button %>
+<%= @project.display_cancel_button %>
 
-<% if can? :block, @project %>
-  <%= button_to 'Block Project', block_project_url(@project), method: :put, class: 'btn btn-large btn-danger' %>
-<% end %>
-<% if can? :unblock, @project %>
-  <%= button_to 'Unblock Project', unblock_project_url(@project), method: :put, class: 'btn btn-large btn-info' %>
-<% end %>
+<%= @project.display_contribute_button %>
+<%= @project.display_edit_contribution_button %>
+
+<%= @project.display_block_button %>
+<%= @project.display_unblock_button %>

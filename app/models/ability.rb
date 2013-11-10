@@ -79,18 +79,19 @@ class Ability
     # Even more privileges if you're a site admin!
     if user and user.admin?
       # Projects
-      can [:read, :create, :save, :activate, :block], Project
+      can :read, Project
       # TODO change this to 'cancel'
       can :destroy, Project, owner: user, state: :active
       can :destroy, Project, state: :inactive
       can :destroy, Project, state: :unconfirmed
 
+      can :block, Project
       cannot :block, Project, state: :blocked
       can :unblock, Project, state: :blocked
 
       # Note: this 'update' refers to the Update and Edit actions of ProjectsController,
       # not the ability to create Update objects associated with a project
-      can :update, Project, can_edit?: true
+      can :update, Project, owner: user, can_edit?: true
 
       # Updates
       can :create, Update do |update|
