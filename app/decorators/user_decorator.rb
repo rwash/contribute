@@ -15,8 +15,12 @@ class UserDecorator < Draper::Decorator
   # Allows the use of helpers without a proxy (see Draper documentation)
   include Draper::LazyHelpers
 
-  def picture_url
-    model.picture? ? model.picture.url : 'defaultProfilePic.jpg'
+  def picture_url version
+    model.picture? ? model.picture.url(version) : 'defaultProfilePic.jpg'
+  end
+
+  def thumbnail_image_tag
+    image_tag picture_url :thumb
   end
 
   def picture_tag

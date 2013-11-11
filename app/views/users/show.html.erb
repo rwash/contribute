@@ -1,16 +1,14 @@
 <div class="user-profile">
-  <%#TODO move null picture to decorator %>
-  <% if @user.picture? %>
-    <%= image_tag @user.picture.url(:thumb) %>
-  <% else %>
-    <%= image_tag "defaultProfilePic.jpg" %>
-  <% end %>
-  <h1><%= @user.name %></h1>
+  <%= @user.thumbnail_image_tag %>
 
-  <p>Member for <%= distance_of_time_in_words @user.created_at, Time.now %></p>
-  <% if @user.location? %>
-    <strong>Location:</strong> <%= @user.location %><br>
-  <% end %>
+  <div class="info">
+    <h1><%= @user.name %></h1>
+
+    <p>Member for <%= distance_of_time_in_words @user.created_at, Time.now %></p>
+    <% if @user.location? %>
+      From <%= @user.location %>
+    <% end %>
+  </div>
 
   <%= render :partial => 'stats_banner' %>
 </div>
