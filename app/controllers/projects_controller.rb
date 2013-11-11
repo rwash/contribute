@@ -96,7 +96,6 @@ class ProjectsController < InheritedResources::Base
     @project = project_from_params
     authorize! :unblock, @project
 
-    # TODO reset project state to unconfirmed or inactive
     if @project.payment_account_id == Project::UNDEFINED_PAYMENT_ACCOUNT_ID
       @project.state = :unconfirmed
     else
