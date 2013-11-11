@@ -73,7 +73,7 @@ feature 'user page', :js do
 
       click_button 'Contribute to this project'
 
-      click_link "Don't have an account yet? Sign up!"
+      click_link "Sign up!"
 
       fill_in 'user_name', :with => user.name
       fill_in 'user_email', :with => user.email

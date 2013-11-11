@@ -1,7 +1,5 @@
-.usersBtn {
-  right: 0px;
-  position:absolute;
-}
+@import 'bourbon';
+@import 'neat';
 
 /******* Edit User *******/
 div#statistics {
@@ -16,19 +14,14 @@ div#statistics {
 
 /******* New User ********/
 
-#new_user, #sign_in, #edit_user {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 50px;
-  width: 230px;
-}
-
-#new_user p {
-  font-size: 13px;
-}
-
-.new_form {
-  padding-bottom: 10px;
+.alternative-actions {
+  @include span-columns(9);
+  @include shift(3);
+  li {
+    list-style: none;
+    margin-bottom: $gutter/2;
+  }
+  margin-bottom: $gutter;
 }
 
 #edit_user{

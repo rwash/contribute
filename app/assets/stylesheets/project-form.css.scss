@@ -6,6 +6,7 @@
   margin-bottom: $gutter;
 }
 form {
+  overflow: hidden;
   .field {
     margin-top: $gutter;
     @include row;
