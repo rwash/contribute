@@ -19,8 +19,8 @@ class UserDecorator < Draper::Decorator
     model.picture? ? model.picture.url(version) : 'defaultProfilePic.jpg'
   end
 
-  def thumbnail_image_tag
-    image_tag picture_url :thumb
+  def show_page_image_tag
+    image_tag picture_url :show
   end
 
   def picture_tag
