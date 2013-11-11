@@ -108,8 +108,8 @@ describe Project do
         it { should be_able_to :unblock, project }
       end
 
-      it { should be_able_to :save, project }
-      it { should be_able_to :activate, project }
+      it { should_not be_able_to :save, project }
+      it { should_not be_able_to :activate, project }
       it { should be_able_to :block, project }
       it { should_not be_able_to :unblock, project }
 
