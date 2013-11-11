@@ -1,7 +1,13 @@
-<% if @user.picture? %>
-Current Picture <br/> <%= image_tag(@user.picture.url(:thumb)) %><br>
-<% end %>
-New Picture: (optional) <br/>
-<%= f.file_field :picture %>
+<%#TODO very similar to app/views/projects/_picture %>
 <%= f.hidden_field :picture_cache %>
-<br>
+
+<div class="field">
+  <% if @user.picture? %>
+      <%= f.label :picture, "New Picture (optional): " %>
+      <%= f.file_field :picture, :class => 'picture-btn' %>
+      <div class="pull-right"> <span class="bold">Current Picture:</span> <%= image_tag @user.picture.url(:thumb), :width => '100' %></div>
+    <% else %>
+      <%= f.label :picture, "Picture: " %>
+      <%= f.file_field :picture, :class => 'picture-btn' %>
+    <% end %>
+</div>

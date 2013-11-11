@@ -15,7 +15,7 @@ div#statistics {
 /******* New User ********/
 
 .alternative-actions {
-  @include span-columns(9);
+  @include span-columns(6);
   @include shift(3);
   li {
     list-style: none;
@@ -24,45 +24,12 @@ div#statistics {
   margin-bottom: $gutter;
 }
 
-#edit_user{
-  width: 900px;
-}
-
-#edit_user h1 {
-  margin-left: -20px;
-  padding-bottom: 30px;
-}
-
-#check_box {
-  display: inline;
-}
-
-.form_field {
-  margin-bottom: 20px;
-}
-
-.current_password {
-  position: absolute;
-  margin-top: 40px;
-  margin-left: 480px;
-  line-height: 10px;
-  width: 400px;
-  font-size: 20px;
-}
-
 /******* User Profile *******/
 
 .profile-head {
   width: 940px;
   margin-right: auto;
   margin-left: auto;
-}
-.btn-row {
-  float: left;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 8px;
-  margin-bottom: -20px;
 }
 .profile-pic {
   width: 150px;

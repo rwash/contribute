@@ -1,55 +1,53 @@
-<div id="edit_user">
+<h2 class="form-header">Edit your profile</h1>
 
-<h1 align="center">Edit <%= resource_name.to_s.humanize %> Profile</h1>
-
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :multipart => true, :method => :put }) do |f| %>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name),
+             :html => { :multipart => true, :method => :put }) do |f| %>
   <%= devise_error_messages! %>
 
-<div class="current_password", align="center">
-  <div class="form_field">
-    <p><%= f.label :current_password %> <p><i>(we need this to confirm your changes)</i></p>
-    <p><%= f.password_field :current_password, :placeholder  => "Current Password" %></p>
-  </div>
-
-  <div class="form_field">
-    <%= submit_tag("Update Profile", :class => 'btn btn-large btn-warning') %>
-  </div>
-</div>
-
-  <div class="form_field">
+  <div class="field">
     <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
 
-  <div class="form_field">
+  <div class="field">
     <%= f.label :location %>
     <%= f.text_field :location %>
   </div>
 
-  <div class="form_field">
-    <%= render :partial => "picture", :locals => {:f => f} %><br />
-  </div>
+  <%= render :partial => "picture", :locals => {:f => f} %>
 
-  <div class ="form_field">
+  <div class="field">
     <%= f.label :email %>
     <%= f.email_field :email %>
   </div>
 
-  <div class="form_field">
-    <%= f.label :new_password %> <i>(leave blank if you don't want to change it)</i><br />
+  <div class="field">
+    <%= f.label :new_password %>
     <%= f.password_field :password %>
+    <span class="help-block">Leave this blank if you don't want to change it</span>
   </div>
 
-  <div class="form_field">
+  <div class="field">
     <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation %>
   </div>
 
+  <div class="field">
+    <%= f.label :current_password %>
+    <%= f.password_field :current_password, :placeholder  => "Current Password" %>
+    <span class="help-block">We need this to confirm your changes</span>
+  </div>
+
+  <div class="submit">
+    <%= f.submit "Update Profile", :class => 'btn btn-success btn-large submit-form' %>
+  </div>
 <% end %>
 
-<br/><br/>
-
-<p><i>This will delete all of your projects, all the contributions to those projects <br/ >and any contributions you made to other projects.</i></p>
-<%= button_to "Delete my account", registration_path(resource_name), :confirm => "Are you sure you want to delete your account? This will delete all of your projects and all the contributions to those projects.", :method => :delete, :class => "btn btn-danger" %>
-
+<div class="alternative-actions">
+  <h3>Need to close your account?</h3>
+  <p>This will delete all of your projects, all the contributions to those projects
+  and any contributions you made to other projects.</p>
+  <%= button_to "Delete my account", registration_path(resource_name),
+    :confirm => "Are you sure you want to delete your account? This will delete all of your projects and all the contributions to those projects.",
+    :method => :delete, :class => "btn btn-danger" %>
 </div>

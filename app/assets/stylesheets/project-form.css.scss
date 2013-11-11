@@ -1,10 +1,7 @@
 @import 'bourbon';
 @import 'neat';
 
-.form-header {
-  text-align: center;
-  margin-bottom: $gutter;
-}
+.form-header { text-align: center; }
 form {
   overflow: hidden;
   .field {
