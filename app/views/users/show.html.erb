@@ -1,6 +1,22 @@
-<h1><%= @user.name %></h1>
+<div class="user-profile">
+  <%#TODO move null picture to decorator %>
+  <% if @user.picture? %>
+    <%= image_tag @user.picture.url(:thumb) %>
+  <% else %>
+    <%= image_tag "defaultProfilePic.jpg" %>
+  <% end %>
+  <h1><%= @user.name %></h1>
 
-<span id='user-email'><%= @user.email %></span>
-<p>Member for <%= distance_of_time_in_words @user.created_at, Time.now %></p>
+  <p>Member for <%= distance_of_time_in_words @user.created_at, Time.now %></p>
+  <% if @user.location? %>
+    <strong>Location:</strong> <%= @user.location %><br>
+  <% end %>
 
-<%= render :partial => 'stats_banner' %>
+  <%= render :partial => 'stats_banner' %>
+</div>
+
+<div class="projects">
+  <% @user.projects.each do |project| %>
+    <%= render partial: 'shared/project', locals: {project: project} %>
+  <% end %>
+</div>

@@ -1,19 +1,12 @@
 @import 'bourbon';
 @import 'neat';
+@import 'mixins/card';
 
-/******* Edit User *******/
-div#statistics {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  text-align: center;
-
-  span.number {
-    font-size: 4em;
-  }
+.user-profile .statistics {
+  @include card;
 }
 
-/******* New User ********/
-
+/* TODO move this to a 'form' stylesheet */
 .alternative-actions {
   @include span-columns(6);
   @include shift(3);
@@ -22,25 +15,6 @@ div#statistics {
     margin-bottom: $gutter/2;
   }
   margin-bottom: $gutter;
-}
-
-/******* User Profile *******/
-
-.profile-head {
-  width: 940px;
-  margin-right: auto;
-  margin-left: auto;
-}
-.profile-pic {
-  width: 150px;
-}
-#userContributions {
-  margin-top: 50px;
-}
-.userProjects, #userContributions {
-  li { list-style: none; }
-  a { text-decoration: none; }
-  a:hover { text-decoration: underline; }
 }
 
 /*******Forgot/edit password******/

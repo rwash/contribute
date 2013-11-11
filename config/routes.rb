@@ -10,10 +10,6 @@ Contribute::Application.routes.draw do
 
   #Users
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
-  # TODO take these out of devise, and move them to the users resource
-  devise_scope :user do
-    get 'users/show/:id', :to => 'registrations#show', :as => :user
-  end
   resources :users do
     post 'block', on: :member
     post 'toggle_admin', on: :member
