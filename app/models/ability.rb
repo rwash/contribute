@@ -25,7 +25,9 @@ class Ability
     # Projects
     can :create, Project
     can [:read, :save, :activate], Project, owner: user
-    can :read, Project, confirmation_approver?: true
+    can :read, Project do |project|
+      project.confirmation_approver? user
+    end
 
     can :destroy, Project, owner: user, state: :active
     can :destroy, Project, owner: user, state: :inactive

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :yt_client, :confirmation_approver?
+  helper_method :yt_client
 
   # Ensure authorization happens on every action in the application.
   # This will raise an exception if authorization is not performed in an action.

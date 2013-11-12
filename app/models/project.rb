@@ -202,9 +202,9 @@ class Project < ActiveRecord::Base
   end
 
   # TODO badly formed method
-  def confirmation_approver?
+  def confirmation_approver? user
     approvals.each do |approval|
-      return true if approval.group.owner == current_user
+      return true if approval.group.owner == user
     end
     return false
   end
