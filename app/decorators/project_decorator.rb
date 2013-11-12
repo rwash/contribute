@@ -16,8 +16,12 @@ class ProjectDecorator < Draper::Decorator
   include Draper::LazyHelpers
 
   # Generates a colored span describing the state of the project
-  def colored_state_description
-    content_tag :span, "Project State: #{model.state.display_string}", class: "label label-#{model.state.color_class}"
+  def display_colored_state_description
+    if source.owner == current_user
+      content_tag :p do
+        content_tag :span, "Project State: #{state.display_string}", class: "label label-#{state.color_class}"
+      end
+    end
   end
 
   def display_log_in_button

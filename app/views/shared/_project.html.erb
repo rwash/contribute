@@ -18,6 +18,6 @@
 
   <div class="time-left"><span class="bold"><%= project.remaining_time %></span></div>
   <div class="state">
-    <%= project.colored_state_description if project.state != 'active' %>
+    <%= project.display_colored_state_description %>
   </div>
 </div>
