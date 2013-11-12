@@ -4,7 +4,9 @@
 <ul class="group-actions">
   <li><%= link_to "Add a project", new_group_approval_path(@group), id: 'add' %></li>
   <% if group_admin? @group %>
-    <li><%= link_to "Projects needing approval", group_approvals_path(@group) if group_admin?(@group) %></li>
+    <% if group_admin?(@group) && @group.approvals.any? %>
+      <li><%= link_to "Projects needing approval", group_approvals_path(@group) if group_admin?(@group) %></li>
+    <% end %>
     <li><%= link_to "Edit group", edit_group_path(@group), id: 'edit' %></li>
     <li><%= link_to "Delete group", destroy_group_path(@group), id: "delete", :confirm => "Are you sure? This can not be reversed." %></li>
   <% end %>

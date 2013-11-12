@@ -23,6 +23,13 @@
     margin-bottom: 0;
     textarea { @include fill-parent; }
   }
+
+  .modal-footer {
+    a, input {
+      @include span-columns(1 of 2);
+      text-align: center;
+    }
+  }
 }
 
 .pending-approvals {
