@@ -31,10 +31,23 @@
     padding: $gutter 0;
     @include span-columns(3 of 12);
     input {
-      @include span-columns(1 of 3);
+      @include span-columns(.5 of 3);
     }
     input:not([type=submit]) {
-      @include span-columns(2 of 3);
+      @include span-columns(2.5 of 3);
+      background: #96CCD8;
+      border: 1px solid #96CCD8;
+      padding: $gutter/2;
+      @include omega;
+    }
+    button {
+      margin-top: -5px;
+      background: none;
+      border: none;
+      svg g {
+        stroke: #96CCD8;
+        fill: none;
+      }
     }
   }
 }

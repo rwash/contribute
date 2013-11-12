@@ -76,7 +76,7 @@ feature 'Search' do
   def search_for query
     visit projects_path
     fill_in 'search', with: query
-    click_button 'Search'
+    click_button 'search'
   end
 
   def search_term
