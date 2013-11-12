@@ -10,7 +10,7 @@ feature 'comments', :js do
     visit project_path project
     click_on "Comments"
     fill_in :comment_body, with: comment.body
-    click_on "Create Comment"
+    click_on "Post Comment"
 
     click_on "Comments"
     page.should have_content comment.body
@@ -28,7 +28,7 @@ feature 'comments', :js do
       click_on "reply"
       within 'form#new_comment' do
         fill_in :comment_body, with: comment.body
-        click_on 'Create Comment'
+        click_on 'Post Comment'
       end
     end
 

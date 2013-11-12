@@ -14,6 +14,5 @@
   <%= f.text_area :body, :rows => 4, :class => 'span5' %> <br />
   <%= hidden_field_tag 'projectid', @project.id %>
   <%= hidden_field_tag 'parentCommentId', parent.id if parent != nil %>
-  <%= f.submit :class => 'btn' %>
-
+  <%= f.submit "Post Comment" %>
 <% end %>

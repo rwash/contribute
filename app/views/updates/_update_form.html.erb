@@ -15,7 +15,6 @@
   <h4>Update title:</h4><%= f.text_field :title %>
   <h4>Update body:</h4><%= f.cktext_area :content, :rows => 4, :class => 'span5', :toolbar => 'Basic'  %> <br />
   <%= hidden_field_tag 'project_id', @project.id %>
-  <%= f.submit :class => 'btn' %>
-
+  <%= f.submit %>
 <% end %>
 </div>

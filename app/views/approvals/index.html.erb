@@ -4,24 +4,24 @@
   <% if @group.pending_approvals.each do |approval| %>
     <div class="pending-approval">
       <%= render 'shared/project', project: approval.project %>
-      <%= link_to 'Approve', approve_group_approval_path(@group, approval), method: :put, :class => "btn btn-primary" %>
-      <%= link_to 'Reject', '#', :class => "btn btn-danger", :onclick => "$(\"#myModal-#{approval.id}\").modal('show')" %>
-    </div>
+      <%= link_to 'Reject', '#', class: "button", :onclick => "$(\"#myModal-#{approval.id}\").modal('show')" %>
+      <%= link_to 'Approve', approve_group_approval_path(@group, approval), method: :put, class: 'success-button' %>
 
-    <div id="myModal-<%= approval.id -%>" class="modal fade">
-      <div class="modal-header">
-        <h3>Please provide a reason for rejecting this project.</h3>
+      <div id="myModal-<%= approval.id -%>" class="modal fade">
+        <div class="modal-header">
+          <h3>Please provide a reason for rejecting this project.</h3>
+        </div>
+        <%= form_tag reject_group_approval_path(@group, approval), method: :put do %>
+          <div class="modal-body">
+            <%= text_area_tag :reason, '', :rows => 6 %>
+          </div>
+
+          <div class="modal-footer">
+            <a href="#" class="button" data-dismiss="modal" >Cancel</a>
+            <%= submit_tag "Submit", class: 'success-button' %>
+          </div>
+        <% end %>
       </div>
-      <%= form_tag reject_group_approval_path(@group, approval), method: :put do %>
-        <div class="modal-body">
-          <%= text_area_tag :reason, '', :rows => 6 %>
-        </div>
-
-        <div class="modal-footer">
-          <a href="#" class="btn" data-dismiss="modal" >Cancel</a>
-          <%= submit_tag "Submit", :class => 'btn btn-primary' %>
-        </div>
-      <% end %>
     </div>
   <% end.none? %>
     Yay! No projects waiting to be approved.

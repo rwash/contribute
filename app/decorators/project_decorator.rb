@@ -24,61 +24,55 @@ class ProjectDecorator < Draper::Decorator
     end
   end
 
-  def display_log_in_button
-    unless user_signed_in?
-      button_to "Log in to contribute!", new_user_session_path, class: 'btn btn-info btn-large'
-    end
-  end
-
   # Generates a button linking to the edit page for the project
   def display_edit_button
     if can? :edit, source
-      button_to "Edit Project", edit_project_path(model), method: 'get', class: 'btn btn-info btn-large'
+      button_to "Edit Project", edit_project_path(model), method: 'get'
     end
   end
 
   # Generates a button linking to the activate action for the project
   def display_activate_button
     if logged_in? and owner == current_user and state.inactive?
-      button_to "Activate Project", activate_project_path(model), method: :put, confirm: "Are you sure you want to activate this project? You will not be able to edit the project once it is active.", class: 'btn btn-success btn-large'
+      button_to "Activate Project", activate_project_path(model), method: :put, confirm: "Are you sure you want to activate this project? You will not be able to edit the project once it is active.", class: 'success-button'
     end
   end
 
   # Generates a button linking to the delete action for the project
   def display_delete_button
     if logged_in? and owner == current_user and (state.inactive? or state.unconfirmed?)
-      button_to "Delete Project", model, method: :delete, confirm: "Are you sure you want to delete this project?", class: 'btn btn-danger btn-large'
+      button_to "Delete Project", model, method: :delete, confirm: "Are you sure you want to delete this project?", class: 'danger-button'
     end
   end
 
   def display_contribute_button
     if state.active? && !existing_contribution && current_user != owner
-      button_to "Contribute to this project", new_contribution_url(source), :method=>:get, :class => 'btn btn-success btn-large'
+      button_to "Contribute to this project", new_contribution_url(source), :method=>:get, :class => 'success-button'
     end
   end
 
   def display_edit_contribution_button
     if existing_contribution and can? :edit, existing_contribution
-      button_to "Contribute more", edit_contribution_url(existing_contribution),:method => :get,  :class => 'btn btn-primary btn-large'
+      button_to "Contribute more", edit_contribution_url(existing_contribution),:method => :get
     end
   end
 
   def display_block_button
     if can? :block, source
-      button_to 'Block Project', block_project_url(source), method: :put, class: 'btn btn-large btn-danger'
+      button_to 'Block Project', block_project_url(source), method: :put, class: 'danger-button'
     end
   end
 
   def display_unblock_button
     if can? :unblock, source
-      button_to 'Unblock Project', unblock_project_url(source), method: :put, class: 'btn btn-large btn-info'
+      button_to 'Unblock Project', unblock_project_url(source), method: :put
     end
   end
 
   # Generates a button linking to the cancel action for the project
   def display_cancel_button
     if logged_in? and owner == current_user and state.active?
-      button_to "Cancel Project", model, method: :delete, confirm: "Are you sure you want to cancel this project? All contributions to it will also be cancelled.", class: 'btn-danger btn-large'
+      button_to "Cancel Project", model, method: :delete, confirm: "Are you sure you want to cancel this project? All contributions to it will also be cancelled.", class: 'danger-button'
     end
   end
 

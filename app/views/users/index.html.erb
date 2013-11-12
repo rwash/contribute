@@ -21,7 +21,7 @@
       <td><%= user.projects.count %></td>
       <td><%= user.contributions.count %></td>
       <td><%= user.admin? ? 'Admin' : '---' %></td>
-      <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-small btn-primary' %></td>
+      <td><%= link_to 'Edit', edit_user_path(user) %></td>
     </tr>
   <% end %>
 </table>

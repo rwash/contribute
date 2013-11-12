@@ -1,0 +1,36 @@
+@import 'bourbon';
+@import 'neat';
+
+$green: #5cb85c;
+$red: #d9534f;
+$blue: #428bca;
+
+form {
+  input[type=submit] {
+    @include button($green);
+    font-size: 1.4em;
+  }
+}
+
+.button, form.button_to input {
+  @include button($blue);
+  font-size: 1.4em;
+
+  &.danger-button {
+    @include button($red);
+    font-size: 1.4em;
+  }
+  &.success-button {
+    @include button($green);
+    font-size: 1.4em;
+  }
+}
+
+.danger-button {
+  @include button($red);
+  font-size: 1.4em;
+}
+.success-button {
+  @include button($green);
+  font-size: 1.4em;
+}

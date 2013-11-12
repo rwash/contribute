@@ -7,9 +7,9 @@
 <%= "#{@user.name} is #{'not' unless @user.admin?} an admin" %>
 <% if can? :toggle_admin, @user %>
   <%= if @user.admin?
-        button_to 'Demote from admin', toggle_admin_user_path(@user, admin: false), method: :post, class: 'btn btn-warning'
+        button_to 'Demote from admin', toggle_admin_user_path(@user, admin: false), class: 'danger-button'
       else
-        button_to 'Promote to admin', toggle_admin_user_path(@user, admin: true), method: :post, class: 'btn btn-success'
+        button_to 'Promote to admin', toggle_admin_user_path(@user, admin: true)
       end
     %>
 <% end %>
@@ -17,9 +17,9 @@
 <%= "#{@user.name}'s account is #{@user.blocked ? 'blocked' : 'active'}" %>
 <% if can? :block, @user %>
   <%= if @user.blocked?
-        button_to 'Unblock account', block_user_path(@user, blocked: false), method: :post, class: 'btn btn-success'
+        button_to 'Unblock account', block_user_path(@user, blocked: false)
       else
-        button_to 'Block account', block_user_path(@user, blocked: true), method: :post, class: 'btn btn-danger'
+        button_to 'Block account', block_user_path(@user, blocked: true), class: 'danger-button'
       end
     %>
 <% end %>

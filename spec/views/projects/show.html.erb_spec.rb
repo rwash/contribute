@@ -11,11 +11,15 @@ describe "projects/show" do
   subject { rendered }
 
   context 'user is not logged in' do
+    before do
+      project.payment_account_id = "abc"
+      project.state = :active
+      project.save
+    end
     before { render }
 
     it 'has the appropriate buttons' do
-      should have_button 'Log in to contribute'
-      should_not have_button 'Contribute to this project'
+      should have_button 'Contribute to this project'
       should_not have_button 'Contribute more'
       should_not have_button "Connect an Amazon account"
       should_not have_button 'Cancel Project'
@@ -37,7 +41,6 @@ describe "projects/show" do
       before { render }
 
       it 'has the appropriate buttons' do
-        should_not have_button 'Log in to contribute'
         should have_button 'Contribute to this project'
         should_not have_button 'Contribute more'
         should_not have_button "Connect an Amazon account"
@@ -53,7 +56,6 @@ describe "projects/show" do
       before { render }
 
       it 'has the appropriate buttons' do
-        should_not have_button 'Log in to contribute'
         should_not have_button 'Contribute to this project'
         should have_button 'Contribute more'
         should_not have_button "Connect an Amazon account"
@@ -73,7 +75,6 @@ describe "projects/show" do
       before { render }
 
       it 'has the appropriate buttons' do
-        should_not have_button 'Log in to contribute'
         should_not have_button 'Contribute to this project'
         should_not have_button 'Contribute more'
         should_not have_button 'Connect an Amazon account'
@@ -97,7 +98,6 @@ describe "projects/show" do
       before { render }
 
       it 'has the appropriate buttons' do
-        should_not have_button 'Log in to contribute'
         should_not have_button 'Contribute to this project'
         should_not have_button 'Contribute more'
         should_not have_button "Connect an Amazon account"
@@ -117,7 +117,6 @@ describe "projects/show" do
       before { render }
 
       it 'has the appropriate buttons' do
-        should_not have_button 'Log in to contribute'
         should_not have_button 'Contribute to this project'
         should_not have_button 'Contribute more'
         should_not have_button "Connect an Amazon account"
@@ -132,7 +131,6 @@ describe "projects/show" do
       before { render }
 
       it 'has the appropriate buttons' do
-        should_not have_button 'Log in to contribute'
         should_not have_button 'Contribute to this project'
         should_not have_button 'Contribute more'
         should have_button "Connect an Amazon account"
@@ -156,7 +154,6 @@ describe "projects/show" do
       before { render }
 
       it 'has the appropriate buttons' do
-        should_not have_button 'Log in to contribute'
         should have_button 'Contribute to this project'
         should_not have_button 'Contribute more'
         should_not have_button "Connect an Amazon account"
@@ -178,7 +175,6 @@ describe "projects/show" do
       before { render }
 
       it 'has the appropriate buttons' do
-        should_not have_button 'Log in to contribute'
         should_not have_button 'Contribute to this project'
         should_not have_button 'Contribute more'
         should_not have_button "Connect an Amazon account"
