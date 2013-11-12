@@ -23,7 +23,7 @@ class UserDecorator < Draper::Decorator
     image_tag picture_url :show
   end
 
-  def picture_tag
-    image_tag picture_url, :class => "userImage", :width=>"50"
+  def project_contributor_picture_tag
+    image_tag picture_url(:thumb), :class => "userImage", :width=>"50"
   end
 end

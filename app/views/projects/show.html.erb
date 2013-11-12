@@ -67,7 +67,7 @@ $(document).ready(function(){
         <% @project.contributions.each do |contribution|%>
           <li>
             <%= link_to contribution.user do %>
-              <%= contribution.user.decorate.picture_tag %>
+              <%= contribution.user.decorate.project_contributor_picture_tag %>
 
               <%=contribution.user.name%>
               <% if can? :destroy, @project # TODO abuse of abilities%>
