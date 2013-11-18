@@ -93,7 +93,7 @@ class ApprovalsController < InheritedResources::Base
 
   private
   def log_user_action event, message=nil
-    UserAction.create user: current_user, subject: approval, event: event, message: message
+    UserAction.create user: current_user, subject: approval, event: event, message: message.to_json
   end
 
   def approval

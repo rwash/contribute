@@ -1,10 +1,14 @@
 <h2>Submit Project</h2>
 
-<div id="new-approval-form">
+<div class="new-approvals">
   <% @projects.each do |project| %>
-    <div class="project-add">
-      <%= render 'shared/project', project: project %>
-      <%= button_to 'Add to group', controller: :approvals, action: :create, group_id: @group.id, project_id: project.id %>
-    </div>
+    <%= form_tag group_approvals_path, method: :post, class: 'new-approval' do %>
+      <div class="project-add">
+        <%= render 'shared/project', project: project %>
+        <%= hidden_field_tag :project_id, project.id %>
+        <%= hidden_field_tag :group_id, @group.id %>
+        <%= submit_tag 'Add to group' %>
+      </div>
+    <% end %>
   <% end %>
 </div>
