@@ -17,6 +17,7 @@ feature 'amazon process', :js do
 
       #fill in form
       fill_in 'name' , with: project.name
+      attach_file 'Picture', 'spec/example_data/bitlab.png'
       fill_in 'project_funding_goal', with: project.funding_goal
       fill_in 'DatePickerEndDate', with: project.end_date.to_s(:db)
       fill_in 'project_short_description', with: project.short_description

@@ -26,7 +26,7 @@ class ProjectsController < InheritedResources::Base
     authorize! :create, @project
 
     if @project.save
-      log_user_action :create, params[:project]
+      log_user_action :create, params[:project].except(:picture)
       unless params[:project][:video].nil?
         @project.video = Video.create(title: @project.name, project_id: @project.id)
         @project.video.delay.upload_video(params[:project][:video].path)
