@@ -1,3 +1,5 @@
+require 'amazon/fps/amazon_validator'
+
 class AmazonPaymentAccountsController < ApplicationController
   skip_authorization_check
 

@@ -15,6 +15,7 @@ require 'openssl'
 require 'net/http'
 require 'net/https'
 require 'rexml/document'
+require 'amazon/fps/outbound_signature_v2'
 
 module Amazon
   module FPS
