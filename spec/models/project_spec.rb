@@ -251,4 +251,18 @@ describe Project do
       project.delete
     end
   end
+
+  describe '#activate!' do
+    context 'when project has approvals' do
+      let(:project) { create :active_project, state: :unconfirmed }
+      let(:group) { create :group, open: true }
+      let!(:approval) { create :approval, group: group, project: project, status: :approved }
+
+      it 'does not throw an error' do
+        expect {
+          project.activate!
+        }.to_not raise_error
+      end
+    end
+  end
 end

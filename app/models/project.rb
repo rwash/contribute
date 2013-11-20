@@ -182,12 +182,6 @@ class Project < ActiveRecord::Base
     # publish video
     self.video.published = true
 
-    #send out emails for any group requests
-    self.approvals.each do |approval|
-      group = approval.group
-      EmailManager.project_to_group_approval(approval, @project, group).deliver
-    end
-
     self.save!
   end
 
