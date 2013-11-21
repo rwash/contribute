@@ -13,7 +13,8 @@ form {
     }
     input:not([type=submit]):not([type=file]), textarea {
       @include span-columns(6 of 12);
-      padding: $gutter;
+      padding: $gutter/2;
+      height: auto;
     }
     .help-block { @include span-columns(2 of 12); }
 
