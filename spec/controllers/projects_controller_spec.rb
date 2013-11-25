@@ -1,9 +1,26 @@
 require 'spec_helper'
-require 'controller_helper'
 
 describe ProjectsController do
   include Devise::TestHelpers
   render_views
+
+  [:index, :show].each do |page|
+    context "GET #{page}" do
+      let(:user) { create :user }
+      let(:project) { create :project }
+      before { sign_in user }
+
+      it "records page views" do
+        get page, test_params
+        should log_page_view user, :projects, page, test_params
+      end
+
+      private
+      def test_params
+        {a: :b, "string_key" => 10, id: project.to_param}
+      end
+    end
+  end
 
   # For stubbing abilities
   # See https://github.com/ryanb/cancan/wiki/Testing-Abilities

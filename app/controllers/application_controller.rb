@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   helper_method :yt_client
+  before_filter :log_page_view
 
   # Ensure authorization happens on every action in the application.
   # This will raise an exception if authorization is not performed in an action.
@@ -21,5 +22,13 @@ class ApplicationController < ActionController::Base
 
   def yt_client
     @yt_client ||= YouTubeIt::Client.new(username: YT_USERNAME , password: YT_PASSWORD , dev_key: YT_DEV_KEY)
+  end
+
+  def log_page_view
+    PageView.create(user_id: (current_user.id rescue nil),
+                    controller: params[:controller],
+                    action: params[:action],
+                    parameters: params.except(:controller, :action).to_s,
+                    ip: request.remote_ip)
   end
 end

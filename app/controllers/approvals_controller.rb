@@ -46,7 +46,7 @@ class ApprovalsController < InheritedResources::Base
     else
       @approval = Approval.create(group: group, project: project)
       flash[:notice] = "Your project has been submitted to the group admin for approval."
-      EmailManager.project_to_group_approval(approval, project, group).deliver
+      EmailManager.project_to_group_approval(@approval, project, group).deliver
       log_user_action :create, params
     end
 
@@ -89,6 +89,19 @@ class ApprovalsController < InheritedResources::Base
     end
 
     redirect_to group_approvals_path(group)
+  end
+
+  private
+  def log_user_action event, message=nil
+    UserAction.create user: current_user, subject: approval, event: event, message: message.to_json
+  end
+
+  def approval
+    @approval ||= Approval.find(params[:id])
+  end
+
+  def group
+    @_group ||= Group.find(params[:group_id])
   end
 
   private
