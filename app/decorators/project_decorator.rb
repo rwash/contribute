@@ -15,15 +15,6 @@ class ProjectDecorator < Draper::Decorator
   # Allows the use of helpers without a proxy (see Draper documentation)
   include Draper::LazyHelpers
 
-  # Generates a colored span describing the state of the project
-  def display_colored_state_description
-    if source.owner == current_user
-      content_tag :p do
-        content_tag :span, "Project State: #{state.display_string}", class: "label label-#{state.color_class}"
-      end
-    end
-  end
-
   # Generates a button linking to the edit page for the project
   def display_edit_button
     if can? :edit, source
