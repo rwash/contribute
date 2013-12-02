@@ -9,8 +9,10 @@
       <%= group.description %>
     </div>
     <div class="images">
-      <% group.projects.limit(6).each do |p| %>
-        <%= p.decorate.thumbnail_tag %>
+      <% group.projects.limit(6).each do |project| %>
+        <%= link_to project do %>
+          <%= project.decorate.thumbnail_tag %>
+        <% end %>
       <% end %>
     </div>
   </div>
