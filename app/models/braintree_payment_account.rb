@@ -1,0 +1,2 @@
+class BraintreePaymentAccount < PaymentAccount
+end
