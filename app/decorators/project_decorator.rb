@@ -69,7 +69,7 @@ class ProjectDecorator < Draper::Decorator
 
   def display_connect_amazon_button
     if logged_in? and owner == current_user and state.unconfirmed?
-      button_to "Connect an Amazon account", new_project_amazon_payment_account_path(model), method: :get
+      button_to "Connect an Amazon account", new_project_amazon_payment_account_path(model), method: :get, class: 'success-button'
     end
   end
 
