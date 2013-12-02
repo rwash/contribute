@@ -24,7 +24,6 @@ feature 'Projects', :js do
 
     click_button 'Create Project'
 
-    page.should have_content 'Unconfirmed'
     page.should have_button 'Connect an Amazon account'
   end
 
