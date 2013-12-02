@@ -139,6 +139,9 @@ gem 'youtube_it', '~> 2.1.13'
 #rich text editor
 gem 'ckeditor', '~> 4.0.2'
 
+# Payment processing
+gem 'braintree', "~> 2.26.0"
+
 #ordering gem for Queues
 gem 'acts_as_list', '~> 0.1.9'
 
