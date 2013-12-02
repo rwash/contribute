@@ -13,6 +13,7 @@
   <div class="field">
     <%= f.label :funding_goal, "Funding Goal: $" %>
     <%= f.text_field :funding_goal, :placeholder => '0.00' %>
+    <span class="help-block">You must set a goal of at least $5, and the goal must be a whole dollar amount (no cents).</span>
   </div>
 
   <div class="field">
