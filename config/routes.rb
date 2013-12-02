@@ -27,6 +27,8 @@ Contribute::Application.routes.draw do
   match 'projects/:id/edit/upload' => 'projects#upload', :as => :upload_project_video
   resources :projects, :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
     resources :amazon_payment_accounts, only: [:new, :create, :destroy]
+    resources :braintree_payment_accounts, only: [:new, :create, :destroy]
+
     put 'activate', on: :member
     put 'block', on: :member
     put 'unblock', on: :member
