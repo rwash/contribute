@@ -7,7 +7,7 @@ set :application, "contribute"
 
 set :scm, :git
 set :branch, "master"
-set :repository,  "ssh://rwash@orithena.cas.msu.edu/projects/contribute.git"
+set :repository, "git@github.com:rwash/contribute.git"
 #set :deploy_via, :remote_cache
 
 set :user, "rwash"
