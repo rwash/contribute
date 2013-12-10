@@ -64,6 +64,11 @@ describe BraintreePaymentAccountsController do
         it { should render_template :new }
         it { should set_the_flash.to(/problem/) }
 
+        it 'does not change the project state' do
+          post_create invalid_params
+          project.reload.state.should_not eq :inactive
+        end
+
         private
         def invalid_params
           invalid_params = braintree_params
@@ -109,7 +114,7 @@ describe BraintreePaymentAccountsController do
       }
     end
 
-    let(:project) { create :project }
+    let(:project) { create :project, state: :unconfirmed }
   end
 
   describe "DELETE destroy" do
@@ -120,15 +125,27 @@ describe BraintreePaymentAccountsController do
     end
 
     context 'as non-project owner' do
-      it 'does not destroy the payment account'
-      pending { should redirect_to :root }
-      pending { should set_the_flash.to(/not authorized/) }
+      it 'does not destroy the payment account' do
+        expect { delete_destroy }.to_not change(BraintreePaymentAccount, :count)
+      end
+      it { delete_destroy; should redirect_to :root }
+      it { delete_destroy; should set_the_flash.to(/not authorized/) }
     end
 
     context 'when not signed in' do
-      it 'does not destroy the payment account'
-      pending { should redirect_to :root }
-      pending { should set_the_flash.to(/not authorized/) }
+      it 'does not destroy the payment account' do
+        expect { delete_destroy }.to_not change(BraintreePaymentAccount, :count)
+      end
+      it { delete_destroy; should redirect_to :root }
+      it { delete_destroy; should set_the_flash.to(/not authorized/) }
     end
+
+    private
+    def delete_destroy
+      delete :destroy, id: braintree_payment_account.id, project_id: project.to_param
+    end
+
+    let!(:braintree_payment_account) { create :braintree_payment_account }
+    let(:project) { braintree_payment_account.project }
   end
 end

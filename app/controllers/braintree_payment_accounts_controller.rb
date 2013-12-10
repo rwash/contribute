@@ -11,8 +11,6 @@ class BraintreePaymentAccountsController < ApplicationController
     unless current_user == project.owner
       return unauthorized
     end
-    project.state = :inactive
-    project.save
     application = params[:braintree_payment_account]
     result = Braintree::MerchantAccount.create(
       :applicant_details => {
@@ -34,6 +32,8 @@ class BraintreePaymentAccountsController < ApplicationController
     )
     begin
       BraintreePaymentAccount.create token: result.merchant_account.id, project: project
+      project.state = :inactive
+      project.save
       redirect_to project
     rescue
       flash[:alert] = "There was a problem with the information you entered. Please try again."
@@ -45,6 +45,9 @@ class BraintreePaymentAccountsController < ApplicationController
   end
 
   def destroy
+    unless current_user == project.owner
+      return unauthorized
+    end
   end
 
   private
