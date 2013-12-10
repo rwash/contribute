@@ -59,8 +59,17 @@ describe BraintreePaymentAccountsController do
       end
 
       context 'with invalid params' do
-        it 're-renders the form'
-        it 'sets the flash to an error message'
+        before { post_create invalid_params }
+
+        it { should render_template :new }
+        it { should set_the_flash.to(/problem/) }
+
+        private
+        def invalid_params
+          invalid_params = braintree_params
+          invalid_params[:tos_accepted] = false
+          invalid_params
+        end
       end
     end
 
@@ -80,8 +89,8 @@ describe BraintreePaymentAccountsController do
     end
 
     private
-    def post_create
-      post :create, { project_id: project.to_param, braintree_payment_account: braintree_params }
+    def post_create params=braintree_params
+      post :create, { project_id: project.to_param, braintree_payment_account: params }
     end
 
     def braintree_params

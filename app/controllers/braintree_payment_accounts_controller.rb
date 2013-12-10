@@ -32,9 +32,13 @@ class BraintreePaymentAccountsController < ApplicationController
       :tos_accepted => application[:tos_accepted],
       :master_merchant_account_id => merchant_account_id,
     )
-
-    BraintreePaymentAccount.create token: result.merchant_account.id, project: project
-    redirect_to project
+    begin
+      BraintreePaymentAccount.create token: result.merchant_account.id, project: project
+      redirect_to project
+    rescue
+      flash[:alert] = "There was a problem with the information you entered. Please try again."
+      render :new
+    end
   end
 
   def save
