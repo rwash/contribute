@@ -35,11 +35,48 @@ describe BraintreePaymentAccountsController do
   describe "POST create" do
     context 'as project owner' do
       context 'with valid params' do
-        it 'should succeed with valid input'
-        it 'creates a new payment account'
-        it 'redirects to the associated project'
-        it 'sets the associated project to inactive'
-        it 'sets the token appropriately'
+        it 'creates a new payment account' do
+          expect { post_create }.to change(BraintreePaymentAccount, :count).by(1)
+        end
+
+        it 'redirects to the associated project' do
+          post_create
+          response.should redirect_to project
+        end
+
+        it 'sets the project to inactive' do
+          post_create
+          project.reload.state.should eq :inactive
+        end
+
+        it 'stores a pending braintree merchant account id' do
+          post_create
+          account = BraintreePaymentAccount.last
+          account.token.should_not be_nil
+        end
+
+        private
+        def post_create
+          post :create, { project_id: project.to_param, braintree_payment_account: braintree_params }
+        end
+
+        def braintree_params
+          {
+            :first_name => Braintree::Test::MerchantAccount::Approve,
+            :last_name => "Bloggs",
+            :email => "joe@14ladders.com",
+            :street_address => "123 Credibility St.",
+            :postal_code => "60606",
+            :locality => "Chicago",
+            :region => "IL",
+            :date_of_birth => "1980-10-09",
+            :routing_number => "021000021",
+            :account_number => "43759348798",
+            :tos_accepted => true,
+          }
+        end
+
+        let(:project) { create :project }
       end
 
       context 'with invalid params' do

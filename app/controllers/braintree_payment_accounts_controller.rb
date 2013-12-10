@@ -8,6 +8,30 @@ class BraintreePaymentAccountsController < ApplicationController
   end
 
   def create
+    project.state = :inactive
+    project.save
+    application = params[:braintree_payment_account]
+    result = Braintree::MerchantAccount.create(
+      :applicant_details => {
+        :first_name => application[:first_name],
+        :last_name => application[:last_name],
+        :email => application[:email],
+        :address => {
+          :street_address => application[:street_address],
+          :postal_code => application[:postal_code],
+          :locality => application[:locality],
+          :region => application[:region],
+        },
+        :date_of_birth => application[:date_of_birth],
+        :routing_number => application[:routing_number],
+        :account_number => application[:account_number],
+      },
+      :tos_accepted => application[:tos_accepted],
+      :master_merchant_account_id => merchant_account_id,
+    )
+
+    BraintreePaymentAccount.create token: result.merchant_account.id, project: project
+    redirect_to project
   end
 
   def save
@@ -24,64 +48,8 @@ class BraintreePaymentAccountsController < ApplicationController
   def unauthorized
     redirect_to :root, alert: "You are not authorized to access that page."
   end
-end
 
-=begin
-class AmazonPaymentAccountsController < ApplicationController
-  skip_authorization_check
-
-  def create
-    if current_user == project.owner
-      @amazon_payment_account = AmazonPaymentAccount.new
-      @amazon_payment_account.token = params["tokenID"]
-      @amazon_payment_account.project = project
-
-      if valid_response? && @amazon_payment_account.save
-        project.state = :inactive
-        project.save
-
-        redirect_to project, notice: "Project saved successfully"
-      else
-        redirect_to project, alert: error_message
-      end
-    else
-      unauthorized
-    end
-  end
-
-  def save
-    Amazon::FPS::AmazonLogger::log_recipient_token_response(params)
-  end
-
-  def destroy
-    if current_user == project.owner
-      @amazon_payment_account = AmazonPaymentAccount.find(params[:id])
-      @amazon_payment_account.destroy
-
-      redirect_to @amazon_payment_account.project
-    else
-      unauthorized
-    end
-  end
-
-  private
-  def project
-    @_project ||= Project.find_by_slug! params[:project_id]
-  end
-
-  def error_message
-    "Something went wrong, and we couldn't save your changes."
-  end
-
-  def valid_response?
-    Amazon::FPS::AmazonValidator::valid_recipient_response?(
-      return_url,
-      session,
-      params)
-  end
-
-  def return_url
-    project_amazon_payment_accounts_url(project)
+  def merchant_account_id
+    Contribute::Application.config.braintree_merchant_account_id
   end
 end
-=end
