@@ -34,6 +34,8 @@ describe BraintreePaymentAccountsController do
 
   describe "POST create" do
     context 'as project owner' do
+      before { sign_in project.owner }
+
       context 'with valid params' do
         it 'creates a new payment account' do
           expect { post_create }.to change(BraintreePaymentAccount, :count).by(1)
@@ -54,29 +56,6 @@ describe BraintreePaymentAccountsController do
           account = BraintreePaymentAccount.last
           account.token.should_not be_nil
         end
-
-        private
-        def post_create
-          post :create, { project_id: project.to_param, braintree_payment_account: braintree_params }
-        end
-
-        def braintree_params
-          {
-            :first_name => Braintree::Test::MerchantAccount::Approve,
-            :last_name => "Bloggs",
-            :email => "joe@14ladders.com",
-            :street_address => "123 Credibility St.",
-            :postal_code => "60606",
-            :locality => "Chicago",
-            :region => "IL",
-            :date_of_birth => "1980-10-09",
-            :routing_number => "021000021",
-            :account_number => "43759348798",
-            :tos_accepted => true,
-          }
-        end
-
-        let(:project) { create :project }
       end
 
       context 'with invalid params' do
@@ -89,16 +68,39 @@ describe BraintreePaymentAccountsController do
       before { sign_in create :user }
       before { post_create }
 
-      pending { should redirect_to :root }
-      pending { should set_the_flash.to(/not authorized/) }
+      it { should redirect_to :root }
+      it { should set_the_flash.to(/not authorized/) }
     end
 
     context 'when not signed in' do
       before { post_create }
 
-      pending { should redirect_to :root }
-      pending { should set_the_flash.to(/not authorized/) }
+      it { should redirect_to :root }
+      it { should set_the_flash.to(/not authorized/) }
     end
+
+    private
+    def post_create
+      post :create, { project_id: project.to_param, braintree_payment_account: braintree_params }
+    end
+
+    def braintree_params
+      {
+        :first_name => Braintree::Test::MerchantAccount::Approve,
+        :last_name => "Bloggs",
+        :email => "joe@14ladders.com",
+        :street_address => "123 Credibility St.",
+        :postal_code => "60606",
+        :locality => "Chicago",
+        :region => "IL",
+        :date_of_birth => "1980-10-09",
+        :routing_number => "021000021",
+        :account_number => "43759348798",
+        :tos_accepted => true,
+      }
+    end
+
+    let(:project) { create :project }
   end
 
   describe "DELETE destroy" do

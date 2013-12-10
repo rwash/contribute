@@ -8,6 +8,9 @@ class BraintreePaymentAccountsController < ApplicationController
   end
 
   def create
+    unless current_user == project.owner
+      return unauthorized
+    end
     project.state = :inactive
     project.save
     application = params[:braintree_payment_account]
