@@ -35,7 +35,7 @@ module Amazon
       end
 
       def service_end_point
-        Rails.application.config.amazon_fps_endpoint
+        AmazonFlexPay.api_endpoint
       end
 
       #converts the current time to ISO 8601 format

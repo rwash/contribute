@@ -18,7 +18,7 @@ module Amazon
       end
 
       def service_end_point
-        Rails.application.config.amazon_cbui_endpoint
+        AmazonFlexPay.pipeline_endpoint
       end
 
       def version

@@ -62,12 +62,6 @@ Contribute::Application.configure do
 	# Tell Devise where to link back to in its confirmation e-mails
 	config.action_mailer.default_url_options = { :host => 'contribute.cas.msu.edu' }
 
-	#Amazon Payments Configuration
-	# config.amazon_cbui_endpoint = "https://authorize.payments.amazon.com/cobranded-ui/actions/start"
-	# config.amazon_fps_endpoint = "https://fps.amazonaws.com/"
-	config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
-	config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
-
 	#Email Configuration
 	config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
 	config.admin_address = "contribute@bitlab.cas.msu.edu"

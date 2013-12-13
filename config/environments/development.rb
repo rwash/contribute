@@ -33,12 +33,7 @@ Contribute::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-	#Amazon Payments Configuration
-	config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
-	config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
-
 	#Email Configuration
 	config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
 	config.admin_address = "devenv@bitlab.cas.msu.edu"
-
 end

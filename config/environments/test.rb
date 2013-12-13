@@ -40,10 +40,6 @@ Contribute::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 
-	# Amazon Payments Configuration
-  config.amazon_cbui_endpoint = "https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start"
-  config.amazon_fps_endpoint = "https://fps.sandbox.amazonaws.com/"
-
   #Email Configuration
   config.from_address = "Contribute <gethelp@contribute.cas.msu.edu>"
   config.admin_address = "testenv@bitlab.cas.msu.edu"
