@@ -41,11 +41,6 @@ module Amazon
 
     class SignatureUtilsForOutbound
 
-  def initialize(aws_access_key, aws_secret_key)
-    @aws_secret_key = aws_secret_key
-    @aws_access_key = aws_access_key
-  end
-
       def validate_request(args)
         @args = args
         signature.validate

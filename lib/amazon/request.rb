@@ -9,11 +9,11 @@ module Amazon
     end
 
     def access_key
-      Rails.application.config.aws_access_key
+      AmazonFlexPay.access_key
     end
 
     def secret_key
-      Rails.application.config.aws_secret_key
+      AmazonFlexPay.secret_key
     end
 
     def default_params
@@ -36,7 +36,6 @@ module Amazon
                         uri = URI.parse(service_end_point)
                         Amazon::FPS::SignatureUtils.sign_parameters({
                           parameters: @params,
-                          aws_secret_key: secret_key,
                           host: uri.host,
                           verb: http_method,
                           uri: uri.path,

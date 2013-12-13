@@ -26,7 +26,7 @@ class SignatureUtils
     else
       raise "Invalid Signature Version specified"
     end
-    return compute_signature(string_to_sign, args[:aws_secret_key], algorithm)
+    return compute_signature(string_to_sign, algorithm)
   end
   
   # Convert a string into URL encoded form.
@@ -81,9 +81,9 @@ class SignatureUtils
     end
   end
 
-  def self.compute_signature(canonical, aws_secret_key, algorithm = 'sha1')
+  def self.compute_signature(canonical, algorithm = 'sha1')
     digest = OpenSSL::Digest::Digest.new(algorithm)
-    return Base64.encode64(OpenSSL::HMAC.digest(digest, aws_secret_key, canonical)).chomp
+    return Base64.encode64(OpenSSL::HMAC.digest(digest, AmazonFlexPay.secret_key, canonical)).chomp
   end
 
 end

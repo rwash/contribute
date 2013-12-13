@@ -31,7 +31,7 @@ module Amazon
       end
 
       def signature_matches_hash
-        signature == Base64.encode64(OpenSSL::HMAC.digest(digest, @aws_secret_key, canonical)).chomp
+        signature == Base64.encode64(OpenSSL::HMAC.digest(digest, AmazonFlexPay.secret_key, canonical)).chomp
       end
 
       def canonical
