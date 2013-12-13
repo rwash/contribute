@@ -1,4 +1,3 @@
-require 'amazon/fps/multi_token_request'
 require 'amazon/fps/amazon_logger'
 require 'amazon/fps/amazon_validator'
 
@@ -102,10 +101,15 @@ class ContributionsController < ApplicationController
 
     session[:contribution] = @contribution
     session[:editing_contribution_id] = @editing_contribution.id
-    request = Amazon::FPS::MultiTokenRequest.new(session, update_save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
 
     log_user_action :update
-    return redirect_to request.url
+
+    redirect_to AmazonFlexPay.multi_use_pipeline(
+      UUIDTools::UUID.random_create.to_s,
+      update_save_contribution_url,
+      recipient_token_list: @project.payment_account_id,
+      global_amount_limit: @contribution.amount
+    )
   end
 
   def update_save
