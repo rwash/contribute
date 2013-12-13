@@ -32,10 +32,13 @@ class ContributionsController < ApplicationController
         return redirect_to @contribution.project, alert: "An error occured while submitting your contribution. Please try again."
       end
       session[:contribution_id] = @contribution.id
-      request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @contribution.project.payment_account_id, @contribution.amount, @contribution.project.name)
-
       log_user_action :create
-      redirect_to request.url
+      redirect_to AmazonFlexPay.multi_use_pipeline(
+        UUIDTools::UUID.random_create.to_s,
+        save_contribution_url,
+        recipient_token_list: @contribution.project.payment_account_id,
+        global_amount_limit: @contribution.amount
+      )
     else
       render action: :new, alert: "Sorry, this project is no longer taking contributions."
     end
