@@ -51,9 +51,7 @@ class ContributionsController < ApplicationController
     @contribution = Contribution.find(session[:contribution_id])
 
     Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
-    if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(save_contribution_url, session, params)
-      return redirect_to @contribution.project, alert: ERROR_STRING
-    end
+    AmazonFlexPay.verify_request request
 
     session[:contribution_id] = nil
     @contribution.payment_key = params[:tokenID]
@@ -66,6 +64,8 @@ class ContributionsController < ApplicationController
       log_user_action :save
       return redirect_to @contribution.project, alert: "Contribution submitted. Thank you for your support!"
     end
+  rescue
+    redirect_to @contribution.project, alert: ERROR_STRING
   end
 
   def edit
@@ -119,9 +119,7 @@ class ContributionsController < ApplicationController
     @contribution = session[:contribution]
 
     Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
-    if !Amazon::FPS::AmazonValidator::valid_multi_token_response?(update_save_contribution_url, session, params)
-      return redirect_to @contribution.project, alert: ERROR_STRING
-    end
+    AmazonFlexPay.verify_signature request
 
     session[:contribution] = nil
     @editing_contribution = Contribution.find(session[:editing_contribution_id])
@@ -142,6 +140,8 @@ class ContributionsController < ApplicationController
       log_user_action :update_save
       return redirect_to @contribution.project, alert: "Contribution successfully updated. Thank you for your support!"
     end
+  rescue
+    redirect_to @contribution.project, alert: ERROR_STRING
   end
 
   protected

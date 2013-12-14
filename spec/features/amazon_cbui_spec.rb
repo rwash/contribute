@@ -19,9 +19,13 @@ feature 'amazon process', :js do
     session = {}
     session[:contribution] = @contribution
 
-    request = Amazon::FPS::MultiTokenRequest.new(session, save_contribution_url, @project.payment_account_id, @contribution.amount, @project.name)
+    visit AmazonFlexPay.multi_use_pipeline(
+      UUIDTools::UUID.random_create.to_s,
+      save_contribution_url,
+      recipient_token_list: @project.payment_account_id,
+      global_amount_limit: @contribution.amount
+    )
 
-    visit request.url
     expect(page).to have_content('Sign in with your Amazon account')
   end
 

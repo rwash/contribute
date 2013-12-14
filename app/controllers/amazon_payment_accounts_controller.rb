@@ -18,7 +18,9 @@ class AmazonPaymentAccountsController < ApplicationController
       @amazon_payment_account.token = params["tokenID"]
       @amazon_payment_account.project = project
 
-      if valid_response? && @amazon_payment_account.save
+      AmazonFlexPay.verify_request request
+
+      if successful_status and @amazon_payment_account.save
         project.state = :inactive
         project.save
 
@@ -29,6 +31,8 @@ class AmazonPaymentAccountsController < ApplicationController
     else
       unauthorized
     end
+  rescue
+    redirect_to project, alert: error_message
   end
 
   def save
@@ -59,14 +63,11 @@ class AmazonPaymentAccountsController < ApplicationController
     "Something went wrong, and we couldn't save your changes."
   end
 
-  def valid_response?
-    Amazon::FPS::AmazonValidator::valid_recipient_response?(
-      return_url,
-      session,
-      params)
-  end
-
   def return_url
     project_amazon_payment_accounts_url(project)
+  end
+
+  def successful_status
+    params['status'] == "SR"
   end
 end

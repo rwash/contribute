@@ -64,7 +64,7 @@ describe ContributionsController do
 
     before(:each) do
       sign_in user
-      Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
+      AmazonFlexPay.stub(:verify_signature) { true }
     end
     before { session[:contribution_id] = contribution.id }
 
@@ -176,7 +176,7 @@ describe ContributionsController do
 
     before(:each) do
       sign_in user
-      Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
+      AmazonFlexPay.stub(:verify_signature) { true }
       Amazon::FPS::CancelTokenRequest.stub(:send)
     end
 
