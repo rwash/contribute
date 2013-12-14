@@ -69,22 +69,20 @@ class ContributionsController < ApplicationController
   end
 
   def edit
-    initialize_editing_contribution
+    initialize_old_contribution
 
     @contribution = Contribution.new
   end
 
   def update
-    initialize_editing_contribution
+    initialize_old_contribution
     @contribution = Contribution.new params[:contribution]
 
     #Setup contribution parameters that aren't specified by user...
-    @contribution = prepare_contribution()
-    # DONT CHANGE THIS LINE.
-    # We don't want to do @contribution.project = @editing_contribution.project
-    # because that will assign the entire project object. Later, we'll be storing this object in
-    # the session variable. We're fine storing a single id, but we can't store the entire project.
-    @contribution.project_id = @project.id
+    @contribution = Contribution.new params[:contribution]
+    @contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
+    @contribution.user_id = current_user.id if user_signed_in?
+    @contribution.project = @project
 
     if @project.end_date < Date.today
       return redirect_to @project, error: "You cannot edit your contribution because this project is no longer taking contributions."
@@ -94,13 +92,14 @@ class ContributionsController < ApplicationController
       return render action: :edit
     end
 
-    if @contribution.amount <= @editing_contribution.amount
+    if @contribution.amount <= @old_contribution.amount
       @contribution.errors.add(:amount, "must be more than the original amount")
       return render action: :edit
     end
+    @contribution.save
 
-    session[:contribution] = @contribution
-    session[:editing_contribution_id] = @editing_contribution.id
+    session[:contribution_id] = @contribution.id
+    session[:old_contribution_id] = @old_contribution.id
 
     log_user_action :update
 
@@ -113,17 +112,19 @@ class ContributionsController < ApplicationController
   end
 
   def update_save
-    if session[:contribution].nil? or session[:editing_contribution_id].nil?
+    if session[:contribution_id].nil? or session[:old_contribution_id].nil?
       return redirect_to root_path, alert: ERROR_STRING
     end
-    @contribution = session[:contribution]
+    @contribution = Contribution.find session[:contribution_id]
+    @old_contribution = Contribution.find(session[:old_contribution_id])
 
     Amazon::FPS::AmazonLogger::log_multi_token_response(params, session)
-    AmazonFlexPay.verify_signature request
+    unless AmazonFlexPay.verify_request(request)
+      redirect_to @contribution.project, alert: ERROR_STRING
+    end
 
     session[:contribution] = nil
-    @editing_contribution = Contribution.find(session[:editing_contribution_id])
-    session[:editing_contribution_id] = nil
+    session[:old_contribution_id] = nil
 
     @contribution.payment_key = params[:tokenID]
 
@@ -131,11 +132,11 @@ class ContributionsController < ApplicationController
       return redirect_to @contribution.project, alert: ERROR_STRING
     end
 
-    if !@editing_contribution.cancel
+    if !@old_contribution.cancel
       @contribution.cancel
       return redirect_to @contribution.project, alert: ERROR_STRING
     else # success
-      EmailManager.edit_contribution(@editing_contribution, @contribution).deliver
+      EmailManager.edit_contribution(@old_contribution, @contribution).deliver
 
       log_user_action :update_save
       return redirect_to @contribution.project, alert: "Contribution successfully updated. Thank you for your support!"
@@ -152,11 +153,11 @@ class ContributionsController < ApplicationController
     end
   end
 
-  def initialize_editing_contribution
-    @editing_contribution = Contribution.find(params[:id])
+  def initialize_old_contribution
+    @old_contribution = Contribution.find(params[:id])
 
-    @project = @editing_contribution.project
-    authorize! :edit, @editing_contribution
+    @project = @old_contribution.project
+    authorize! :edit, @old_contribution
     validate_project @project
 
   rescue ActiveRecord::RecordNotFound

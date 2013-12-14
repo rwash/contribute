@@ -167,12 +167,12 @@ describe ContributionsController do
 
   describe 'POST update_save' do
     let(:contribution) { create :contribution, user: user }
-    let(:editing_contribution) { create :contribution, user: user, project: contribution.project }
+    let(:old_contribution) { create :contribution, user: user, project: contribution.project }
     let(:params) { {"tokenID"=>"I4TRCVA1ATAFBN1ZJJI634UP4XQCX9DDIDNR1MM7UF6DDJ6ZDDD7KD9E4BDVQIBF",
                     "status"=>"SC"} }
 
-    before { session[:contribution] = contribution }
-    before { session[:editing_contribution_id] = editing_contribution.id }
+    before { session[:contribution_id] = contribution.id }
+    before { session[:old_contribution_id] = old_contribution.id }
 
     before(:each) do
       sign_in user
@@ -197,8 +197,8 @@ describe ContributionsController do
     end
 
     it "fails if there is no contribution in session" do
-      session[:contribution] = nil
-      session[:editing_contribution_id] = editing_contribution.id
+      session[:contribution_id] = nil
+      session[:old_contribution_id] = old_contribution.id
 
       get :update_save, params
       expect(response).to redirect_to(root_path)
@@ -206,8 +206,8 @@ describe ContributionsController do
     end
 
     it "fails when given invalid params" do
-      session[:contribution] = contribution
-      session[:editing_contribution_id] = editing_contribution.id
+      session[:contribution_id] = contribution.id
+      session[:old_contribution_id] = old_contribution.id
       params["tokenID"] = nil
 
       get :update_save, params
@@ -218,20 +218,20 @@ describe ContributionsController do
     it "displays error message if the contribution can't save" do
       Contribution.any_instance.stub(:save){false}
 
-      session[:contribution] = contribution
-      session[:editing_contribution_id] = editing_contribution.id
+      session[:contribution_id] = contribution.id
+      session[:old_contribution_id] = old_contribution.id
 
       get :update_save, params
       expect(response).to redirect_to(contribution.project)
       expect(flash[:alert]).to include "error"
     end
 
-    it "displays error message if editing contribution can't cancel" do
+    it "displays error message if old contribution can't cancel" do
       Contribution.any_instance.stub(:cancel){false}
       Contribution.any_instance.stub(:save){true} #if you remove this, you will get a stack overflow error at contribution.save.  The previous test and this one will run in isolation, but not one after another *shrugs*
 
-      session[:contribution] = contribution
-      session[:editing_contribution_id] = editing_contribution.id
+      session[:contribution_id] = contribution.id
+      session[:old_contribution_id] = old_contribution.id
 
       get :update_save, params
       expect(response).to redirect_to(contribution.project)
