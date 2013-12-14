@@ -19,7 +19,9 @@ class ContributionsController < ApplicationController
   end
 
   def create
-    @contribution = prepare_contribution
+    @contribution = Contribution.new params[:contribution]
+    @contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
+    @contribution.user_id = current_user.id if user_signed_in?
     authorize! :create, @contribution
     validate_project @contribution.project
 
@@ -141,8 +143,6 @@ class ContributionsController < ApplicationController
       log_user_action :update_save
       return redirect_to @contribution.project, alert: "Contribution successfully updated. Thank you for your support!"
     end
-  rescue
-    redirect_to @contribution.project, alert: ERROR_STRING
   end
 
   protected
@@ -162,17 +162,6 @@ class ContributionsController < ApplicationController
 
   rescue ActiveRecord::RecordNotFound
     redirect_to root_url, alert: ERROR_STRING
-  end
-
-  # TODO get rid of this
-  def prepare_contribution
-    contribution = Contribution.new params[:contribution]
-
-    #Setup contribution parameters that aren't specified by user...
-    #TODO this can be a default value in the database
-    contribution.payment_key = Contribution::UNDEFINED_PAYMENT_KEY #To pass validation at valid?
-    contribution.user_id = current_user.id if user_signed_in?
-    return contribution
   end
 
   def log_user_action event

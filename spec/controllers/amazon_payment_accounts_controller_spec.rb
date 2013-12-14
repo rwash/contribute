@@ -40,8 +40,15 @@ describe AmazonPaymentAccountsController do
       before { sign_in project.owner }
 
       describe "with valid params" do
-        before do
-          Amazon::FPS::AmazonValidator.stub(:valid_cbui_response?){true}
+        before { AmazonFlexPay.stub(:verify_signature) {true} }
+
+        let(:user) { create :user }
+        let(:project) { create :project }
+        let(:params) do
+          {project_id: project.to_param,
+           'tokenID' => token,
+           status: "SR",
+          }
         end
 
         it "should succeed with valid input" do
@@ -65,15 +72,6 @@ describe AmazonPaymentAccountsController do
           get :create, params
           expect(response).to redirect_to(project)
           expect(flash[:alert]).to include "Something went wrong"
-        end
-
-        let(:user) { create :user }
-        let(:project) { create :project }
-        let(:params) do
-          {project_id: project.to_param,
-           'tokenID' => token,
-           status: "SR",
-          }
         end
 
         it "creates a new AmazonPaymentAccount" do
@@ -106,6 +104,14 @@ describe AmazonPaymentAccountsController do
 
         it { should redirect_to project }
         it { should set_the_flash.to(/something went wrong/i) }
+      end
+
+      describe "with an invalid signature response from Amazon" do
+        it "displays appropriate error message" do
+          pending
+          expect(response).to redirect_to(project)
+          expect(flash[:alert]).to include "Something went wrong"
+        end
       end
     end
 
