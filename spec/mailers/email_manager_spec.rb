@@ -68,17 +68,6 @@ describe EmailManager do
     expect(last_email.body.encoded).to match(user.name)
   end
 
-  it "failed retries" do
-    contribution = create(:contribution, status: :retry_cancel)
-    contribution2 = create(:contribution, status: :pending)
-    argArray = [ contribution, contribution2 ]
-
-    EmailManager.failed_retries(argArray).deliver
-
-    #TODO: Admin address
-    expect(last_email.subject).to match(Date.today.to_s)
-  end
-
   it "project funded to owner" do
     user = create(:user)
     project = create(:project, owner: user)

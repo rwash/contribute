@@ -136,27 +136,6 @@ describe Amazon::FPS::AmazonValidator do
     end
   end
 
-  describe "get_cancel_status" do
-    before :each do
-      @response = {"ResponseMetadata"=>{"RequestId"=>"7f51e809-190b-45a9-95fe-4a2c7bd2e319:0"}}
-    end
-
-    it "should succeed with valid parameters" do
-      valid_cancel_status?.should eq :success
-    end
-
-    it "should fail with an error" do
-      @response["Errors"] = "omg an error"
-      valid_cancel_status?.should eq :failure
-    end
-
-    private
-
-    def valid_cancel_status?
-      Amazon::FPS::AmazonValidator.get_cancel_status(@response)
-    end
-  end
-
   describe "get_pay_status" do
     it "should succeed on valid input" do
       run_get_pay_status_test(successful_response).should eq :pending

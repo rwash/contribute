@@ -11,7 +11,6 @@ class RetryContributions
 
     check_pending
     retry_pay
-    retry_cancel
 
     if @@still_failing.any?
       EmailManager.failed_retries(@@still_failing).deliver
@@ -41,20 +40,6 @@ class RetryContributions
     to_retry_pay.each do |contribution|
       @@logger.info "Contribution with id #{contribution.id} is retrying payment"
       contribution.execute_payment
-      # This value might need to be tweaked depending on how many e-mails it causes
-      if contribution.retry_count > 3
-        @@still_failing.push contribution
-      end
-    end
-  end
-
-  def self.retry_cancel
-    to_retry_cancel = Contribution.find_all_by_status(:retry_cancel)
-    @@logger.info "Found #{to_retry_cancel.size} contributions to retry cancel"
-
-    to_retry_cancel.each do |contribution|
-      @@logger.info "Contribution with id #{contribution.id} is retrying cancellation"
-      contribution.cancel
       # This value might need to be tweaked depending on how many e-mails it causes
       if contribution.retry_count > 3
         @@still_failing.push contribution

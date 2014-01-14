@@ -18,6 +18,3 @@ end
 
 class ContributionStatus::RetryPay < ContributionStatus
 end
-
-class ContributionStatus::RetryCancel < ContributionStatus
-end

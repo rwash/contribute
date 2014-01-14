@@ -28,9 +28,8 @@ class Project < ActiveRecord::Base
 
   belongs_to :owner, class_name: 'User', foreign_key: 'user_id'
   has_many :contributions,
-    conditions: ["status not in (:retry_cancel, :fail, :cancelled)",
-                 {retry_cancel: ContributionStatus::RetryCancel,
-                  fail: ContributionStatus::Failure,
+    conditions: ["status not in (:fail, :cancelled)",
+                 {fail: ContributionStatus::Failure,
                   cancelled: ContributionStatus::Cancelled}]
   has_and_belongs_to_many :groups
   has_many :comments

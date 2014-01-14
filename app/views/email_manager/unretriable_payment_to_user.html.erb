@@ -1,12 +1,10 @@
 <p>Hey <%= @user.name %>, </p>
 
-<p>We're having some trouble with your contribution to <%= @project.name %>. This is what Amazon Payments told us:</p>
-<%= render :partial => "error", :locals => {:error => @error} %>
+<p>We're having some trouble processing your contribution to <%= @project.name %>.
+We're taking a look at the situation to figure out what went wrong, and we'll be in contact shortly.</p>
 
-<p>Due to the nature of this error, we can't resolve this without your help. We need you to go <a href="TODO: A link to fix a failed contribution">here</a> to create a new contribution.</p>
+<p>If you have concerns, please get in touch with us at <%= mail_to @admin_address %></p>
 
-<p>Since your original contribution failed, you will not be double billed. The contribution you create at the link above will be your only contribution to <%= @project.name %>.</p>
+<p>Thanks for your patience!</p>
 
-<p>Thanks for your help!</p>
-
-<%= render :partial => "signature" %>
+<%= render partial: "signature" %>

@@ -76,8 +76,9 @@ class EmailManager < ActionMailer::Base
   def unretriable_payment_to_user(error, contribution)
     register_contribution contribution
     @error = error
+    @admin_address = @@admin_address
 
-    mail(to: @user.email, subject: "Attention! We need your help to fix your contribution to #{@project.name}!")
+    mail(to: @user.email, subject: "Uh oh. Your contribution to #{@project.name} hit a snag.")
   end
 
   def unretriable_payment_to_admin(error, contribution)

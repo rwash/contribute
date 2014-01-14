@@ -20,6 +20,7 @@ require 'amazon/fps/pay_request'
 class Contribution < ActiveRecord::Base
   MIN_CONTRIBUTION_AMT = 1
   UNDEFINED_PAYMENT_KEY = 'TEMP'
+  MAX_CANCEL_RETRIES = 4
 
   belongs_to :project
   belongs_to :user
@@ -42,72 +43,44 @@ class Contribution < ActiveRecord::Base
   end
 
   # Cancels a contribution by sending a request to Amazon services.
-  # Updates status to one of CANCELLED, RETRY_CANCEL, or FAILURE
+  # Updates status to either CANCELLED or FAILURE
   def cancel
-    request = Amazon::FPS::CancelTokenRequest.new(self.payment_key)
-    response = request.send
+    AmazonFlexPay.cancel_token(payment_key)
+    self.status = :cancelled
 
-    cancel_status = Amazon::FPS::AmazonValidator.get_cancel_status(response)
-
-    if cancel_status == :success
-      self.status = :cancelled
-      self.retry_count = 0
-      EmailManager.contribution_cancelled(self).deliver
-    else
-      error = Amazon::FPS::AmazonValidator.get_error(response)
-
-      if error.retriable
-        self.status = :retry_cancel
-        self.retry_count = self.retry_count + 1
-      else
-        #If the cancel failed, it won't matter to the user. Their contribution is 
-        #cancelled on our end, so it won't get executed
-        EmailManager.unretriable_cancel_to_admin(error, self).deliver
-        self.status = :failure
-      end
-    end
-
-    self.save
+  rescue AmazonFlexPay::API::Error => error
+    #If the cancel failed, it won't matter to the user. Their contribution is
+    #cancelled on our end, so it won't get executed
+    EmailManager.unretriable_cancel_to_admin(error, self).deliver
+    self.status = :failure
+  ensure
+    EmailManager.contribution_cancelled(self).deliver
+    save
   end
 
   # Executes a contribution payment by sending a request to Amazon services.
   # Updates status to one of SUCCESS, PENDING, CANCELLED, RETRY_PAY, or FAILURE, and sends emails appropriately.
   def execute_payment
-    request = Amazon::FPS::PayRequest.new(self.payment_key, self.project.payment_account_id, self.amount)
-
-    response = request.send 
-    transaction_status = Amazon::FPS::AmazonValidator.get_pay_status(response)
-
-    if transaction_status == :success
+    response = AmazonFlexPay.pay(amount, 'USD', payment_key, project.payment_account_id)
+    if response.transaction_status == 'Success'
       self.status = :success
       self.retry_count = 0
       EmailManager.contribution_successful(self).deliver
-      self.transaction_id = response['PayResult']['TransactionId']
-    elsif transaction_status == :pending
+      self.transaction_id = response.transaction_id
+    elsif response.transaction_status == "Pending"
       self.status = :pending
       self.retry_count = 0
-      self.transaction_id = response['PayResult']['TransactionId']
-    elsif transaction_status == :cancelled
+      self.transaction_id = response.transaction_id
+    elsif response.transaction_status == "Cancelled"
       EmailManager.cancelled_payment_to_admin(self).deliver
       self.status = :cancelled
-    else
-      error = Amazon::FPS::AmazonValidator.get_error(response)
-
-      if error.retriable
-        self.status = :retry_pay
-        self.retry_count = self.retry_count + 1
-      else
-        if error.email_user
-          EmailManager.unretriable_payment_to_user(error, self).deliver
-        end
-        if error.email_admin
-          EmailManager.unretriable_payment_to_admin(error, self).deliver
-        end
-        self.status = :failure
-      end
     end
-
-    self.save
+  rescue AmazonFlexPay::API::Error => error
+    EmailManager.unretriable_payment_to_user(error, self).deliver
+    EmailManager.unretriable_payment_to_admin(error, self).deliver
+    self.status = :failure
+  ensure
+    save
   end
 
   # Assumption is that we only use this on Pay calls that are pending

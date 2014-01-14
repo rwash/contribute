@@ -25,11 +25,6 @@ module Amazon
 		response['GetTransactionStatusResult']['TransactionStatus'].downcase.to_sym
 	end
 
-	#if the response contains errors or the transaction status was not a success
-	def self.get_cancel_status(response)
-    response["Errors"].nil? ? :success : :failure
-	end
-
 	#if the response contains errors or no transaction status
 	def self.get_pay_status(response)
 		if !response['Errors'].nil? or response['PayResult'].nil? or response['PayResult']['TransactionStatus'].nil?

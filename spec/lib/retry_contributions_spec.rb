@@ -19,13 +19,11 @@ describe RetryContributions do
 
       success = create(:contribution, status: :success, retry_count: 0)
       pending = create(:contribution, status: :pending, retry_count: 0)
-      retry_cancel = create(:contribution, status: :retry_cancel, retry_count: 0)
       retry_pay = create(:contribution, status: :retry_pay, retry_count: 0)
 
 # TODO: Can't get should_receives to work on objects, as opposed to static classes
 # Tried stubbing on the object itself and should receiving on Contribution. No luck.
 #      pending.should_receive(:update_status).once
-#      retry_cancel.should_receive(:cancel).once
 #      retry_pay.should_receive(:execute_payment).once
 
       RetryContributions.run
@@ -41,11 +39,10 @@ describe RetryContributions do
 
       success = create(:contribution, status: :success, retry_count: 4)
       pending = create(:contribution, status: :pending, retry_count: 4)
-      retry_cancel = create(:contribution, status: :retry_cancel, retry_count: 4)
       retry_pay = create(:contribution, status: :retry_pay, retry_count: 4)
 
       EmailManager.stub_chain(:failed_retries, deliver: true)
-      expectedArray = [ pending, retry_pay, retry_cancel ]
+      expectedArray = [ pending, retry_pay ]
       EmailManager.should_receive(:failed_retries).with(expectedArray).once
 
       RetryContributions.run
