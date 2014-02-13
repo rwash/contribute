@@ -1,7 +1,3 @@
-<script>
-$('.tabs').button()
-</script>
-
 <script type="text/javascript">
 $(document).ready(function(){
   $('.show_hide').showHide({
@@ -42,47 +38,51 @@ $(document).ready(function(){
   </div>
 </div>
 
-<div class="project">
-  <div id="tabs">
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#projectContent" data-toggle="tab">Project Info</a></li>
-      <li><a href="#projectContributors" data-toggle="tab">Contributions</a></li>
-      <li><a href="#projectComments" data-toggle="tab">Comments</a></li>
-      <li><a href="#projectUpdates" data-toggle="tab">Updates</a></li>
+<div id="project">
+  <div id="description">
+    <%= raw(@project.long_description) %><br/>
+  </div>
+
+  <div id="updates">
+    <ul>
+      <%= render :partial => 'updates/update', :collection => @updates %>
+    </ul>
+
+    <p class="update">
+    <%= render :partial => "updates/update_form",
+      :object => @update if can? :create, @project.updates.new %>
+    </p>
+  </div>
+</div>
+
+<div id="project-sidebar">
+  <div id="contributors">
+    <h3> Contributors </h3>
+    <ul>
+      <% @project.contributions.each do |contribution|%>
+        <li>
+          <%= link_to contribution.user do %>
+            <%= contribution.user.decorate.project_contributor_picture_tag %>
+
+            <%=contribution.user.name%>
+            <% if can? :destroy, @project # TODO abuse of abilities%>
+              - <%= number_to_currency(contribution.amount, :precision => 0) %>
+            <% end %>
+          <% end %>
+        </li>
+        <br/>
+      <% end %>
+      <% if @project.contributions.none? %>
+        <p>Be the first!</p>
+      <% end %>
     </ul>
   </div>
 
-  <div class="tab-content">
-    <div class="tab-pane active" id="projectContent">
-      <%= raw(@project.long_description) %><br/>
-    </div>
-
-    <div class="tab-pane" id="projectContributors">
-      <h3> Contributors </h3>
-      <ul class="projectContributors">
-        <% @project.contributions.each do |contribution|%>
-          <li>
-            <%= link_to contribution.user do %>
-              <%= contribution.user.decorate.project_contributor_picture_tag %>
-
-              <%=contribution.user.name%>
-              <% if can? :destroy, @project # TODO abuse of abilities%>
-                - <%= number_to_currency(contribution.amount, :precision => 0) %>
-              <% end %>
-            <% end %>
-          </li>
-          <br/>
-        <% end %>
-        <% if @project.contributions.none? %>
-          <p>Be the first!</p>
-        <% end %>
-      </ul>
-    </div>
-
-    <div class="tab-pane" id="projectComments">
+  <div id="comments">
+    <div id="comments">
       <p>
       <h3> Comments </h3><br>
-      <ul class="projectComments">
+      <ul>
         <h4><%= "There are no comments for this project." if @rootComments.empty? %></h4>
 
         <% @rootComments.each do |comment|%>
@@ -99,19 +99,6 @@ $(document).ready(function(){
           <%= link_to "You must log in to comment.", new_user_session_path %>
         </div>
       <% end %>
-      </p>
-    </div>
-
-    <div class="tab-pane" id="projectUpdates">
-      <ul class="projectUpdates">
-        <h4><%= "There are no updates for this project." if @updates.empty? %></h4>
-
-        <%= render :partial => 'updates/update', :collection => @updates %>
-
-      </ul>
-      <p>&nbsp;</p>
-      <p class="update">
-      <%= render :partial => "updates/update_form", :object => @update if can? :create, @project.updates.new %>
       </p>
     </div>
   </div>
