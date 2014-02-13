@@ -130,9 +130,6 @@ gem 'rdoc', '~> 3.4'
 gem 'kaminari', '~> 0.14.1'
 gem 'bootstrap-kaminari-views', '~> 0.0.2'
 
-# Comments gem
-gem 'acts_as_commentable_with_threading', '~> 1.1.2'
-
 #YouTube Gem
 gem 'youtube_it', '~> 2.1.13'
 

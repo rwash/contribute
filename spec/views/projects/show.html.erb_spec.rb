@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "projects/show" do
   before do
     assign :project, project.decorate
-    assign :rootComments, []
+    assign :comments, []
     assign :updates, []
     assign :comment, Comment.new
     assign :update, Update.new

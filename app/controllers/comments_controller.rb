@@ -4,7 +4,7 @@ class CommentsController < InheritedResources::Base
   def create
     project = Project.find(params[:projectid])
 
-    comment = Comment.new(commentable: project, user: current_user, body: params[:comment][:body])
+    comment = Comment.new(project: project, user: current_user, body: params[:comment][:body])
     comment.user = current_user
     authorize! :create, comment
 
@@ -29,15 +29,10 @@ class CommentsController < InheritedResources::Base
 
     authorize! :destroy, comment, message: "You cannot delete comments you don't own."
 
-    if(comment.children.any?)
-      comment.body = "[comment deleted]"
-      comment.save
+    if comment.delete
+      flash[:alert] = "Comment successfully deleted."
     else
-      if comment.delete
-        flash[:alert] = "Comment successfully deleted."
-      else
-        flash[:alert] = "Comment could not be deleted."
-      end
+      flash[:alert] = "Comment could not be deleted."
     end
 
     begin

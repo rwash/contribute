@@ -32,9 +32,8 @@ class Project < ActiveRecord::Base
                  {retry_cancel: ContributionStatus::RetryCancel,
                   fail: ContributionStatus::Failure,
                   cancelled: ContributionStatus::Cancelled}]
-  acts_as_commentable
   has_and_belongs_to_many :groups
-  has_many :comments, as: :commentable
+  has_many :comments
   has_many :updates
   has_one :video
   has_one :amazon_payment_account

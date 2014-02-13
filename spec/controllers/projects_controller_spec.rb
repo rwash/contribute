@@ -111,7 +111,7 @@ describe ProjectsController do
       let(:project) { create :project }
       before { sign_in user }
       before { @ability.stub!(:can?).with(:update, project).and_return(true) }
-      before { post :update, id: project.name, project: attributes }
+      before { post :update, id: project.to_param, project: attributes }
       let(:attributes) { attributes_for :project }
 
       it { should set_the_flash.to(/Successfully updated project/) }
@@ -202,7 +202,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:show, project).and_return(true) }
 
       it 'CAN view project' do
-        get :show, id: project.name
+        get :show, id: project.to_param
         expect(response).to be_success
       end
     end
@@ -211,7 +211,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:show, project).and_return(false) }
 
       it 'can NOT view project' do
-        get :show, id: project.name
+        get :show, id: project.to_param
         expect(response).to redirect_to(root_path)
       end
     end
@@ -222,7 +222,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:edit, project).and_return(false) }
 
       it "can't edit a project" do
-        get :edit, id: project.name
+        get :edit, id: project.to_param
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -232,7 +232,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:edit, project).and_return(true) }
 
       it "CAN edit the project" do
-        get :edit, id: project.name
+        get :edit, id: project.to_param
         expect(response).to be_success
       end
     end
@@ -291,7 +291,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:destroy, project).and_return(true) }
 
       it "CAN destroy a project" do
-        expect { get :destroy, id: project.name }.to change { Project.count }.by(-1)
+        expect { get :destroy, id: project.to_param }.to change { Project.count }.by(-1)
         expect(flash[:notice]).to include "successfully deleted"
         expect(response).to redirect_to(root_path)
       end
@@ -301,7 +301,7 @@ describe ProjectsController do
       end
 
       it "should succeed destroy" do
-        expect{ delete :destroy, id: project.name }.to change{ Project.count }.by(-1)
+        expect{ delete :destroy, id: project.to_param }.to change{ Project.count }.by(-1)
 
         expect(response).to redirect_to(root_path)
         expect(flash[:notice]).to include "successfully deleted"
@@ -310,7 +310,7 @@ describe ProjectsController do
       it "should handle failure" do
         Project.any_instance.stub(:destroy) {false}
 
-        expect{ delete :destroy, id: project.name }.to_not change{ Project.count }
+        expect{ delete :destroy, id: project.to_param }.to_not change{ Project.count }
 
         expect(response).to redirect_to(project_path(project))
         expect(flash[:alert]).to include "could not be deleted"
@@ -321,7 +321,7 @@ describe ProjectsController do
       before { @ability.stub!(:can?).with(:destroy, project).and_return(false) }
 
       it "can't destroy a project" do
-        expect {get :destroy, id: project.name}.to_not change{ Project.count }
+        expect {get :destroy, id: project.to_param}.to_not change{ Project.count }
         expect(response).to redirect_to(new_user_session_path)
       end
     end

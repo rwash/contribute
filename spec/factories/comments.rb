@@ -11,5 +11,6 @@ FactoryGirl.define do
   factory :comment do
     body lorem(Random.rand(100) + 50)
     user
+    project
   end
 end

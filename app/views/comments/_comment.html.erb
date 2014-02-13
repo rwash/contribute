@@ -1,13 +1,10 @@
 <div class="comment">
 <div id="comment_body">
+  <% if comment.user %>
   <li>
     <%= link_to comment.user do %>
-      <% if comment.user.picture? %>
-        <%= image_tag comment.user.picture.url(:thumb), :class => "userImage", :width=>"50" %>
-      <% else %>
-        <%= image_tag "defaultProfilePic.jpg", :class => "userImage", :width=>"50"%>
-      <% end %>
-    <span class="username"><%= comment.user.name %></span>
+      <%= image_tag comment.user.decorate.picture_url(:thumb), class: "userImage" %>
+      <span class="username"><%= comment.user.name %></span>
   <% end %>
   <% if comment.user == @project.owner %>
     &nbsp;&nbsp;<span class="userBadge"><%= link_to "project owner", comment.user %></span>
@@ -22,34 +19,11 @@
   <% end %>
   <br>
   <p>
-  <% if user_signed_in? %>
-    <a href="#" class="show_hide" rel="#reply_<%= comment.id %>">reply</a>&nbsp;&nbsp;&nbsp;
-  <% else %>
-  <br>
-  <% end %>
   <% if can? :destroy, comment %>
-      <%= link_to 'delete', comment, :method => :delete %>
+    <%= link_to 'delete', comment, :method => :delete %>
   <% end %>
   </p>
-    <div id="reply_<%= comment.id %>">
-      <%= render :partial => "comments/comment_form", :locals => {:parent => comment} if logged_in? %>
-    </div>
   </li>
-</div>
-
-<div id="reply_body">
-  <div class="replyBlock">
-    <% if comment_depth < THREAD_DEPTH %>
-    <% comment.children.each do |reply| %>
-      <%= render :partial => 'comments/comment', :object => reply, :locals =>{:comment_depth => comment_depth + 1} %>
-    <% end %>
   <% end %>
-  </div>
 </div>
-
-<style>
-#reply_<%= comment.id %> {
-  display:none;
-}
-</style>
 </div>
