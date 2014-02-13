@@ -85,7 +85,10 @@
 }
 
 #comments{
-  .userImage{ padding-right: 10px; float: left;}
+  .userImage{
+    padding-right: 10px; float: left;
+    width: 50px;
+  }
   .comment { margin-top: 50px;}
   li { list-style: none; }
   a { text-decoration: none; }
