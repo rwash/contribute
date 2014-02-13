@@ -147,8 +147,6 @@ class ProjectsController < InheritedResources::Base
 
     # Existing updates
     @updates = @project.updates
-    # For new updates
-    @update = @project.updates.new params[:update]
   end
 
   def edit

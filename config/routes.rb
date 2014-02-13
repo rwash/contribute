@@ -5,9 +5,6 @@ Contribute::Application.routes.draw do
   #Comments
   resources :comments
 
-  #Updates
-  resources :updates, :only => [:create]
-
   #Users
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
   resources :users do
@@ -26,6 +23,7 @@ Contribute::Application.routes.draw do
   #The :id being passed through the routes is really the name of the project
   match 'projects/:id/edit/upload' => 'projects#upload', :as => :upload_project_video
   resources :projects, :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
+    resources :updates, only: [:new, :create]
     resources :amazon_payment_accounts, only: [:new, :create, :destroy]
     put 'activate', on: :member
     put 'block', on: :member

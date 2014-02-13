@@ -30,10 +30,10 @@ describe UpdatesController do
 
         context 'for a valid update' do
           let(:project) { create :project, state: :unconfirmed }
-          before { post :create, project_id: project.id, update: attributes_for(:update) }
+          before { post :create, project_id: project.to_param, update: attributes_for(:update) }
 
           it 'creates an update' do
-            expect{ post 'create', project_id: project.id, update: attributes_for(:update)}.to change{ Update.count }.by 1
+            expect{ post 'create', project_id: project.to_param, update: attributes_for(:update)}.to change{ Update.count }.by 1
           end
 
           it { should redirect_to project_path(project) }
@@ -47,10 +47,10 @@ describe UpdatesController do
         end
 
         context 'for an incomplete update' do
-          before { post :create, project_id: project.id }
+          before { post :create, project_id: project.to_param }
 
           it 'does not create an update' do
-            expect{ post 'create', project_id: project.id }.to_not change {Update.count}
+            expect{ post 'create', project_id: project.to_param }.to_not change {Update.count}
           end
 
           it { should redirect_to project_path(project) }
@@ -60,10 +60,10 @@ describe UpdatesController do
 
       context 'without permission' do
         before { @ability.stub!(:can?).and_return(false) }
-        before { post 'create', project_id: project.id, update: attributes_for(:update) }
+        before { post 'create', project_id: project.to_param, update: attributes_for(:update) }
 
         it 'does not create an update' do
-          expect {post 'create', project_id: project.id, update: attributes_for(:update)}.to_not change{ Update.count }
+          expect {post 'create', project_id: project.to_param, update: attributes_for(:update)}.to_not change{ Update.count }
         end
 
         it { should redirect_to :root }
@@ -72,13 +72,13 @@ describe UpdatesController do
     end
 
     context "when user is not signed in" do
-      before { post :create, project_id: project.id, update: attributes_for(:update) }
+      before { post :create, project_id: project.to_param, update: attributes_for(:update) }
 
       it { should redirect_to new_user_session_path }
       it { should set_the_flash.to(/sign in/) }
 
       it 'does not create an update' do
-        expect{ post 'create', project_id: project.id, update: attributes_for(:update)}.to_not change { Update.count }
+        expect{ post 'create', project_id: project.to_param, update: attributes_for(:update)}.to_not change { Update.count }
       end
     end
   end

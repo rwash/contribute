@@ -37,14 +37,11 @@
   </div>
 
   <div id="updates">
-    <ul>
-      <%= render :partial => 'updates/update', :collection => @updates %>
-    </ul>
+    <%= render :partial => 'updates/update', :collection => @updates %>
 
-    <p class="update">
-    <%= render :partial => "updates/update_form",
-      :object => @update if can? :create, @project.updates.new %>
-    </p>
+    <% if can? :create, @project.updates.new %>
+      <%= link_to "Add an update", new_project_update_path(@project) %>
+    <% end %>
   </div>
 </div>
 

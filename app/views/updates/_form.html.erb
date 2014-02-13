@@ -1,0 +1,24 @@
+<%= form_for(@update, url: project_updates_path(@project)) do |f| %>
+  <%= render 'shared/form_errors', subject: @update %>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title, id: 'title' %>
+    <span class="help-block">Be careful &mdash; once you post this update you won't be able to come back and change it.</span>
+  </div>
+
+  <div class="field">
+    <%= f.label :content %>
+    <%= f.text_area :content %>
+  </div>
+
+  <script type="text/javascript">
+//<![CDATA[
+  if (typeof CKEDITOR != 'undefined') { CKEDITOR.inline('update[content]'); }
+  //]]>
+  </script>
+
+  <div class="submit">
+    <%= f.submit 'Post Update' %>
+  </div>
+<% end %>
