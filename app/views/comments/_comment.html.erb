@@ -1,5 +1,6 @@
 <div class="comment">
 <div id="comment_body">
+  <% if comment.user %>
   <li>
     <%= link_to comment.user do %>
       <%= image_tag comment.user.decorate.picture_url(:thumb), class: "userImage" %>
@@ -23,5 +24,6 @@
   <% end %>
   </p>
   </li>
+  <% end %>
 </div>
 </div>

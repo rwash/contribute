@@ -141,7 +141,7 @@ class ProjectsController < InheritedResources::Base
     @project = @project.decorate
 
     # Existing comments
-    @rootComments = @project.root_comments
+    @comments = @project.comments
     # For new comments
     @comment = @project.comments.new params[:comment]
 

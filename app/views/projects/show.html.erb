@@ -74,12 +74,12 @@
   <div id="comments">
     <div id="comments">
       <p>
-      <h3> Comments </h3><br>
+      <h3> Comments </h3>
       <ul>
-        <h4><%= "There are no comments for this project." if @rootComments.empty? %></h4>
+        <h4><%= "There are no comments for this project." if @comments.empty? %></h4>
 
-        <% @rootComments.each do |comment|%>
-          <%= render :partial => 'comments/comment', :object => comment, :locals =>{:comment_depth => 0} %>
+        <% @comments.each do |comment|%>
+          <%= render :partial => 'comments/comment', locals: {comment: comment} %>
         <% end %>
       </ul>
       </p>
