@@ -17,21 +17,8 @@ module Amazon
       project && token && correct_status && valid_cbui_response?(params, url)
     end
 
-	def self.valid_transaction_status_response?(response)
-		return (response['Errors'].nil? and !response['GetTransactionStatusResult'].nil? and !response['GetTransactionStatusResult']['TransactionStatus'].nil?)
-	end
-
 	def self.get_transaction_status(response)
 		response['GetTransactionStatusResult']['TransactionStatus'].downcase.to_sym
-	end
-
-	#if the response contains errors or no transaction status
-	def self.get_pay_status(response)
-		if !response['Errors'].nil? or response['PayResult'].nil? or response['PayResult']['TransactionStatus'].nil?
-			return :failure
-		else
-			response['PayResult']['TransactionStatus'].downcase.to_sym
-		end
 	end
 
 	#Written under the assumption that if a transaction returns failure, it WILL contain an error

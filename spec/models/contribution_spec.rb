@@ -1,7 +1,5 @@
 require "spec_helper"
 require 'amazon/fps/pay_request'
-require 'amazon/fps/transaction_status_request'
-require 'amazon/fps/cancel_token_request'
 require 'amazon/fps/amazon_validator'
 
 describe Contribution do
@@ -143,11 +141,8 @@ describe Contribution do
     let(:project) { contribution.project }
 
     before do
-      EmailManager.stub_chain(:contribution_successful, deliver: true)
-    end
-
-    before do
       AmazonFlexPay.stub(:pay).and_return(mock_response)
+      EmailManager.stub_chain(:contribution_successful, deliver: true)
     end
 
     context 'on success' do
@@ -240,78 +235,100 @@ describe Contribution do
 
   describe "#update_status" do
     before do
-      Amazon::FPS::TransactionStatusRequest.any_instance.stub(:send) {}
+      AmazonFlexPay.stub(:get_transaction_status).and_return(mock_response)
+    end
+    let(:contribution) { create(:contribution, transaction_id: 'abcdefg') }
+
+    context 'on error' do
+      let(:mock_response) {nil}
+      before do
+        AmazonFlexPay.stub(:get_transaction_status) { raise AmazonFlexPay::API::Error.new(nil,nil,nil,nil) }
+        EmailManager.stub_chain(:failed_status_to_admin, deliver: true)
+      end
+
+      it 'e-mails admin error' do
+        EmailManager.should_receive(:failed_status_to_admin).once
+        contribution.update_status
+      end
     end
 
-    it 'on invalid response, e-mails admin error' do
-      Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { false }
-      Amazon::FPS::AmazonValidator.stub(:get_error) { create('email_both') }
-      EmailManager.stub_chain(:failed_status_to_admin, deliver: true)
-      contribution = create(:contribution, transaction_id: 'abcdefg')
+    context 'on success' do
+      let(:mock_response) do
+        double("response", transaction_status: "Success", transaction_id: contribution.transaction_id)
+      end
 
-      EmailManager.should_receive(:failed_status_to_admin).with(instance_of(AmazonError), contribution).once
+      before do
+        EmailManager.stub_chain(:contribution_successful, deliver: true)
+      end
 
-      contribution.update_status
+      it 'updates the contribution status' do
+        contribution.update_status
+        expect(contribution.reload.status).to eq :success
+      end
+
+      it 'sets the retry count to 0' do
+        contribution.update_status
+        expect(contribution.reload.retry_count).to eq 0
+      end
+
+      it 'emails the user' do
+        EmailManager.should_receive(:contribution_successful).with(contribution).once
+        contribution.update_status
+      end
     end
 
-    it 'on success, updates contribution status, sets retry count to 0, and sends e-mail to user' do
-      Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { :success }
-      Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
-      EmailManager.stub_chain(:contribution_successful, deliver: true)
-      contribution = create(:contribution, transaction_id: 'abcdefg')
+    context 'on failure' do
+      let(:mock_response) do
+        double("response", transaction_status: "Failure", transaction_id: contribution.transaction_id)
+      end
+      before do
+        EmailManager.stub_chain(:failed_payment_to_user, deliver: true)
+      end
 
-      EmailManager.should_receive(:contribution_successful).with(contribution).once
+      it 'updates contribution status' do
+        contribution.update_status
+        expect(contribution.reload.status).to eq :failure
+      end
 
-      contribution.update_status
-
-      expect(contribution.status).to eq :success
-      expect(contribution.retry_count).to eq 0
+      it 'emails the user' do
+        EmailManager.should_receive(:failed_payment_to_user).with(contribution).once
+        contribution.update_status
+      end
     end
 
-    it 'on failure, updates contribution status and sends e-mail to user' do
-      Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { :failure }
-      Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
-      EmailManager.stub_chain(:failed_payment_to_user, deliver: true)
-      contribution = create(:contribution, transaction_id: 'abcdefg')
-
-      EmailManager.should_receive(:failed_payment_to_user).with(contribution).once
-
-      contribution.update_status
-
-      expect(contribution.status).to eq :failure
+    context 'on cancelled' do
+      let(:mock_response) do
+        double("response", transaction_status: "Cancelled", transaction_id: contribution.transaction_id)
+      end
+      before do
+        EmailManager.stub_chain(:cancelled_payment_to_admin, deliver: true)
+      end
+      it 'updates the contribution status' do
+        contribution.update_status
+        expect(contribution.reload.status).to eq :cancelled
+      end
+      it 'emails the admin' do
+        EmailManager.should_receive(:cancelled_payment_to_admin).with(contribution).once
+        contribution.update_status
+      end
     end
 
-    it 'on cancelled, updates contribution status and sends e-mail to admin' do
-      Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { :cancelled }
-      Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
-      EmailManager.stub_chain(:cancelled_payment_to_admin, deliver: true)
-      contribution = create(:contribution, transaction_id: 'abcdefg')
-
-      EmailManager.should_receive(:cancelled_payment_to_admin).with(contribution).once
-
-      contribution.update_status
-
-      expect(contribution.status).to eq :cancelled
+    context 'on pending' do
+      let(:mock_response) do
+        double("response", transaction_status: "Pending", transaction_id: contribution.transaction_id)
+      end
+      it 'updates the status' do
+        contribution.update_status
+        expect(contribution.reload.status).to eq :pending
+      end
     end
-
-    it 'on pending, updates retry count' do
-      Amazon::FPS::AmazonValidator.stub(:get_transaction_status) { :pending }
-      Amazon::FPS::AmazonValidator.stub(:valid_transaction_status_response?) { true }
-
-      contribution = create(:contribution, transaction_id: 'abcdefg', status: :pending, retry_count: 2)
-      contribution.update_status
-
-      expect(contribution.status).to eq :pending
-      expect(contribution.retry_count).to eq 3
-    end
-
   end
 
   describe "#destroy" do
     it 'calls cancel' do
       Contribution.any_instance.stub(:cancel) {}
 
-      contribution = create(:contribution, transaction_id: 'abcdefg')
+      contribution = create :contribution
       contribution.should_receive(:cancel).once
 
       contribution.destroy

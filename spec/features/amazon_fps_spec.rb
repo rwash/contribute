@@ -6,7 +6,7 @@ feature "fps requests should", :js do
 
   let(:user) { create :user }
 
-  scenario "succeed on pay request and check transaction status" do
+  scenario "succeed on pay request" do
     contribution = generate_contribution(
       user, #contribution login
       'contribute_testing@hotmail.com', #amazon login
@@ -22,14 +22,6 @@ feature "fps requests should", :js do
 
     transaction_id = response['PayResult']['TransactionId']
     expect(transaction_id).to_not be_nil
-
-    request = Amazon::FPS::TransactionStatusRequest.new(transaction_id)
-    response = request.send()
-
-    expect(response['Errors']).to be_nil
-    expect(response['GetTransactionStatusResult']['TransactionStatus']).to_not be_nil
-    expect(Logging::LogPayResponse.find_by_TransactionId(transaction_id)).to_not be_nil
-    expect(Logging::LogGetTransactionResponse.find_by_TransactionId(transaction_id)).to_not be_nil
   end
 
   scenario "succeed on cancel token request" do
@@ -40,11 +32,15 @@ feature "fps requests should", :js do
       project, #the project to contribute to
       100) #the amount
 
-    request = Amazon::FPS::CancelTokenRequest.new(contribution.payment_key)
-    response = request.send()
+    response = nil
+    expect do
+      response = AmazonFlexPay.cancel_token(contribution.payment_key)
+    end.to_not raise_error
 
-    expect(response['Errors']).to be_nil
+    puts "Response: #{response.inspect}"
+    puts "Response methods: #{response.public_methods}"
 
+    pending "Log requests and responses!"
     log_cancel_request = Logging::LogCancelRequest.find_by_TokenId(contribution.payment_key)
     expect(log_cancel_request).to_not be_nil
     expect(Logging::LogCancelResponse.find_by_log_cancel_request_id(log_cancel_request.id)).to_not be_nil
@@ -57,23 +53,5 @@ feature "fps requests should", :js do
     log_pay_request = Logging::LogPayRequest.find_by_SenderTokenId('invalid')
     expect(log_pay_request).to_not be_nil
     assert_amazon_error(log_pay_request.id)
-  end
-
-  scenario "handle invalid get_transaction_status request" do
-    request = Amazon::FPS::TransactionStatusRequest.new('invalid')
-    request.send()
-
-    log_get_transaction_request = Logging::LogGetTransactionRequest.find_by_TransactionId('invalid')
-    expect(log_get_transaction_request).to_not be_nil
-    assert_amazon_error(log_get_transaction_request.id)
-  end
-
-  scenario "handle invalid cancel_token request" do
-    request = Amazon::FPS::CancelTokenRequest.new('invalid')
-    request.send()
-
-    log_cancel_request = Logging::LogCancelRequest.find_by_TokenId('invalid')
-    expect(log_cancel_request).to_not be_nil
-    assert_amazon_error(log_cancel_request.id)
   end
 end

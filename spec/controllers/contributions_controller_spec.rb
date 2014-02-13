@@ -177,7 +177,7 @@ describe ContributionsController do
     before(:each) do
       sign_in user
       AmazonFlexPay.stub(:verify_signature) { true }
-      Amazon::FPS::CancelTokenRequest.stub(:send)
+      AmazonFlexPay.stub(:cancel_token)
     end
 
     it "succeeds with valid input" do
