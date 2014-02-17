@@ -6,6 +6,8 @@
   </div>
 </div>
 
+<%= render 'admin_bar' %>
+
 <div class="project-info-wrapper">
   <div class="project-media"><%= @project.media %></div>
 
@@ -27,7 +29,10 @@
 
     <%= render 'projects/progress', project: @project %>
 
-    <%= render 'action_links' %>
+    <%= @project.display_contribute_button %>
+    <%= @project.display_edit_contribution_button %>
+    <%= @project.display_block_button %>
+    <%= @project.display_unblock_button %>
   </div>
 </div>
 

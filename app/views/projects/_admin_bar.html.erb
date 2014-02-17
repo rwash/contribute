@@ -1,0 +1,22 @@
+<% if logged_in? and current_user == @project.owner and @project.actionable? %>
+  <div id="project-admin-bar">
+    <div class="header">
+      <p>Next Step: <span class="next-step"><%= @project.recommended_action.text %></span></p>
+    </div>
+
+    <div class="description">
+      <%= @project.recommended_action.description %>
+    </div>
+
+    <div class="actions">
+      <%= render 'action_button',
+        action: @project.recommended_action,
+        button_class: 'success-button' %>
+
+      <% @project.secondary_actions.each do |action| %>
+        <%= render 'action_button', action: action %>
+      <% end %>
+    </div>
+  </div>
+  <hr></hr>
+<% end %>

@@ -106,6 +106,10 @@ class Project < ActiveRecord::Base
   delegate :can_update?, to: :state
   delegate :can_comment?, to: :state
 
+  delegate :actionable?, to: :state
+  delegate :recommended_action, to: :state
+  delegate :secondary_actions, to: :state
+
   # Methods --------------------------------------------------------------
 
   def payment_account_id

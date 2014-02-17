@@ -1,0 +1,5 @@
+<%= button_to action.button_text,
+action.route,
+method: action.http_method,
+confirm: action.confirmation_text,
+:class => (button_class rescue action.button_class) %>

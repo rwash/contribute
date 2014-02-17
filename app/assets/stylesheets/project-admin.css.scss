@@ -1,0 +1,30 @@
+@import 'bourbon';
+@import 'neat';
+@import 'mixins/card';
+
+#project-admin-bar {
+  @include card;
+  .header {
+    p { font-size: 1.8em; }
+    margin-bottom: $gutter;
+  }
+  .description {
+    @include span-columns(6 of 12);
+    @include shift(3);
+  }
+  .actions {
+    @include span-columns(12 of 12);
+    text-align: center;
+    form {
+      display: inline-block;
+      margin-top: $gutter;
+      margin-right: $gutter;
+      margin-bottom: 0;
+    }
+  }
+  @include clearfix;
+}
+
+hr {
+  border-bottom: .5em dashed #CCC;
+}

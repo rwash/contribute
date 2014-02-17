@@ -1,5 +1,6 @@
-class ProjectState < ClassyEnum::Base
+require 'project_actions/activate'
 
+class ProjectState < ClassyEnum::Base
   # Returns true if the public can view the project.
   # The public can view projects that are active, nonfunded, or funded.
   def public_can_view?() false end
@@ -22,20 +23,51 @@ class ProjectState < ClassyEnum::Base
   def display_string
     to_s.titlecase
   end
+
+  # Whether or not the project owner can currently take any action
+  def actionable?()
+    respond_to? :recommended_action
+  end
 end
 
 class ProjectState::Unconfirmed < ProjectState
   def can_edit?() true end
+
+  def recommended_action
+    ProjectActions::ConnectAmazon.new owner
+  end
+
+  def secondary_actions
+    [ProjectActions::Edit, ProjectActions::Delete].
+      map {|action| action.new owner}
+  end
 end
 
 class ProjectState::Inactive < ProjectState
   def can_edit?() true end
+
+  def recommended_action
+    ProjectActions::Activate.new owner
+  end
+
+  def secondary_actions
+    [ProjectActions::Edit, ProjectActions::Delete].
+      map {|action| action.new owner}
+  end
 end
 
 class ProjectState::Active < ProjectState
   def public_can_view?() true end
   def can_update?() true end
   def can_comment?() true end
+
+  def recommended_action
+    ProjectActions::Update.new owner
+  end
+
+  def secondary_actions
+    [ProjectActions::Cancel.new(owner)]
+  end
 end
 
 class ProjectState::Funded < ProjectState
