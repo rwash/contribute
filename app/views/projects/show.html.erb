@@ -37,7 +37,7 @@
   </div>
 
   <div id="updates">
-    <%= render :partial => 'updates/update', :collection => @updates %>
+    <%= render :partial => 'updates/update', :collection => @project.updates %>
 
     <% if can? :create, @project.updates.new %>
       <%= link_to "Add an update", new_project_update_path(@project) %>
@@ -70,19 +70,19 @@
 
   <div id="comments">
     <h3> Comments </h3>
-    <h4><%= "There are no comments for this project." if @comments.empty? %></h4>
+    <h4><%= "There are no comments for this project." if @project.comments.empty? %></h4>
 
-    <% @comments.each do |comment|%>
+    <% @project.comments.each do |comment|%>
       <%= render :partial => 'comments/comment', locals: {comment: comment} %>
     <% end %>
 
     <p class="comment">
     <%# TODO cancan  %>
-    <%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? and @project.can_comment? %>
+    <% if logged_in? and @project.can_comment? %>
+      <%= render :partial => "comments/comment_form", :locals => {:parent => nil} %>
+    <% end %>
     <% unless logged_in? %>
-      <div class="alert">
-        <%= link_to "You must log in to comment.", new_user_session_path %>
-      </div>
+      <%= link_to "Log in to comment.", new_user_session_path %>
     <% end %>
     </p>
   </div>

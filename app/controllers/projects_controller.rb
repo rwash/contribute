@@ -136,17 +136,8 @@ class ProjectsController < InheritedResources::Base
   end
 
   def show
-    @project = project_from_params
+    @project = project_from_params.decorate
     authorize! :show, @project
-    @project = @project.decorate
-
-    # Existing comments
-    @comments = @project.comments
-    # For new comments
-    @comment = @project.comments.new params[:comment]
-
-    # Existing updates
-    @updates = @project.updates
   end
 
   def edit
