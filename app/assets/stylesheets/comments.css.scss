@@ -1,19 +1,15 @@
-.comment {
-  .time {
-    font-weight: lighter;
-    color: #6e6e6e;
-    font-size: smaller;
-  }
-  .username {
-    font-weight: bold;
-    font-size: 1.3em;
-    color: #252525;
-  }
-}
+@import 'bourbon';
+@import 'neat';
 
-#comment_body a{
-  font-weight: lighter;
-  color: #6e6e6e;
-  font-size: small;
-  font-weight: bold;
+#comments {
+  .comment {
+    margin-top: $gutter;
+    border-left: 3px solid #CCC;
+    padding-left: .5em;
+    @include fill-parent;
+    .time {
+      color: #AAA;
+    }
+    @include clearfix;
+  }
 }

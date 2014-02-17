@@ -1,29 +1,16 @@
+<% if comment.user %>
 <div class="comment">
-<div id="comment_body">
-  <% if comment.user %>
-  <li>
-    <%= link_to comment.user do %>
-      <%= image_tag comment.user.decorate.picture_url(:thumb), class: "userImage" %>
-      <span class="username"><%= comment.user.name %></span>
-  <% end %>
-  <% if comment.user == @project.owner %>
-    &nbsp;&nbsp;<span class="userBadge"><%= link_to "project owner", comment.user %></span>
-  <% end %>
-  &nbsp;&nbsp;<span class="time"><%= time_ago_in_words(comment.created_at) %> ago</span><br>
-  <% if comment.body == "comment deleted" %>
-    <br>
-    <span class="deleted"><%= comment.body %></span>
-    <br>
-  <% else %>
-    <%= simple_format(comment.body) %>
-  <% end %>
-  <br>
-  <p>
+
+  <%= simple_format(comment.body) %>
+  <span class="username"><%= link_to comment.user.name, comment.user -%>,</span>
+  <span class="time"><%= time_ago_in_words(comment.created_at) %> ago</span>
+
   <% if can? :destroy, comment %>
-    <%= link_to 'delete', comment, :method => :delete %>
+    <div class="actions">
+      <%= link_to 'delete', comment, :method => :delete %>
+    </div>
   <% end %>
-  </p>
-  </li>
-  <% end %>
+
+  <%# TODO put some kind of badge on the comment if it's by the project owner %>
 </div>
-</div>
+<% end %>

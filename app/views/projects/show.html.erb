@@ -69,26 +69,21 @@
   </div>
 
   <div id="comments">
-    <div id="comments">
-      <p>
-      <h3> Comments </h3>
-      <ul>
-        <h4><%= "There are no comments for this project." if @comments.empty? %></h4>
+    <h3> Comments </h3>
+    <h4><%= "There are no comments for this project." if @comments.empty? %></h4>
 
-        <% @comments.each do |comment|%>
-          <%= render :partial => 'comments/comment', locals: {comment: comment} %>
-        <% end %>
-      </ul>
-      </p>
-      <p class="comment">
-      <%# TODO cancan  %>
-      <%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? and @project.can_comment? %>
-      <% unless logged_in? %>
-        <div class="alert">
-          <%= link_to "You must log in to comment.", new_user_session_path %>
-        </div>
-      <% end %>
-      </p>
-    </div>
+    <% @comments.each do |comment|%>
+      <%= render :partial => 'comments/comment', locals: {comment: comment} %>
+    <% end %>
+
+    <p class="comment">
+    <%# TODO cancan  %>
+    <%= render :partial => "comments/comment_form", :locals => {:parent => nil} if logged_in? and @project.can_comment? %>
+    <% unless logged_in? %>
+      <div class="alert">
+        <%= link_to "You must log in to comment.", new_user_session_path %>
+      </div>
+    <% end %>
+    </p>
   </div>
 </div>

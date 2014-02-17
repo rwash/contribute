@@ -58,9 +58,7 @@
   }
   #updates {
     .userImage{ padding-right: 10px; float: left;}
-    .comment { margin-top: 50px;}
     li { list-style: none; }
-    a { font-size: 20px; font-weight: bold;}
     a { text-decoration: none; }
     a:hover { text-decoration: underline; }
     padding-top: 20px;
@@ -82,18 +80,6 @@
     /* TODO darken the background instead of underlining */
     &:hover { text-decoration: underline; }
   }
-}
-
-#comments{
-  .userImage{
-    padding-right: 10px; float: left;
-    width: 50px;
-  }
-  .comment { margin-top: 50px;}
-  li { list-style: none; }
-  a { text-decoration: none; }
-  a { font-size: 20px; font-weight: bold;}
-  a:hover { text-decoration: underline; }
 }
 
 .alert {
