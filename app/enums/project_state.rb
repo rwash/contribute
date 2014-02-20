@@ -17,13 +17,6 @@ class ProjectState < ClassyEnum::Base
   # The project must be active, funded, or non-funded.
   def can_comment?() false end
 
-  # Used for displaying the project throughout the site
-  # Different project states are shown in different colors,
-  # so it's important to be consistent
-  #
-  # TODO: Perhaps there's a better place for this... Decorator, maybe?
-  def color_class() 'important' end
-
   # Converts the project state to a string, but gives it a bit of
   # personality (e.g. adding an exclamation point)
   def display_string
@@ -33,27 +26,22 @@ end
 
 class ProjectState::Unconfirmed < ProjectState
   def can_edit?() true end
-  def color_class() 'warning' end
 end
 
 class ProjectState::Inactive < ProjectState
   def can_edit?() true end
-  def color_class() 'warning' end
 end
 
 class ProjectState::Active < ProjectState
   def public_can_view?() true end
   def can_update?() true end
   def can_comment?() true end
-  def color_class() 'success' end
 end
 
 class ProjectState::Funded < ProjectState
   def public_can_view?() true end
   def can_update?() true end
   def can_comment?() true end
-
-  def color_class() 'success' end
 
   def display_string() 'Funded!' end
 end
@@ -63,18 +51,12 @@ class ProjectState::Nonfunded < ProjectState
   def can_update?() true end
   def can_comment?() true end
 
-  def color_class() 'inverse' end
-
   def display_string() 'Non-funded' end
 end
 
 class ProjectState::Cancelled < ProjectState
-  def color_class() 'inverse' end
 end
 
 class ProjectState::Blocked < ProjectState
-  def color_class() 'inverse' end
   def can_edit?() true end
 end
-
-# TODO get rid of color_class
