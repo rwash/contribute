@@ -1,5 +1,3 @@
-require 'project_actions/activate'
-
 class ProjectState < ClassyEnum::Base
   # Returns true if the public can view the project.
   # The public can view projects that are active, nonfunded, or funded.
