@@ -27,23 +27,6 @@ class ProjectDecorator < Draper::Decorator
     end
   end
 
-  def display_block_button
-    if can? :block, source
-      button_to 'Block Project',
-        block_project_url(source),
-        method: :put,
-        class: 'danger-button'
-    end
-  end
-
-  def display_unblock_button
-    if can? :unblock, source
-      button_to 'Unblock Project',
-        unblock_project_url(source),
-        method: :put
-    end
-  end
-
   def existing_contribution
     source.contributions.find_by_user_id(current_user.id) rescue nil
   end

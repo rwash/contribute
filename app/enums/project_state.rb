@@ -88,7 +88,3 @@ end
 
 class ProjectState::Cancelled < ProjectState
 end
-
-class ProjectState::Blocked < ProjectState
-  def can_edit?() true end
-end

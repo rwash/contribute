@@ -326,48 +326,4 @@ describe ProjectsController do
       end
     end
   end
-
-  describe 'PUT block' do
-    context 'with permission' do
-      let(:project) { create :project }
-      before { @ability.stub!(:can?).with(:block, project).and_return(true) }
-      before { put :block, id: project.to_param }
-
-      it 'blocks project' do
-        expect(project.reload.state).to eq :blocked
-      end
-    end
-
-    context 'without permission' do
-      let(:project) { create :project }
-      before { @ability.stub!(:can?).with(:block, project).and_return(false) }
-      before { put :block, id: project.to_param }
-
-      it 'does not block project' do
-        expect(project.reload.state).to_not eq :blocked
-      end
-    end
-  end
-
-  describe 'PUT unblock' do
-    context 'with permission' do
-      let(:project) { create :project, state: :blocked }
-      before { @ability.stub!(:can?).with(:unblock, project).and_return(true) }
-      before { put :unblock, id: project.to_param }
-
-      it 'unblocks project' do
-        expect(project.reload.state).to_not eq :blocked
-      end
-    end
-
-    context 'without permission' do
-      let(:project) { create :project, state: :blocked }
-      before { @ability.stub!(:can?).with(:unblock, project).and_return(false) }
-      before { put :unblock, id: project.to_param }
-
-      it 'sets project state to active' do
-        expect(project.reload.state).to eq :blocked
-      end
-    end
-  end
 end

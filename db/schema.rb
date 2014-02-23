@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140213191408) do
+ActiveRecord::Schema.define(:version => 20140223190305) do
 
   create_table "amazon_errors", :force => true do |t|
     t.string   "description"
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.boolean  "retriable"
     t.boolean  "email_user"
     t.boolean  "email_admin"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "error"
   end
 
@@ -29,14 +29,13 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.string   "token"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.string   "type"
   end
 
   create_table "approvals", :force => true do |t|
     t.integer  "group_id"
     t.integer  "project_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.string   "reason"
     t.string   "status",     :default => "pending", :null => false
   end
@@ -50,8 +49,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.string   "type",              :limit => 30
     t.integer  "width"
     t.integer  "height"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   add_index "ckeditor_assets", ["assetable_type", "assetable_id"], :name => "idx_ckeditor_assetable"
@@ -61,8 +60,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.integer  "project_id", :default => 0
     t.text     "body"
     t.integer  "user_id",    :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "comments", ["project_id"], :name => "index_comments_on_project_id"
@@ -73,8 +72,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.integer  "amount"
     t.integer  "project_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.string   "status",         :default => "none"
     t.integer  "retry_count",    :default => 0
     t.string   "transaction_id"
@@ -97,13 +96,6 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
-  create_table "dirty_projects", :force => true do |t|
-    t.integer  "project_id"
-    t.string   "session_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "groups", :force => true do |t|
     t.string   "name",                 :default => ""
     t.string   "description",          :default => ""
@@ -113,8 +105,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.string   "long_description"
   end
 
@@ -127,30 +119,30 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
 
   create_table "log_cancel_requests", :force => true do |t|
     t.string   "TokenId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "log_cancel_responses", :force => true do |t|
     t.integer  "log_cancel_request_id"
     t.string   "RequestId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "log_errors", :force => true do |t|
     t.integer  "log_request_id"
     t.string   "Code"
     t.string   "Message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "RequestId"
   end
 
   create_table "log_get_transaction_requests", :force => true do |t|
     t.string   "TransactionId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "log_get_transaction_responses", :force => true do |t|
@@ -159,8 +151,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.string   "CallerReference"
     t.string   "StatusCode"
     t.string   "StatusMessage"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "log_get_transaction_request_id"
     t.string   "RequestId"
   end
@@ -170,8 +162,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.string   "recipientTokenList"
     t.integer  "globalAmountLimit"
     t.string   "paymentReason"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "log_multi_token_responses", :force => true do |t|
@@ -180,8 +172,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.string   "errorMessage"
     t.string   "warningCode"
     t.string   "warningMessage"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.integer  "log_multi_token_request_id"
   end
 
@@ -189,16 +181,16 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.string   "CallerReference"
     t.string   "RecipientTokenId"
     t.string   "SenderTokenId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "log_pay_responses", :force => true do |t|
     t.string   "TransactionId"
     t.string   "TransactionStatus"
     t.string   "RequestId"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.integer  "log_pay_request_id"
   end
 
@@ -208,8 +200,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.string   "status"
     t.string   "callerReference"
     t.string   "errorMessage"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "page_views", :force => true do |t|
@@ -229,8 +221,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.integer  "funding_goal"
     t.date     "end_date"
     t.boolean  "active"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
@@ -242,8 +234,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
 
   create_table "updates", :force => true do |t|
     t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "user_id"
     t.integer  "project_id"
     t.boolean  "email_sent"
@@ -280,18 +272,16 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
     t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "picture_file_name"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.boolean  "admin",                  :default => false
     t.boolean  "starred"
-    t.boolean  "blocked",                :default => false
   end
 
-  add_index "users", ["blocked"], :name => "index_users_on_blocked"
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
@@ -300,8 +290,8 @@ ActiveRecord::Schema.define(:version => 20140213191408) do
   create_table "videos", :force => true do |t|
     t.string   "yt_video_id"
     t.boolean  "is_complete", :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "project_id"
     t.boolean  "published",   :default => false
   end

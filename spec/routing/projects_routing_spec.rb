@@ -34,14 +34,5 @@ describe ProjectsController do
     it 'routes to #activate' do
       expect( put '/projects/1/activate' ).to route_to('projects#activate', id: '1')
     end
-
-    it 'routes to #block' do
-      expect( put '/projects/1/block' ).to route_to('projects#block', id: '1')
-    end
-
-    it 'routes to #unblock' do
-      expect( put '/projects/1/unblock' ).to route_to('projects#unblock', id: '1')
-    end
-
   end
 end

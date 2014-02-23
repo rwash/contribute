@@ -161,29 +161,6 @@ describe "projects/show" do
         should_not have_button 'Edit Project'
         should_not have_button 'Activate Project'
         should_not have_button 'Delete Project'
-        should have_button 'Block Project'
-        should_not have_button 'Unblock Project'
-      end
-    end
-
-    context 'project is blocked' do
-      before do
-        project.payment_account_id = "abc"
-        project.state = :blocked
-        project.save
-      end
-      before { render }
-
-      it 'has the appropriate buttons' do
-        should_not have_button 'Contribute to this project'
-        should_not have_button 'Contribute more'
-        should_not have_button "Connect an Amazon account"
-        should_not have_button 'Cancel Project'
-        should_not have_button 'Edit Project'
-        should_not have_button 'Activate Project'
-        should_not have_button 'Delete Project'
-        should_not have_button 'Block Project'
-        should have_button 'Unblock Project'
       end
     end
 

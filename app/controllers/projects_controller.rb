@@ -76,38 +76,6 @@ class ProjectsController < InheritedResources::Base
     respond_with(@project)
   end
 
-  def block
-    @project = project_from_params
-    authorize! :block, @project
-
-    @project.state = :blocked
-
-    #make video non-published
-    @project.video.published = false if @project.video
-
-    #TODO send out email to project owner
-    #TODO send out emails to any contributors
-
-    @project.save!
-    redirect_to @project, notice: "Successfully blocked project."
-  end
-
-  def unblock
-    @project = project_from_params
-    authorize! :unblock, @project
-
-    if @project.payment_account_id == Project::UNDEFINED_PAYMENT_ACCOUNT_ID
-      @project.state = :unconfirmed
-    else
-      @project.state = :inactive
-    end
-
-    #TODO send out email to project owner
-
-    @project.save!
-    redirect_to @project, notice: "Successfully unblocked project."
-  end
-
   def destroy
     @project = project_from_params
     authorize! :destroy, @project

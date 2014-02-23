@@ -16,20 +16,6 @@ class UsersController < ApplicationController
     authorize! :read, User
   end
 
-  def block
-    user = User.find(params[:id])
-    authorize! :block, user
-
-    redirect_to :back and return if params[:blocked].nil?
-    user.blocked = params[:blocked]
-
-    if user.save
-      redirect_to :back, notice: "#{user.name}'s privileges were successfully updated."
-    else
-      redirect_to :back, notice: "Failed to save changes to #{user.name}'s account"
-    end
-  end
-
   def toggle_admin
     user = User.find(params[:id])
     authorize! :toggle_admin, user
@@ -43,5 +29,4 @@ class UsersController < ApplicationController
       redirect_to :back, notice: "Failed to save changes to #{user.name}'s account"
     end
   end
-
 end

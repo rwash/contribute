@@ -14,14 +14,4 @@
     %>
 <% end %>
 
-<%= "#{@user.name}'s account is #{@user.blocked ? 'blocked' : 'active'}" %>
-<% if can? :block, @user %>
-  <%= if @user.blocked?
-        button_to 'Unblock account', block_user_path(@user, blocked: false)
-      else
-        button_to 'Block account', block_user_path(@user, blocked: true), class: 'danger-button'
-      end
-    %>
-<% end %>
-
 <%= render :partial => 'stats_banner' %>

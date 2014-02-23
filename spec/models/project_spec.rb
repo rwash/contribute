@@ -26,8 +26,6 @@ describe Project do
       it { should_not be_able_to :activate, project }
       it { should_not be_able_to :destroy, project }
       it { should_not be_able_to :update, project }
-      it { should_not be_able_to :block, project }
-      it { should_not be_able_to :unblock, project }
     end
 
     context 'when signed in' do
@@ -48,8 +46,6 @@ describe Project do
       it { should_not be_able_to :activate, project }
       it { should_not be_able_to :destroy, project }
       it { should_not be_able_to :update, project }
-      it { should_not be_able_to :block, project }
-      it { should_not be_able_to :unblock, project }
     end
 
     context 'when user owns project' do
@@ -72,8 +68,6 @@ describe Project do
 
       it { should be_able_to :save, project }
       it { should be_able_to :activate, project }
-      it { should_not be_able_to :block, project }
-      it { should_not be_able_to :unblock, project }
 
       it { should be_able_to :destroy, build(:project, owner: user, state: :unconfirmed) }
       it { should be_able_to :destroy, build(:project, owner: user, state: :inactive) }
@@ -101,17 +95,8 @@ describe Project do
         it { should_not be_able_to :update, build(:project, owner: user, state: :active) }
       end
 
-      context 'when project is blocked' do
-        before { project.stub!(:state).and_return(:blocked) }
-
-        it { should_not be_able_to :block, project }
-        it { should be_able_to :unblock, project }
-      end
-
       it { should_not be_able_to :save, project }
       it { should_not be_able_to :activate, project }
-      it { should be_able_to :block, project }
-      it { should_not be_able_to :unblock, project }
 
       it { should be_able_to :destroy, build(:project, owner: user, state: :unconfirmed) }
       it { should be_able_to :destroy, build(:project, owner: user, state: :inactive) }

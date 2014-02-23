@@ -8,7 +8,6 @@ Contribute::Application.routes.draw do
   #Users
   devise_for :users, :controllers => { :registrations => :registrations, :confirmations => :confirmations }
   resources :users do
-    post 'block', on: :member
     post 'toggle_admin', on: :member
   end
 
@@ -26,8 +25,6 @@ Contribute::Application.routes.draw do
     resources :updates, only: [:new, :create]
     resources :amazon_payment_accounts, only: [:new, :create, :destroy]
     put 'activate', on: :member
-    put 'block', on: :member
-    put 'unblock', on: :member
   end
   get 'projects/:project_id/amazon_payment_accounts' => 'amazon_payment_accounts#create'
 

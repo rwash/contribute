@@ -159,32 +159,6 @@ describe ProjectState do
     end
   end
 
-  context 'is blocked' do
-    let(:project_state) { :blocked }
-
-    it 'responds appropriately' do
-      project.state = :cancelled
-      expect(project.state).to eq 'cancelled'
-      expect(project.state.cancelled?).to be_true
-    end
-
-    it "can be edited" do
-      expect(project.can_edit?).to be_true
-    end
-
-    it "can't be viewed by the public" do
-      expect(project.public_can_view?).to be_false
-    end
-
-    it "can't be updated" do
-      expect(project.can_update?).to be_false
-    end
-
-    it "can't be commented on" do
-      expect(project.can_comment?).to be_false
-    end
-  end
-
   it 'guards against invalid values' do
     project = build :project, state: 'invalid_state'
     expect(project.valid?).to be_false

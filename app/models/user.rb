@@ -27,7 +27,6 @@
 # * *picture_updated_at* (+datetime+)
 # * *admin* (+boolean+)
 # * *starred* (+boolean+)
-# * *blocked* (+boolean+)
 class User < ActiveRecord::Base
   mount_uploader :picture, PictureUploader, mount_on: :picture_file_name
 
@@ -37,7 +36,7 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :location, :picture, :picture_cache, :blocked
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :location, :picture, :picture_cache
 
   has_many :projects, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -45,20 +44,4 @@ class User < ActiveRecord::Base
   has_many :owned_groups, class_name: "Group", foreign_key: "admin_user_id"
 
   validates :name, presence: true
-
-  # Override the default devise filter for active users
-  # so that we can guard against blocked users
-  def active_for_authentication?
-    super && !blocked?
-  end
-
-  # If a user is not allowed to sign in, display the following error message
-  # (found in config/locales/devise.##.yml)
-  def inactive_message
-    if blocked?
-      :blocked
-    else
-      super
-    end
-  end
 end
